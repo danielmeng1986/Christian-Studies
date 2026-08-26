@@ -1,0 +1,4 @@
+interface:
+  display_name: "《追寻敬虔》Word 转 Markdown"
+  short_description: "依照 Word 原稿样式转换《追寻敬虔》的章节、引文、斜体和脚注"
+  default_prompt: "Use $qfg-word-to-markdown to convert a chapter of 《追寻敬虔》 from the source Word draft into repository-compliant Markdown."
