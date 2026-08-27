@@ -28,4 +28,6 @@ Generated files are written to `Books/追寻敬虔/Web/dist/` and are intentiona
 
 Open `http://127.0.0.1:4173/chapters/05/` in Safari or Chrome.
 
-The current MVP includes deterministic Chapter 05 rendering, a reserved chapter menu, the three-column reading layout, responsive side panels, light/dark/sepia themes, and left-panel footnote interaction. Note persistence belongs to a later roadmap phase.
+The current MVP includes deterministic Chapter 05 rendering, a reserved chapter menu, the three-column reading layout, responsive side panels, light/dark/sepia themes, and left-panel footnote interaction. The note editing UI belongs to the next roadmap phase.
+
+The local service also exposes the Phase 3 chapter-note data layer. `GET /api/chapters/05/notes` reads the Git-tracked JSON source, while revision-checked `PUT` requests save it atomically. The editing UI will begin using this API in the next roadmap phase.
