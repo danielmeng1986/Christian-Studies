@@ -254,22 +254,47 @@ def footnote_markdown(doc: WordDocument, note, label: NoteLabel) -> str:
     return body
 
 
-def build_markdown(doc: WordDocument, chapter: int, output: Path, footnotes: Path):
+def parse_source_pages(value: str | None) -> tuple[int, int] | None:
+    if value is None:
+        return None
+    match = re.fullmatch(r"\s*(\d+)\s*[-–—]\s*(\d+)\s*", value)
+    if not match:
+        raise SystemExit("--source-pages must use START-END, for example 97-116.")
+    start, end = map(int, match.groups())
+    if start > end:
+        raise SystemExit("--source-pages start page must not exceed end page.")
+    return start, end
+
+
+def build_markdown(
+    doc: WordDocument,
+    chapter: int,
+    output: Path,
+    footnotes: Path,
+    source_pages: tuple[int, int] | None = None,
+):
     start, end = chapter_range(doc, chapter)
     paragraphs = doc.paragraphs[start:end]
     labels, ordered_notes = note_labels(doc, paragraphs)
     href = Path(os.path.relpath(footnotes, output.parent)).as_posix()
     chapter_label = doc.plain_text(paragraphs[0]).strip()
     title = doc.plain_text(paragraphs[1]).strip()
+    if source_pages:
+        page_start, page_end = source_pages
+        source_location = f"{chapter_label}，Word 文档第{page_start}–{page_end}页"
+        source_note = f"> 来源定位：原始文档 {chapter_label}，Word 文档第{page_start}–{page_end}页。"
+    else:
+        source_location = f"{chapter_label}（尚未核验 Word 文档页码）"
+        source_note = f"> 来源定位：原始文档 {chapter_label}（尚未核验 Word 文档页码）。"
     blocks = [
         "---\n"
         "book: 追寻敬虔\n"
         f"chapter: {chapter:02d}\n"
         "source_file: Original/QFG Draft 20170911 20211005.doc\n"
-        f"source_location: \"{chapter_label}（源文件未提供稳定页码标记）\"\n"
+        f"source_location: \"{source_location}\"\n"
         "---",
         f"# {chapter_label}：{title}",
-        f"> 来源定位：原始文档 {chapter_label}（未提供稳定页码标记）。",
+        source_note,
     ]
     style_counts: dict[str, int] = {}
     text_mismatches = []
@@ -339,6 +364,7 @@ def build_markdown(doc: WordDocument, chapter: int, output: Path, footnotes: Pat
         "numbered_footnotes": sum(not label.custom for label in ordered_notes),
         "translator_footnotes": sum(label.custom for label in ordered_notes),
         "chapter_title": f"{chapter_label}：{title}",
+        "source_pages": list(source_pages) if source_pages else None,
         "paragraph_text_mismatches": text_mismatches,
         "footnote_text_mismatches": footnote_text_mismatches,
     }
@@ -352,13 +378,21 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--footnotes", type=Path, required=True)
     parser.add_argument("--soffice")
+    parser.add_argument(
+        "--source-pages",
+        help="Verified physical Word page range as START-END (for example 97-116).",
+    )
     parser.add_argument("--audit-only", action="store_true")
     args = parser.parse_args()
     docx, temp = convert_doc(args.source.resolve(), args.soffice)
     try:
         doc = WordDocument(docx)
         chapter_md, footnote_md, audit = build_markdown(
-            doc, args.chapter, args.output.resolve(), args.footnotes.resolve()
+            doc,
+            args.chapter,
+            args.output.resolve(),
+            args.footnotes.resolve(),
+            parse_source_pages(args.source_pages),
         )
         if not args.audit_only:
             args.output.parent.mkdir(parents=True, exist_ok=True)
