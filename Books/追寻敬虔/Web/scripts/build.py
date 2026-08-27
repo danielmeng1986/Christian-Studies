@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import re
 import shutil
@@ -105,6 +106,7 @@ def build() -> Path:
     body, metadata = strip_front_matter(source)
     title_match = TITLE_RE.search(body)
     title = title_match.group(1).strip() if title_match else "第五章"
+    source_revision = hashlib.sha256(body.encode("utf-8")).hexdigest()
     article_html, referenced_footnotes = render_markdown(body)
     article_html = article_html.rstrip()
     footnote_templates, available_footnotes = render_footnotes(FOOTNOTE_PATH.read_text(encoding="utf-8"))
@@ -115,6 +117,7 @@ def build() -> Path:
     template = TEMPLATE_PATH.read_text(encoding="utf-8")
     page_title = f"{title}｜追寻敬虔"
     output = template.replace("{{PAGE_TITLE}}", html.escape(page_title, quote=True))
+    output = output.replace("{{SOURCE_REVISION}}", source_revision)
     output = output.replace("{{ARTICLE_HTML}}", article_html)
     output = output.replace("{{FOOTNOTE_TEMPLATES}}", footnote_templates)
 

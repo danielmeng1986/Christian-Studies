@@ -61,7 +61,7 @@
       </aside>
 
       <section class="reading-column" aria-label="章节正文">
-        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="05">
+        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="05" data-source-revision="{{SOURCE_REVISION}}">
 {{ARTICLE_HTML}}
         </article>
         <footer class="chapter-footer">
@@ -77,14 +77,49 @@
             <p class="eyebrow">ANNOTATIONS</p>
             <h2>我的笔记</h2>
           </div>
-          <span class="save-status" aria-live="polite">阅读模式</span>
+          <span class="save-status" id="save-status" aria-live="polite" data-state="loading">载入中</span>
         </div>
-        <div class="empty-state">
+
+        <div class="notes-message" id="notes-message" hidden>
+          <p id="notes-message-text"></p>
+          <button type="button" id="reload-notes">重新载入</button>
+        </div>
+
+        <div class="notes-list-view" id="notes-list-view" hidden>
+          <div class="notes-list-summary">
+            <span id="notes-count">0 条笔记</span>
+            <span id="unresolved-count"></span>
+          </div>
+          <div class="notes-list" id="notes-list"></div>
+        </div>
+
+        <div class="empty-state" id="notes-empty-state">
           <span class="empty-state__mark empty-state__mark--note" aria-hidden="true">✦</span>
-          <p>选中文字并写下笔记的功能将在后续阶段接入。</p>
+          <p>在正文中选择一段文字，然后点击“写笔记”。</p>
         </div>
+
+        <form class="note-editor" id="note-editor" hidden>
+          <div class="note-editor__body">
+            <div class="note-editor__heading">
+              <p class="eyebrow" id="note-editor-mode">NEW NOTE</p>
+              <h3 id="note-editor-title">写笔记</h3>
+            </div>
+            <blockquote class="note-quotation" id="note-quotation"></blockquote>
+            <label for="note-body">笔记内容</label>
+            <textarea id="note-body" rows="12" required placeholder="写下你的想法……"></textarea>
+            <p class="field-message" id="note-field-message" aria-live="polite"></p>
+          </div>
+          <div class="note-editor__actions">
+            <button type="button" class="danger-button" id="delete-note" hidden>删除</button>
+            <span class="note-editor__spacer"></span>
+            <button type="button" class="secondary-button" id="cancel-note">取消</button>
+            <button type="submit" class="primary-button" id="save-note">保存</button>
+          </div>
+        </form>
       </aside>
     </main>
+
+    <button type="button" class="selection-action" id="selection-action" hidden>写笔记</button>
 
     <div class="footnote-templates" hidden aria-hidden="true">
 {{FOOTNOTE_TEMPLATES}}

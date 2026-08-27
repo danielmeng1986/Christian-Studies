@@ -73,6 +73,7 @@ class BuildTests(unittest.TestCase):
         self.assertIn('data-theme-choice="light"', self.output)
         self.assertIn('data-theme-choice="sepia"', self.output)
         self.assertIn('data-theme-choice="dark"', self.output)
+        self.assertRegex(self.output, r'data-source-revision="[0-9a-f]{64}"')
 
     def test_footnotes_are_compiled_and_interactive(self) -> None:
         parser = StructureParser()

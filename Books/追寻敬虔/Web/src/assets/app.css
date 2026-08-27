@@ -20,6 +20,8 @@
   --quote-border: #c6773d;
   --shadow: 0 1px 2px rgb(40 34 26 / 5%), 0 18px 48px rgb(40 34 26 / 7%);
   --focus: #b35f2c;
+  --highlight-bg: #ffd19a;
+  --highlight-border: #d97824;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "PingFang TC", "PingFang SC", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
 }
 
@@ -41,6 +43,8 @@
   --quote-border: #a96535;
   --shadow: 0 1px 2px rgb(57 44 24 / 7%), 0 18px 48px rgb(57 44 24 / 8%);
   --focus: #9b5428;
+  --highlight-bg: #e7b777;
+  --highlight-border: #a65a27;
 }
 
 :root[data-theme="dark"] {
@@ -61,6 +65,8 @@
   --quote-border: #c47b45;
   --shadow: 0 1px 2px rgb(0 0 0 / 20%), 0 18px 48px rgb(0 0 0 / 20%);
   --focus: #efae7c;
+  --highlight-bg: #74421f;
+  --highlight-border: #e39a62;
 }
 
 *,
@@ -409,6 +415,242 @@ a {
   font-size: 0.66rem;
 }
 
+.save-status[data-state="saved"] {
+  color: #39734c;
+}
+
+:root[data-theme="dark"] .save-status[data-state="saved"] {
+  color: #8bc39a;
+}
+
+.save-status[data-state="dirty"],
+.save-status[data-state="saving"] {
+  color: var(--accent);
+}
+
+.save-status[data-state="error"] {
+  color: #b33b32;
+  border-color: color-mix(in srgb, #b33b32 40%, var(--border));
+}
+
+.notes-message {
+  margin: 1rem;
+  padding: 0.85rem;
+  color: var(--text);
+  background: color-mix(in srgb, #bd4037 9%, var(--panel-bg));
+  border: 1px solid color-mix(in srgb, #bd4037 38%, var(--border));
+  border-radius: 0.5rem;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.notes-message p {
+  margin: 0 0 0.65rem;
+}
+
+.notes-message button {
+  padding: 0.35rem 0.55rem;
+  color: var(--text);
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  cursor: pointer;
+}
+
+.notes-list-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.7rem;
+}
+
+#unresolved-count {
+  color: var(--accent);
+}
+
+.notes-list {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0.85rem;
+}
+
+.note-list-item {
+  display: grid;
+  gap: 0.42rem;
+  width: 100%;
+  padding: 0.85rem;
+  color: var(--text);
+  text-align: left;
+  background: var(--reading-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.note-list-item:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 5px 18px rgb(40 34 26 / 5%);
+}
+
+.note-list-item.is-unresolved {
+  border-style: dashed;
+}
+
+.note-list-item__quote,
+.note-list-item__preview {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.note-list-item__quote {
+  color: var(--accent);
+  font-family: ui-serif, "Songti TC", "Songti SC", STSong, serif;
+  font-size: 0.77rem;
+  line-height: 1.55;
+  -webkit-line-clamp: 2;
+}
+
+.note-list-item__preview {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  -webkit-line-clamp: 3;
+}
+
+.note-list-item__meta {
+  color: var(--faint);
+  font-size: 0.65rem;
+}
+
+.note-editor {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100% - 5rem);
+}
+
+.note-editor[hidden] {
+  display: none;
+}
+
+.note-editor__body {
+  flex: 1;
+  padding: 1.15rem;
+}
+
+.note-editor__heading h3 {
+  margin: 0.2rem 0 1rem;
+  font-family: ui-serif, "Songti TC", "Songti SC", STSong, serif;
+  font-size: 1.1rem;
+}
+
+.note-quotation {
+  max-height: 9rem;
+  overflow: auto;
+  margin: 0 0 1.2rem;
+  padding: 0.8rem 0.9rem;
+  color: var(--muted);
+  background: var(--quote-bg);
+  border-left: 3px solid var(--highlight-border);
+  border-radius: 0 0.4rem 0.4rem 0;
+  font-family: ui-serif, "Songti TC", "Songti SC", STSong, serif;
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.note-editor label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.note-editor textarea {
+  width: 100%;
+  min-height: 13rem;
+  resize: vertical;
+  padding: 0.8rem;
+  color: var(--text);
+  background: var(--reading-bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 0.45rem;
+  font: inherit;
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.field-message {
+  min-height: 1.2em;
+  margin: 0.45rem 0 0;
+  color: #b33b32;
+  font-size: 0.7rem;
+}
+
+.note-editor__actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--panel-bg) 96%, transparent);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.note-editor__spacer {
+  flex: 1;
+}
+
+.note-editor__actions button {
+  min-height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.note-editor__actions button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.primary-button {
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.secondary-button {
+  color: var(--text);
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+}
+
+.danger-button {
+  color: #b33b32;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, #b33b32 45%, var(--border));
+}
+
+.selection-action {
+  position: fixed;
+  z-index: 80;
+  padding: 0.48rem 0.72rem;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 75%, #000);
+  border-radius: 0.42rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  font-size: 0.76rem;
+}
+
+.selection-action[hidden] {
+  display: none;
+}
+
 .empty-state {
   display: grid;
   justify-items: center;
@@ -543,6 +785,23 @@ a {
 .chapter-article .footnote-ref:hover,
 .chapter-article .footnote-ref.is-open {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.chapter-article mark.annotation-highlight {
+  margin: 0 -0.02em;
+  padding: 0.03em 0.02em;
+  color: inherit;
+  background: var(--highlight-bg);
+  border-bottom: 2px solid var(--highlight-border);
+  border-radius: 0.14em;
+  cursor: pointer;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.chapter-article mark.annotation-highlight:hover,
+.chapter-article mark.annotation-highlight:focus-visible {
+  filter: saturate(1.12) brightness(0.98);
 }
 
 .chapter-article .footnote-ref.is-open {

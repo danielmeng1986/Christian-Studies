@@ -124,6 +124,9 @@ def normalize_note_document(value: Any, chapter_id: str) -> dict[str, Any]:
             raise ValidationError(f"{field}.anchor.endOffset must be greater than startOffset")
         if not isinstance(exact, str) or not exact.strip():
             raise ValidationError(f"{field}.anchor.exact must be non-empty")
+        exact_utf16_length = len(exact.encode("utf-16-le")) // 2
+        if end - start != exact_utf16_length:
+            raise ValidationError(f"{field}.anchor offsets must match the exact text length")
         if not isinstance(prefix, str) or len(prefix) > 32:
             raise ValidationError(f"{field}.anchor.prefix must contain at most 32 characters")
         if not isinstance(suffix, str) or len(suffix) > 32:
