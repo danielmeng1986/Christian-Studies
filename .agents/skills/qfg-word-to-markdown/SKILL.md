@@ -18,8 +18,9 @@ Read `Books/追寻敬虔/Metadata/word-to-markdown-spec.md` completely before co
 3. Run `scripts/convert_qfg_chapter.py` against `Books/追寻敬虔/Original/QFG Draft 20170911 20211005.doc`, first writing to temporary output paths, and pass the verified range with `--source-pages START-END`.
 4. Compare temporary output with the existing chapter. Preserve intentional repository metadata while preferring Word text, paragraph structure, and semantic styles.
 5. Verify the page range, all headings, quotations, inline italics, footnote references, footnote bodies, and chapter boundaries.
-6. Write the approved chapter and `References/Footnotes-NN.md` only after the audit passes.
-7. Run the script again with `--audit-only`, then run the link/content checks in the canonical specification.
+6. Run `scripts/link_qfg_scriptures.py` on the temporary chapter. It must resolve every detected citation against every translation configured in `Metadata/scripture-config.json`.
+7. Write the approved chapter and `References/Footnotes-NN.md` only after the audit passes.
+8. Run the converter again with `--audit-only`, run the Scripture linker with `--check`, then run the link/content checks in the canonical specification.
 
 ## Command pattern
 

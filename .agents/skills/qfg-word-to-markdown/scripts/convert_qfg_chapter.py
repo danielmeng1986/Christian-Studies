@@ -45,6 +45,12 @@ class NoteLabel:
     custom: bool
 
 
+LEGACY_CUSTOM_MARKS = {
+    "\uf02a": "*",
+    "\uf02b": "+",
+}
+
+
 class WordDocument:
     def __init__(self, path: Path):
         with zipfile.ZipFile(path) as archive:
@@ -172,6 +178,7 @@ def note_labels(doc: WordDocument, paragraphs) -> tuple[dict[str, NoteLabel], li
                 note_text = doc.plain_text(doc.footnotes.get(word_id)).lstrip() if word_id in doc.footnotes else ""
                 marker_match = re.match(r"(\*+|\++)", note_text)
                 mark = marker_match.group(1) if marker_match else (doc.run_text(run).strip() or "*")
+                mark = "".join(LEGACY_CUSTOM_MARKS.get(character, character) for character in mark)
                 label = NoteLabel(word_id, mark, f"译者注{translator}", f"译者注{translator}", True)
             else:
                 number += 1
@@ -215,7 +222,22 @@ def paragraph_markdown(doc: WordDocument, paragraph, labels: dict[str, NoteLabel
             segments[-1] = (previous[0] + text, italic, bold)
         else:
             segments.append((text, italic, bold))
-    rendered = "".join(wrap_text(*segment) for segment in segments)
+    normalized_segments: list[tuple[str, bool, bool]] = []
+    for index, segment in enumerate(segments):
+        text, italic, bold = segment
+        if (
+            text.isspace()
+            and normalized_segments
+            and index + 1 < len(segments)
+            and normalized_segments[-1][1:] == segments[index + 1][1:]
+        ):
+            italic, bold = normalized_segments[-1][1:]
+        if normalized_segments and normalized_segments[-1][1:] == (italic, bold):
+            previous = normalized_segments[-1]
+            normalized_segments[-1] = (previous[0] + text, italic, bold)
+        else:
+            normalized_segments.append((text, italic, bold))
+    rendered = "".join(wrap_text(*segment) for segment in normalized_segments)
     rendered = re.sub(r"^\s+", "", rendered)
     rendered = rendered.replace("\t", " ")
     rendered = re.sub(r"[ ]{2,}", " ", rendered)
@@ -278,7 +300,12 @@ def build_markdown(
     labels, ordered_notes = note_labels(doc, paragraphs)
     href = Path(os.path.relpath(footnotes, output.parent)).as_posix()
     chapter_label = doc.plain_text(paragraphs[0]).strip()
-    title = doc.plain_text(paragraphs[1]).strip()
+    title_parts = [doc.plain_text(paragraphs[1]).strip()]
+    body_start = 2
+    while body_start < len(paragraphs) and doc.style_name(paragraphs[body_start]).lower() == "heading 1":
+        title_parts.append(doc.plain_text(paragraphs[body_start]).strip())
+        body_start += 1
+    title = "".join(title_parts)
     if source_pages:
         page_start, page_end = source_pages
         source_location = f"{chapter_label}，Word 文档第{page_start}–{page_end}页"
@@ -306,7 +333,7 @@ def build_markdown(
             blocks.append("\n".join(quote_buffer))
             quote_buffer = []
 
-    for offset, paragraph in enumerate(paragraphs[2:], start=2):
+    for offset, paragraph in enumerate(paragraphs[body_start:], start=body_start):
         style = doc.style_name(paragraph)
         style_key = style.lower()
         text = paragraph_markdown(doc, paragraph, labels, href)
