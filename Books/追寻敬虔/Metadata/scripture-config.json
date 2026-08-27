@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "default_translation": "cuv-s",
+  "available_translations": [
+    "cuv-s",
+    "kjv",
+    "asv"
+  ],
+  "translation_labels": {
+    "cuv-s": "新标点和合本简体",
+    "kjv": "King James Version 1769",
+    "asv": "American Standard Version 1901"
+  }
+}

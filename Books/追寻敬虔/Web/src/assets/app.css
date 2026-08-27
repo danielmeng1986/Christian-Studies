@@ -406,6 +406,35 @@ a {
   color: var(--accent);
 }
 
+.scripture-card__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.scripture-card__translation {
+  max-width: 12rem;
+  padding: 0.35rem 1.8rem 0.35rem 0.55rem;
+  color: var(--text);
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  font-size: 0.7rem;
+}
+
+.scripture-card__text {
+  color: var(--text);
+  font-size: 0.94rem;
+  line-height: 1.85;
+}
+
+.scripture-card__citation {
+  color: var(--muted);
+  font-family: ui-sans-serif, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
 .save-status {
   padding: 0.26rem 0.48rem;
   color: var(--muted);
@@ -660,6 +689,10 @@ a {
   text-align: center;
 }
 
+.empty-state[hidden] {
+  display: none;
+}
+
 .empty-state p {
   max-width: 15rem;
   margin: 0;
@@ -807,6 +840,20 @@ a {
 .chapter-article .footnote-ref.is-open {
   color: var(--reading-bg);
   background: var(--accent);
+}
+
+.chapter-article .scripture-ref {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+}
+
+.chapter-article .scripture-ref:hover,
+.chapter-article .scripture-ref.is-open {
+  background: var(--accent-soft);
+  border-radius: 0.18em;
+  box-shadow: 0 0 0 0.12em var(--accent-soft);
 }
 
 .chapter-article blockquote {

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
+import re
 import sys
 import unittest
 from html.parser import HTMLParser
@@ -32,6 +34,7 @@ class StructureParser(HTMLParser):
         self.block_ids: list[str] = []
         self.footnote_refs: list[str] = []
         self.footnote_templates: list[str] = []
+        self.scripture_refs: list[str] = []
         self.in_article = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -47,6 +50,8 @@ class StructureParser(HTMLParser):
             self.block_ids.append(attributes["data-block-id"] or "")
         if "footnote-ref" in (attributes.get("class") or ""):
             self.footnote_refs.append(attributes.get("data-footnote-id") or "")
+        if "scripture-ref" in (attributes.get("class") or ""):
+            self.scripture_refs.append(attributes.get("data-scripture-id") or "")
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "article" and self.in_article:
@@ -84,6 +89,70 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn("Footnotes-05.md#", self.output)
         self.assertIn("译者注1", parser.footnote_templates)
         self.assertIn("译者注2", parser.footnote_templates)
+
+    def test_scriptures_are_compiled_and_interactive(self) -> None:
+        parser = StructureParser()
+        parser.feed(self.output)
+        self.assertEqual(len(parser.scripture_refs), 28)
+        self.assertEqual(len(set(parser.scripture_refs)), 26)
+        self.assertNotIn("scripture:", self.output)
+        self.assertIn('aria-controls="reference-panel"', self.output)
+        self.assertIn('id="show-all-references"', self.output)
+
+        match = re.search(
+            r'<script type="application/json" id="scripture-data">(.*?)</script>',
+            self.output,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(match)
+        payload = json.loads(match.group(1))
+        self.assertEqual(payload["defaultTranslation"], "cuv-s")
+        self.assertEqual(payload["translationOrder"], ["cuv-s", "kjv", "asv"])
+        self.assertEqual(len(payload["references"]), 26)
+        luke = payload["references"]["LUK.4.23"]["versions"]
+        self.assertEqual(luke["cuv-s"]["citation"], "路 4:23")
+        self.assertEqual(luke["kjv"]["citation"], "Luke 4:23")
+        self.assertEqual(luke["asv"]["citation"], "Luke 4:23")
+        self.assertEqual(payload["translations"]["asv"]["label"], "American Standard Version 1901")
+        self.assertNotIn("  ", luke["kjv"]["text"])
+        self.assertIn("1CO.2.4,5;15.25,26", payload["references"])
+
+    def test_scripture_uri_validation(self) -> None:
+        config, _, books = BUILD.load_scripture_context()
+        parsed = BUILD.parse_scripture_uri(
+            "scripture:1TH.1.5-10;2.13?version=kjv",
+            books,
+            config["available_translations"],
+        )
+        self.assertEqual(parsed["id"], "1TH.1.5-10;2.13")
+        self.assertEqual(parsed["initialTranslation"], "kjv")
+        with self.assertRaisesRegex(ValueError, "Reversed"):
+            BUILD.parse_scripture_uri("scripture:LUK.1.45-44", books, config["available_translations"])
+        with self.assertRaisesRegex(ValueError, "Unknown Scripture book"):
+            BUILD.parse_scripture_uri("scripture:XYZ.1.1", books, config["available_translations"])
+        with self.assertRaisesRegex(ValueError, "Disallowed"):
+            BUILD.parse_scripture_uri("scripture:LUK.1.1?version=web", books, config["available_translations"])
+        with self.assertRaisesRegex(ValueError, "Empty Scripture translation"):
+            BUILD.parse_scripture_uri("scripture:LUK.1.1?version=", books, config["available_translations"])
+
+    def test_scripture_passage_joining_matches_project_format(self) -> None:
+        config, translations, books = BUILD.load_scripture_context()
+        reference = BUILD.parse_scripture_uri(
+            "scripture:LUK.1.44-45",
+            books,
+            config["available_translations"],
+        )
+        versions = BUILD.build_scripture_data([reference], config, translations, books)["references"][reference["id"]][
+            "versions"
+        ]
+        self.assertEqual(
+            versions["cuv-s"]["text"],
+            "因为你问安的声音一入我耳，我腹里的胎就欢喜跳动。"
+            "这相信的女子是有福的！因为主对她所说的话都要应验。」",
+        )
+        self.assertEqual(versions["cuv-s"]["citation"], "路 1:44–45")
+        self.assertIn("joy. And blessed", versions["kjv"]["text"])
+        self.assertEqual(versions["kjv"]["citation"], "Luke 1:44–45")
 
     def test_output_excludes_private_and_machine_specific_data(self) -> None:
         self.assertNotIn(str(BUILD.REPO_ROOT), self.output)

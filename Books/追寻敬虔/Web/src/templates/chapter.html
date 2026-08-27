@@ -32,8 +32,8 @@
       </div>
 
       <div class="toolbar__group panel-controls" role="group" aria-label="栏位显示">
-        <button type="button" class="icon-button" id="toggle-footnotes" aria-controls="footnote-panel" aria-expanded="true">
-          <span aria-hidden="true">注</span><span class="button-label">脚注</span>
+        <button type="button" class="icon-button" id="toggle-references" aria-controls="reference-panel" aria-expanded="true">
+          <span aria-hidden="true">引</span><span class="button-label">脚注 / 经文</span>
         </button>
         <button type="button" class="icon-button" id="toggle-notes" aria-controls="notes-panel" aria-expanded="true">
           <span aria-hidden="true">记</span><span class="button-label">笔记</span>
@@ -42,22 +42,22 @@
     </header>
 
     <main class="app-shell" id="app-shell">
-      <aside class="side-panel footnote-panel" id="footnote-panel" aria-label="脚注">
+      <aside class="side-panel footnote-panel" id="reference-panel" aria-label="脚注与经文">
         <div class="side-panel__header">
           <div>
             <p class="eyebrow">REFERENCES</p>
-            <h2>脚注</h2>
+            <h2>脚注 / 经文</h2>
           </div>
-          <div class="side-panel__actions" aria-label="脚注操作">
-            <button type="button" id="show-all-footnotes">显示全部</button>
-            <button type="button" id="clear-footnotes">清空</button>
+          <div class="side-panel__actions" aria-label="脚注与经文操作">
+            <button type="button" id="show-all-references">显示全部</button>
+            <button type="button" id="clear-references">清空</button>
           </div>
         </div>
-        <div class="empty-state" id="footnote-empty-state">
+        <div class="empty-state" id="reference-empty-state">
           <span class="empty-state__mark" aria-hidden="true">1</span>
-          <p>点击正文中的脚注标记，内容会显示在这里。</p>
+          <p>点击正文中的脚注或经文链接，内容会显示在这里。</p>
         </div>
-        <div class="footnote-list" id="footnote-list" aria-live="polite"></div>
+        <div class="footnote-list" id="reference-list" aria-live="polite"></div>
       </aside>
 
       <section class="reading-column" aria-label="章节正文">
@@ -124,5 +124,6 @@
     <div class="footnote-templates" hidden aria-hidden="true">
 {{FOOTNOTE_TEMPLATES}}
     </div>
+    <script type="application/json" id="scripture-data">{{SCRIPTURE_DATA}}</script>
   </body>
 </html>

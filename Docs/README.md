@@ -14,5 +14,6 @@ Read the documents in order:
 5. [Reading Workflow](05-Reading-Workflow.md)
 6. [Knowledge Graph](06-Knowledge-Graph.md)
 7. [Roadmap](07-Roadmap.md)
+8. [Scripture Reference Specification (English)](08-Scripture-Reference-Spec.md) / [经文引用规范（中文）](08-Scripture-Reference-Spec-zh.md)
 
 The design principles used throughout are collected in [01-Vision.md](01-Vision.md#design-principles).

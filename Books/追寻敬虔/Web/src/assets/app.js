@@ -9,16 +9,22 @@ const root = document.documentElement;
 const shell = document.querySelector("#app-shell");
 const article = document.querySelector("#chapter-article");
 const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
-const leftToggle = document.querySelector("#toggle-footnotes");
+const leftToggle = document.querySelector("#toggle-references");
 const rightToggle = document.querySelector("#toggle-notes");
 
-const footnoteList = document.querySelector("#footnote-list");
-const footnoteEmptyState = document.querySelector("#footnote-empty-state");
-const showAllFootnotes = document.querySelector("#show-all-footnotes");
-const clearFootnotes = document.querySelector("#clear-footnotes");
+const referenceList = document.querySelector("#reference-list");
+const referenceEmptyState = document.querySelector("#reference-empty-state");
+const showAllReferences = document.querySelector("#show-all-references");
+const clearReferences = document.querySelector("#clear-references");
 const footnoteRefs = [...document.querySelectorAll(".footnote-ref[data-footnote-id]")];
-const allFootnoteIds = [...new Set(footnoteRefs.map((ref) => ref.dataset.footnoteId))];
-let openFootnoteIds = [];
+const scriptureRefs = [...document.querySelectorAll(".scripture-ref[data-scripture-id]")];
+const interactiveRefs = [...document.querySelectorAll(".footnote-ref[data-footnote-id], .scripture-ref[data-scripture-id]")];
+const scriptureData = JSON.parse(document.querySelector("#scripture-data")?.textContent || "{}");
+const referenceKey = (ref) =>
+  ref.classList.contains("scripture-ref") ? `scripture:${ref.dataset.scriptureId}` : `footnote:${ref.dataset.footnoteId}`;
+const allReferenceKeys = [...new Set(interactiveRefs.map(referenceKey))];
+let openReferenceKeys = [];
+const selectedScriptureVersions = new Map();
 
 const saveStatus = document.querySelector("#save-status");
 const notesMessage = document.querySelector("#notes-message");
@@ -83,18 +89,18 @@ function footnoteTemplate(footnoteId) {
   return document.getElementById(`footnote-template-${footnoteId}`);
 }
 
-function syncFootnoteRefs() {
-  const openSet = new Set(openFootnoteIds);
-  footnoteRefs.forEach((ref) => {
-    const isOpen = openSet.has(ref.dataset.footnoteId);
+function syncReferenceRefs() {
+  const openSet = new Set(openReferenceKeys);
+  interactiveRefs.forEach((ref) => {
+    const isOpen = openSet.has(referenceKey(ref));
     ref.setAttribute("aria-expanded", String(isOpen));
     ref.classList.toggle("is-open", isOpen);
   });
 }
 
-function closeFootnote(footnoteId) {
-  openFootnoteIds = openFootnoteIds.filter((id) => id !== footnoteId);
-  renderFootnotes();
+function closeReference(key) {
+  openReferenceKeys = openReferenceKeys.filter((item) => item !== key);
+  renderReferences();
 }
 
 function createFootnoteCard(footnoteId) {
@@ -115,7 +121,7 @@ function createFootnoteCard(footnoteId) {
   closeButton.className = "footnote-card__close";
   closeButton.setAttribute("aria-label", `关闭${title.textContent}`);
   closeButton.textContent = "×";
-  closeButton.addEventListener("click", () => closeFootnote(footnoteId));
+  closeButton.addEventListener("click", () => closeReference(`footnote:${footnoteId}`));
 
   const content = document.createElement("div");
   content.className = "footnote-card__content";
@@ -125,26 +131,90 @@ function createFootnoteCard(footnoteId) {
   return card;
 }
 
-function renderFootnotes(scrollToId = null) {
-  const cards = openFootnoteIds.map(createFootnoteCard).filter(Boolean);
-  footnoteList.replaceChildren(...cards);
-  footnoteEmptyState.hidden = cards.length > 0;
-  clearFootnotes.disabled = cards.length === 0;
-  showAllFootnotes.disabled = allFootnoteIds.length === 0 || cards.length === allFootnoteIds.length;
-  syncFootnoteRefs();
-  if (scrollToId) {
-    document.getElementById(`open-footnote-${scrollToId}`)?.scrollIntoView({ block: "nearest" });
+function createScriptureCard(scriptureId) {
+  const reference = scriptureData.references?.[scriptureId];
+  if (!reference) return null;
+  const selectedVersion = selectedScriptureVersions.get(scriptureId) || scriptureData.defaultTranslation;
+  const passage = reference.versions[selectedVersion];
+  if (!passage) return null;
+
+  const card = document.createElement("article");
+  card.className = "footnote-card scripture-card";
+  card.id = `open-scripture-${scriptureId}`;
+  card.dataset.scriptureId = scriptureId;
+
+  const header = document.createElement("header");
+  header.className = "footnote-card__header scripture-card__header";
+  const title = document.createElement("h3");
+  title.textContent = "经文";
+  const controls = document.createElement("div");
+  controls.className = "scripture-card__controls";
+  const select = document.createElement("select");
+  select.className = "scripture-card__translation";
+  select.setAttribute("aria-label", "选择圣经译本");
+  scriptureData.translationOrder.forEach((translationId) => {
+    const option = document.createElement("option");
+    option.value = translationId;
+    option.textContent = scriptureData.translations[translationId].label;
+    option.selected = translationId === selectedVersion;
+    select.append(option);
+  });
+  select.addEventListener("change", () => {
+    selectedScriptureVersions.set(scriptureId, select.value);
+    renderReferences(`scripture:${scriptureId}`);
+  });
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.className = "footnote-card__close";
+  closeButton.setAttribute("aria-label", `关闭经文 ${scriptureId}`);
+  closeButton.textContent = "×";
+  closeButton.addEventListener("click", () => closeReference(`scripture:${scriptureId}`));
+  controls.append(select, closeButton);
+  header.append(title, controls);
+
+  const content = document.createElement("div");
+  content.className = "footnote-card__content scripture-card__content";
+  const text = document.createElement("p");
+  text.className = "scripture-card__text";
+  text.textContent = passage.text;
+  const citation = document.createElement("p");
+  citation.className = "scripture-card__citation";
+  citation.textContent = passage.citation;
+  content.append(text, citation);
+  card.append(header, content);
+  return card;
+}
+
+function createReferenceCard(key) {
+  const [type, id] = key.split(/:(.*)/s, 2);
+  return type === "scripture" ? createScriptureCard(id) : createFootnoteCard(id);
+}
+
+function renderReferences(scrollToKey = null) {
+  const cards = openReferenceKeys.map(createReferenceCard).filter(Boolean);
+  referenceList.replaceChildren(...cards);
+  referenceEmptyState.hidden = cards.length > 0;
+  clearReferences.disabled = cards.length === 0;
+  showAllReferences.disabled = allReferenceKeys.length === 0 || cards.length === allReferenceKeys.length;
+  syncReferenceRefs();
+  if (scrollToKey) {
+    const [type, id] = scrollToKey.split(/:(.*)/s, 2);
+    document.getElementById(`open-${type}-${id}`)?.scrollIntoView({ block: "nearest" });
   }
 }
 
-function toggleFootnote(footnoteId) {
-  if (openFootnoteIds.includes(footnoteId)) {
-    closeFootnote(footnoteId);
+function toggleReference(key, initialVersion = null) {
+  if (openReferenceKeys.includes(key)) {
+    closeReference(key);
     return;
   }
-  openFootnoteIds = [...openFootnoteIds, footnoteId];
+  if (key.startsWith("scripture:") && initialVersion) {
+    const scriptureId = key.slice("scripture:".length);
+    if (!selectedScriptureVersions.has(scriptureId)) selectedScriptureVersions.set(scriptureId, initialVersion);
+  }
+  openReferenceKeys = [...openReferenceKeys, key];
   applyPanelState("left", true);
-  renderFootnotes(footnoteId);
+  renderReferences(key);
 }
 
 function setSaveStatus(label, state) {
@@ -167,7 +237,7 @@ function canonicalTextNodes(container) {
   const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       if (!node.data) return NodeFilter.FILTER_REJECT;
-      if (node.parentElement?.closest(".footnote-ref")) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement?.closest(".footnote-ref, .scripture-ref")) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
   });
@@ -439,8 +509,8 @@ function openExistingNote(noteId, scrollToHighlight = false) {
   }
 }
 
-function rangeIncludesFootnote(range) {
-  return Boolean(range.cloneContents().querySelector?.(".footnote-ref"));
+function rangeIncludesReference(range) {
+  return Boolean(range.cloneContents().querySelector?.(".footnote-ref, .scripture-ref"));
 }
 
 function selectionAnchor() {
@@ -450,7 +520,7 @@ function selectionAnchor() {
   const startBlock = closestBlock(range.startContainer);
   const endBlock = closestBlock(range.endContainer);
   if (!startBlock || startBlock !== endBlock || !article.contains(startBlock)) return null;
-  if (rangeIncludesFootnote(range)) return null;
+  if (rangeIncludesReference(range)) return null;
 
   const startOffset = canonicalOffset(startBlock, range.startContainer, range.startOffset);
   const endOffset = canonicalOffset(startBlock, range.endContainer, range.endOffset);
@@ -575,20 +645,25 @@ themeButtons.forEach((button) => button.addEventListener("click", () => applyThe
 leftToggle.addEventListener("click", () => applyPanelState("left", leftToggle.getAttribute("aria-expanded") !== "true"));
 rightToggle.addEventListener("click", () => applyPanelState("right", rightToggle.getAttribute("aria-expanded") !== "true"));
 
-footnoteRefs.forEach((ref) => {
+interactiveRefs.forEach((ref) => {
   ref.addEventListener("click", (event) => {
     event.preventDefault();
-    toggleFootnote(ref.dataset.footnoteId);
+    toggleReference(referenceKey(ref), ref.dataset.initialVersion);
   });
 });
-showAllFootnotes.addEventListener("click", () => {
-  openFootnoteIds = [...allFootnoteIds];
+showAllReferences.addEventListener("click", () => {
+  scriptureRefs.forEach((ref) => {
+    if (!selectedScriptureVersions.has(ref.dataset.scriptureId)) {
+      selectedScriptureVersions.set(ref.dataset.scriptureId, ref.dataset.initialVersion);
+    }
+  });
+  openReferenceKeys = [...allReferenceKeys];
   applyPanelState("left", true);
-  renderFootnotes();
+  renderReferences();
 });
-clearFootnotes.addEventListener("click", () => {
-  openFootnoteIds = [];
-  renderFootnotes();
+clearReferences.addEventListener("click", () => {
+  openReferenceKeys = [];
+  renderReferences();
 });
 
 article.addEventListener("click", (event) => {
@@ -640,5 +715,5 @@ window.addEventListener("beforeunload", (event) => {
 applyTheme(preferredTheme(), false);
 applyPanelState("left", storedPanelState(STORAGE_KEYS.leftPanel), false);
 applyPanelState("right", storedPanelState(STORAGE_KEYS.rightPanel), false);
-renderFootnotes();
+renderReferences();
 loadNotes();
