@@ -49,14 +49,15 @@
             <h2>脚注</h2>
           </div>
           <div class="side-panel__actions" aria-label="脚注操作">
-            <button type="button" disabled>显示全部</button>
-            <button type="button" disabled>清空</button>
+            <button type="button" id="show-all-footnotes">显示全部</button>
+            <button type="button" id="clear-footnotes">清空</button>
           </div>
         </div>
-        <div class="empty-state">
+        <div class="empty-state" id="footnote-empty-state">
           <span class="empty-state__mark" aria-hidden="true">1</span>
-          <p>脚注会在下一阶段接入。正文中的标记和左栏位置已经预留。</p>
+          <p>点击正文中的脚注标记，内容会显示在这里。</p>
         </div>
+        <div class="footnote-list" id="footnote-list" aria-live="polite"></div>
       </aside>
 
       <section class="reading-column" aria-label="章节正文">
@@ -85,5 +86,8 @@
       </aside>
     </main>
 
+    <div class="footnote-templates" hidden aria-hidden="true">
+{{FOOTNOTE_TEMPLATES}}
+    </div>
   </body>
 </html>

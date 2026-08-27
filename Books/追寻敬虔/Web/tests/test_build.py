@@ -30,17 +30,23 @@ class StructureParser(HTMLParser):
         super().__init__()
         self.article_counts: dict[str, int] = {}
         self.block_ids: list[str] = []
+        self.footnote_refs: list[str] = []
+        self.footnote_templates: list[str] = []
         self.in_article = False
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         attributes = dict(attrs)
         if tag == "article" and attributes.get("id") == "chapter-article":
             self.in_article = True
+        if tag == "template" and attributes.get("data-footnote-id"):
+            self.footnote_templates.append(attributes["data-footnote-id"] or "")
         if not self.in_article:
             return
         self.article_counts[tag] = self.article_counts.get(tag, 0) + 1
         if "data-block-id" in attributes and attributes["data-block-id"]:
             self.block_ids.append(attributes["data-block-id"] or "")
+        if "footnote-ref" in (attributes.get("class") or ""):
+            self.footnote_refs.append(attributes.get("data-footnote-id") or "")
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "article" and self.in_article:
@@ -67,6 +73,16 @@ class BuildTests(unittest.TestCase):
         self.assertIn('data-theme-choice="light"', self.output)
         self.assertIn('data-theme-choice="sepia"', self.output)
         self.assertIn('data-theme-choice="dark"', self.output)
+
+    def test_footnotes_are_compiled_and_interactive(self) -> None:
+        parser = StructureParser()
+        parser.feed(self.output)
+        self.assertEqual(len(parser.footnote_refs), 35)
+        self.assertEqual(len(parser.footnote_templates), 35)
+        self.assertEqual(set(parser.footnote_refs), set(parser.footnote_templates))
+        self.assertNotIn("Footnotes-05.md#", self.output)
+        self.assertIn("译者注1", parser.footnote_templates)
+        self.assertIn("译者注2", parser.footnote_templates)
 
     def test_output_excludes_private_and_machine_specific_data(self) -> None:
         self.assertNotIn(str(BUILD.REPO_ROOT), self.output)

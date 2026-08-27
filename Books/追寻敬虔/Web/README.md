@@ -28,4 +28,4 @@ Generated files are written to `Books/追寻敬虔/Web/dist/` and are intentiona
 
 Open `http://127.0.0.1:4173/chapters/05/` in Safari or Chrome.
 
-The current MVP includes deterministic Chapter 05 rendering, a reserved chapter menu, the three-column reading layout, responsive side panels, and light, dark, and sepia themes. Footnote interaction and note persistence belong to later roadmap phases.
+The current MVP includes deterministic Chapter 05 rendering, a reserved chapter menu, the three-column reading layout, responsive side panels, light/dark/sepia themes, and left-panel footnote interaction. Note persistence belongs to a later roadmap phase.
