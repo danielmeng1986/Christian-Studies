@@ -1,0 +1,1414 @@
+{
+  "schema_version": 2,
+  "books": [
+    {
+      "order": 1,
+      "code": "GEN",
+      "name_en": "Genesis",
+      "name_zh_hant": "創世記",
+      "name_zh_hans": "创世记",
+      "abbreviation_zh_hant": "創",
+      "abbreviation_zh_hans": "创",
+      "source_codes": [
+        "GEN"
+      ],
+      "aliases": [
+        "GEN",
+        "Genesis",
+        "創世記",
+        "创世记",
+        "創",
+        "创",
+        "Gen",
+        "Ge"
+      ]
+    },
+    {
+      "order": 2,
+      "code": "EXO",
+      "name_en": "Exodus",
+      "name_zh_hant": "出埃及記",
+      "name_zh_hans": "出埃及记",
+      "abbreviation_zh_hant": "出",
+      "abbreviation_zh_hans": "出",
+      "source_codes": [
+        "EXO"
+      ],
+      "aliases": [
+        "EXO",
+        "Exodus",
+        "出埃及記",
+        "出埃及记",
+        "出",
+        "Exod",
+        "Ex"
+      ]
+    },
+    {
+      "order": 3,
+      "code": "LEV",
+      "name_en": "Leviticus",
+      "name_zh_hant": "利未記",
+      "name_zh_hans": "利未记",
+      "abbreviation_zh_hant": "利",
+      "abbreviation_zh_hans": "利",
+      "source_codes": [
+        "LEV"
+      ],
+      "aliases": [
+        "LEV",
+        "Leviticus",
+        "利未記",
+        "利未记",
+        "利",
+        "Lev",
+        "Le"
+      ]
+    },
+    {
+      "order": 4,
+      "code": "NUM",
+      "name_en": "Numbers",
+      "name_zh_hant": "民數記",
+      "name_zh_hans": "民数记",
+      "abbreviation_zh_hant": "民",
+      "abbreviation_zh_hans": "民",
+      "source_codes": [
+        "NUM"
+      ],
+      "aliases": [
+        "NUM",
+        "Numbers",
+        "民數記",
+        "民数记",
+        "民",
+        "Num",
+        "Nu"
+      ]
+    },
+    {
+      "order": 5,
+      "code": "DEU",
+      "name_en": "Deuteronomy",
+      "name_zh_hant": "申命記",
+      "name_zh_hans": "申命记",
+      "abbreviation_zh_hant": "申",
+      "abbreviation_zh_hans": "申",
+      "source_codes": [
+        "DEU"
+      ],
+      "aliases": [
+        "DEU",
+        "Deuteronomy",
+        "申命記",
+        "申命记",
+        "申",
+        "Deut",
+        "Dt"
+      ]
+    },
+    {
+      "order": 6,
+      "code": "JOS",
+      "name_en": "Joshua",
+      "name_zh_hant": "約書亞記",
+      "name_zh_hans": "约书亚记",
+      "abbreviation_zh_hant": "書",
+      "abbreviation_zh_hans": "书",
+      "source_codes": [
+        "JOS"
+      ],
+      "aliases": [
+        "JOS",
+        "Joshua",
+        "約書亞記",
+        "约书亚记",
+        "書",
+        "书",
+        "Josh",
+        "Jos"
+      ]
+    },
+    {
+      "order": 7,
+      "code": "JDG",
+      "name_en": "Judges",
+      "name_zh_hant": "士師記",
+      "name_zh_hans": "士师记",
+      "abbreviation_zh_hant": "士",
+      "abbreviation_zh_hans": "士",
+      "source_codes": [
+        "JDG"
+      ],
+      "aliases": [
+        "JDG",
+        "Judges",
+        "士師記",
+        "士师记",
+        "士",
+        "Judg",
+        "Jdg"
+      ]
+    },
+    {
+      "order": 8,
+      "code": "RUT",
+      "name_en": "Ruth",
+      "name_zh_hant": "路得記",
+      "name_zh_hans": "路得记",
+      "abbreviation_zh_hant": "得",
+      "abbreviation_zh_hans": "得",
+      "source_codes": [
+        "RUT"
+      ],
+      "aliases": [
+        "RUT",
+        "Ruth",
+        "路得記",
+        "路得记",
+        "得",
+        "Ru"
+      ]
+    },
+    {
+      "order": 9,
+      "code": "1SA",
+      "name_en": "1 Samuel",
+      "name_zh_hant": "撒母耳記上",
+      "name_zh_hans": "撒母耳记上",
+      "abbreviation_zh_hant": "撒上",
+      "abbreviation_zh_hans": "撒上",
+      "source_codes": [
+        "1SA"
+      ],
+      "aliases": [
+        "1SA",
+        "1 Samuel",
+        "撒母耳記上",
+        "撒母耳记上",
+        "撒上",
+        "1Sam",
+        "1 Sa"
+      ]
+    },
+    {
+      "order": 10,
+      "code": "2SA",
+      "name_en": "2 Samuel",
+      "name_zh_hant": "撒母耳記下",
+      "name_zh_hans": "撒母耳记下",
+      "abbreviation_zh_hant": "撒下",
+      "abbreviation_zh_hans": "撒下",
+      "source_codes": [
+        "2SA"
+      ],
+      "aliases": [
+        "2SA",
+        "2 Samuel",
+        "撒母耳記下",
+        "撒母耳记下",
+        "撒下",
+        "2Sam",
+        "2 Sa"
+      ]
+    },
+    {
+      "order": 11,
+      "code": "1KI",
+      "name_en": "1 Kings",
+      "name_zh_hant": "列王紀上",
+      "name_zh_hans": "列王纪上",
+      "abbreviation_zh_hant": "王上",
+      "abbreviation_zh_hans": "王上",
+      "source_codes": [
+        "1KI"
+      ],
+      "aliases": [
+        "1KI",
+        "1 Kings",
+        "列王紀上",
+        "列王纪上",
+        "王上",
+        "1Kgs",
+        "1 Ki"
+      ]
+    },
+    {
+      "order": 12,
+      "code": "2KI",
+      "name_en": "2 Kings",
+      "name_zh_hant": "列王紀下",
+      "name_zh_hans": "列王纪下",
+      "abbreviation_zh_hant": "王下",
+      "abbreviation_zh_hans": "王下",
+      "source_codes": [
+        "2KI"
+      ],
+      "aliases": [
+        "2KI",
+        "2 Kings",
+        "列王紀下",
+        "列王纪下",
+        "王下",
+        "2Kgs",
+        "2 Ki"
+      ]
+    },
+    {
+      "order": 13,
+      "code": "1CH",
+      "name_en": "1 Chronicles",
+      "name_zh_hant": "歷代志上",
+      "name_zh_hans": "历代志上",
+      "abbreviation_zh_hant": "代上",
+      "abbreviation_zh_hans": "代上",
+      "source_codes": [
+        "1CH"
+      ],
+      "aliases": [
+        "1CH",
+        "1 Chronicles",
+        "歷代志上",
+        "历代志上",
+        "代上",
+        "1Chr",
+        "1 Ch"
+      ]
+    },
+    {
+      "order": 14,
+      "code": "2CH",
+      "name_en": "2 Chronicles",
+      "name_zh_hant": "歷代志下",
+      "name_zh_hans": "历代志下",
+      "abbreviation_zh_hant": "代下",
+      "abbreviation_zh_hans": "代下",
+      "source_codes": [
+        "2CH"
+      ],
+      "aliases": [
+        "2CH",
+        "2 Chronicles",
+        "歷代志下",
+        "历代志下",
+        "代下",
+        "2Chr",
+        "2 Ch"
+      ]
+    },
+    {
+      "order": 15,
+      "code": "EZR",
+      "name_en": "Ezra",
+      "name_zh_hant": "以斯拉記",
+      "name_zh_hans": "以斯拉记",
+      "abbreviation_zh_hant": "拉",
+      "abbreviation_zh_hans": "拉",
+      "source_codes": [
+        "EZR"
+      ],
+      "aliases": [
+        "EZR",
+        "Ezra",
+        "以斯拉記",
+        "以斯拉记",
+        "拉",
+        "Ezr"
+      ]
+    },
+    {
+      "order": 16,
+      "code": "NEH",
+      "name_en": "Nehemiah",
+      "name_zh_hant": "尼希米記",
+      "name_zh_hans": "尼希米记",
+      "abbreviation_zh_hant": "尼",
+      "abbreviation_zh_hans": "尼",
+      "source_codes": [
+        "NEH"
+      ],
+      "aliases": [
+        "NEH",
+        "Nehemiah",
+        "尼希米記",
+        "尼希米记",
+        "尼",
+        "Neh",
+        "Ne"
+      ]
+    },
+    {
+      "order": 17,
+      "code": "EST",
+      "name_en": "Esther",
+      "name_zh_hant": "以斯帖記",
+      "name_zh_hans": "以斯帖记",
+      "abbreviation_zh_hant": "斯",
+      "abbreviation_zh_hans": "斯",
+      "source_codes": [
+        "EST"
+      ],
+      "aliases": [
+        "EST",
+        "Esther",
+        "以斯帖記",
+        "以斯帖记",
+        "斯",
+        "Esth",
+        "Est"
+      ]
+    },
+    {
+      "order": 18,
+      "code": "JOB",
+      "name_en": "Job",
+      "name_zh_hant": "約伯記",
+      "name_zh_hans": "约伯记",
+      "abbreviation_zh_hant": "伯",
+      "abbreviation_zh_hans": "伯",
+      "source_codes": [
+        "JOB"
+      ],
+      "aliases": [
+        "JOB",
+        "Job",
+        "約伯記",
+        "约伯记",
+        "伯"
+      ]
+    },
+    {
+      "order": 19,
+      "code": "PSA",
+      "name_en": "Psalms",
+      "name_zh_hant": "詩篇",
+      "name_zh_hans": "诗篇",
+      "abbreviation_zh_hant": "詩",
+      "abbreviation_zh_hans": "诗",
+      "source_codes": [
+        "PSA"
+      ],
+      "aliases": [
+        "PSA",
+        "Psalms",
+        "詩篇",
+        "诗篇",
+        "詩",
+        "诗",
+        "Psalm",
+        "Ps",
+        "Psa"
+      ]
+    },
+    {
+      "order": 20,
+      "code": "PRO",
+      "name_en": "Proverbs",
+      "name_zh_hant": "箴言",
+      "name_zh_hans": "箴言",
+      "abbreviation_zh_hant": "箴",
+      "abbreviation_zh_hans": "箴",
+      "source_codes": [
+        "PRO"
+      ],
+      "aliases": [
+        "PRO",
+        "Proverbs",
+        "箴言",
+        "箴",
+        "Prov",
+        "Pr"
+      ]
+    },
+    {
+      "order": 21,
+      "code": "ECC",
+      "name_en": "Ecclesiastes",
+      "name_zh_hant": "傳道書",
+      "name_zh_hans": "传道书",
+      "abbreviation_zh_hant": "傳",
+      "abbreviation_zh_hans": "传",
+      "source_codes": [
+        "ECC"
+      ],
+      "aliases": [
+        "ECC",
+        "Ecclesiastes",
+        "傳道書",
+        "传道书",
+        "傳",
+        "传",
+        "Eccl",
+        "Ecc"
+      ]
+    },
+    {
+      "order": 22,
+      "code": "SNG",
+      "name_en": "Song of Solomon",
+      "name_zh_hant": "雅歌",
+      "name_zh_hans": "雅歌",
+      "abbreviation_zh_hant": "歌",
+      "abbreviation_zh_hans": "歌",
+      "source_codes": [
+        "SOL",
+        "SNG"
+      ],
+      "aliases": [
+        "SNG",
+        "SOL",
+        "Song of Solomon",
+        "雅歌",
+        "歌",
+        "Song",
+        "Song of Songs",
+        "Sng"
+      ]
+    },
+    {
+      "order": 23,
+      "code": "ISA",
+      "name_en": "Isaiah",
+      "name_zh_hant": "以賽亞書",
+      "name_zh_hans": "以赛亚书",
+      "abbreviation_zh_hant": "賽",
+      "abbreviation_zh_hans": "赛",
+      "source_codes": [
+        "ISA"
+      ],
+      "aliases": [
+        "ISA",
+        "Isaiah",
+        "以賽亞書",
+        "以赛亚书",
+        "賽",
+        "赛",
+        "Isa",
+        "Is"
+      ]
+    },
+    {
+      "order": 24,
+      "code": "JER",
+      "name_en": "Jeremiah",
+      "name_zh_hant": "耶利米書",
+      "name_zh_hans": "耶利米书",
+      "abbreviation_zh_hant": "耶",
+      "abbreviation_zh_hans": "耶",
+      "source_codes": [
+        "JER"
+      ],
+      "aliases": [
+        "JER",
+        "Jeremiah",
+        "耶利米書",
+        "耶利米书",
+        "耶",
+        "Jer",
+        "Je"
+      ]
+    },
+    {
+      "order": 25,
+      "code": "LAM",
+      "name_en": "Lamentations",
+      "name_zh_hant": "耶利米哀歌",
+      "name_zh_hans": "耶利米哀歌",
+      "abbreviation_zh_hant": "哀",
+      "abbreviation_zh_hans": "哀",
+      "source_codes": [
+        "LAM"
+      ],
+      "aliases": [
+        "LAM",
+        "Lamentations",
+        "耶利米哀歌",
+        "哀",
+        "Lam",
+        "La"
+      ]
+    },
+    {
+      "order": 26,
+      "code": "EZK",
+      "name_en": "Ezekiel",
+      "name_zh_hant": "以西結書",
+      "name_zh_hans": "以西结书",
+      "abbreviation_zh_hant": "結",
+      "abbreviation_zh_hans": "结",
+      "source_codes": [
+        "EZE",
+        "EZK"
+      ],
+      "aliases": [
+        "EZK",
+        "EZE",
+        "Ezekiel",
+        "以西結書",
+        "以西结书",
+        "結",
+        "结",
+        "Ezek",
+        "Ezk"
+      ]
+    },
+    {
+      "order": 27,
+      "code": "DAN",
+      "name_en": "Daniel",
+      "name_zh_hant": "但以理書",
+      "name_zh_hans": "但以理书",
+      "abbreviation_zh_hant": "但",
+      "abbreviation_zh_hans": "但",
+      "source_codes": [
+        "DAN"
+      ],
+      "aliases": [
+        "DAN",
+        "Daniel",
+        "但以理書",
+        "但以理书",
+        "但",
+        "Dan",
+        "Da"
+      ]
+    },
+    {
+      "order": 28,
+      "code": "HOS",
+      "name_en": "Hosea",
+      "name_zh_hant": "何西阿書",
+      "name_zh_hans": "何西阿书",
+      "abbreviation_zh_hant": "何",
+      "abbreviation_zh_hans": "何",
+      "source_codes": [
+        "HOS"
+      ],
+      "aliases": [
+        "HOS",
+        "Hosea",
+        "何西阿書",
+        "何西阿书",
+        "何",
+        "Hos",
+        "Ho"
+      ]
+    },
+    {
+      "order": 29,
+      "code": "JOL",
+      "name_en": "Joel",
+      "name_zh_hant": "約珥書",
+      "name_zh_hans": "约珥书",
+      "abbreviation_zh_hant": "珥",
+      "abbreviation_zh_hans": "珥",
+      "source_codes": [
+        "JOE",
+        "JOL"
+      ],
+      "aliases": [
+        "JOL",
+        "JOE",
+        "Joel",
+        "約珥書",
+        "约珥书",
+        "珥",
+        "Jl"
+      ]
+    },
+    {
+      "order": 30,
+      "code": "AMO",
+      "name_en": "Amos",
+      "name_zh_hant": "阿摩司書",
+      "name_zh_hans": "阿摩司书",
+      "abbreviation_zh_hant": "摩",
+      "abbreviation_zh_hans": "摩",
+      "source_codes": [
+        "AMO"
+      ],
+      "aliases": [
+        "AMO",
+        "Amos",
+        "阿摩司書",
+        "阿摩司书",
+        "摩",
+        "Am"
+      ]
+    },
+    {
+      "order": 31,
+      "code": "OBA",
+      "name_en": "Obadiah",
+      "name_zh_hant": "俄巴底亞書",
+      "name_zh_hans": "俄巴底亚书",
+      "abbreviation_zh_hant": "俄",
+      "abbreviation_zh_hans": "俄",
+      "source_codes": [
+        "OBA"
+      ],
+      "aliases": [
+        "OBA",
+        "Obadiah",
+        "俄巴底亞書",
+        "俄巴底亚书",
+        "俄",
+        "Obad",
+        "Ob"
+      ]
+    },
+    {
+      "order": 32,
+      "code": "JON",
+      "name_en": "Jonah",
+      "name_zh_hant": "約拿書",
+      "name_zh_hans": "约拿书",
+      "abbreviation_zh_hant": "拿",
+      "abbreviation_zh_hans": "拿",
+      "source_codes": [
+        "JON"
+      ],
+      "aliases": [
+        "JON",
+        "Jonah",
+        "約拿書",
+        "约拿书",
+        "拿",
+        "Jon"
+      ]
+    },
+    {
+      "order": 33,
+      "code": "MIC",
+      "name_en": "Micah",
+      "name_zh_hant": "彌迦書",
+      "name_zh_hans": "弥迦书",
+      "abbreviation_zh_hant": "彌",
+      "abbreviation_zh_hans": "弥",
+      "source_codes": [
+        "MIC"
+      ],
+      "aliases": [
+        "MIC",
+        "Micah",
+        "彌迦書",
+        "弥迦书",
+        "彌",
+        "弥",
+        "Mic",
+        "Mi"
+      ]
+    },
+    {
+      "order": 34,
+      "code": "NAM",
+      "name_en": "Nahum",
+      "name_zh_hant": "那鴻書",
+      "name_zh_hans": "那鸿书",
+      "abbreviation_zh_hant": "鴻",
+      "abbreviation_zh_hans": "鸿",
+      "source_codes": [
+        "NAH",
+        "NAM"
+      ],
+      "aliases": [
+        "NAM",
+        "NAH",
+        "Nahum",
+        "那鴻書",
+        "那鸿书",
+        "鴻",
+        "鸿",
+        "Nah",
+        "Na"
+      ]
+    },
+    {
+      "order": 35,
+      "code": "HAB",
+      "name_en": "Habakkuk",
+      "name_zh_hant": "哈巴谷書",
+      "name_zh_hans": "哈巴谷书",
+      "abbreviation_zh_hant": "哈",
+      "abbreviation_zh_hans": "哈",
+      "source_codes": [
+        "HAB"
+      ],
+      "aliases": [
+        "HAB",
+        "Habakkuk",
+        "哈巴谷書",
+        "哈巴谷书",
+        "哈",
+        "Hab"
+      ]
+    },
+    {
+      "order": 36,
+      "code": "ZEP",
+      "name_en": "Zephaniah",
+      "name_zh_hant": "西番雅書",
+      "name_zh_hans": "西番雅书",
+      "abbreviation_zh_hant": "番",
+      "abbreviation_zh_hans": "番",
+      "source_codes": [
+        "ZEP"
+      ],
+      "aliases": [
+        "ZEP",
+        "Zephaniah",
+        "西番雅書",
+        "西番雅书",
+        "番",
+        "Zeph",
+        "Zep"
+      ]
+    },
+    {
+      "order": 37,
+      "code": "HAG",
+      "name_en": "Haggai",
+      "name_zh_hant": "哈該書",
+      "name_zh_hans": "哈该书",
+      "abbreviation_zh_hant": "該",
+      "abbreviation_zh_hans": "该",
+      "source_codes": [
+        "HAG"
+      ],
+      "aliases": [
+        "HAG",
+        "Haggai",
+        "哈該書",
+        "哈该书",
+        "該",
+        "该",
+        "Hag"
+      ]
+    },
+    {
+      "order": 38,
+      "code": "ZEC",
+      "name_en": "Zechariah",
+      "name_zh_hant": "撒迦利亞書",
+      "name_zh_hans": "撒迦利亚书",
+      "abbreviation_zh_hant": "亞",
+      "abbreviation_zh_hans": "亚",
+      "source_codes": [
+        "ZEC"
+      ],
+      "aliases": [
+        "ZEC",
+        "Zechariah",
+        "撒迦利亞書",
+        "撒迦利亚书",
+        "亞",
+        "亚",
+        "Zech",
+        "Zec"
+      ]
+    },
+    {
+      "order": 39,
+      "code": "MAL",
+      "name_en": "Malachi",
+      "name_zh_hant": "瑪拉基書",
+      "name_zh_hans": "玛拉基书",
+      "abbreviation_zh_hant": "瑪",
+      "abbreviation_zh_hans": "玛",
+      "source_codes": [
+        "MAL"
+      ],
+      "aliases": [
+        "MAL",
+        "Malachi",
+        "瑪拉基書",
+        "玛拉基书",
+        "瑪",
+        "玛",
+        "Mal"
+      ]
+    },
+    {
+      "order": 40,
+      "code": "MAT",
+      "name_en": "Matthew",
+      "name_zh_hant": "馬太福音",
+      "name_zh_hans": "马太福音",
+      "abbreviation_zh_hant": "太",
+      "abbreviation_zh_hans": "太",
+      "source_codes": [
+        "MAT"
+      ],
+      "aliases": [
+        "MAT",
+        "Matthew",
+        "馬太福音",
+        "马太福音",
+        "太",
+        "Matt",
+        "Mt"
+      ]
+    },
+    {
+      "order": 41,
+      "code": "MRK",
+      "name_en": "Mark",
+      "name_zh_hant": "馬可福音",
+      "name_zh_hans": "马可福音",
+      "abbreviation_zh_hant": "可",
+      "abbreviation_zh_hans": "可",
+      "source_codes": [
+        "MAR",
+        "MRK"
+      ],
+      "aliases": [
+        "MRK",
+        "MAR",
+        "Mark",
+        "馬可福音",
+        "马可福音",
+        "可",
+        "Mk"
+      ]
+    },
+    {
+      "order": 42,
+      "code": "LUK",
+      "name_en": "Luke",
+      "name_zh_hant": "路加福音",
+      "name_zh_hans": "路加福音",
+      "abbreviation_zh_hant": "路",
+      "abbreviation_zh_hans": "路",
+      "source_codes": [
+        "LUK"
+      ],
+      "aliases": [
+        "LUK",
+        "Luke",
+        "路加福音",
+        "路",
+        "Lk"
+      ]
+    },
+    {
+      "order": 43,
+      "code": "JHN",
+      "name_en": "John",
+      "name_zh_hant": "約翰福音",
+      "name_zh_hans": "约翰福音",
+      "abbreviation_zh_hant": "約",
+      "abbreviation_zh_hans": "约",
+      "source_codes": [
+        "JOH",
+        "JHN"
+      ],
+      "aliases": [
+        "JHN",
+        "JOH",
+        "John",
+        "約翰福音",
+        "约翰福音",
+        "約",
+        "约",
+        "Jn"
+      ]
+    },
+    {
+      "order": 44,
+      "code": "ACT",
+      "name_en": "Acts",
+      "name_zh_hant": "使徒行傳",
+      "name_zh_hans": "使徒行传",
+      "abbreviation_zh_hant": "徒",
+      "abbreviation_zh_hans": "徒",
+      "source_codes": [
+        "ACT"
+      ],
+      "aliases": [
+        "ACT",
+        "Acts",
+        "使徒行傳",
+        "使徒行传",
+        "徒",
+        "Ac"
+      ]
+    },
+    {
+      "order": 45,
+      "code": "ROM",
+      "name_en": "Romans",
+      "name_zh_hant": "羅馬書",
+      "name_zh_hans": "罗马书",
+      "abbreviation_zh_hant": "羅",
+      "abbreviation_zh_hans": "罗",
+      "source_codes": [
+        "ROM"
+      ],
+      "aliases": [
+        "ROM",
+        "Romans",
+        "羅馬書",
+        "罗马书",
+        "羅",
+        "罗",
+        "Rom",
+        "Ro"
+      ]
+    },
+    {
+      "order": 46,
+      "code": "1CO",
+      "name_en": "1 Corinthians",
+      "name_zh_hant": "哥林多前書",
+      "name_zh_hans": "哥林多前书",
+      "abbreviation_zh_hant": "林前",
+      "abbreviation_zh_hans": "林前",
+      "source_codes": [
+        "1CO"
+      ],
+      "aliases": [
+        "1CO",
+        "1 Corinthians",
+        "哥林多前書",
+        "哥林多前书",
+        "林前",
+        "1Cor",
+        "1 Co"
+      ]
+    },
+    {
+      "order": 47,
+      "code": "2CO",
+      "name_en": "2 Corinthians",
+      "name_zh_hant": "哥林多後書",
+      "name_zh_hans": "哥林多后书",
+      "abbreviation_zh_hant": "林後",
+      "abbreviation_zh_hans": "林后",
+      "source_codes": [
+        "2CO"
+      ],
+      "aliases": [
+        "2CO",
+        "2 Corinthians",
+        "哥林多後書",
+        "哥林多后书",
+        "林後",
+        "林后",
+        "2Cor",
+        "2 Co"
+      ]
+    },
+    {
+      "order": 48,
+      "code": "GAL",
+      "name_en": "Galatians",
+      "name_zh_hant": "加拉太書",
+      "name_zh_hans": "加拉太书",
+      "abbreviation_zh_hant": "加",
+      "abbreviation_zh_hans": "加",
+      "source_codes": [
+        "GAL"
+      ],
+      "aliases": [
+        "GAL",
+        "Galatians",
+        "加拉太書",
+        "加拉太书",
+        "加",
+        "Gal",
+        "Ga"
+      ]
+    },
+    {
+      "order": 49,
+      "code": "EPH",
+      "name_en": "Ephesians",
+      "name_zh_hant": "以弗所書",
+      "name_zh_hans": "以弗所书",
+      "abbreviation_zh_hant": "弗",
+      "abbreviation_zh_hans": "弗",
+      "source_codes": [
+        "EPH"
+      ],
+      "aliases": [
+        "EPH",
+        "Ephesians",
+        "以弗所書",
+        "以弗所书",
+        "弗",
+        "Eph"
+      ]
+    },
+    {
+      "order": 50,
+      "code": "PHP",
+      "name_en": "Philippians",
+      "name_zh_hant": "腓立比書",
+      "name_zh_hans": "腓立比书",
+      "abbreviation_zh_hant": "腓",
+      "abbreviation_zh_hans": "腓",
+      "source_codes": [
+        "PHI",
+        "PHP"
+      ],
+      "aliases": [
+        "PHP",
+        "PHI",
+        "Philippians",
+        "腓立比書",
+        "腓立比书",
+        "腓",
+        "Phil",
+        "Php"
+      ]
+    },
+    {
+      "order": 51,
+      "code": "COL",
+      "name_en": "Colossians",
+      "name_zh_hant": "歌羅西書",
+      "name_zh_hans": "歌罗西书",
+      "abbreviation_zh_hant": "西",
+      "abbreviation_zh_hans": "西",
+      "source_codes": [
+        "COL"
+      ],
+      "aliases": [
+        "COL",
+        "Colossians",
+        "歌羅西書",
+        "歌罗西书",
+        "西",
+        "Col"
+      ]
+    },
+    {
+      "order": 52,
+      "code": "1TH",
+      "name_en": "1 Thessalonians",
+      "name_zh_hant": "帖撒羅尼迦前書",
+      "name_zh_hans": "帖撒罗尼迦前书",
+      "abbreviation_zh_hant": "帖前",
+      "abbreviation_zh_hans": "帖前",
+      "source_codes": [
+        "1TH"
+      ],
+      "aliases": [
+        "1TH",
+        "1 Thessalonians",
+        "帖撒羅尼迦前書",
+        "帖撒罗尼迦前书",
+        "帖前",
+        "1Thess",
+        "1 Th"
+      ]
+    },
+    {
+      "order": 53,
+      "code": "2TH",
+      "name_en": "2 Thessalonians",
+      "name_zh_hant": "帖撒羅尼迦後書",
+      "name_zh_hans": "帖撒罗尼迦后书",
+      "abbreviation_zh_hant": "帖後",
+      "abbreviation_zh_hans": "帖后",
+      "source_codes": [
+        "2TH"
+      ],
+      "aliases": [
+        "2TH",
+        "2 Thessalonians",
+        "帖撒羅尼迦後書",
+        "帖撒罗尼迦后书",
+        "帖後",
+        "帖后",
+        "2Thess",
+        "2 Th"
+      ]
+    },
+    {
+      "order": 54,
+      "code": "1TI",
+      "name_en": "1 Timothy",
+      "name_zh_hant": "提摩太前書",
+      "name_zh_hans": "提摩太前书",
+      "abbreviation_zh_hant": "提前",
+      "abbreviation_zh_hans": "提前",
+      "source_codes": [
+        "1TI"
+      ],
+      "aliases": [
+        "1TI",
+        "1 Timothy",
+        "提摩太前書",
+        "提摩太前书",
+        "提前",
+        "1Tim",
+        "1 Ti"
+      ]
+    },
+    {
+      "order": 55,
+      "code": "2TI",
+      "name_en": "2 Timothy",
+      "name_zh_hant": "提摩太後書",
+      "name_zh_hans": "提摩太后书",
+      "abbreviation_zh_hant": "提後",
+      "abbreviation_zh_hans": "提后",
+      "source_codes": [
+        "2TI"
+      ],
+      "aliases": [
+        "2TI",
+        "2 Timothy",
+        "提摩太後書",
+        "提摩太后书",
+        "提後",
+        "提后",
+        "2Tim",
+        "2 Ti"
+      ]
+    },
+    {
+      "order": 56,
+      "code": "TIT",
+      "name_en": "Titus",
+      "name_zh_hant": "提多書",
+      "name_zh_hans": "提多书",
+      "abbreviation_zh_hant": "多",
+      "abbreviation_zh_hans": "多",
+      "source_codes": [
+        "TIT"
+      ],
+      "aliases": [
+        "TIT",
+        "Titus",
+        "提多書",
+        "提多书",
+        "多",
+        "Tit"
+      ]
+    },
+    {
+      "order": 57,
+      "code": "PHM",
+      "name_en": "Philemon",
+      "name_zh_hant": "腓利門書",
+      "name_zh_hans": "腓利门书",
+      "abbreviation_zh_hant": "門",
+      "abbreviation_zh_hans": "门",
+      "source_codes": [
+        "PHM"
+      ],
+      "aliases": [
+        "PHM",
+        "Philemon",
+        "腓利門書",
+        "腓利门书",
+        "門",
+        "门",
+        "Phlm",
+        "Phm"
+      ]
+    },
+    {
+      "order": 58,
+      "code": "HEB",
+      "name_en": "Hebrews",
+      "name_zh_hant": "希伯來書",
+      "name_zh_hans": "希伯来书",
+      "abbreviation_zh_hant": "來",
+      "abbreviation_zh_hans": "来",
+      "source_codes": [
+        "HEB"
+      ],
+      "aliases": [
+        "HEB",
+        "Hebrews",
+        "希伯來書",
+        "希伯来书",
+        "來",
+        "来",
+        "Heb"
+      ]
+    },
+    {
+      "order": 59,
+      "code": "JAM",
+      "name_en": "James",
+      "name_zh_hant": "雅各書",
+      "name_zh_hans": "雅各书",
+      "abbreviation_zh_hant": "雅",
+      "abbreviation_zh_hans": "雅",
+      "source_codes": [
+        "JAM"
+      ],
+      "aliases": [
+        "JAM",
+        "James",
+        "雅各書",
+        "雅各书",
+        "雅",
+        "Jas",
+        "Jam"
+      ]
+    },
+    {
+      "order": 60,
+      "code": "1PE",
+      "name_en": "1 Peter",
+      "name_zh_hant": "彼得前書",
+      "name_zh_hans": "彼得前书",
+      "abbreviation_zh_hant": "彼前",
+      "abbreviation_zh_hans": "彼前",
+      "source_codes": [
+        "1PE"
+      ],
+      "aliases": [
+        "1PE",
+        "1 Peter",
+        "彼得前書",
+        "彼得前书",
+        "彼前",
+        "1Pet",
+        "1 Pe"
+      ]
+    },
+    {
+      "order": 61,
+      "code": "2PE",
+      "name_en": "2 Peter",
+      "name_zh_hant": "彼得後書",
+      "name_zh_hans": "彼得后书",
+      "abbreviation_zh_hant": "彼後",
+      "abbreviation_zh_hans": "彼后",
+      "source_codes": [
+        "2PE"
+      ],
+      "aliases": [
+        "2PE",
+        "2 Peter",
+        "彼得後書",
+        "彼得后书",
+        "彼後",
+        "彼后",
+        "2Pet",
+        "2 Pe"
+      ]
+    },
+    {
+      "order": 62,
+      "code": "1JO",
+      "name_en": "1 John",
+      "name_zh_hant": "約翰一書",
+      "name_zh_hans": "约翰一书",
+      "abbreviation_zh_hant": "約壹",
+      "abbreviation_zh_hans": "约壹",
+      "source_codes": [
+        "1JO"
+      ],
+      "aliases": [
+        "1JO",
+        "1 John",
+        "約翰一書",
+        "约翰一书",
+        "約壹",
+        "约壹",
+        "1John",
+        "1 Jn",
+        "約一",
+        "约一"
+      ]
+    },
+    {
+      "order": 63,
+      "code": "2JO",
+      "name_en": "2 John",
+      "name_zh_hant": "約翰二書",
+      "name_zh_hans": "约翰二书",
+      "abbreviation_zh_hant": "約貳",
+      "abbreviation_zh_hans": "约贰",
+      "source_codes": [
+        "2JO"
+      ],
+      "aliases": [
+        "2JO",
+        "2 John",
+        "約翰二書",
+        "约翰二书",
+        "約貳",
+        "约贰",
+        "2John",
+        "2 Jn",
+        "約二",
+        "约二"
+      ]
+    },
+    {
+      "order": 64,
+      "code": "3JO",
+      "name_en": "3 John",
+      "name_zh_hant": "約翰三書",
+      "name_zh_hans": "约翰三书",
+      "abbreviation_zh_hant": "約參",
+      "abbreviation_zh_hans": "约叁",
+      "source_codes": [
+        "3JO"
+      ],
+      "aliases": [
+        "3JO",
+        "3 John",
+        "約翰三書",
+        "约翰三书",
+        "約參",
+        "约叁",
+        "3John",
+        "3 Jn",
+        "約三",
+        "约三"
+      ]
+    },
+    {
+      "order": 65,
+      "code": "JUD",
+      "name_en": "Jude",
+      "name_zh_hant": "猶大書",
+      "name_zh_hans": "犹大书",
+      "abbreviation_zh_hant": "猶",
+      "abbreviation_zh_hans": "犹",
+      "source_codes": [
+        "JUD"
+      ],
+      "aliases": [
+        "JUD",
+        "Jude",
+        "猶大書",
+        "犹大书",
+        "猶",
+        "犹",
+        "Jud"
+      ]
+    },
+    {
+      "order": 66,
+      "code": "REV",
+      "name_en": "Revelation",
+      "name_zh_hant": "啟示錄",
+      "name_zh_hans": "启示录",
+      "abbreviation_zh_hant": "啟",
+      "abbreviation_zh_hans": "启",
+      "source_codes": [
+        "REV"
+      ],
+      "aliases": [
+        "REV",
+        "Revelation",
+        "啟示錄",
+        "启示录",
+        "啟",
+        "启",
+        "Rev",
+        "Re"
+      ]
+    }
+  ]
+}
