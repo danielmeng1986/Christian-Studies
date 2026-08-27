@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="《追寻敬虔》本地交互式阅读版">
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="../../assets/app.css">
+    <script type="module" src="../../assets/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#chapter-article">跳到正文</a>
+
+    <header class="toolbar" aria-label="阅读工具栏">
+      <div class="toolbar__identity">
+        <span class="toolbar__book">追寻敬虔</span>
+        <span class="toolbar__divider" aria-hidden="true"></span>
+        <span class="toolbar__chapter">第五章</span>
+      </div>
+
+      <div class="toolbar__group toolbar__navigation">
+        <label class="visually-hidden" for="chapter-navigation">章节导航</label>
+        <select id="chapter-navigation" class="chapter-select" aria-label="章节导航" disabled>
+          <option selected>第五章 · 約翰．歐文論從神而來的交通</option>
+        </select>
+      </div>
+
+      <div class="toolbar__group theme-switcher" role="group" aria-label="阅读主题">
+        <button type="button" class="theme-button" data-theme-choice="light" aria-pressed="true">明亮</button>
+        <button type="button" class="theme-button" data-theme-choice="sepia" aria-pressed="false">护眼</button>
+        <button type="button" class="theme-button" data-theme-choice="dark" aria-pressed="false">暗色</button>
+      </div>
+
+      <div class="toolbar__group panel-controls" role="group" aria-label="栏位显示">
+        <button type="button" class="icon-button" id="toggle-footnotes" aria-controls="footnote-panel" aria-expanded="true">
+          <span aria-hidden="true">注</span><span class="button-label">脚注</span>
+        </button>
+        <button type="button" class="icon-button" id="toggle-notes" aria-controls="notes-panel" aria-expanded="true">
+          <span aria-hidden="true">记</span><span class="button-label">笔记</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="app-shell" id="app-shell">
+      <aside class="side-panel footnote-panel" id="footnote-panel" aria-label="脚注">
+        <div class="side-panel__header">
+          <div>
+            <p class="eyebrow">REFERENCES</p>
+            <h2>脚注</h2>
+          </div>
+          <div class="side-panel__actions" aria-label="脚注操作">
+            <button type="button" disabled>显示全部</button>
+            <button type="button" disabled>清空</button>
+          </div>
+        </div>
+        <div class="empty-state">
+          <span class="empty-state__mark" aria-hidden="true">1</span>
+          <p>脚注会在下一阶段接入。正文中的标记和左栏位置已经预留。</p>
+        </div>
+      </aside>
+
+      <section class="reading-column" aria-label="章节正文">
+        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="05">
+{{ARTICLE_HTML}}
+        </article>
+        <footer class="chapter-footer">
+          <span>第五章</span>
+          <span aria-hidden="true">·</span>
+          <span>本地阅读版</span>
+        </footer>
+      </section>
+
+      <aside class="side-panel notes-panel" id="notes-panel" aria-label="笔记">
+        <div class="side-panel__header">
+          <div>
+            <p class="eyebrow">ANNOTATIONS</p>
+            <h2>我的笔记</h2>
+          </div>
+          <span class="save-status" aria-live="polite">阅读模式</span>
+        </div>
+        <div class="empty-state">
+          <span class="empty-state__mark empty-state__mark--note" aria-hidden="true">✦</span>
+          <p>选中文字并写下笔记的功能将在后续阶段接入。</p>
+        </div>
+      </aside>
+    </main>
+
+  </body>
+</html>
