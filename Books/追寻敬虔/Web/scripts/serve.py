@@ -24,7 +24,7 @@ WEB_ROOT = Path(__file__).resolve().parents[1]
 BOOK_ROOT = WEB_ROOT.parent
 DIST_ROOT = WEB_ROOT / "dist"
 NOTES_ROOT = BOOK_ROOT / "Notes/Annotations"
-DEFAULT_NOTE_PATHS = {"05": NOTES_ROOT / "05.json"}
+DEFAULT_NOTE_PATHS = {f"{chapter:02d}": NOTES_ROOT / f"{chapter:02d}.json" for chapter in range(1, 21)}
 
 MAX_REQUEST_BYTES = 1_000_000
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
@@ -370,15 +370,15 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=4173)
     args = parser.parse_args()
 
-    chapter = DIST_ROOT / "chapters/05/index.html"
-    if not chapter.is_file():
+    chapter_pages = [DIST_ROOT / f"chapters/{chapter:02d}/index.html" for chapter in range(1, 21)]
+    if any(not chapter.is_file() for chapter in chapter_pages):
         raise SystemExit("Build output is missing. Run Web/scripts/build.py first.")
     for chapter_id, note_path in DEFAULT_NOTE_PATHS.items():
         if not note_path.is_file():
             raise SystemExit(f"Notes file for chapter {chapter_id} is missing: {note_path}")
 
     server = build_server(args.port)
-    print(f"Reader available at http://127.0.0.1:{server.server_address[1]}/chapters/05/")
+    print(f"Reader available at http://127.0.0.1:{server.server_address[1]}/chapters/01/")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

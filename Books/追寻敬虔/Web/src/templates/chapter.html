@@ -15,14 +15,19 @@
       <div class="toolbar__identity">
         <span class="toolbar__book">追寻敬虔</span>
         <span class="toolbar__divider" aria-hidden="true"></span>
-        <span class="toolbar__chapter">第五章</span>
+        <span class="toolbar__chapter">{{CHAPTER_LABEL}}</span>
       </div>
 
       <div class="toolbar__group toolbar__navigation">
-        <label class="visually-hidden" for="chapter-navigation">章节导航</label>
-        <select id="chapter-navigation" class="chapter-select" aria-label="章节导航" disabled>
-          <option selected>第五章 · 約翰．歐文論從神而來的交通</option>
-        </select>
+        <div class="chapter-menu">
+          <button type="button" class="chapter-menu__trigger" id="chapter-navigation" aria-label="章节导航" aria-haspopup="listbox" aria-expanded="false" aria-controls="chapter-menu-list">
+            <span class="chapter-menu__current">{{CHAPTER_MENU_LABEL}}</span>
+            <span class="chapter-menu__chevron" aria-hidden="true"></span>
+          </button>
+          <div class="chapter-menu__list" id="chapter-menu-list" role="listbox" aria-label="选择章节" hidden>
+{{CHAPTER_NAVIGATION}}
+          </div>
+        </div>
       </div>
 
       <div class="toolbar__group theme-switcher" role="group" aria-label="阅读主题">
@@ -61,11 +66,11 @@
       </aside>
 
       <section class="reading-column" aria-label="章节正文">
-        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="05" data-source-revision="{{SOURCE_REVISION}}">
+        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="{{CHAPTER_ID}}" data-source-revision="{{SOURCE_REVISION}}">
 {{ARTICLE_HTML}}
         </article>
         <footer class="chapter-footer">
-          <span>第五章</span>
+          <span>{{CHAPTER_LABEL}}</span>
           <span aria-hidden="true">·</span>
           <span>本地阅读版</span>
         </footer>
@@ -87,8 +92,11 @@
 
         <div class="notes-list-view" id="notes-list-view" hidden>
           <div class="notes-list-summary">
-            <span id="notes-count">0 条笔记</span>
-            <span id="unresolved-count"></span>
+            <div class="notes-list-summary__counts">
+              <span id="notes-count">0 条笔记</span>
+              <span id="unresolved-count"></span>
+            </div>
+            <button type="button" class="notes-expand-button" id="toggle-all-notes" aria-expanded="false" hidden>展开全部</button>
           </div>
           <div class="notes-list" id="notes-list"></div>
         </div>

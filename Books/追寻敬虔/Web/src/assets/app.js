@@ -11,6 +11,11 @@ const article = document.querySelector("#chapter-article");
 const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
 const leftToggle = document.querySelector("#toggle-references");
 const rightToggle = document.querySelector("#toggle-notes");
+const chapterNavigation = document.querySelector("#chapter-navigation");
+const chapterMenu = document.querySelector("#chapter-menu-list");
+const currentChapterLink = chapterMenu.querySelector('[aria-current="page"]');
+const chapterId = article.dataset.chapterId;
+const notesApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/notes`;
 
 const referenceList = document.querySelector("#reference-list");
 const referenceEmptyState = document.querySelector("#reference-empty-state");
@@ -34,6 +39,7 @@ const notesListView = document.querySelector("#notes-list-view");
 const notesList = document.querySelector("#notes-list");
 const notesCount = document.querySelector("#notes-count");
 const unresolvedCount = document.querySelector("#unresolved-count");
+const toggleAllNotes = document.querySelector("#toggle-all-notes");
 const notesEmptyState = document.querySelector("#notes-empty-state");
 const noteEditor = document.querySelector("#note-editor");
 const noteEditorMode = document.querySelector("#note-editor-mode");
@@ -54,6 +60,7 @@ let activeNoteId = null;
 let draftAnchor = null;
 let editorDirty = false;
 let pendingSelectionAnchor = null;
+let notesExpanded = false;
 
 function preferredTheme() {
   const saved = localStorage.getItem(STORAGE_KEYS.theme);
@@ -83,6 +90,12 @@ function applyPanelState(side, open, persist = true) {
   shell.classList.toggle(className, !open);
   toggle.setAttribute("aria-expanded", String(open));
   if (persist) localStorage.setItem(storageKey, open ? "open" : "closed");
+}
+
+function setChapterMenuOpen(open) {
+  chapterMenu.hidden = !open;
+  chapterNavigation.setAttribute("aria-expanded", String(open));
+  if (open) currentChapterLink?.scrollIntoView({ block: "nearest" });
 }
 
 function footnoteTemplate(footnoteId) {
@@ -375,7 +388,15 @@ function renderNoteList() {
   notesCount.textContent = `${count} 条笔记`;
   unresolvedCount.textContent = unresolved ? `${unresolved} 条需重新定位` : "";
 
-  const items = notesDocument.notes.map((note) => {
+  const sortedNotes = [...notesDocument.notes].sort(
+    (left, right) => new Date(right.updatedAt) - new Date(left.updatedAt) || right.id.localeCompare(left.id),
+  );
+  const visibleNotes = notesExpanded ? sortedNotes : sortedNotes.slice(0, 3);
+  toggleAllNotes.hidden = count <= 3;
+  toggleAllNotes.setAttribute("aria-expanded", String(notesExpanded));
+  toggleAllNotes.textContent = notesExpanded ? "收起" : `展开全部（${count}）`;
+
+  const items = visibleNotes.map((note) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "note-list-item";
@@ -426,7 +447,7 @@ async function loadNotes() {
   try {
     const [sessionResponse, notesResponse] = await Promise.all([
       fetch("/api/session", { cache: "no-store" }),
-      fetch("/api/chapters/05/notes", { cache: "no-store" }),
+      fetch(notesApiUrl, { cache: "no-store" }),
     ]);
     if (!sessionResponse.ok) throw new Error(await responseError(sessionResponse));
     if (!notesResponse.ok) throw new Error(await responseError(notesResponse));
@@ -444,7 +465,7 @@ async function loadNotes() {
 async function persistNotes(nextDocument) {
   setSaveStatus("保存中", "saving");
   hideNotesMessage();
-  const response = await fetch("/api/chapters/05/notes", {
+  const response = await fetch(notesApiUrl, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -642,6 +663,23 @@ async function deleteActiveNote() {
 }
 
 themeButtons.forEach((button) => button.addEventListener("click", () => applyTheme(button.dataset.themeChoice)));
+chapterNavigation.addEventListener("click", () => {
+  setChapterMenuOpen(chapterNavigation.getAttribute("aria-expanded") !== "true");
+});
+chapterMenu.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link) return;
+  if (!confirmDiscard()) event.preventDefault();
+  setChapterMenuOpen(false);
+});
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".chapter-menu")) setChapterMenuOpen(false);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || chapterMenu.hidden) return;
+  setChapterMenuOpen(false);
+  chapterNavigation.focus();
+});
 leftToggle.addEventListener("click", () => applyPanelState("left", leftToggle.getAttribute("aria-expanded") !== "true"));
 rightToggle.addEventListener("click", () => applyPanelState("right", rightToggle.getAttribute("aria-expanded") !== "true"));
 
@@ -701,6 +739,10 @@ noteBody.addEventListener("input", () => {
 noteEditor.addEventListener("submit", saveEditor);
 cancelNoteButton.addEventListener("click", () => closeEditor());
 deleteNoteButton.addEventListener("click", deleteActiveNote);
+toggleAllNotes.addEventListener("click", () => {
+  notesExpanded = !notesExpanded;
+  renderNoteList();
+});
 reloadNotesButton.addEventListener("click", () => {
   if (!confirmDiscard()) return;
   closeEditor({ force: true });

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the deterministic Chapter 05 reading prototype."""
+"""Build the deterministic multi-chapter reading application."""
 
 from __future__ import annotations
 
@@ -18,8 +18,8 @@ from markdown_it import MarkdownIt
 WEB_ROOT = Path(__file__).resolve().parents[1]
 BOOK_ROOT = WEB_ROOT.parent
 REPO_ROOT = BOOK_ROOT.parents[1]
-SOURCE_PATH = BOOK_ROOT / "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md"
-FOOTNOTE_PATH = BOOK_ROOT / "References/Footnotes-05.md"
+READING_ROOT = BOOK_ROOT / "Reading"
+FOOTNOTE_ROOT = BOOK_ROOT / "References"
 SCRIPTURE_CONFIG_PATH = BOOK_ROOT / "Metadata/scripture-config.json"
 BIBLE_ROOT = REPO_ROOT / "References/Bible-Texts"
 BIBLE_MANIFEST_PATH = BIBLE_ROOT / "manifest.json"
@@ -32,7 +32,7 @@ OUTPUT_PATH = DIST_ROOT / "chapters/05/index.html"
 FRONT_MATTER_RE = re.compile(r"\A---\n(?P<meta>.*?)\n---\n", re.DOTALL)
 TITLE_RE = re.compile(r"^#\s+(.+)$", re.MULTILINE)
 FOOTNOTE_SECTION_RE = re.compile(r"^##\s+(.+?)\s*$\n(?P<body>.*?)(?=^##\s+|\Z)", re.MULTILINE | re.DOTALL)
-FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-05\.md#(.+)$")
+FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-(?P<chapter>\d{2})\.md#(?P<fragment>.+)$")
 SCRIPTURE_FIRST_SEGMENT_RE = re.compile(r"^(?P<book>[1-3]?[A-Z]{2,3})\.(?P<chapter>[1-9]\d*)\.(?P<verses>.+)$")
 SCRIPTURE_NEXT_SEGMENT_RE = re.compile(r"^(?P<chapter>[1-9]\d*)\.(?P<verses>.+)$")
 SCRIPTURE_VERSE_PART_RE = re.compile(r"^(?P<start>[1-9]\d*)(?:-(?P<end>[1-9]\d*))?$")
@@ -147,6 +147,7 @@ def parse_scripture_uri(href: str, books: dict[str, dict], allowed_translations:
 
 def render_markdown(
     markdown_source: str,
+    chapter_id: str,
     books: dict[str, dict],
     available_translations: list[str],
     default_translation: str,
@@ -181,7 +182,9 @@ def render_markdown(
                 match = FOOTNOTE_LINK_RE.search(href)
                 if not match:
                     continue
-                footnote_id = unquote(match.group(1))
+                if match.group("chapter") != chapter_id:
+                    raise ValueError(f"Footnote link points outside chapter {chapter_id}: {href}")
+                footnote_id = unquote(match.group("fragment"))
                 child.attrSet("href", f"#footnote-{footnote_id}")
                 child.attrSet("class", "footnote-ref")
                 child.attrSet("data-footnote-id", footnote_id)
@@ -193,7 +196,7 @@ def render_markdown(
             continue
         block_index += 1
         tag = token.tag if token.tag in {"h1", "h2"} else "p"
-        token.attrSet("data-block-id", f"05-{tag}-{block_index:04d}")
+        token.attrSet("data-block-id", f"{chapter_id}-{tag}-{block_index:04d}")
 
     return parser.renderer.render(tokens, parser.options, {}), referenced_footnotes, referenced_scriptures
 
@@ -291,21 +294,77 @@ def render_footnotes(source: str) -> tuple[str, set[str]]:
     return "\n".join(templates), footnote_ids
 
 
-def build() -> Path:
-    source = SOURCE_PATH.read_text(encoding="utf-8")
+def discover_chapters() -> list[dict[str, str | Path]]:
+    chapters = []
+    seen: set[str] = set()
+    for source_path in sorted(READING_ROOT.rglob("*.md")):
+        source = source_path.read_text(encoding="utf-8")
+        body, metadata = strip_front_matter(source)
+        chapter_id = metadata.get("chapter", "")
+        if not re.fullmatch(r"\d{2}", chapter_id):
+            raise ValueError(f"Missing or invalid chapter metadata: {source_path}")
+        if chapter_id in seen:
+            raise ValueError(f"Duplicate chapter metadata: {chapter_id}")
+        title_match = TITLE_RE.search(body)
+        if not title_match:
+            raise ValueError(f"Missing chapter title: {source_path}")
+        title = title_match.group(1).strip()
+        title_parts = re.split(r"[：:]", title, maxsplit=1)
+        chapter_label = title_parts[0]
+        chapter_title = title_parts[1] if len(title_parts) == 2 else title
+        chapters.append(
+            {
+                "id": chapter_id,
+                "source_path": source_path,
+                "footnote_path": FOOTNOTE_ROOT / f"Footnotes-{chapter_id}.md",
+                "title": title,
+                "label": chapter_label,
+                "short_title": chapter_title,
+            }
+        )
+        seen.add(chapter_id)
+    chapters.sort(key=lambda chapter: str(chapter["id"]))
+    if [chapter["id"] for chapter in chapters] != [f"{number:02d}" for number in range(1, 21)]:
+        raise ValueError("Reading directory must contain chapters 01 through 20")
+    return chapters
+
+
+def render_chapter_navigation(chapters: list[dict[str, str | Path]], selected_id: str) -> str:
+    options = []
+    for chapter in chapters:
+        chapter_id = str(chapter["id"])
+        selected = "true" if chapter_id == selected_id else "false"
+        current = ' aria-current="page"' if chapter_id == selected_id else ""
+        label = html.escape(f'{chapter["label"]} · {chapter["short_title"]}')
+        options.append(
+            f'<a class="chapter-menu__option" role="option" aria-selected="{selected}"{current} '
+            f'href="/chapters/{chapter_id}/">{label}</a>'
+        )
+    return "\n".join(options)
+
+
+def build_chapter(
+    chapter: dict[str, str | Path],
+    chapters: list[dict[str, str | Path]],
+    scripture_context: tuple[dict, dict[str, dict], dict[str, dict]],
+) -> Path:
+    chapter_id = str(chapter["id"])
+    source_path = Path(chapter["source_path"])
+    footnote_path = Path(chapter["footnote_path"])
+    source = source_path.read_text(encoding="utf-8")
     body, metadata = strip_front_matter(source)
-    title_match = TITLE_RE.search(body)
-    title = title_match.group(1).strip() if title_match else "第五章"
+    title = str(chapter["title"])
     source_revision = hashlib.sha256(body.encode("utf-8")).hexdigest()
-    scripture_config, translations, books = load_scripture_context()
+    scripture_config, translations, books = scripture_context
     article_html, referenced_footnotes, referenced_scriptures = render_markdown(
         body,
+        chapter_id,
         books,
         scripture_config["available_translations"],
         scripture_config["default_translation"],
     )
     article_html = article_html.rstrip()
-    footnote_templates, available_footnotes = render_footnotes(FOOTNOTE_PATH.read_text(encoding="utf-8"))
+    footnote_templates, available_footnotes = render_footnotes(footnote_path.read_text(encoding="utf-8"))
     missing = [footnote_id for footnote_id in referenced_footnotes if footnote_id not in available_footnotes]
     if missing:
         raise ValueError(f"Missing footnote target(s): {', '.join(missing)}")
@@ -314,28 +373,45 @@ def build() -> Path:
     template = TEMPLATE_PATH.read_text(encoding="utf-8")
     page_title = f"{title}｜追寻敬虔"
     output = template.replace("{{PAGE_TITLE}}", html.escape(page_title, quote=True))
+    output = output.replace("{{CHAPTER_ID}}", chapter_id)
+    output = output.replace("{{CHAPTER_LABEL}}", html.escape(str(chapter["label"])))
+    output = output.replace(
+        "{{CHAPTER_MENU_LABEL}}",
+        html.escape(f'{chapter["label"]} · {chapter["short_title"]}'),
+    )
+    output = output.replace("{{CHAPTER_NAVIGATION}}", render_chapter_navigation(chapters, chapter_id))
     output = output.replace("{{SOURCE_REVISION}}", source_revision)
     output = output.replace("{{ARTICLE_HTML}}", article_html)
     output = output.replace("{{FOOTNOTE_TEMPLATES}}", footnote_templates)
     output = output.replace("{{SCRIPTURE_DATA}}", serialize_scripture_data(scripture_data))
 
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    output_path = DIST_ROOT / f"chapters/{chapter_id}/index.html"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(output.rstrip() + "\n", encoding="utf-8", newline="\n")
+
+    return output_path.relative_to(REPO_ROOT)
+
+
+def build() -> list[Path]:
+    chapters = discover_chapters()
+    scripture_context = load_scripture_context()
+    outputs = [build_chapter(chapter, chapters, scripture_context) for chapter in chapters]
+
     (DIST_ROOT / "assets").mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(output.rstrip() + "\n", encoding="utf-8", newline="\n")
 
     for asset_name in ("app.css", "app.js"):
         source_asset = ASSET_ROOT / asset_name
         target_asset = DIST_ROOT / "assets" / asset_name
         target_asset.write_bytes(source_asset.read_bytes())
 
-    return OUTPUT_PATH.relative_to(REPO_ROOT)
+    return outputs
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.parse_args()
-    output = build()
-    print(f"Built {output}")
+    outputs = build()
+    print(f"Built {len(outputs)} chapters in {DIST_ROOT.relative_to(REPO_ROOT)}")
 
 
 if __name__ == "__main__":

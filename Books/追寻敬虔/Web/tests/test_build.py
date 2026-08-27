@@ -79,6 +79,25 @@ class BuildTests(unittest.TestCase):
         self.assertIn('data-theme-choice="sepia"', self.output)
         self.assertIn('data-theme-choice="dark"', self.output)
         self.assertRegex(self.output, r'data-source-revision="[0-9a-f]{64}"')
+        self.assertEqual(self.output.count('class="chapter-menu__option"'), 20)
+        self.assertIn('aria-selected="true" aria-current="page" href="/chapters/05/"', self.output)
+        self.assertIn('role="listbox" aria-label="选择章节"', self.output)
+        for chapter_id in range(1, 21):
+            self.assertTrue((BUILD.DIST_ROOT / f"chapters/{chapter_id:02d}/index.html").is_file())
+
+    def test_notes_list_can_collapse_to_recent_items(self) -> None:
+        app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
+        self.assertIn("sortedNotes.slice(0, 3)", app_js)
+        self.assertIn('id="toggle-all-notes"', self.output)
+
+    def test_each_chapter_has_a_repository_note_source(self) -> None:
+        for chapter in range(1, 21):
+            chapter_id = f"{chapter:02d}"
+            note_path = BUILD.BOOK_ROOT / f"Notes/Annotations/{chapter_id}.json"
+            document = json.loads(note_path.read_text(encoding="utf-8"))
+            self.assertEqual(document["bookId"], "qfg")
+            self.assertEqual(document["chapterId"], chapter_id)
+            self.assertIsInstance(document["notes"], list)
 
     def test_footnotes_are_compiled_and_interactive(self) -> None:
         parser = StructureParser()
@@ -160,9 +179,10 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn("sourceRevision", self.output)
 
     def test_repeated_build_is_deterministic(self) -> None:
-        first = hashlib.sha256(self.output_path.read_bytes()).digest()
+        paths = [BUILD.DIST_ROOT / f"chapters/{chapter:02d}/index.html" for chapter in range(1, 21)]
+        first = {path: hashlib.sha256(path.read_bytes()).digest() for path in paths}
         BUILD.build()
-        second = hashlib.sha256(self.output_path.read_bytes()).digest()
+        second = {path: hashlib.sha256(path.read_bytes()).digest() for path in paths}
         self.assertEqual(first, second)
 
 
