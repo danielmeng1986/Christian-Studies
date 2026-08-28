@@ -31,3 +31,5 @@ Open `http://127.0.0.1:4173/chapters/01/` in Safari or Chrome. Use the top menu 
 The current reader deterministically builds all 20 chapters and includes working chapter navigation, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, and a per-chapter annotation workflow. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
 
 The local service exposes a per-chapter note data layer. `GET /api/chapters/{chapter}/notes` reads the Git-tracked JSON source, while revision-checked `PUT` requests save it atomically. Select a continuous range inside one body block, use “Write note,” and manage the saved note from the right panel. Version 1 rejects cross-block and overlapping selections.
+
+The agreed requirements, data model, security boundaries, and acceptance criteria for the planned AI discussion feature are documented in [`AI-DISCUSSION-SPEC-zh.md`](AI-DISCUSSION-SPEC-zh.md).
