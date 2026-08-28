@@ -9,6 +9,7 @@ import tempfile
 import threading
 import unittest
 from pathlib import Path
+from subprocess import CompletedProcess
 from unittest.mock import patch
 
 
@@ -112,7 +113,10 @@ class NotesAPITests(unittest.TestCase):
     def test_session_and_empty_notes_are_readable(self) -> None:
         status, _, content = self.request("GET", "/api/session")
         self.assertEqual(status, 200)
-        self.assertEqual(json.loads(content), {"writeToken": "test-write-token"})
+        session = json.loads(content)
+        self.assertEqual(session["writeToken"], "test-write-token")
+        self.assertFalse(session["aiConfigured"])
+        self.assertIsInstance(session["model"], str)
         _, document = self.get_notes()
         self.assertEqual(document, SERVE.empty_note_document("05"))
 
@@ -174,6 +178,39 @@ class NotesAPITests(unittest.TestCase):
                 SERVE.write_notes_atomically(self.note_path, b"replacement\n")
         self.assertEqual(self.note_path.read_bytes(), original)
         self.assertEqual(list(self.note_path.parent.glob(".*.tmp")), [])
+
+    def test_macos_website_password_is_injected_without_logging_it(self) -> None:
+        fake_key = "test-only-secret"
+        result = CompletedProcess([], 0, stdout=f"{fake_key}\n", stderr="")
+        with patch.object(SERVE.subprocess, "run", return_value=result) as run:
+            with patch.dict(os.environ, {}, clear=True):
+                SERVE.inject_api_key_from_macos_internet_password("OpenAPI Key")
+                self.assertEqual(os.environ["OPENAI_API_KEY"], fake_key)
+        command = run.call_args.args[0]
+        self.assertEqual(command[-2:], ["-l", "OpenAPI Key"])
+        self.assertNotIn(fake_key, command)
+
+    def test_macos_website_password_lookup_falls_back_to_server_name(self) -> None:
+        results = [
+            CompletedProcess([], 44, stdout="", stderr="not found"),
+            CompletedProcess([], 0, stdout="fallback-secret\n", stderr=""),
+        ]
+        with patch.object(SERVE.subprocess, "run", side_effect=results) as run:
+            with patch.dict(os.environ, {}, clear=True):
+                SERVE.inject_api_key_from_macos_internet_password("OpenAPI Key")
+                self.assertEqual(os.environ["OPENAI_API_KEY"], "fallback-secret")
+        self.assertEqual(run.call_args_list[-1].args[0][-2:], ["-s", "OpenAPI Key"])
+
+    def test_macos_generic_password_is_injected_without_exposing_it(self) -> None:
+        fake_key = "generic-test-secret"
+        result = CompletedProcess([], 0, stdout=f"{fake_key}\n", stderr="")
+        with patch.object(SERVE.subprocess, "run", return_value=result) as run:
+            with patch.dict(os.environ, {}, clear=True):
+                SERVE.inject_api_key_from_macos_generic_password("org.openai.qfg-reader")
+                self.assertEqual(os.environ["OPENAI_API_KEY"], fake_key)
+        command = run.call_args.args[0]
+        self.assertEqual(command[-2:], ["-s", "org.openai.qfg-reader"])
+        self.assertNotIn(fake_key, command)
 
 
 if __name__ == "__main__":

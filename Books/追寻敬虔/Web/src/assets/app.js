@@ -2,6 +2,8 @@ const STORAGE_KEYS = {
   theme: "qfg-reader-theme",
   leftPanel: "qfg-reader-left-panel",
   rightPanel: "qfg-reader-right-panel",
+  notesPanelWidth: "qfg-reader-notes-panel-width",
+  discussionPanelWidth: "qfg-reader-discussion-panel-width",
 };
 
 const THEMES = new Set(["light", "sepia", "dark"]);
@@ -11,11 +13,15 @@ const article = document.querySelector("#chapter-article");
 const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
 const leftToggle = document.querySelector("#toggle-references");
 const rightToggle = document.querySelector("#toggle-notes");
+const footnotePanel = document.querySelector("#reference-panel");
+const notesPanel = document.querySelector("#notes-panel");
+const studyPanelResizer = document.querySelector("#study-panel-resizer");
 const chapterNavigation = document.querySelector("#chapter-navigation");
 const chapterMenu = document.querySelector("#chapter-menu-list");
 const currentChapterLink = chapterMenu.querySelector('[aria-current="page"]');
 const chapterId = article.dataset.chapterId;
 const notesApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/notes`;
+const discussionsApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/discussions`;
 
 const referenceList = document.querySelector("#reference-list");
 const referenceEmptyState = document.querySelector("#reference-empty-state");
@@ -51,6 +57,39 @@ const saveNoteButton = document.querySelector("#save-note");
 const cancelNoteButton = document.querySelector("#cancel-note");
 const deleteNoteButton = document.querySelector("#delete-note");
 const selectionAction = document.querySelector("#selection-action");
+const selectionNoteAction = document.querySelector("#selection-note-action");
+const selectionDiscussAction = document.querySelector("#selection-discuss-action");
+const notesTab = document.querySelector("#notes-tab");
+const discussionsTab = document.querySelector("#discussions-tab");
+const notesView = document.querySelector("#notes-view");
+const discussionsView = document.querySelector("#discussions-view");
+const studyPanelTitle = document.querySelector("#study-panel-title");
+const discussionMessage = document.querySelector("#discussion-message");
+const discussionHome = document.querySelector("#discussion-home");
+const discussionThread = document.querySelector("#discussion-thread");
+const discussionSelectionCard = document.querySelector("#discussion-selection-card");
+const discussionSelectionQuote = document.querySelector("#discussion-selection-quote");
+const discussionContextSummary = document.querySelector("#discussion-context-summary");
+const matchingDiscussions = document.querySelector("#matching-discussions");
+const matchingDiscussionCount = document.querySelector("#matching-discussion-count");
+const matchingDiscussionList = document.querySelector("#matching-discussion-list");
+const startNewDiscussionButton = document.querySelector("#start-new-discussion");
+const cancelNewDiscussionButton = document.querySelector("#cancel-new-discussion");
+const discussionStartForm = document.querySelector("#discussion-start-form");
+const discussionFirstMessage = document.querySelector("#discussion-first-message");
+const sendFirstMessage = document.querySelector("#send-first-message");
+const discussionList = document.querySelector("#discussion-list");
+const discussionEmptyState = document.querySelector("#discussion-empty-state");
+const reloadDiscussions = document.querySelector("#reload-discussions");
+const backToDiscussions = document.querySelector("#back-to-discussions");
+const deleteDiscussionButton = document.querySelector("#delete-discussion");
+const newFromThread = document.querySelector("#new-from-thread");
+const discussionThreadQuote = document.querySelector("#discussion-thread-quote");
+const discussionMessages = document.querySelector("#discussion-messages");
+const discussionReplyForm = document.querySelector("#discussion-reply-form");
+const discussionReply = document.querySelector("#discussion-reply");
+const sendReply = document.querySelector("#send-reply");
+const discussionModel = document.querySelector("#discussion-model");
 
 let notesDocument = null;
 let notesEtag = null;
@@ -60,7 +99,23 @@ let activeNoteId = null;
 let draftAnchor = null;
 let editorDirty = false;
 let pendingSelectionAnchor = null;
+let pendingSelectionContext = null;
 let notesExpanded = false;
+let session = null;
+let discussionSummaries = [];
+let activeDiscussion = null;
+let activeDiscussionEtag = null;
+let discussionSelection = null;
+let discussionBusy = false;
+let activeStudyMode = "notes";
+
+const DESKTOP_STUDY_LAYOUT = window.matchMedia("(min-width: 68.01rem)");
+const READING_MIN_WIDTH = 512;
+const RESIZER_WIDTH = 8;
+const STUDY_PANEL_WIDTHS = {
+  notes: { min: 320, max: 520, storageKey: STORAGE_KEYS.notesPanelWidth },
+  discussions: { min: 448, max: 720, storageKey: STORAGE_KEYS.discussionPanelWidth },
+};
 
 function preferredTheme() {
   const saved = localStorage.getItem(STORAGE_KEYS.theme);
@@ -90,6 +145,76 @@ function applyPanelState(side, open, persist = true) {
   shell.classList.toggle(className, !open);
   toggle.setAttribute("aria-expanded", String(open));
   if (persist) localStorage.setItem(storageKey, open ? "open" : "closed");
+  if (side === "left" && activeStudyMode === "notes") {
+    window.requestAnimationFrame(() => applyStoredStudyPanelWidth());
+  }
+  updateStudyPanelResizer();
+}
+
+function currentStudyWidthConfig() {
+  return STUDY_PANEL_WIDTHS[activeStudyMode];
+}
+
+function studyWidthLimits() {
+  const config = currentStudyWidthConfig();
+  const leftWidth =
+    activeStudyMode === "notes" && leftToggle.getAttribute("aria-expanded") === "true"
+      ? footnotePanel.getBoundingClientRect().width
+      : 0;
+  const available = Math.floor(shell.getBoundingClientRect().width - leftWidth - READING_MIN_WIDTH - RESIZER_WIDTH);
+  const maximum = Math.max(config.min, Math.min(config.max, available));
+  return { min: Math.min(config.min, maximum), max: maximum };
+}
+
+function clampStudyPanelWidth(width) {
+  const limits = studyWidthLimits();
+  return Math.round(Math.min(limits.max, Math.max(limits.min, width)));
+}
+
+function storedStudyPanelWidth() {
+  const value = Number(localStorage.getItem(currentStudyWidthConfig().storageKey));
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function updateStudyPanelResizer() {
+  if (!studyPanelResizer) return;
+  const enabled = DESKTOP_STUDY_LAYOUT.matches && rightToggle.getAttribute("aria-expanded") === "true";
+  studyPanelResizer.setAttribute("aria-disabled", String(!enabled));
+  studyPanelResizer.tabIndex = enabled ? 0 : -1;
+  const limits = studyWidthLimits();
+  const width = Math.round(notesPanel.getBoundingClientRect().width);
+  studyPanelResizer.setAttribute("aria-valuemin", String(limits.min));
+  studyPanelResizer.setAttribute("aria-valuemax", String(limits.max));
+  studyPanelResizer.setAttribute("aria-valuenow", String(width));
+  studyPanelResizer.setAttribute("aria-valuetext", `${width} 像素`);
+}
+
+function applyStoredStudyPanelWidth() {
+  if (!DESKTOP_STUDY_LAYOUT.matches) {
+    shell.style.removeProperty("--study-panel-width");
+    updateStudyPanelResizer();
+    return;
+  }
+  const savedWidth = storedStudyPanelWidth();
+  if (savedWidth === null) {
+    shell.style.removeProperty("--study-panel-width");
+  } else {
+    shell.style.setProperty("--study-panel-width", `${clampStudyPanelWidth(savedWidth)}px`);
+  }
+  window.requestAnimationFrame(updateStudyPanelResizer);
+}
+
+function setStudyPanelWidth(width, persist = true) {
+  const nextWidth = clampStudyPanelWidth(width);
+  shell.style.setProperty("--study-panel-width", `${nextWidth}px`);
+  if (persist) localStorage.setItem(currentStudyWidthConfig().storageKey, String(nextWidth));
+  updateStudyPanelResizer();
+}
+
+function resetStudyPanelWidth() {
+  localStorage.removeItem(currentStudyWidthConfig().storageKey);
+  shell.style.removeProperty("--study-panel-width");
+  window.requestAnimationFrame(updateStudyPanelResizer);
 }
 
 function setChapterMenuOpen(open) {
@@ -246,11 +371,15 @@ function hideNotesMessage() {
   notesMessageText.textContent = "";
 }
 
-function canonicalTextNodes(container) {
+function canonicalTextNodes(container, includeReferences = false) {
   const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       if (!node.data) return NodeFilter.FILTER_REJECT;
-      if (node.parentElement?.closest(".footnote-ref, .scripture-ref")) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement?.closest(".discussion-anchor-marker")) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement?.closest(".footnote-ref")) return NodeFilter.FILTER_REJECT;
+      if (!includeReferences && node.parentElement?.closest(".scripture-ref")) {
+        return NodeFilter.FILTER_REJECT;
+      }
       return NodeFilter.FILTER_ACCEPT;
     },
   });
@@ -259,15 +388,15 @@ function canonicalTextNodes(container) {
   return nodes;
 }
 
-function canonicalText(container) {
-  return canonicalTextNodes(container).map((node) => node.data).join("");
+function canonicalText(container, includeReferences = false) {
+  return canonicalTextNodes(container, includeReferences).map((node) => node.data).join("");
 }
 
-function canonicalOffset(block, container, offset) {
+function canonicalOffset(block, container, offset, includeReferences = false) {
   const range = document.createRange();
   range.setStart(block, 0);
   range.setEnd(container, offset);
-  return canonicalText(range.cloneContents()).length;
+  return canonicalText(range.cloneContents(), includeReferences).length;
 }
 
 function closestBlock(node) {
@@ -295,25 +424,31 @@ function matchingOffsets(text, anchor) {
   return matches;
 }
 
-function resolveAnchor(anchor) {
+function resolveAnchorInProjection(anchor, includeReferences) {
   const originalBlock = article.querySelector(`[data-block-id="${CSS.escape(anchor.blockId)}"]`);
   if (originalBlock) {
-    const text = canonicalText(originalBlock);
+    const text = canonicalText(originalBlock, includeReferences);
     if (text.slice(anchor.startOffset, anchor.endOffset) === anchor.exact) {
-      return { ...anchor };
+      return { ...anchor, includeReferences };
     }
     const matches = matchingOffsets(text, anchor);
     if (matches.length === 1) {
-      return { ...anchor, ...matches[0] };
+      return { ...anchor, ...matches[0], includeReferences };
     }
   }
 
   const chapterMatches = [];
   article.querySelectorAll("[data-block-id]").forEach((block) => {
-    const matches = matchingOffsets(canonicalText(block), anchor);
-    matches.forEach((match) => chapterMatches.push({ ...anchor, ...match, blockId: block.dataset.blockId }));
+    const matches = matchingOffsets(canonicalText(block, includeReferences), anchor);
+    matches.forEach((match) =>
+      chapterMatches.push({ ...anchor, ...match, blockId: block.dataset.blockId, includeReferences }),
+    );
   });
   return chapterMatches.length === 1 ? chapterMatches[0] : null;
+}
+
+function resolveAnchor(anchor) {
+  return resolveAnchorInProjection(anchor, true) ?? resolveAnchorInProjection(anchor, false);
 }
 
 function unwrapHighlights() {
@@ -324,8 +459,8 @@ function unwrapHighlights() {
   });
 }
 
-function wrapTextRange(block, startOffset, endOffset, noteId) {
-  const nodes = canonicalTextNodes(block);
+function wrapTextRange(block, startOffset, endOffset, noteId, includeReferences) {
+  const nodes = canonicalTextNodes(block, includeReferences);
   const segments = [];
   let position = 0;
   nodes.forEach((node) => {
@@ -373,7 +508,9 @@ function restoreAndRenderHighlights() {
     if (!block) return;
     entries
       .sort((left, right) => right.anchor.startOffset - left.anchor.startOffset)
-      .forEach(({ note, anchor }) => wrapTextRange(block, anchor.startOffset, anchor.endOffset, note.id));
+      .forEach(({ note, anchor }) =>
+        wrapTextRange(block, anchor.startOffset, anchor.endOffset, note.id, anchor.includeReferences),
+      );
   });
 }
 
@@ -451,11 +588,13 @@ async function loadNotes() {
     ]);
     if (!sessionResponse.ok) throw new Error(await responseError(sessionResponse));
     if (!notesResponse.ok) throw new Error(await responseError(notesResponse));
-    writeToken = (await sessionResponse.json()).writeToken;
+    session = await sessionResponse.json();
+    writeToken = session.writeToken;
     notesDocument = await notesResponse.json();
     notesEtag = notesResponse.headers.get("ETag");
     setSaveStatus("已载入", "saved");
     renderNotes();
+    await loadDiscussions();
   } catch (error) {
     setSaveStatus("载入失败", "error");
     showNotesMessage(`无法读取笔记：${error.message}`, true);
@@ -530,10 +669,6 @@ function openExistingNote(noteId, scrollToHighlight = false) {
   }
 }
 
-function rangeIncludesReference(range) {
-  return Boolean(range.cloneContents().querySelector?.(".footnote-ref, .scripture-ref"));
-}
-
 function selectionAnchor() {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount !== 1 || selection.isCollapsed) return null;
@@ -541,19 +676,13 @@ function selectionAnchor() {
   const startBlock = closestBlock(range.startContainer);
   const endBlock = closestBlock(range.endContainer);
   if (!startBlock || startBlock !== endBlock || !article.contains(startBlock)) return null;
-  if (rangeIncludesReference(range)) return null;
 
-  const startOffset = canonicalOffset(startBlock, range.startContainer, range.startOffset);
-  const endOffset = canonicalOffset(startBlock, range.endContainer, range.endOffset);
+  const startOffset = canonicalOffset(startBlock, range.startContainer, range.startOffset, true);
+  const endOffset = canonicalOffset(startBlock, range.endContainer, range.endOffset, true);
   if (endOffset <= startOffset) return null;
-  const text = canonicalText(startBlock);
+  const text = canonicalText(startBlock, true);
   const exact = text.slice(startOffset, endOffset);
   if (!exact.trim()) return null;
-
-  const overlaps = [...resolvedAnchors.values()].some(
-    (anchor) => anchor.blockId === startBlock.dataset.blockId && startOffset < anchor.endOffset && endOffset > anchor.startOffset,
-  );
-  if (overlaps) return null;
 
   return {
     blockId: startBlock.dataset.blockId,
@@ -565,10 +694,50 @@ function selectionAnchor() {
   };
 }
 
+function selectionReferences(range) {
+  const refs = interactiveRefs.filter((ref) => {
+    try {
+      return range.intersectsNode(ref);
+    } catch {
+      return false;
+    }
+  });
+  const scriptures = [];
+  const footnotes = [];
+  const seen = new Set();
+  refs.forEach((ref) => {
+    const key = referenceKey(ref);
+    if (seen.has(key)) return;
+    seen.add(key);
+    if (ref.classList.contains("scripture-ref")) {
+      const id = ref.dataset.scriptureId;
+      const translationId = selectedScriptureVersions.get(id) || ref.dataset.initialVersion || scriptureData.defaultTranslation;
+      const passage = scriptureData.references?.[id]?.versions?.[translationId];
+      const translation = scriptureData.translations?.[translationId];
+      if (passage && translation) {
+        scriptures.push({
+          id,
+          translationId,
+          translationLabel: translation.label,
+          citation: passage.citation,
+          text: passage.text,
+        });
+      }
+    } else {
+      const id = ref.dataset.footnoteId;
+      const template = footnoteTemplate(id);
+      const text = template?.content?.textContent?.trim();
+      if (text) footnotes.push({ id, text });
+    }
+  });
+  return { scriptures, footnotes };
+}
+
 function updateSelectionAction() {
   const anchor = selectionAnchor();
   if (!anchor || !notesDocument) {
     pendingSelectionAnchor = null;
+    pendingSelectionContext = null;
     selectionAction.hidden = true;
     return;
   }
@@ -577,13 +746,15 @@ function updateSelectionAction() {
   const rects = range.getClientRects();
   const rect = rects[rects.length - 1] ?? range.getBoundingClientRect();
   pendingSelectionAnchor = anchor;
+  pendingSelectionContext = selectionReferences(range);
   selectionAction.hidden = false;
-  selectionAction.style.left = `${Math.min(window.innerWidth - 100, Math.max(8, rect.left + rect.width / 2 - 42))}px`;
+  selectionAction.style.left = `${Math.min(window.innerWidth - 236, Math.max(8, rect.left + rect.width / 2 - 112))}px`;
   selectionAction.style.top = `${Math.min(window.innerHeight - 50, rect.bottom + 8)}px`;
 }
 
 function beginSelectedNote(anchor) {
   pendingSelectionAnchor = null;
+  pendingSelectionContext = null;
   selectionAction.hidden = true;
   window.getSelection()?.removeAllRanges();
   openEditor({ anchor });
@@ -662,6 +833,337 @@ async function deleteActiveNote() {
   }
 }
 
+function switchStudyTab(tab) {
+  const showNotes = tab === "notes";
+  const nextMode = showNotes ? "notes" : "discussions";
+  const previousMode = activeStudyMode;
+  activeStudyMode = nextMode;
+  shell.classList.toggle("discussion-focus", !showNotes);
+  if (!showNotes && previousMode !== "discussions") {
+    applyPanelState("left", false, false);
+  } else if (showNotes && previousMode === "discussions") {
+    applyPanelState("left", storedPanelState(STORAGE_KEYS.leftPanel), false);
+  }
+  notesTab.setAttribute("aria-selected", String(showNotes));
+  discussionsTab.setAttribute("aria-selected", String(!showNotes));
+  notesView.hidden = !showNotes;
+  discussionsView.hidden = showNotes;
+  studyPanelTitle.textContent = showNotes ? "我的笔记" : "与 AI 讨论";
+  saveStatus.hidden = !showNotes;
+  applyPanelState("right", true);
+  applyStoredStudyPanelWidth();
+}
+
+function showDiscussionMessage(message, state = "info") {
+  discussionMessage.textContent = message;
+  discussionMessage.dataset.state = state;
+  discussionMessage.hidden = !message;
+}
+
+function sameAnchor(left, right) {
+  return (
+    left.blockId === right.blockId &&
+    left.startOffset === right.startOffset &&
+    left.endOffset === right.endOffset &&
+    left.exact === right.exact
+  );
+}
+
+function createDiscussionListItem(summary) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "discussion-list-item";
+  const title = document.createElement("strong");
+  title.textContent = summary.title;
+  const preview = document.createElement("span");
+  preview.textContent = summary.preview || "等待 AI 回复";
+  const meta = document.createElement("small");
+  meta.textContent = `${summary.messageCount} 条消息 · ${formatDate(summary.updatedAt)}${summary.hasFailedResponse ? " · 回复失败" : ""}`;
+  button.append(title, preview, meta);
+  button.addEventListener("click", () => openDiscussion(summary.id));
+  return button;
+}
+
+function renderDiscussionMarkers() {
+  article.querySelectorAll(".discussion-anchor-marker").forEach((marker) => marker.remove());
+  const byBlock = new Map();
+  discussionSummaries.forEach((summary) => {
+    const entries = byBlock.get(summary.anchor.blockId) || [];
+    entries.push(summary);
+    byBlock.set(summary.anchor.blockId, entries);
+  });
+  byBlock.forEach((entries, blockId) => {
+    const block = article.querySelector(`[data-block-id="${CSS.escape(blockId)}"]`);
+    if (!block) return;
+    const marker = document.createElement("button");
+    marker.type = "button";
+    marker.className = "discussion-anchor-marker";
+    marker.textContent = entries.length === 1 ? "AI" : `AI ${entries.length}`;
+    marker.title = entries.map((entry) => entry.title).join("\n");
+    marker.setAttribute("aria-label", `打开这段文字的 ${entries.length} 个 AI 讨论`);
+    marker.addEventListener("click", () => openDiscussion(entries[0].id));
+    block.append(marker);
+  });
+}
+
+function renderDiscussionLists() {
+  renderDiscussionMarkers();
+  const allItems = discussionSummaries.map(createDiscussionListItem);
+  discussionList.replaceChildren(...allItems);
+  discussionEmptyState.hidden = allItems.length > 0;
+
+  if (!discussionSelection) {
+    discussionSelectionCard.hidden = true;
+    matchingDiscussions.hidden = true;
+    discussionStartForm.hidden = true;
+    return;
+  }
+  discussionSelectionCard.hidden = false;
+  discussionSelectionQuote.textContent = discussionSelection.anchor.exact;
+  const scriptureCount = discussionSelection.scriptures.length;
+  const footnoteCount = discussionSelection.footnotes.length;
+  discussionContextSummary.textContent = `将加入完整章节、${scriptureCount} 处经文和 ${footnoteCount} 条脚注。`;
+  const matches = discussionSummaries.filter((summary) => sameAnchor(summary.anchor, discussionSelection.anchor));
+  matchingDiscussionList.replaceChildren(...matches.map(createDiscussionListItem));
+  matchingDiscussionCount.textContent = matches.length ? `${matches.length} 个` : "";
+  matchingDiscussions.hidden = matches.length === 0;
+  discussionStartForm.hidden = matches.length > 0;
+  if (matches.length === 0) discussionFirstMessage.focus();
+}
+
+async function loadDiscussions() {
+  try {
+    const response = await fetch(discussionsApiUrl, { cache: "no-store" });
+    if (!response.ok) throw new Error(await responseError(response));
+    discussionSummaries = (await response.json()).discussions;
+    showDiscussionMessage("");
+    renderDiscussionLists();
+  } catch (error) {
+    showDiscussionMessage(`无法读取讨论：${error.message}`, "error");
+  }
+}
+
+function renderDiscussionThread() {
+  if (!activeDiscussion) return;
+  discussionHome.hidden = true;
+  discussionThread.hidden = false;
+  discussionThreadQuote.textContent = activeDiscussion.anchor.exact;
+  discussionModel.textContent = session?.model ? `模型：${session.model}` : "";
+  const items = activeDiscussion.messages.map((message) => {
+    const item = document.createElement("article");
+    item.className = `discussion-message-card discussion-message-card--${message.role}`;
+    const label = document.createElement("p");
+    label.className = "discussion-message-card__label";
+    label.textContent = message.role === "user" ? "你" : "AI";
+    const content = document.createElement("div");
+    content.className = "discussion-message-card__content";
+    if (message.status === "pending" && !message.content) {
+      content.textContent = "正在思考……";
+      item.classList.add("is-pending");
+    } else if (message.status === "failed") {
+      content.textContent = message.error?.message || "这次回复失败了。";
+      item.classList.add("is-failed");
+      if (message.error?.retryable) {
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "secondary-button";
+        retry.textContent = "重试";
+        retry.disabled = discussionBusy;
+        retry.addEventListener("click", retryDiscussion);
+        content.append(document.createElement("br"), retry);
+      }
+    } else {
+      if (message.role === "assistant" && typeof message.renderedContent === "string") {
+        content.classList.add("markdown-content");
+        content.innerHTML = message.renderedContent;
+      } else {
+        content.textContent = message.content;
+      }
+    }
+    item.append(label, content);
+    return item;
+  });
+  discussionMessages.replaceChildren(...items);
+  discussionReply.disabled = discussionBusy;
+  sendReply.disabled = discussionBusy;
+  discussionMessages.lastElementChild?.scrollIntoView({ block: "end" });
+}
+
+async function openDiscussion(id) {
+  try {
+    const response = await fetch(`/api/discussions/${encodeURIComponent(id)}`, { cache: "no-store" });
+    if (!response.ok) throw new Error(await responseError(response));
+    activeDiscussion = await response.json();
+    activeDiscussionEtag = response.headers.get("ETag");
+    discussionSelection = {
+      anchor: activeDiscussion.anchor,
+      scriptures: activeDiscussion.context.scriptures,
+      footnotes: activeDiscussion.context.footnotes,
+    };
+    showDiscussionMessage(
+      activeDiscussion.sourceRevision === article.dataset.sourceRevision ? "" : "正文自创建此讨论后已变更；讨论保留，本轮会使用当前完整章节。",
+      "info",
+    );
+    switchStudyTab("discussions");
+    renderDiscussionThread();
+  } catch (error) {
+    showDiscussionMessage(`无法打开讨论：${error.message}`, "error");
+  }
+}
+
+async function consumeNdjson(response) {
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  while (true) {
+    const { value, done } = await reader.read();
+    buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() || "";
+    for (const line of lines) {
+      if (!line.trim()) continue;
+      const event = JSON.parse(line);
+      if (event.type === "response.started") {
+        activeDiscussion = event.discussion;
+        activeDiscussionEtag = event.etag;
+        renderDiscussionThread();
+      } else if (event.type === "response.delta") {
+        const pending = activeDiscussion?.messages.at(-1);
+        if (pending?.status === "pending") pending.content += event.delta;
+        renderDiscussionThread();
+      } else if (event.type === "response.completed" || event.type === "response.error") {
+        activeDiscussion = event.discussion;
+        activeDiscussionEtag = event.etag;
+        if (event.error) showDiscussionMessage(event.error.message, "error");
+        renderDiscussionThread();
+      }
+    }
+    if (done) break;
+  }
+}
+
+async function postDiscussion(url, payload, etag = null) {
+  discussionBusy = true;
+  showDiscussionMessage("");
+  renderDiscussionThread();
+  const headers = {
+    "Content-Type": "application/json",
+    "X-QFG-Write-Token": writeToken,
+  };
+  if (etag) headers["If-Match"] = etag;
+  try {
+    const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(payload) });
+    if (!response.ok) {
+      const error = new Error(await responseError(response));
+      error.status = response.status;
+      throw error;
+    }
+    discussionHome.hidden = true;
+    discussionThread.hidden = false;
+    await consumeNdjson(response);
+    await loadDiscussions();
+  } finally {
+    discussionBusy = false;
+    renderDiscussionThread();
+  }
+}
+
+function beginSelectedDiscussion(anchor, context) {
+  pendingSelectionAnchor = null;
+  pendingSelectionContext = null;
+  selectionAction.hidden = true;
+  window.getSelection()?.removeAllRanges();
+  discussionSelection = { anchor, ...context };
+  activeDiscussion = null;
+  activeDiscussionEtag = null;
+  discussionHome.hidden = false;
+  discussionThread.hidden = true;
+  switchStudyTab("discussions");
+  renderDiscussionLists();
+}
+
+async function createDiscussion(event) {
+  event.preventDefault();
+  if (!discussionSelection || !discussionFirstMessage.value.trim()) return;
+  if (!session?.aiConfigured) {
+    showDiscussionMessage("尚未安全注入 OPENAI_API_KEY，请先从已配置密钥的终端启动阅读器。", "error");
+    return;
+  }
+  const payload = {
+    sourceRevision: article.dataset.sourceRevision,
+    anchor: discussionSelection.anchor,
+    scriptures: discussionSelection.scriptures,
+    footnotes: discussionSelection.footnotes,
+    message: discussionFirstMessage.value,
+  };
+  sendFirstMessage.disabled = true;
+  try {
+    await postDiscussion(discussionsApiUrl, payload);
+    discussionFirstMessage.value = "";
+  } catch (error) {
+    showDiscussionMessage(`无法发起讨论：${error.message}`, "error");
+  } finally {
+    sendFirstMessage.disabled = false;
+  }
+}
+
+async function continueDiscussion(event) {
+  event.preventDefault();
+  const message = discussionReply.value;
+  if (!activeDiscussion || !message.trim()) return;
+  try {
+    discussionReply.value = "";
+    await postDiscussion(
+      `/api/discussions/${encodeURIComponent(activeDiscussion.id)}/messages`,
+      { message },
+      activeDiscussionEtag,
+    );
+  } catch (error) {
+    discussionReply.value = message;
+    showDiscussionMessage(`无法继续讨论：${error.message}`, "error");
+  }
+}
+
+async function retryDiscussion() {
+  if (!activeDiscussion || discussionBusy) return;
+  try {
+    await postDiscussion(
+      `/api/discussions/${encodeURIComponent(activeDiscussion.id)}/messages`,
+      { retry: true },
+      activeDiscussionEtag,
+    );
+  } catch (error) {
+    showDiscussionMessage(`重试失败：${error.message}`, "error");
+  }
+}
+
+async function deleteDiscussion() {
+  if (!activeDiscussion || discussionBusy) return;
+  if (!window.confirm("确定删除这个讨论及其全部消息吗？此操作不可在阅读器中撤销。")) return;
+  discussionBusy = true;
+  try {
+    const response = await fetch(`/api/discussions/${encodeURIComponent(activeDiscussion.id)}`, {
+      method: "DELETE",
+      headers: {
+        "If-Match": activeDiscussionEtag,
+        "X-QFG-Write-Token": writeToken,
+      },
+    });
+    if (!response.ok) throw new Error(await responseError(response));
+    activeDiscussion = null;
+    activeDiscussionEtag = null;
+    discussionSelection = null;
+    discussionThread.hidden = true;
+    discussionHome.hidden = false;
+    await loadDiscussions();
+    showDiscussionMessage("讨论已删除。");
+  } catch (error) {
+    showDiscussionMessage(`无法删除讨论：${error.message}`, "error");
+  } finally {
+    discussionBusy = false;
+  }
+}
+
 themeButtons.forEach((button) => button.addEventListener("click", () => applyTheme(button.dataset.themeChoice)));
 chapterNavigation.addEventListener("click", () => {
   setChapterMenuOpen(chapterNavigation.getAttribute("aria-expanded") !== "true");
@@ -686,6 +1188,7 @@ rightToggle.addEventListener("click", () => applyPanelState("right", rightToggle
 interactiveRefs.forEach((ref) => {
   ref.addEventListener("click", (event) => {
     event.preventDefault();
+    if (event.target.closest("mark.annotation-highlight")) return;
     toggleReference(referenceKey(ref), ref.dataset.initialVersion);
   });
 });
@@ -727,8 +1230,85 @@ article.addEventListener("contextmenu", (event) => {
 document.addEventListener("selectionchange", () => window.setTimeout(updateSelectionAction, 0));
 
 selectionAction.addEventListener("mousedown", (event) => event.preventDefault());
-selectionAction.addEventListener("click", () => {
+selectionNoteAction.addEventListener("click", () => {
   if (pendingSelectionAnchor) beginSelectedNote(pendingSelectionAnchor);
+});
+selectionDiscussAction.addEventListener("click", () => {
+  if (pendingSelectionAnchor && pendingSelectionContext) {
+    beginSelectedDiscussion(pendingSelectionAnchor, pendingSelectionContext);
+  }
+});
+
+notesTab.addEventListener("click", () => switchStudyTab("notes"));
+discussionsTab.addEventListener("click", () => switchStudyTab("discussions"));
+studyPanelResizer.addEventListener("pointerdown", (event) => {
+  if (!DESKTOP_STUDY_LAYOUT.matches || rightToggle.getAttribute("aria-expanded") !== "true") return;
+  event.preventDefault();
+  const startX = event.clientX;
+  const startWidth = notesPanel.getBoundingClientRect().width;
+  studyPanelResizer.setPointerCapture(event.pointerId);
+  studyPanelResizer.classList.add("is-resizing");
+  document.body.classList.add("is-resizing-study-panel");
+
+  const move = (moveEvent) => setStudyPanelWidth(startWidth + startX - moveEvent.clientX);
+  const finish = () => {
+    studyPanelResizer.classList.remove("is-resizing");
+    document.body.classList.remove("is-resizing-study-panel");
+    studyPanelResizer.removeEventListener("pointermove", move);
+    studyPanelResizer.removeEventListener("pointerup", finish);
+    studyPanelResizer.removeEventListener("pointercancel", finish);
+  };
+  studyPanelResizer.addEventListener("pointermove", move);
+  studyPanelResizer.addEventListener("pointerup", finish);
+  studyPanelResizer.addEventListener("pointercancel", finish);
+});
+studyPanelResizer.addEventListener("keydown", (event) => {
+  if (!DESKTOP_STUDY_LAYOUT.matches || rightToggle.getAttribute("aria-expanded") !== "true") return;
+  const currentWidth = notesPanel.getBoundingClientRect().width;
+  const step = event.shiftKey ? 48 : 16;
+  if (event.key === "ArrowLeft") setStudyPanelWidth(currentWidth + step);
+  else if (event.key === "ArrowRight") setStudyPanelWidth(currentWidth - step);
+  else if (event.key === "Home") setStudyPanelWidth(studyWidthLimits().min);
+  else if (event.key === "End") setStudyPanelWidth(studyWidthLimits().max);
+  else return;
+  event.preventDefault();
+});
+studyPanelResizer.addEventListener("dblclick", resetStudyPanelWidth);
+reloadDiscussions.addEventListener("click", loadDiscussions);
+startNewDiscussionButton.addEventListener("click", () => {
+  matchingDiscussions.hidden = true;
+  discussionStartForm.hidden = false;
+  discussionFirstMessage.focus();
+});
+cancelNewDiscussionButton.addEventListener("click", () => {
+  const hasMatches = discussionSelection
+    ? discussionSummaries.some((summary) => sameAnchor(summary.anchor, discussionSelection.anchor))
+    : false;
+  discussionStartForm.hidden = true;
+  matchingDiscussions.hidden = !hasMatches;
+});
+discussionStartForm.addEventListener("submit", createDiscussion);
+discussionReplyForm.addEventListener("submit", continueDiscussion);
+backToDiscussions.addEventListener("click", () => {
+  activeDiscussion = null;
+  activeDiscussionEtag = null;
+  discussionThread.hidden = true;
+  discussionHome.hidden = false;
+  renderDiscussionLists();
+});
+deleteDiscussionButton.addEventListener("click", deleteDiscussion);
+newFromThread.addEventListener("click", () => {
+  if (!discussionSelection) return;
+  activeDiscussion = null;
+  activeDiscussionEtag = null;
+  discussionThread.hidden = true;
+  discussionHome.hidden = false;
+  matchingDiscussions.hidden = true;
+  discussionStartForm.hidden = false;
+  renderDiscussionLists();
+  matchingDiscussions.hidden = true;
+  discussionStartForm.hidden = false;
+  discussionFirstMessage.focus();
 });
 
 noteBody.addEventListener("input", () => {
@@ -753,9 +1333,11 @@ window.addEventListener("beforeunload", (event) => {
   event.preventDefault();
   event.returnValue = "";
 });
+window.addEventListener("resize", applyStoredStudyPanelWidth);
 
 applyTheme(preferredTheme(), false);
 applyPanelState("left", storedPanelState(STORAGE_KEYS.leftPanel), false);
 applyPanelState("right", storedPanelState(STORAGE_KEYS.rightPanel), false);
+applyStoredStudyPanelWidth();
 renderReferences();
 loadNotes();

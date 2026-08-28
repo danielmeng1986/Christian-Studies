@@ -90,6 +90,21 @@ class BuildTests(unittest.TestCase):
         self.assertIn("sortedNotes.slice(0, 3)", app_js)
         self.assertIn('id="toggle-all-notes"', self.output)
 
+    def test_ai_discussion_controls_are_built(self) -> None:
+        app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
+        app_css = (BUILD.ASSET_ROOT / "app.css").read_text(encoding="utf-8")
+        self.assertIn('id="selection-note-action"', self.output)
+        self.assertIn('id="selection-discuss-action"', self.output)
+        self.assertIn('id="discussions-tab"', self.output)
+        self.assertIn('id="discussion-start-form"', self.output)
+        self.assertIn('id="study-panel-resizer"', self.output)
+        self.assertIn('role="separator"', self.output)
+        self.assertIn("selectionReferences(range)", app_js)
+        self.assertIn('event.type === "response.delta"', app_js)
+        self.assertIn('shell.classList.toggle("discussion-focus"', app_js)
+        self.assertIn("qfg-reader-discussion-panel-width", app_js)
+        self.assertIn(".app-shell.discussion-focus", app_css)
+
     def test_each_chapter_has_a_repository_note_source(self) -> None:
         for chapter in range(1, 21):
             chapter_id = f"{chapter:02d}"
@@ -177,6 +192,13 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn(str(BUILD.REPO_ROOT), self.output)
         self.assertNotIn("Notes/Annotations", self.output)
         self.assertNotIn("sourceRevision", self.output)
+
+    def test_ai_markdown_rendering_assets_are_present(self) -> None:
+        app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
+        app_css = (BUILD.ASSET_ROOT / "app.css").read_text(encoding="utf-8")
+        self.assertIn("message.renderedContent", app_js)
+        self.assertIn(".markdown-content blockquote", app_css)
+        self.assertIn(".markdown-content table", app_css)
 
     def test_repeated_build_is_deterministic(self) -> None:
         paths = [BUILD.DIST_ROOT / f"chapters/{chapter:02d}/index.html" for chapter in range(1, 21)]

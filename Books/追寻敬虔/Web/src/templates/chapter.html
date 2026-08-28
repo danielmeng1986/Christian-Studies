@@ -41,7 +41,7 @@
           <span aria-hidden="true">引</span><span class="button-label">脚注 / 经文</span>
         </button>
         <button type="button" class="icon-button" id="toggle-notes" aria-controls="notes-panel" aria-expanded="true">
-          <span aria-hidden="true">记</span><span class="button-label">笔记</span>
+          <span aria-hidden="true">记</span><span class="button-label">笔记 / 讨论</span>
         </button>
       </div>
     </header>
@@ -76,14 +76,34 @@
         </footer>
       </section>
 
-      <aside class="side-panel notes-panel" id="notes-panel" aria-label="笔记">
+      <div
+        class="study-panel-resizer"
+        id="study-panel-resizer"
+        role="separator"
+        tabindex="0"
+        aria-label="调整笔记与 AI 讨论区宽度"
+        aria-orientation="vertical"
+        aria-valuemin="320"
+        aria-valuemax="720"
+        aria-valuenow="352"
+        title="拖动调整宽度；双击恢复默认"
+      ></div>
+
+      <aside class="side-panel notes-panel" id="notes-panel" aria-label="笔记与 AI 讨论">
         <div class="side-panel__header">
           <div>
-            <p class="eyebrow">ANNOTATIONS</p>
-            <h2>我的笔记</h2>
+            <p class="eyebrow">STUDY</p>
+            <h2 id="study-panel-title">我的笔记</h2>
           </div>
           <span class="save-status" id="save-status" aria-live="polite" data-state="loading">载入中</span>
         </div>
+
+        <div class="study-tabs" role="tablist" aria-label="研读内容">
+          <button type="button" id="notes-tab" role="tab" aria-selected="true" aria-controls="notes-view">笔记</button>
+          <button type="button" id="discussions-tab" role="tab" aria-selected="false" aria-controls="discussions-view">AI 讨论</button>
+        </div>
+
+        <div id="notes-view" role="tabpanel" aria-labelledby="notes-tab">
 
         <div class="notes-message" id="notes-message" hidden>
           <p id="notes-message-text"></p>
@@ -124,10 +144,70 @@
             <button type="submit" class="primary-button" id="save-note">保存</button>
           </div>
         </form>
+        </div>
+
+        <div class="discussions-view" id="discussions-view" role="tabpanel" aria-labelledby="discussions-tab" hidden>
+          <div class="discussion-message" id="discussion-message" aria-live="polite" hidden></div>
+
+          <section class="discussion-home" id="discussion-home">
+            <div class="discussion-selection-card" id="discussion-selection-card" hidden>
+              <p class="eyebrow">SELECTED TEXT</p>
+              <blockquote id="discussion-selection-quote"></blockquote>
+              <p id="discussion-context-summary"></p>
+            </div>
+            <div id="matching-discussions" hidden>
+              <div class="discussion-section-heading">
+                <h3>继续讨论</h3>
+                <span id="matching-discussion-count"></span>
+              </div>
+              <div class="discussion-list" id="matching-discussion-list"></div>
+              <button type="button" class="secondary-button discussion-new-button" id="start-new-discussion">发起新讨论</button>
+            </div>
+            <form class="discussion-start-form" id="discussion-start-form" hidden>
+              <label for="discussion-first-message">你想从哪里开始讨论？</label>
+              <textarea id="discussion-first-message" rows="6" maxlength="12000" required placeholder="例如：这段话如何理解？它与这里引用的经文有什么关系？"></textarea>
+              <div class="discussion-form-actions">
+                <button type="button" class="secondary-button" id="cancel-new-discussion">取消</button>
+                <button type="submit" class="primary-button" id="send-first-message">发送</button>
+              </div>
+            </form>
+
+            <div class="discussion-all-heading">
+              <h3>本章讨论</h3>
+              <button type="button" id="reload-discussions">刷新</button>
+            </div>
+            <div class="discussion-list" id="discussion-list"></div>
+            <div class="empty-state discussion-empty-state" id="discussion-empty-state">
+              <span class="empty-state__mark" aria-hidden="true">∞</span>
+              <p>选择一段文字，然后点击“与 AI 讨论”。</p>
+            </div>
+          </section>
+
+          <section class="discussion-thread" id="discussion-thread" hidden>
+            <div class="discussion-thread__toolbar">
+              <button type="button" class="secondary-button" id="back-to-discussions">返回列表</button>
+              <button type="button" class="danger-button" id="delete-discussion">删除讨论</button>
+              <button type="button" class="secondary-button" id="new-from-thread">发起新讨论</button>
+            </div>
+            <blockquote class="discussion-thread__quote" id="discussion-thread-quote"></blockquote>
+            <div class="discussion-messages" id="discussion-messages" aria-live="polite"></div>
+            <form class="discussion-reply-form" id="discussion-reply-form">
+              <label for="discussion-reply">继续讨论</label>
+              <textarea id="discussion-reply" rows="4" maxlength="12000" required placeholder="写下你的问题或回应……"></textarea>
+              <div class="discussion-form-actions">
+                <span class="discussion-model" id="discussion-model"></span>
+                <button type="submit" class="primary-button" id="send-reply">发送</button>
+              </div>
+            </form>
+          </section>
+        </div>
       </aside>
     </main>
 
-    <button type="button" class="selection-action" id="selection-action" hidden>写笔记</button>
+    <div class="selection-action" id="selection-action" role="toolbar" aria-label="选中文字操作" hidden>
+      <button type="button" id="selection-note-action">写笔记</button>
+      <button type="button" id="selection-discuss-action">与 AI 讨论</button>
+    </div>
 
     <div class="footnote-templates" hidden aria-hidden="true">
 {{FOOTNOTE_TEMPLATES}}
