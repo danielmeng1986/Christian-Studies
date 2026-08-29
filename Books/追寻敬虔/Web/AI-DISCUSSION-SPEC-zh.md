@@ -10,6 +10,8 @@
 
 本文档定义《追寻敬虔》本地阅读器“与 AI 讨论”功能的产品行为、数据结构、接口、安全边界和验收标准。它是后续实现、代码审查、测试和历史查询的共同依据。
 
+讨论上下文的分层、资料导入、跨章节检索和未来联网能力由 [`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md) 进一步定义；面向实现代理和运行时 AI 的规范性执行合同见 [`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)；分阶段实施计划见 [`AI-CONTEXT-ROADMAP-zh.md`](AI-CONTEXT-ROADMAP-zh.md)。
+
 本文中的关键词含义如下：
 
 - **必须**：MVP 实现不可省略的要求。
