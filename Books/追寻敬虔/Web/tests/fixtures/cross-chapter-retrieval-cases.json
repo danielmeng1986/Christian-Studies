@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "description": "M4 固定检索评估；只含书稿主题与公开人名，不含私人笔记或讨论。",
+  "cases": [
+    {"id": "holy-spirit-witness", "question": "聖靈的見證", "relevantChapterIds": ["11", "05", "12"], "expectedTopChapterIds": ["11"]},
+    {"id": "justification", "question": "稱義教義", "relevantChapterIds": ["09", "01"], "expectedTopChapterIds": ["09"]},
+    {"id": "marriage-family", "question": "婚姻與家庭", "relevantChapterIds": ["16"], "expectedTopChapterIds": ["16"]},
+    {"id": "preaching", "question": "清教徒論講道", "relevantChapterIds": ["17", "13"], "expectedTopChapterIds": ["17"]},
+    {"id": "blood-salvation", "question": "寶血得救", "relevantChapterIds": ["08"], "expectedTopChapterIds": ["08"]},
+    {"id": "sabbath", "question": "主日", "relevantChapterIds": ["14", "03", "18"], "expectedTopChapterIds": ["14"]},
+    {"id": "conscience", "question": "良心", "relevantChapterIds": ["07", "04", "18"], "expectedTopChapterIds": ["07"]},
+    {"id": "revival", "question": "復興運動", "relevantChapterIds": ["03", "19", "04"], "expectedTopChapterIds": ["03", "19"]},
+    {"id": "worship", "question": "崇拜神", "relevantChapterIds": ["15", "12", "01"], "expectedTopChapterIds": ["15"]},
+    {"id": "spirituality", "question": "靈命觀", "relevantChapterIds": ["12", "01"], "expectedTopChapterIds": ["12"]},
+    {"id": "spiritual-gifts", "question": "屬靈的恩賜", "relevantChapterIds": ["13", "12", "09"], "expectedTopChapterIds": ["13"]},
+    {"id": "interpretation", "question": "詮釋聖經", "relevantChapterIds": ["06", "05"], "expectedTopChapterIds": ["06"]},
+    {"id": "evangelism", "question": "清教徒傳講福音", "relevantChapterIds": ["10", "17"], "expectedTopChapterIds": ["10"]},
+    {"id": "practical-works", "question": "清教徒實用作品", "relevantChapterIds": ["04", "11", "15"], "expectedTopChapterIds": ["04"]},
+    {"id": "illumination", "question": "聖靈的光照", "relevantChapterIds": ["05", "07", "11", "17"], "expectedTopChapterIds": ["05", "07"]},
+    {"id": "pilgrims-progress", "question": "天路歷程", "relevantChapterIds": ["12", "02", "03", "05"], "expectedTopChapterIds": ["12", "02", "03"]},
+    {"id": "john-owen", "question": "約翰．歐文", "entities": [{"surface": "約翰．歐文", "chinese": "約翰．歐文", "english": "Owen, John", "indexForm": "Owen, John", "canonicalSearchName": "John Owen"}], "relevantChapterIds": ["05", "12", "13", "08"], "expectedTopChapterIds": ["05", "12", "13"]},
+    {"id": "jonathan-edwards", "question": "約拿單．愛德華滋", "entities": [{"surface": "約拿單．愛德華滋", "chinese": "約拿單．愛德華滋", "english": "Edwards, Jonathan", "indexForm": "Edwards, Jonathan", "canonicalSearchName": "Jonathan Edwards"}], "relevantChapterIds": ["19", "18", "03", "01"], "expectedTopChapterIds": ["19"]},
+    {"id": "scripture-2ti-3-16", "question": "提後3:16", "scriptureIds": ["2TI.3.16"], "relevantChapterIds": ["04", "06"], "expectedTopChapterIds": ["04", "06"]},
+    {"id": "no-result", "question": "量子引力彩虹獨角獸", "relevantChapterIds": [], "expectedTopChapterIds": [], "expectEmpty": true}
+  ]
+}

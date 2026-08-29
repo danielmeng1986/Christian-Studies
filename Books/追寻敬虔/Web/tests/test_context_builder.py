@@ -6,6 +6,7 @@ import json
 import sys
 import tempfile
 import unittest
+from collections import Counter
 from pathlib import Path
 
 
@@ -24,6 +25,7 @@ def load_module():
 
 
 CONTEXT = load_module()
+import context_retrieval as RETRIEVAL
 
 
 def metadata_source(*, book_id: str = "qfg") -> str:
@@ -334,6 +336,87 @@ class ContextBuilderTests(unittest.TestCase):
                     "suffix": "正文。",
                 },
             )
+
+    def test_cross_chapter_retrieval_is_locatable_ranked_limited_and_excludable(self) -> None:
+        current = "# 测试章\n\n虚构选区正文。\n"
+        chapter_paths = {}
+        footnote_paths = {}
+        for chapter_id in ("05", "06", "07", "08"):
+            path = Path(self.temporary.name) / f"{chapter_id}.md"
+            if chapter_id == "05":
+                body = current
+            else:
+                body = (
+                    f"# 第{chapter_id}章\n\n## 相关小节\n\n"
+                    f"約翰．歐文在第{chapter_id}章的第一段。"
+                    + (f"[1](../References/Footnotes-{chapter_id}.md#1)" if chapter_id == "06" else "")
+                    + "\n\n"
+                    f"John Owen 在第{chapter_id}章的第二段。\n\n"
+                    f"Owen 在第{chapter_id}章的第三段。\n"
+                )
+            path.write_text(
+                f"---\nbook: 追寻敬虔\nchapter: {chapter_id}\n---\n{body}",
+                encoding="utf-8",
+            )
+            chapter_paths[chapter_id] = path
+        footnote_path = Path(self.temporary.name) / "Footnotes-06.md"
+        footnote_path.write_text(
+            "# Footnotes-06\n\n## 1\n\nPneumatologia 是这里引用的著作。\n",
+            encoding="utf-8",
+        )
+        footnote_paths["06"] = footnote_path
+
+        builder = CONTEXT.ContextBuilder(
+            self.metadata_path,
+            self.translation_path,
+            chapter_paths=chapter_paths,
+            footnote_paths=footnote_paths,
+        )
+        first = builder.build(request(current, question="約翰．歐文与 Pneumatologia 有何关系？"))
+        passages = first.envelope["retrieval"]["bookPassages"]
+        self.assertEqual(len(passages), 5)
+        self.assertTrue(first.preview["hasMoreBookPassages"])
+        self.assertNotIn("05", {passage["chapterId"] for passage in passages})
+        self.assertLessEqual(max(Counter(passage["chapterId"] for passage in passages).values()), 2)
+        self.assertTrue(all(passage["evidenceType"] == "book_passage" for passage in passages))
+        self.assertTrue(all(passage["href"].endswith(passage["blockId"]) for passage in passages))
+        footnote_match = next(passage for passage in passages if passage["matchedFootnoteIds"])
+        self.assertEqual(footnote_match["relatedFootnoteIds"], ["1"])
+        self.assertIn("exact_entity", footnote_match["matchReasons"])
+        self.assertEqual(first.manifest["retrievalVersion"], 2)
+        self.assertTrue(first.manifest["capabilities"]["crossChapterSearch"])
+        self.assertEqual(len(first.manifest["included"]["bookPassages"]), 5)
+
+        excluded_id = passages[0]["passageId"]
+        excluded = builder.build(
+            request(
+                current,
+                question="約翰．歐文与 Pneumatologia 有何关系？",
+                excluded_book_passage_ids=frozenset({excluded_id}),
+            )
+        )
+        self.assertEqual(len(excluded.envelope["retrieval"]["bookPassages"]), 4)
+        self.assertNotIn(
+            excluded_id,
+            {passage["passageId"] for passage in excluded.envelope["retrieval"]["bookPassages"]},
+        )
+
+    def test_cross_chapter_retrieval_returns_empty_for_unmatched_query(self) -> None:
+        current = "# 测试章\n\n虚构选区正文。\n"
+        other_path = Path(self.temporary.name) / "06.md"
+        other_path.write_text(
+            "---\nbook: 追寻敬虔\nchapter: 06\n---\n# 第六章\n\n完全无关的段落。\n",
+            encoding="utf-8",
+        )
+        builder = CONTEXT.ContextBuilder(
+            self.metadata_path,
+            self.translation_path,
+            chapter_paths={"06": other_path},
+            footnote_paths={},
+        )
+        bundle = builder.build(request(current, question="量子引力彩虹独角兽"))
+        self.assertEqual(bundle.envelope["retrieval"]["bookPassages"], [])
+        self.assertEqual(bundle.manifest["included"]["bookPassages"], [])
         with self.assertRaisesRegex(CONTEXT.ContextBuildError, "split"):
             CONTEXT.resolve_reading_focus(
                 "# 测试章\n\n🙏\n",

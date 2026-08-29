@@ -37,6 +37,10 @@ DISCUSSIONS_ROOT = BOOK_ROOT / "Notes/Discussions"
 READING_ROOT = BOOK_ROOT / "Reading"
 DEFAULT_NOTE_PATHS = {f"{chapter:02d}": NOTES_ROOT / f"{chapter:02d}.json" for chapter in range(1, 21)}
 DEFAULT_CHAPTER_PATHS = discussions.discover_chapter_paths(READING_ROOT)
+DEFAULT_FOOTNOTE_PATHS = {
+    chapter_id: BOOK_ROOT / f"References/Footnotes-{chapter_id}.md"
+    for chapter_id in DEFAULT_CHAPTER_PATHS
+}
 
 MAX_REQUEST_BYTES = 1_000_000
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
@@ -234,6 +238,7 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         note_paths: dict[str, Path],
         discussion_root: Path,
         chapter_paths: dict[str, Path],
+        footnote_paths: dict[str, Path],
         openai_client: Any,
         write_token: str | None = None,
     ) -> None:
@@ -243,7 +248,18 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         self.note_paths = {chapter: path.resolve() for chapter, path in note_paths.items()}
         self.discussion_root = discussion_root.resolve()
         self.chapter_paths = {chapter: path.resolve() for chapter, path in chapter_paths.items()}
+        self.footnote_paths = {chapter: path.resolve() for chapter, path in footnote_paths.items()}
         self.openai_client = openai_client
+        client_builder = getattr(openai_client, "context_builder", None)
+        base_builder = client_builder or discussions.ContextBuilder()
+        self.context_builder = discussions.ContextBuilder(
+            metadata_path=base_builder.metadata_path,
+            translation_index_path=base_builder.translation_index_path,
+            chapter_paths=self.chapter_paths,
+            footnote_paths=self.footnote_paths,
+        )
+        if client_builder is not None:
+            openai_client.context_builder = self.context_builder
         self.write_token = write_token or secrets.token_urlsafe(32)
         self.notes_lock = threading.Lock()
         self.discussions_lock = threading.Lock()
@@ -396,6 +412,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         excluded_note_ids: frozenset[str] = frozenset(),
         included_translation_source_lines: frozenset[int] = frozenset(),
         excluded_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_book_passage_ids: frozenset[str] = frozenset(),
+        book_passage_limit: int = 5,
     ) -> None:
         discussion_id = document["id"]
         self.send_stream_headers()
@@ -416,6 +434,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 excluded_note_ids=excluded_note_ids,
                 included_translation_source_lines=included_translation_source_lines,
                 excluded_translation_source_lines=excluded_translation_source_lines,
+                excluded_book_passage_ids=excluded_book_passage_ids,
+                book_passage_limit=book_passage_limit,
             ):
                 if event.get("type") == "response.delta":
                     self.write_stream_event(event)
@@ -560,6 +580,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     "excludedNoteIds",
                     "includedTranslationSourceLines",
                     "excludedTranslationSourceLines",
+                    "excludedBookPassageIds",
+                    "bookPassageLimit",
                 }
                 if not set(payload) <= allowed or not required <= set(payload):
                     raise discussions.DiscussionValidationError("preview request has invalid fields")
@@ -569,6 +591,12 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 )
                 excluded_translation_source_lines = discussions.normalize_translation_source_lines(
                     payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+                )
+                excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
+                    payload.get("excludedBookPassageIds")
+                )
+                book_passage_limit = discussions.normalize_book_passage_limit(
+                    payload.get("bookPassageLimit")
                 )
                 document = discussions.create_discussion_document(
                     {key: value for key, value in payload.items() if key in required},
@@ -580,7 +608,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
                     return
                 note_document = self.note_context(chapter_id)
-                builder = getattr(self.server.openai_client, "context_builder", None) or discussions.ContextBuilder()
+                builder = self.server.context_builder
                 request = discussions.ContextRequest.from_discussion(
                     document,
                     chapter_markdown,
@@ -589,6 +617,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     excluded_note_ids=excluded_note_ids,
                     included_translation_source_lines=included_translation_source_lines,
                     excluded_translation_source_lines=excluded_translation_source_lines,
+                    excluded_book_passage_ids=excluded_book_passage_ids,
+                    book_passage_limit=book_passage_limit,
                 )
                 bundle = builder.build(request)
             except (discussions.DiscussionValidationError, discussions.ContextBuildError, ValidationError) as error:
@@ -614,6 +644,12 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 excluded_translation_source_lines = discussions.normalize_translation_source_lines(
                     payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
                 )
+                excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
+                    payload.get("excludedBookPassageIds")
+                )
+                book_passage_limit = discussions.normalize_book_passage_limit(
+                    payload.get("bookPassageLimit")
+                )
                 document = discussions.create_discussion_document(
                     {
                         key: value
@@ -623,6 +659,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                             "excludedNoteIds",
                             "includedTranslationSourceLines",
                             "excludedTranslationSourceLines",
+                            "excludedBookPassageIds",
+                            "bookPassageLimit",
                         }
                     },
                     chapter_id,
@@ -656,6 +694,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 excluded_note_ids=excluded_note_ids,
                 included_translation_source_lines=included_translation_source_lines,
                 excluded_translation_source_lines=excluded_translation_source_lines,
+                excluded_book_passage_ids=excluded_book_passage_ids,
+                book_passage_limit=book_passage_limit,
             )
             return
 
@@ -669,6 +709,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 "excludedNoteIds",
                 "includedTranslationSourceLines",
                 "excludedTranslationSourceLines",
+                "excludedBookPassageIds",
+                "bookPassageLimit",
             }
             valid_message_request = (
                 isinstance(payload, dict)
@@ -683,6 +725,12 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             )
             excluded_translation_source_lines = discussions.normalize_translation_source_lines(
                 payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+            )
+            excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
+                payload.get("excludedBookPassageIds")
+            )
+            book_passage_limit = discussions.normalize_book_passage_limit(
+                payload.get("bookPassageLimit")
             )
             with self.server.discussions_lock:
                 if discussion_id in self.server.active_discussions:
@@ -717,6 +765,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             excluded_note_ids=excluded_note_ids,
             included_translation_source_lines=included_translation_source_lines,
             excluded_translation_source_lines=excluded_translation_source_lines,
+            excluded_book_passage_ids=excluded_book_passage_ids,
+            book_passage_limit=book_passage_limit,
         )
 
     def do_DELETE(self) -> None:
@@ -819,15 +869,23 @@ def build_server(
     note_paths: dict[str, Path] | None = None,
     discussion_root: Path = DISCUSSIONS_ROOT,
     chapter_paths: dict[str, Path] | None = None,
+    footnote_paths: dict[str, Path] | None = None,
     openai_client: Any | None = None,
     write_token: str | None = None,
 ) -> ReaderHTTPServer:
+    resolved_chapter_paths = chapter_paths or DEFAULT_CHAPTER_PATHS
+    resolved_footnote_paths = (
+        footnote_paths
+        if footnote_paths is not None
+        else DEFAULT_FOOTNOTE_PATHS if chapter_paths is None else {}
+    )
     return ReaderHTTPServer(
         ("127.0.0.1", port),
         dist_root=dist_root,
         note_paths=note_paths or DEFAULT_NOTE_PATHS,
         discussion_root=discussion_root,
-        chapter_paths=chapter_paths or DEFAULT_CHAPTER_PATHS,
+        chapter_paths=resolved_chapter_paths,
+        footnote_paths=resolved_footnote_paths,
         openai_client=openai_client or discussions.client_from_environment(),
         write_token=write_token,
     )

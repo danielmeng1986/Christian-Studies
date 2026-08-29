@@ -32,6 +32,7 @@ class StructureParser(HTMLParser):
         super().__init__()
         self.article_counts: dict[str, int] = {}
         self.block_ids: list[str] = []
+        self.block_anchor_ids: list[str] = []
         self.footnote_refs: list[str] = []
         self.footnote_templates: list[str] = []
         self.scripture_refs: list[str] = []
@@ -48,6 +49,7 @@ class StructureParser(HTMLParser):
         self.article_counts[tag] = self.article_counts.get(tag, 0) + 1
         if "data-block-id" in attributes and attributes["data-block-id"]:
             self.block_ids.append(attributes["data-block-id"] or "")
+            self.block_anchor_ids.append(attributes.get("id") or "")
         if "footnote-ref" in (attributes.get("class") or ""):
             self.footnote_refs.append(attributes.get("data-footnote-id") or "")
         if "scripture-ref" in (attributes.get("class") or ""):
@@ -70,6 +72,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(parser.article_counts.get("h1"), 1)
         self.assertEqual(parser.article_counts.get("h2"), 8)
         self.assertEqual(len(parser.block_ids), len(set(parser.block_ids)))
+        self.assertEqual(parser.block_anchor_ids, parser.block_ids)
         self.assertGreater(len(parser.block_ids), 60)
 
     def test_template_and_navigation(self) -> None:

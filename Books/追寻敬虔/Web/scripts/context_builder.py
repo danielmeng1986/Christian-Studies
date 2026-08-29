@@ -7,6 +7,7 @@ import ast
 import hashlib
 import json
 import re
+import sys
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,18 +17,23 @@ from markdown_it import MarkdownIt
 
 
 CONTEXT_SCHEMA_VERSION = 1
-RETRIEVAL_VERSION = 1
+RETRIEVAL_VERSION = 2
 SOURCE_REGISTRY_VERSION = 1
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
+if str(SCRIPT_ROOT) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_ROOT))
 WEB_ROOT = SCRIPT_ROOT.parent
 BOOK_ROOT = WEB_ROOT.parent
 DEFAULT_BOOK_METADATA_PATH = BOOK_ROOT / "Metadata/book.yml"
 DEFAULT_TRANSLATION_INDEX_PATH = BOOK_ROOT / "References/追寻敬虔译名对照表.json"
+DEFAULT_READING_ROOT = BOOK_ROOT / "Reading"
+DEFAULT_FOOTNOTE_ROOT = BOOK_ROOT / "References"
 
 KEY_RE = re.compile(r"\A[a-z][a-z0-9_]*\Z")
 INTEGER_RE = re.compile(r"\A-?(?:0|[1-9]\d*)\Z")
 FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-\d{2}\.md#")
+CHAPTER_META_RE = re.compile(r"^chapter:\s*(?P<chapter>\d{2})\s*$", re.MULTILINE)
 
 MARKDOWN_PARSER = MarkdownIt(
     "commonmark",
@@ -71,6 +77,8 @@ class ContextRequest:
     excluded_note_ids: frozenset[str] = frozenset()
     included_translation_source_lines: frozenset[int] = frozenset()
     excluded_translation_source_lines: frozenset[int] = frozenset()
+    excluded_book_passage_ids: frozenset[str] = frozenset()
+    book_passage_limit: int = 5
 
     @classmethod
     def from_discussion(
@@ -83,6 +91,8 @@ class ContextRequest:
         excluded_note_ids: frozenset[str] = frozenset(),
         included_translation_source_lines: frozenset[int] = frozenset(),
         excluded_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_book_passage_ids: frozenset[str] = frozenset(),
+        book_passage_limit: int = 5,
     ) -> ContextRequest:
         return cls(
             book_id=document["bookId"],
@@ -106,6 +116,8 @@ class ContextRequest:
             excluded_note_ids=excluded_note_ids,
             included_translation_source_lines=included_translation_source_lines,
             excluded_translation_source_lines=excluded_translation_source_lines,
+            excluded_book_passage_ids=excluded_book_passage_ids,
+            book_passage_limit=book_passage_limit,
         )
 
 
@@ -463,6 +475,36 @@ def resolve_reading_focus(chapter_markdown: str, chapter_id: str, anchor: dict[s
     }
 
 
+def discover_retrieval_paths(
+    reading_root: Path = DEFAULT_READING_ROOT,
+    footnote_root: Path = DEFAULT_FOOTNOTE_ROOT,
+) -> tuple[dict[str, Path], dict[str, Path]]:
+    """Discover declared book sources without importing HTTP or discussion code."""
+
+    chapter_paths: dict[str, Path] = {}
+    try:
+        candidates = sorted(reading_root.rglob("*.md"))
+    except OSError as error:
+        raise ContextBuildError(f"reading sources could not be listed: {reading_root}") from error
+    for path in candidates:
+        try:
+            source = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as error:
+            raise ContextBuildError(f"chapter source could not be read: {path}") from error
+        match = CHAPTER_META_RE.search(source)
+        if match is None:
+            continue
+        chapter_id = match.group("chapter")
+        if chapter_id in chapter_paths:
+            raise ContextBuildError(f"duplicate chapter source: {chapter_id}")
+        chapter_paths[chapter_id] = path
+    footnote_paths = {
+        chapter_id: footnote_root / f"Footnotes-{chapter_id}.md"
+        for chapter_id in chapter_paths
+    }
+    return chapter_paths, footnote_paths
+
+
 class ContextBuilder:
     """Build a versioned evidence envelope without network access or filesystem writes."""
 
@@ -470,11 +512,22 @@ class ContextBuilder:
         self,
         metadata_path: Path = DEFAULT_BOOK_METADATA_PATH,
         translation_index_path: Path = DEFAULT_TRANSLATION_INDEX_PATH,
+        *,
+        chapter_paths: dict[str, Path] | None = None,
+        footnote_paths: dict[str, Path] | None = None,
     ) -> None:
         self.metadata_path = metadata_path
         self.translation_index_path = translation_index_path
+        if chapter_paths is None:
+            chapter_paths, discovered_footnotes = discover_retrieval_paths()
+            if footnote_paths is None:
+                footnote_paths = discovered_footnotes
+        self.chapter_paths = dict(chapter_paths)
+        self.footnote_paths = dict(footnote_paths or {})
 
     def build(self, request: ContextRequest) -> ContextBundle:
+        if request.book_passage_limit not in {5, 10}:
+            raise ContextBuildError("book passage limit must be 5 or 10")
         book = load_book_metadata(self.metadata_path)
         if request.book_id != book["bookId"]:
             raise ContextBuildError("discussion bookId does not match book metadata")
@@ -501,6 +554,33 @@ class ContextBuilder:
             if item["sourceLine"] in request.included_translation_source_lines
         )
 
+        try:
+            from context_retrieval import build_retrieval_units, retrieve_book_passages
+
+            retrieval_units = build_retrieval_units(
+                self.chapter_paths,
+                self.footnote_paths,
+                build_block_map,
+            )
+            passage_candidates = retrieve_book_passages(
+                retrieval_units,
+                current_chapter_id=request.chapter_id,
+                selected_block_id=focus["selection"]["blockId"],
+                question=request.question,
+                selection=focus["selection"]["exact"],
+                entities=entities,
+                scripture_ids=(item.get("id", "") for item in scriptures),
+                limit=request.book_passage_limit + 1,
+            )
+        except (OSError, ValueError) as error:
+            raise ContextBuildError(str(error)) from error
+        has_more_book_passages = len(passage_candidates) > request.book_passage_limit
+        book_passages = [
+            passage
+            for passage in passage_candidates[: request.book_passage_limit]
+            if passage["passageId"] not in request.excluded_book_passage_ids
+        ]
+
         manifest = {
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
             "promptVersion": request.prompt_version,
@@ -512,13 +592,23 @@ class ContextBuilder:
                 "footnoteIds": [item["id"] for item in footnotes],
                 "noteIds": [item["noteId"] for item in notes],
                 "translationSourceLines": [item["sourceLine"] for item in entities],
-                "bookPassages": [],
+                "bookPassages": [
+                    {
+                        "passageId": item["passageId"],
+                        "chapterId": item["chapterId"],
+                        "blockId": item["blockId"],
+                        "sourceRevision": item["sourceRevision"],
+                        "footnoteRevision": item["footnoteRevision"],
+                        "relatedFootnoteIds": item["relatedFootnoteIds"],
+                    }
+                    for item in book_passages
+                ],
                 "localSourceChunks": [],
                 "webSources": [],
             },
             "capabilities": {
                 "localLibrary": False,
-                "crossChapterSearch": False,
+                "crossChapterSearch": True,
                 "webSearch": False,
                 "researchDepth": "local",
             },
@@ -543,7 +633,7 @@ class ContextBuilder:
             "personalStudy": {"notes": notes},
             "referenceResolution": {"entities": entities, "terms": []},
             "retrieval": {
-                "bookPassages": [],
+                "bookPassages": book_passages,
                 "localSourceChunks": [],
                 "bibliographyMatches": [],
             },
@@ -564,12 +654,21 @@ class ContextBuilder:
                 {**item, "included": item["sourceLine"] in request.included_translation_source_lines}
                 for item in entity_candidates
             ],
+            "bookPassages": book_passages,
+            "bookPassageLimit": request.book_passage_limit,
+            "hasMoreBookPassages": has_more_book_passages,
             "webSearchEnabled": False,
         }
         evidence_characters = len(request.chapter_markdown) + len(anchor["exact"])
         evidence_characters += sum(len(item["text"]) for item in scriptures)
         evidence_characters += sum(len(item["text"]) for item in footnotes)
         evidence_characters += sum(len(item["body"]) for item in notes)
+        evidence_characters += sum(len(item["excerpt"]) for item in book_passages)
+        evidence_characters += sum(
+            len(footnote["text"])
+            for item in book_passages
+            for footnote in item["relatedFootnotes"]
+        )
         estimates = {
             "method": "characters",
             "evidenceCharacters": evidence_characters,

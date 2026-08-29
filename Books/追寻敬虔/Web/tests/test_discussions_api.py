@@ -35,6 +35,8 @@ class FakeOpenAIClient:
     def stream(self, document, chapter_markdown, **context_options):
         assert "完整章节" in chapter_markdown
         assert context_options["note_document"]["chapterId"] == "05"
+        assert "excluded_book_passage_ids" in context_options
+        assert context_options["book_passage_limit"] in {5, 10}
         yield {"type": "response.delta", "delta": "流式"}
         yield {"type": "response.delta", "delta": "回复"}
         yield {
@@ -84,12 +86,17 @@ class DiscussionAPITests(unittest.TestCase):
             "---\nbook: 追寻敬虔\nchapter: 05\n---\n" + self.chapter_markdown,
             encoding="utf-8",
         )
+        other_chapter_path = root / "Reading/06.md"
+        other_chapter_path.write_text(
+            "---\nbook: 追寻敬虔\nchapter: 06\n---\n\n# 第六章\n\n完整章节在其他章节中的呼应。\n",
+            encoding="utf-8",
+        )
         self.server = SERVE.build_server(
             0,
             dist_root=self.dist,
             note_paths={"05": note_path},
             discussion_root=self.discussion_root,
-            chapter_paths={"05": chapter_path},
+            chapter_paths={"05": chapter_path, "06": other_chapter_path},
             openai_client=FakeOpenAIClient(),
             write_token="test-write-token",
         )
@@ -211,6 +218,8 @@ class DiscussionAPITests(unittest.TestCase):
         self.assertEqual(status, 200)
         preview = json.loads(content)["preview"]
         self.assertEqual(preview["notes"][0]["body"], "脱敏测试笔记")
+        self.assertEqual(len(preview["bookPassages"]), 1)
+        passage_id = preview["bookPassages"][0]["passageId"]
 
         payload["excludedNoteIds"] = ["11111111-1111-4111-8111-111111111111"]
         status, _, content = self.request(
@@ -220,6 +229,14 @@ class DiscussionAPITests(unittest.TestCase):
         preview = json.loads(content)["preview"]
         self.assertEqual(preview["notes"], [])
         self.assertTrue(preview["noteCandidates"][0]["excluded"])
+
+        payload["excludedBookPassageIds"] = [passage_id]
+        payload["bookPassageLimit"] = 10
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(content)["preview"]["bookPassages"], [])
 
 
 if __name__ == "__main__":

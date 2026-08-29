@@ -196,7 +196,9 @@ def render_markdown(
             continue
         block_index += 1
         tag = token.tag if token.tag in {"h1", "h2"} else "p"
-        token.attrSet("data-block-id", f"{chapter_id}-{tag}-{block_index:04d}")
+        block_id = f"{chapter_id}-{tag}-{block_index:04d}"
+        token.attrSet("id", block_id)
+        token.attrSet("data-block-id", block_id)
 
     return parser.renderer.render(tokens, parser.options, {}), referenced_footnotes, referenced_scriptures
 

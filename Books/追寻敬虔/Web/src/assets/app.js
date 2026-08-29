@@ -1165,23 +1165,83 @@ function renderContextPreview(container, preview, state) {
       fragment.append(label);
     });
   }
+  if (preview.bookPassages.length) {
+    const heading = document.createElement("p");
+    heading.className = "discussion-context-preview__heading";
+    heading.textContent = "本书其他章节（可排除）";
+    fragment.append(heading);
+    preview.bookPassages.forEach((passage) => {
+      const item = document.createElement("div");
+      item.className = "discussion-context-preview__passage";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.setAttribute("aria-label", `纳入${passage.chapterTitle}的相关段落`);
+      checkbox.checked = !state.excludedBookPassageIds.has(passage.passageId);
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) state.excludedBookPassageIds.delete(passage.passageId);
+        else state.excludedBookPassageIds.add(passage.passageId);
+      });
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = `${passage.chapterTitle} · ${passage.headingPath.at(-1) || passage.blockId}`;
+      const excerpt = document.createElement("blockquote");
+      excerpt.textContent = passage.excerpt;
+      const locator = document.createElement("a");
+      locator.href = passage.href;
+      locator.textContent = `打开 ${passage.chapterId} 章 · ${passage.blockId}`;
+      details.append(summary, excerpt);
+      passage.relatedFootnotes
+        .filter((footnote) => passage.matchedFootnoteIds.includes(footnote.id))
+        .forEach((footnote) => {
+          const footnoteExcerpt = document.createElement("blockquote");
+          footnoteExcerpt.textContent = `脚注 ${footnote.id}：${footnote.text}`;
+          details.append(footnoteExcerpt);
+        });
+      details.append(locator);
+      item.append(checkbox, details);
+      fragment.append(item);
+    });
+  } else {
+    const empty = document.createElement("p");
+    empty.className = "discussion-context-preview__muted";
+    empty.textContent = "本书其他章节未找到足够强的相关段落。";
+    fragment.append(empty);
+  }
+  if (preview.hasMoreBookPassages && state.bookPassageLimit === 5) {
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "secondary-button discussion-context-preview__more";
+    more.textContent = "查找更多本书内容";
+    more.addEventListener("click", async () => {
+      more.disabled = true;
+      try {
+        state.bookPassageLimit = 10;
+        await state.refresh();
+      } catch (error) {
+        state.bookPassageLimit = 5;
+        showDiscussionMessage(`无法扩展本书检索：${error.message}`, "error");
+      } finally {
+        more.disabled = false;
+      }
+    });
+    fragment.append(more);
+  }
   container.replaceChildren(fragment);
   container.hidden = false;
 }
 
-async function previewDiscussionContext(kind, selection, message) {
-  const state = {
-    fingerprint: previewFingerprint(selection, message),
-    excludedNoteIds: new Set(),
-    includedTranslationSourceLines: new Set(),
-    excludedTranslationSourceLines: new Set(),
-  };
+async function refreshDiscussionContextPreview(kind, selection, message, state) {
   const payload = {
     sourceRevision: article.dataset.sourceRevision,
     anchor: selection.anchor,
     scriptures: selection.scriptures,
     footnotes: selection.footnotes,
     message,
+    excludedNoteIds: [...state.excludedNoteIds],
+    includedTranslationSourceLines: [...state.includedTranslationSourceLines],
+    excludedTranslationSourceLines: [...state.excludedTranslationSourceLines],
+    excludedBookPassageIds: [...state.excludedBookPassageIds],
+    bookPassageLimit: state.bookPassageLimit,
   };
   const response = await fetch(`${discussionsApiUrl}/context-preview`, {
     method: "POST",
@@ -1190,9 +1250,22 @@ async function previewDiscussionContext(kind, selection, message) {
   });
   if (!response.ok) throw new Error(await responseError(response));
   const result = await response.json();
-  discussionPreviewState[kind] = state;
   renderContextPreview(kind === "start" ? discussionContextPreview : discussionReplyContextPreview, result.preview, state);
   return state;
+}
+
+async function previewDiscussionContext(kind, selection, message) {
+  const state = {
+    fingerprint: previewFingerprint(selection, message),
+    excludedNoteIds: new Set(),
+    includedTranslationSourceLines: new Set(),
+    excludedTranslationSourceLines: new Set(),
+    excludedBookPassageIds: new Set(),
+    bookPassageLimit: 5,
+  };
+  state.refresh = () => refreshDiscussionContextPreview(kind, selection, message, state);
+  discussionPreviewState[kind] = state;
+  return state.refresh();
 }
 
 function beginSelectedDiscussion(anchor, context) {
@@ -1242,6 +1315,8 @@ async function createDiscussion(event) {
     excludedNoteIds: [...discussionPreviewState.start.excludedNoteIds],
     includedTranslationSourceLines: [...discussionPreviewState.start.includedTranslationSourceLines],
     excludedTranslationSourceLines: [...discussionPreviewState.start.excludedTranslationSourceLines],
+    excludedBookPassageIds: [...discussionPreviewState.start.excludedBookPassageIds],
+    bookPassageLimit: discussionPreviewState.start.bookPassageLimit,
   };
   sendFirstMessage.disabled = true;
   try {
@@ -1288,6 +1363,8 @@ async function continueDiscussion(event) {
         excludedNoteIds: [...discussionPreviewState.reply.excludedNoteIds],
         includedTranslationSourceLines: [...discussionPreviewState.reply.includedTranslationSourceLines],
         excludedTranslationSourceLines: [...discussionPreviewState.reply.excludedTranslationSourceLines],
+        excludedBookPassageIds: [...discussionPreviewState.reply.excludedBookPassageIds],
+        bookPassageLimit: discussionPreviewState.reply.bookPassageLimit,
       },
       activeDiscussionEtag,
     );
