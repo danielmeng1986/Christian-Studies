@@ -663,6 +663,7 @@ function closeEditor({ force = false } = {}) {
 
 function openEditor({ note = null, anchor }) {
   if (!confirmDiscard()) return;
+  switchStudyTab("notes");
   activeNoteId = note?.id ?? null;
   draftAnchor = anchor;
   editorDirty = false;
