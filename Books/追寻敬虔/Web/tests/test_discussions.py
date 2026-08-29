@@ -37,7 +37,7 @@ def sample_payload(source_revision: str) -> dict:
     return {
         "sourceRevision": source_revision,
         "anchor": {
-            "blockId": "05-p-0001",
+            "blockId": "05-p-0002",
             "startOffset": 2,
             "endOffset": 6,
             "exact": "测试文字",
@@ -60,7 +60,7 @@ def sample_payload(source_revision: str) -> dict:
 
 class DiscussionTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.chapter_markdown = "\n# 第五章\n\n完整章节正文。\n"
+        self.chapter_markdown = "\n# 第五章\n\n之前测试文字之后，完整章节正文。\n"
         self.revision = hashlib.sha256(self.chapter_markdown.encode("utf-8")).hexdigest()
         self.document = DISCUSSIONS.create_discussion_document(
             sample_payload(self.revision), "05", "第五章"
@@ -228,6 +228,19 @@ class DiscussionTests(unittest.TestCase):
         events = list(client._read_stream(stream))
         self.assertEqual(events[-1]["content"], "hello world")
         self.assertEqual(events[-1]["usage"]["totalTokens"], 12)
+
+    def test_stream_reports_stale_reading_focus_as_explicit_context_error(self) -> None:
+        stale = json.loads(json.dumps(self.document))
+        stale["anchor"]["exact"] = "已经变化"
+        stale["anchor"]["endOffset"] = stale["anchor"]["startOffset"] + len("已经变化")
+        stale["anchor"]["prefix"] = ""
+        stale["anchor"]["suffix"] = ""
+        client = DISCUSSIONS.OpenAIResponsesClient("secret", model="gpt-test")
+        with self.assertRaises(DISCUSSIONS.OpenAIClientError) as raised:
+            next(client.stream(stale, self.chapter_markdown))
+        self.assertEqual(raised.exception.code, "context_invalid")
+        self.assertFalse(raised.exception.retryable)
+        self.assertIn("重新选择", raised.exception.message)
 
     def test_utf16_anchor_validation_supports_non_bmp_characters(self) -> None:
         payload = sample_payload(self.revision)

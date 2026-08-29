@@ -404,6 +404,24 @@ function closestBlock(node) {
   return element?.closest("[data-block-id]") ?? null;
 }
 
+function selectionHeadingPath(block) {
+  const blocks = [...article.querySelectorAll("[data-block-id]")];
+  const selectedIndex = blocks.indexOf(block);
+  if (selectedIndex < 0) return [];
+  let chapterHeading = "";
+  let sectionHeading = "";
+  for (let index = 0; index <= selectedIndex; index += 1) {
+    const candidate = blocks[index];
+    if (candidate.matches("h1")) {
+      chapterHeading = canonicalText(candidate, true).trim();
+      sectionHeading = "";
+    } else if (candidate.matches("h2")) {
+      sectionHeading = canonicalText(candidate, true).trim();
+    }
+  }
+  return [chapterHeading, sectionHeading].filter(Boolean);
+}
+
 function contextMatches(text, index, anchor) {
   const prefix = text.slice(Math.max(0, index - anchor.prefix.length), index);
   const suffix = text.slice(index + anchor.exact.length, index + anchor.exact.length + anchor.suffix.length);
@@ -746,7 +764,10 @@ function updateSelectionAction() {
   const rects = range.getClientRects();
   const rect = rects[rects.length - 1] ?? range.getBoundingClientRect();
   pendingSelectionAnchor = anchor;
-  pendingSelectionContext = selectionReferences(range);
+  pendingSelectionContext = {
+    ...selectionReferences(range),
+    headingPath: selectionHeadingPath(closestBlock(range.startContainer)),
+  };
   selectionAction.hidden = false;
   selectionAction.style.left = `${Math.min(window.innerWidth - 236, Math.max(8, rect.left + rect.width / 2 - 112))}px`;
   selectionAction.style.top = `${Math.min(window.innerHeight - 50, rect.bottom + 8)}px`;
@@ -922,7 +943,10 @@ function renderDiscussionLists() {
   discussionSelectionQuote.textContent = discussionSelection.anchor.exact;
   const scriptureCount = discussionSelection.scriptures.length;
   const footnoteCount = discussionSelection.footnotes.length;
-  discussionContextSummary.textContent = `将加入完整章节、${scriptureCount} 处经文和 ${footnoteCount} 条脚注。`;
+  const headingLabel = discussionSelection.headingPath?.length
+    ? `所属小节“${discussionSelection.headingPath.at(-1)}”、`
+    : "";
+  discussionContextSummary.textContent = `将加入${headingLabel}选区所在段落及前后语境、完整章节、${scriptureCount} 处经文和 ${footnoteCount} 条脚注。`;
   const matches = discussionSummaries.filter((summary) => sameAnchor(summary.anchor, discussionSelection.anchor));
   matchingDiscussionList.replaceChildren(...matches.map(createDiscussionListItem));
   matchingDiscussionCount.textContent = matches.length ? `${matches.length} 个` : "";

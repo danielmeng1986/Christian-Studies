@@ -47,7 +47,7 @@ def request(chapter_markdown: str) -> object:
         chapter_title="测试章",
         source_revision=revision,
         anchor={
-            "blockId": "05-p-0001",
+            "blockId": "05-p-0002",
             "startOffset": 0,
             "endOffset": 4,
             "exact": "虚构选区",
@@ -89,7 +89,7 @@ class ContextBuilderTests(unittest.TestCase):
         self.assertNotIn("translator", metadata)
 
     def test_build_is_deterministic_and_contains_no_network_or_writes(self) -> None:
-        chapter = "\n# 测试章\n\n虚构章节正文。\n"
+        chapter = "\n# 测试章\n\n虚构选区正文。\n"
         builder = CONTEXT.ContextBuilder(self.metadata_path)
         first = builder.build(request(chapter))
         second = builder.build(request(chapter))
@@ -116,6 +116,133 @@ class ContextBuilderTests(unittest.TestCase):
         self.metadata_path.write_text(metadata_source() + "  nested: value\n", encoding="utf-8")
         with self.assertRaisesRegex(CONTEXT.ContextBuildError, "must not be nested"):
             CONTEXT.load_book_metadata(self.metadata_path)
+
+    def test_resolves_heading_path_selected_block_and_neighboring_paragraphs(self) -> None:
+        chapter = "# 测试章\n\n开头段落。\n\n## 第一小节\n\n目标段落内容。\n\n后续段落。\n"
+        focus = CONTEXT.resolve_reading_focus(
+            chapter,
+            "05",
+            {
+                "blockId": "05-p-0004",
+                "startOffset": 0,
+                "endOffset": 4,
+                "exact": "目标段落",
+                "prefix": "",
+                "suffix": "内容。",
+            },
+        )
+        self.assertEqual(focus["headingPath"], ["测试章", "第一小节"])
+        self.assertEqual(focus["previousBlock"], {"blockId": "05-p-0002", "text": "开头段落。"})
+        self.assertEqual(focus["selectedBlock"]["text"], "目标段落内容。")
+        self.assertEqual(focus["nextBlock"], {"blockId": "05-p-0005", "text": "后续段落。"})
+
+    def test_chapter_boundaries_return_null_neighbors(self) -> None:
+        chapter = "# 测试章\n\n第一段。\n\n最后一段。\n"
+        first = CONTEXT.resolve_reading_focus(
+            chapter,
+            "05",
+            {
+                "blockId": "05-p-0002",
+                "startOffset": 0,
+                "endOffset": 3,
+                "exact": "第一段",
+                "prefix": "",
+                "suffix": "。",
+            },
+        )
+        last = CONTEXT.resolve_reading_focus(
+            chapter,
+            "05",
+            {
+                "blockId": "05-p-0003",
+                "startOffset": 0,
+                "endOffset": 4,
+                "exact": "最后一段",
+                "prefix": "",
+                "suffix": "。",
+            },
+        )
+        self.assertIsNone(first["previousBlock"])
+        self.assertEqual(first["nextBlock"]["blockId"], "05-p-0003")
+        self.assertEqual(last["previousBlock"]["blockId"], "05-p-0002")
+        self.assertIsNone(last["nextBlock"])
+
+    def test_heading_selection_is_explicit_and_uses_paragraph_neighbors(self) -> None:
+        chapter = "# 测试章\n\n前文。\n\n## 被选小节\n\n后文。\n"
+        focus = CONTEXT.resolve_reading_focus(
+            chapter,
+            "05",
+            {
+                "blockId": "05-h2-0003",
+                "startOffset": 0,
+                "endOffset": 4,
+                "exact": "被选小节",
+                "prefix": "",
+                "suffix": "",
+            },
+        )
+        self.assertEqual(focus["selectedBlock"]["kind"], "heading")
+        self.assertEqual(focus["headingPath"], ["测试章", "被选小节"])
+        self.assertEqual(focus["previousBlock"]["text"], "前文。")
+        self.assertEqual(focus["nextBlock"]["text"], "后文。")
+
+    def test_block_map_matches_link_projection_and_nested_paragraph_ids(self) -> None:
+        chapter = (
+            "# 测试章\n\n"
+            "[普通链接](https://example.test) [经文](scripture:JHN.1.1) "
+            "[1](../References/Footnotes-05.md#1) 尾\n\n"
+            "> 引用段落\n\n"
+            "- 列表段落\n"
+        )
+        blocks = CONTEXT.build_block_map(chapter, "05")
+        self.assertEqual([block.block_id for block in blocks], ["05-h1-0001", "05-p-0002", "05-p-0003", "05-p-0004"])
+        self.assertEqual(blocks[1].text, "普通链接 经文  尾")
+        self.assertEqual(blocks[2].text, "引用段落")
+        self.assertEqual(blocks[3].text, "列表段落")
+
+    def test_utf16_offsets_support_non_bmp_selection(self) -> None:
+        focus = CONTEXT.resolve_reading_focus(
+            "# 测试章\n\nA🙏B\n",
+            "05",
+            {
+                "blockId": "05-p-0002",
+                "startOffset": 1,
+                "endOffset": 3,
+                "exact": "🙏",
+                "prefix": "A",
+                "suffix": "B",
+            },
+        )
+        self.assertEqual(focus["selection"]["exact"], "🙏")
+
+    def test_rejects_stale_or_split_selection_without_relocation(self) -> None:
+        chapter = "# 测试章\n\n当前正文。\n"
+        with self.assertRaisesRegex(CONTEXT.ContextBuildError, "does not match"):
+            CONTEXT.resolve_reading_focus(
+                chapter,
+                "05",
+                {
+                    "blockId": "05-p-0002",
+                    "startOffset": 0,
+                    "endOffset": 2,
+                    "exact": "旧文",
+                    "prefix": "",
+                    "suffix": "正文。",
+                },
+            )
+        with self.assertRaisesRegex(CONTEXT.ContextBuildError, "split"):
+            CONTEXT.resolve_reading_focus(
+                "# 测试章\n\n🙏\n",
+                "05",
+                {
+                    "blockId": "05-p-0002",
+                    "startOffset": 0,
+                    "endOffset": 1,
+                    "exact": "错误",
+                    "prefix": "",
+                    "suffix": "",
+                },
+            )
 
 
 if __name__ == "__main__":

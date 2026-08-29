@@ -25,7 +25,7 @@ SCRIPT_ROOT = Path(__file__).resolve().parent
 if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
 
-from context_builder import ContextBuilder, ContextRequest
+from context_builder import ContextBuildError, ContextBuilder, ContextRequest
 
 
 BOOK_ID = "qfg"
@@ -675,7 +675,15 @@ class OpenAIResponsesClient:
     def stream(self, document: dict[str, Any], chapter_markdown: str) -> Iterator[dict[str, Any]]:
         if not self.configured:
             raise OpenAIClientError("api_not_configured", "尚未配置 OpenAI API Key。", False, 503)
-        payload = json.dumps(self._request_payload(document, chapter_markdown), ensure_ascii=False).encode("utf-8")
+        try:
+            payload = json.dumps(self._request_payload(document, chapter_markdown), ensure_ascii=False).encode("utf-8")
+        except ContextBuildError as error:
+            raise OpenAIClientError(
+                "context_invalid",
+                f"无法根据当前章节验证讨论选区：{error}。请刷新页面并重新选择文字。",
+                False,
+                409,
+            ) from error
         request = urllib_request.Request(
             self.endpoint,
             data=payload,

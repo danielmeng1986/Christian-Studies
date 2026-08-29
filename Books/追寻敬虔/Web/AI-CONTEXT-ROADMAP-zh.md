@@ -7,6 +7,7 @@
 产品规范：[`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md)  
 AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)  
 讨论持久化规范：[`AI-DISCUSSION-SPEC-zh.md`](AI-DISCUSSION-SPEC-zh.md)
+开发交接说明：[`AI-CONTEXT-HANDOFF-zh.md`](AI-CONTEXT-HANDOFF-zh.md)
 
 ## 1. Roadmap 的目标
 
@@ -170,6 +171,8 @@ M1–M5 构成本地上下文架构的第一个完整版本。M6 以后均为独
 - 现有不联网讨论功能无回归。
 
 ## 6. 阶段 2：第二层——当前阅读现场
+
+实施状态：**已完成（2026-08-29）**。服务器现在按与构建器相同的规则重建 Markdown block map，使用 UTF-16 偏移验证选区，并将标题路径、选中 block、前后正文 block 加入 context envelope。界面摘要显示所属小节；失效锚点返回明确错误而不自动重定位。现有 3 个真实讨论已通过只读兼容审计，完成时全套 46 项自动测试通过。
 
 ### 工作
 

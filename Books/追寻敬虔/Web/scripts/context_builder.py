@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from markdown_it import MarkdownIt
+
 
 CONTEXT_SCHEMA_VERSION = 1
 RETRIEVAL_VERSION = 1
@@ -22,6 +24,12 @@ DEFAULT_BOOK_METADATA_PATH = BOOK_ROOT / "Metadata/book.yml"
 
 KEY_RE = re.compile(r"\A[a-z][a-z0-9_]*\Z")
 INTEGER_RE = re.compile(r"\A-?(?:0|[1-9]\d*)\Z")
+FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-\d{2}\.md#")
+
+MARKDOWN_PARSER = MarkdownIt(
+    "commonmark",
+    {"html": False, "linkify": False, "typographer": False},
+)
 
 
 class ContextBuildError(ValueError):
@@ -34,6 +42,14 @@ class ContextBundle:
     manifest: dict[str, Any]
     preview: dict[str, Any]
     estimates: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class ReadingBlock:
+    block_id: str
+    kind: str
+    text: str
+    heading_path: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -153,6 +169,134 @@ def load_book_metadata(path: Path) -> dict[str, Any]:
     return result
 
 
+def _inline_text(children: list[Any]) -> str:
+    parts: list[str] = []
+    skipped_links = 0
+    for token in children:
+        if token.type == "link_open":
+            href = token.attrGet("href") or ""
+            if skipped_links or FOOTNOTE_LINK_RE.search(href):
+                skipped_links += 1
+            continue
+        if token.type == "link_close":
+            if skipped_links:
+                skipped_links -= 1
+            continue
+        if skipped_links:
+            continue
+        if token.type in {"text", "code_inline"}:
+            parts.append(token.content)
+        elif token.type in {"softbreak", "hardbreak"}:
+            parts.append("\n")
+        # Images have no DOM text node; their alt text must not affect anchors.
+    return "".join(parts)
+
+
+def build_block_map(chapter_markdown: str, chapter_id: str) -> list[ReadingBlock]:
+    """Reproduce build.py block IDs and the browser's canonical selectable text."""
+
+    tokens = MARKDOWN_PARSER.parse(chapter_markdown)
+    blocks: list[ReadingBlock] = []
+    heading_stack: list[str] = []
+    block_index = 0
+
+    for index, token in enumerate(tokens):
+        if token.type not in {"heading_open", "paragraph_open"}:
+            continue
+        block_index += 1
+        tag = token.tag if token.tag in {"h1", "h2"} else "p"
+        inline = tokens[index + 1] if index + 1 < len(tokens) and tokens[index + 1].type == "inline" else None
+        text = _inline_text(inline.children or []) if inline is not None else ""
+
+        if token.type == "heading_open":
+            level = int(token.tag[1:]) if token.tag.startswith("h") and token.tag[1:].isdigit() else 2
+            if level <= 1:
+                heading_stack = [text]
+            else:
+                # The current reader emits h1/h2, but this remains deterministic for future deeper headings.
+                heading_stack = heading_stack[: max(1, level - 1)]
+                heading_stack.append(text)
+            heading_path = tuple(heading_stack)
+            kind = "heading"
+        else:
+            heading_path = tuple(heading_stack)
+            kind = "paragraph"
+
+        blocks.append(
+            ReadingBlock(
+                block_id=f"{chapter_id}-{tag}-{block_index:04d}",
+                kind=kind,
+                text=text,
+                heading_path=heading_path,
+            )
+        )
+    return blocks
+
+
+def _utf16_slice(text: str, start_offset: int, end_offset: int) -> str:
+    encoded = text.encode("utf-16-le")
+    if start_offset < 0 or end_offset < start_offset or end_offset * 2 > len(encoded):
+        raise ContextBuildError("selection offsets are outside the selected block")
+    try:
+        return encoded[start_offset * 2 : end_offset * 2].decode("utf-16-le")
+    except UnicodeDecodeError as error:
+        raise ContextBuildError("selection offsets split a Unicode character") from error
+
+
+def resolve_reading_focus(chapter_markdown: str, chapter_id: str, anchor: dict[str, Any]) -> dict[str, Any]:
+    blocks = build_block_map(chapter_markdown, chapter_id)
+    selected_index = next((index for index, block in enumerate(blocks) if block.block_id == anchor["blockId"]), None)
+    if selected_index is None:
+        raise ContextBuildError("selection block does not exist in the current chapter")
+
+    selected = blocks[selected_index]
+    actual = _utf16_slice(selected.text, anchor["startOffset"], anchor["endOffset"])
+    if actual != anchor["exact"]:
+        raise ContextBuildError("selection text does not match the current chapter block")
+
+    prefix_length = len(anchor.get("prefix", "").encode("utf-16-le")) // 2
+    suffix_length = len(anchor.get("suffix", "").encode("utf-16-le")) // 2
+    actual_prefix = _utf16_slice(
+        selected.text,
+        max(0, anchor["startOffset"] - prefix_length),
+        anchor["startOffset"],
+    )
+    actual_suffix = _utf16_slice(
+        selected.text,
+        anchor["endOffset"],
+        min(len(selected.text.encode("utf-16-le")) // 2, anchor["endOffset"] + suffix_length),
+    )
+    if actual_prefix != anchor.get("prefix", "") or actual_suffix != anchor.get("suffix", ""):
+        raise ContextBuildError("selection context does not match the current chapter block")
+
+    paragraph_indexes = [index for index, block in enumerate(blocks) if block.kind == "paragraph" and block.text]
+    previous_index = next((index for index in reversed(paragraph_indexes) if index < selected_index), None)
+    next_index = next((index for index in paragraph_indexes if index > selected_index), None)
+
+    def block_value(index: int | None) -> dict[str, str] | None:
+        if index is None:
+            return None
+        block = blocks[index]
+        return {"blockId": block.block_id, "text": block.text}
+
+    return {
+        "headingPath": list(selected.heading_path),
+        "previousBlock": block_value(previous_index),
+        "selectedBlock": {
+            "blockId": selected.block_id,
+            "kind": selected.kind,
+            "text": selected.text,
+        },
+        "selection": {
+            "blockId": anchor["blockId"],
+            "exact": anchor["exact"],
+            "startOffset": anchor["startOffset"],
+            "endOffset": anchor["endOffset"],
+        },
+        "nextBlock": block_value(next_index),
+    }
+
+
 class ContextBuilder:
     """Build a versioned evidence envelope without network access or filesystem writes."""
 
@@ -168,6 +312,7 @@ class ContextBuilder:
         scriptures = request.scriptures
         footnotes = request.footnotes
         anchor = request.anchor
+        focus = resolve_reading_focus(request.chapter_markdown, request.chapter_id, anchor)
 
         manifest = {
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
@@ -202,14 +347,7 @@ class ContextBuilder:
                 "currentSourceRevision": chapter_revision,
                 "sourceChanged": chapter_revision != request.source_revision,
             },
-            "focus": {
-                "selection": {
-                    "blockId": anchor["blockId"],
-                    "exact": anchor["exact"],
-                    "startOffset": anchor["startOffset"],
-                    "endOffset": anchor["endOffset"],
-                }
-            },
+            "focus": focus,
             "primarySources": {
                 "chapterMarkdown": request.chapter_markdown,
                 "scriptures": scriptures,
@@ -228,6 +366,7 @@ class ContextBuilder:
         }
         preview = {
             "chapterTitle": request.chapter_title,
+            "headingPath": focus["headingPath"],
             "selection": anchor["exact"],
             "scriptureCount": len(scriptures),
             "footnoteCount": len(footnotes),
