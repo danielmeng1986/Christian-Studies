@@ -46,7 +46,7 @@
         "responseId": null,
         "usage": null,
         "error": null,
-        "createdAt": "2026-08-29T08:00:00.000Z"
+        "createdAt": "2025-08-29T08:00:00.000Z"
       },
       {
         "id": "33333333-3333-4333-8333-333333333333",
@@ -62,7 +62,7 @@
           "totalTokens": 120
         },
         "error": null,
-        "createdAt": "2026-08-29T08:00:01.000Z"
+        "createdAt": "2025-08-29T08:00:01.000Z"
       },
       {
         "id": "44444444-4444-4444-8444-444444444444",
@@ -74,7 +74,7 @@
         "responseId": null,
         "usage": null,
         "error": null,
-        "createdAt": "2026-08-29T08:01:00.000Z"
+        "createdAt": "2025-08-29T08:01:00.000Z"
       },
       {
         "id": "55555555-5555-4555-8555-555555555555",
@@ -86,23 +86,24 @@
         "responseId": null,
         "usage": null,
         "error": null,
-        "createdAt": "2026-08-29T08:01:00.000Z"
+        "createdAt": "2025-08-29T08:01:00.000Z"
       }
     ],
-    "createdAt": "2026-08-29T08:00:00.000Z",
-    "updatedAt": "2026-08-29T08:01:00.000Z"
+    "createdAt": "2025-08-29T08:00:00.000Z",
+    "updatedAt": "2025-08-29T08:01:00.000Z"
   },
   "expectedContextKeys": [
-    "bookId",
-    "chapterId",
-    "chapterTitle",
-    "sourceRevision",
-    "currentSourceRevision",
-    "sourceChanged",
-    "selection",
-    "scriptures",
-    "footnotes",
-    "chapterMarkdown"
+    "contextSchemaVersion",
+    "book",
+    "chapter",
+    "focus",
+    "primarySources",
+    "personalStudy",
+    "referenceResolution",
+    "retrieval",
+    "externalResearch",
+    "capabilities",
+    "manifest"
   ],
   "expectedCompletedHistory": [
     ["user", "这段话和所引经文有什么关系？"],

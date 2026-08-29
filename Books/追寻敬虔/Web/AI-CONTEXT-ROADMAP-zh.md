@@ -142,6 +142,8 @@ M1–M5 构成本地上下文架构的第一个完整版本。M6 以后均为独
 
 ## 5. 阶段 1：ContextBuilder 骨架与第一层
 
+实施状态：**已完成（2026-08-29）**。已建立独立 `context_builder.py`、严格的 `book.yml` 元数据读取、`ContextRequest`、`ContextBundle`、第一版 envelope/manifest/preview/字符估算，以及只负责 API 输入转换的 prompt adapter。运行时指令升级为 `promptVersion: 2`；版本 1 的旧讨论保持可读，并在下一次继续讨论时升级。
+
 ### 工作
 
 - 建立 `ContextRequest`、`ContextBundle` 和版本常量。
