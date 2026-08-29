@@ -31,12 +31,15 @@ SERVE = load_serve_module()
 class FakeOpenAIClient:
     configured = True
     model = "gpt-test"
+    max_output_tokens = 2400
+    context_window_tokens = 128_000
 
     def stream(self, document, chapter_markdown, **context_options):
         assert "完整章节" in chapter_markdown
         assert context_options["note_document"]["chapterId"] == "05"
         assert "excluded_book_passage_ids" in context_options
         assert context_options["book_passage_limit"] in {5, 10}
+        assert context_options["context_bundle"].manifest == document["turns"][-1]["contextManifest"]
         yield {"type": "response.delta", "delta": "流式"}
         yield {"type": "response.delta", "delta": "回复"}
         yield {
@@ -77,6 +80,7 @@ class DiscussionAPITests(unittest.TestCase):
             }
         ]
         note_path.write_bytes(SERVE.serialize_note_document(note_document))
+        self.note_path = note_path
         self.discussion_root = root / "Notes/Discussions"
         self.chapter_markdown = "\n# 第五章\n\n完整章节正文。\n"
         self.revision = hashlib.sha256(self.chapter_markdown.encode("utf-8")).hexdigest()
@@ -153,7 +157,15 @@ class DiscussionAPITests(unittest.TestCase):
         return [json.loads(line) for line in content.decode("utf-8").splitlines() if line]
 
     def test_create_list_open_continue_and_retry_contract(self) -> None:
-        status, _, content = self.request("POST", "/api/chapters/05/discussions", self.create_payload())
+        payload = self.create_payload()
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        preview_result = json.loads(content)
+        self.assertEqual(preview_result["estimates"]["status"], "within_budget")
+        payload["contextBuildId"] = preview_result["contextBuildId"]
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
         self.assertEqual(status, 200)
         events = self.stream_events(content)
         self.assertEqual([event["type"] for event in events[:3]], ["response.started", "response.delta", "response.delta"])
@@ -165,6 +177,11 @@ class DiscussionAPITests(unittest.TestCase):
         discussion_id = discussion["id"]
         disk_path = self.discussion_root / "05" / f"{discussion_id}.json"
         self.assertTrue(disk_path.is_file())
+        persisted = json.loads(disk_path.read_text(encoding="utf-8"))
+        self.assertEqual(persisted["schemaVersion"], 2)
+        self.assertFalse(persisted["turns"][0]["legacyContext"])
+        self.assertRegex(persisted["turns"][0]["contextSnapshot"]["bundleHash"], r"^[0-9a-f]{64}$")
+        self.assertEqual(persisted["turns"][0]["contextManifest"]["chapterRevision"], self.revision)
 
         status, _, content = self.request("GET", "/api/chapters/05/discussions")
         self.assertEqual(status, 200)
@@ -177,10 +194,21 @@ class DiscussionAPITests(unittest.TestCase):
         self.assertEqual(len(opened["messages"]), 2)
         self.assertEqual(opened["messages"][-1]["renderedContent"], "<p>流式回复</p>\n")
 
+        reply_preview_payload = {
+            **self.create_payload(),
+            "message": "继续追问",
+            "discussionId": discussion_id,
+            "discussionEtag": etag,
+        }
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", reply_preview_payload
+        )
+        self.assertEqual(status, 200)
+        reply_build_id = json.loads(content)["contextBuildId"]
         status, _, content = self.request(
             "POST",
             f"/api/discussions/{discussion_id}/messages",
-            {"message": "继续追问"},
+            {"message": "继续追问", "contextBuildId": reply_build_id},
             {"If-Match": etag},
         )
         self.assertEqual(status, 200)
@@ -236,7 +264,64 @@ class DiscussionAPITests(unittest.TestCase):
             "POST", "/api/chapters/05/discussions/context-preview", payload
         )
         self.assertEqual(status, 200)
-        self.assertEqual(json.loads(content)["preview"]["bookPassages"], [])
+        result = json.loads(content)
+        self.assertEqual(result["preview"]["bookPassages"], [])
+        payload["contextBuildId"] = result["contextBuildId"]
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
+        self.assertEqual(status, 200)
+        persisted_path = next(self.discussion_root.rglob("*.json"))
+        manifest = json.loads(persisted_path.read_text(encoding="utf-8"))["turns"][0]["contextManifest"]
+        self.assertEqual(manifest["included"]["noteIds"], [])
+        self.assertEqual(manifest["included"]["bookPassages"], [])
+
+    def test_send_rejects_changed_evidence_after_preview(self) -> None:
+        payload = self.create_payload()
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        payload["contextBuildId"] = json.loads(content)["contextBuildId"]
+        notes = json.loads(self.note_path.read_text(encoding="utf-8"))
+        notes["notes"][0]["body"] = "预览后改变的脱敏测试笔记"
+        self.note_path.write_bytes(SERVE.serialize_note_document(notes))
+
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
+        self.assertEqual(status, 409)
+        self.assertEqual(json.loads(content)["error"]["code"], "context_changed")
+        self.assertEqual(list(self.discussion_root.rglob("*.json")), [])
+
+    def test_visible_overflow_prevents_sending(self) -> None:
+        self.server.openai_client.context_window_tokens = 100
+        payload = self.create_payload()
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        result = json.loads(content)
+        self.assertEqual(result["estimates"]["status"], "over_budget")
+        self.assertGreater(result["estimates"]["overByTokens"], 0)
+        payload["contextBuildId"] = result["contextBuildId"]
+
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
+        self.assertEqual(status, 422)
+        self.assertEqual(json.loads(content)["error"]["code"], "context_over_budget")
+        self.assertEqual(list(self.discussion_root.rglob("*.json")), [])
+
+    def test_expired_context_build_requires_a_new_preview(self) -> None:
+        payload = self.create_payload()
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        build_id = json.loads(content)["contextBuildId"]
+        with self.server.context_builds_lock:
+            self.server.context_builds[build_id]["expiresAt"] = 0
+        payload["contextBuildId"] = build_id
+
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
+        self.assertEqual(status, 422)
+        self.assertEqual(json.loads(content)["error"]["code"], "invalid_discussion")
+        self.assertEqual(list(self.discussion_root.rglob("*.json")), [])
 
 
 if __name__ == "__main__":

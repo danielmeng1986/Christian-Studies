@@ -1069,6 +1069,13 @@ body.is-resizing-study-panel * {
   color: var(--muted);
 }
 
+.discussion-context-preview__warning {
+  padding: 0.55rem 0.65rem;
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+}
+
 .discussion-context-preview__passage {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

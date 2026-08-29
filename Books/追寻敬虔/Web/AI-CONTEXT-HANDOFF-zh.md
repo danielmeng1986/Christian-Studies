@@ -1,8 +1,8 @@
 # 《追寻敬虔》AI ContextBuilder 开发交接说明
 
-状态：M4 完成后的交接基线
+状态：M5 完成后的交接基线
 日期：2026-08-29  
-下一阶段：M5——预览、预算与可追溯闭环
+下一阶段：M6——本地资料库
 Roadmap：[`AI-CONTEXT-ROADMAP-zh.md`](AI-CONTEXT-ROADMAP-zh.md)  
 产品规范：[`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md)  
 AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
@@ -14,9 +14,11 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 - M2 已完成：标题路径、选中 block、前后正文 block 和服务器端锚点验证已经进入 context envelope。
 - M3 已完成：相关个人笔记和译名身份命中已进入 envelope/manifest，发送前可预览并做本轮排除或候选确认。
 - M4 已完成：20 章及其脚注关系已进入确定性跨章节检索，命中可预览、展开、跳转、扩展和逐项排除。
+- M5 已完成：预览使用短期 build ID 冻结；发送时重验完整 bundle；讨论 schema 2 保存逐轮 manifest、选择和可变证据快照；schema 1 旧轮次显式标记 legacy。
 - 当前讨论继续使用 OpenAI Responses API、`store: false`、`truncation: disabled` 和流式输出。
 - 当前 `promptVersion` 为 2；版本 1 的讨论仍可读取，并在下一次继续讨论时升级。
 - 当前 `contextSchemaVersion` 与 `sourceRegistryVersion` 为 1，`retrievalVersion` 为 2。
+- 当前讨论写入 `schemaVersion: 2`；保守预算法为 `conservative_unicode_characters_v1`，默认 context window 配置值为 128,000 tokens。
 
 ## 2. 关键代码位置
 
@@ -36,12 +38,15 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 
 ```text
 Browser selection
-  → POST discussion API
-  → validated discussion document
+  → POST context-preview
+  → short-lived contextBuildId + preview + budget estimate
+  → POST discussion API with contextBuildId
+  → re-read sources + verify frozen bundle hash
+  → persist pending message + turn manifest
   → ContextRequest.from_discussion(...)
   → ContextBuilder.build(...)
   → ContextBundle.envelope
-  → discussions.build_response_input(...)
+  → discussions.build_response_input_from_bundle(...)
   → OpenAI Responses API
 ```
 
@@ -101,14 +106,23 @@ M3 按“确定性证据 → payload/API → 最小预览”完成，没有升�
 
 固定评估位于 `Web/tests/fixtures/cross-chapter-retrieval-cases.json`，覆盖人物、著作/主题、经文和无结果查询。当前指标：Precision@5 84.88%，无结果正确率 100%，重复率 0%，定位有效率 100%。
 
-## 7. M5 开始前需要做的设计决定
+## 7. M5 的完成实现
 
-- 预览结果如何以短期构建标识冻结，并在发送时验证所有跨章节 source revision 没有变化。
-- 逐轮 manifest 与可选可变证据快照如何进入 discussion schema 2，同时保持 schema 1 的只读与继续讨论兼容。
-- 字符估算何时替换为实际 tokenizer 或保守 token 估算，以及超限时的交互顺序。
-- 如何自动验证预览、最终 manifest 与 Responses API payload 三者一致，而不把完整章节重复持久化。
+1. 服务器为每次预览保存五分钟有效的随机 build ID、草稿讨论、选择、预期 ETag 和完整 envelope hash；缓存只在内存中，成功发送后即消费。
+2. 发送时不信任浏览器选择：重新规范化选择、读取全部本地来源并重建 bundle。完整 canonical envelope hash 不一致时返回 `context_changed`，不写讨论文件。
+3. Responses adapter 接受已冻结 `ContextBundle`，测试逐字解析 payload 中的 evidence JSON，确认其 manifest 与逐轮持久化 manifest 相同。
+4. token 数量使用清楚标注的保守估算，不声称等同模型 tokenizer。默认每 Unicode 字符按一个 token，输入上限为可配置 context window 减去输出保留量。前端显示估算，超限发送再次被拒绝。
+5. schema 2 的 `turns` 与用户消息一一对应；保存 manifest、bundle hash、本轮选择和实际纳入的可变个人笔记证据。稳定书稿证据只保存 locator、revision/hash，不重复保存完整章节。
+6. schema 1 在内存中映射为 schema 2；所有旧轮次 `legacyContext: true`、manifest/snapshot 为 `null`。读取、列表或审计不会改写文件；继续讨论才正常写回 schema 2。
 
-## 8. 用户数据保护
+## 8. M6 开始前需要做的设计决定
+
+- 本地资料目录、catalog 严格 schema 与导入状态机的最终字段。
+- Markdown、PDF、DOCX 的可复现转换、页码/段落 locator 和内容哈希策略。
+- 私人资料首次进入外发 context 前的明确授权如何持久化与撤销。
+- 如何在不改变 M5 freeze/manifest 合同的前提下接入 `localSourceChunks`。
+
+## 9. 用户数据保护
 
 以下当前 Git 改动属于用户的真实阅读数据，不是待清理的开发产物：
 
@@ -122,7 +136,7 @@ M3 按“确定性证据 → payload/API → 最小预览”完成，没有升�
 - 可以进行只读兼容审计，但不得在输出中显示选区、问题、回答或笔记正文；
 - 若未来需要真实 schema 迁移，必须先提供 dry run、备份策略和用户确认。
 
-## 9. 验证命令
+## 10. 验证命令
 
 使用项目虚拟环境：
 
@@ -141,20 +155,19 @@ node --check 'Books/追寻敬虔/Web/src/assets/app.js'
 node --check 'Books/追寻敬虔/Web/dist/assets/app.js'
 ```
 
-完整测试需要绑定临时 `127.0.0.1` 端口。M4 完成时：
+完整测试需要绑定临时 `127.0.0.1` 端口。M5 完成时：
 
-- 聚焦检索与上下文测试 32 项通过；
-- 全套测试 56 项通过；
+- 全套测试 62 项通过；
 - 20 章构建成功；
-- 当前 3 个真实讨论通过只读锚点兼容审计。
+- 真实讨论与笔记仅做不输出正文的只读兼容审计。
 
-## 10. 推荐给下一任务的起始提示
+## 11. 推荐给下一任务的起始提示
 
 ```text
-继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M5：预览、预算、冻结和 manifest 闭环。
+继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M6：本地资料库。
 先完整阅读 Web/AI-CONTEXT-HANDOFF-zh.md、AI-CONTEXT-ROADMAP-zh.md、
 AI-CONTEXT-SPEC-zh.md 和 AI-CONTEXT-SPEC.md。严格保护真实的 05.json 与
-Notes/Discussions/，测试只用临时目录和脱敏 fixture。先设计短期预览构建标识与
-discussion schema 2 的逐轮 manifest，再实现发送时重新验证和冻结、预算超限交互、
-preview/manifest/payload 一致性测试以及 schema 1 的显式兼容，最后运行全套测试并更新 Roadmap 状态。
+Notes/Discussions/，测试只用临时目录和脱敏 fixture。保持 M5 的 build ID、预算、
+逐轮 manifest 和 schema 1 legacy 合同不变；先设计 Sources 目录、catalog、导入确认与
+locator/hash，再接入可逐项排除的 localSourceChunks，最后运行全套测试并更新 Roadmap 状态。
 ```

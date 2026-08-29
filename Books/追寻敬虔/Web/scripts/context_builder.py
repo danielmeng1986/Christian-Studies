@@ -587,10 +587,32 @@ class ContextBuilder:
             "retrievalVersion": RETRIEVAL_VERSION,
             "sourceRegistryVersion": SOURCE_REGISTRY_VERSION,
             "chapterRevision": chapter_revision,
+            "sourceHashes": {
+                "bookMetadata": hashlib.sha256(
+                    self.metadata_path.read_bytes()
+                ).hexdigest(),
+                "translationIndex": hashlib.sha256(
+                    self.translation_index_path.read_bytes()
+                ).hexdigest(),
+                "scriptures": hashlib.sha256(
+                    json.dumps(scriptures, ensure_ascii=False, sort_keys=True).encode("utf-8")
+                ).hexdigest(),
+                "footnotes": hashlib.sha256(
+                    json.dumps(footnotes, ensure_ascii=False, sort_keys=True).encode("utf-8")
+                ).hexdigest(),
+            },
             "included": {
                 "scriptureIds": [item["id"] for item in scriptures],
                 "footnoteIds": [item["id"] for item in footnotes],
                 "noteIds": [item["noteId"] for item in notes],
+                "noteRevisions": [
+                    {
+                        "noteId": item["noteId"],
+                        "sourceRevision": item["sourceRevision"],
+                        "updatedAt": item["updatedAt"],
+                    }
+                    for item in notes
+                ],
                 "translationSourceLines": [item["sourceLine"] for item in entities],
                 "bookPassages": [
                     {

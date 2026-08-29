@@ -1103,6 +1103,12 @@ function previewFingerprint(selection, message) {
   return JSON.stringify([selection.anchor, message.trim()]);
 }
 
+function invalidateContextPreview(state) {
+  state.contextBuildId = null;
+  state.budgetStatus = null;
+  (state.kind === "start" ? sendFirstMessage : sendReply).textContent = "重新预览";
+}
+
 function renderContextPreview(container, preview, state) {
   const title = document.createElement("strong");
   title.textContent = "本轮上下文预览";
@@ -1110,6 +1116,16 @@ function renderContextPreview(container, preview, state) {
   summary.textContent = `将发送完整章节、${preview.scriptureCount} 处经文、${preview.footnoteCount} 条脚注。`;
   const fragment = document.createDocumentFragment();
   fragment.append(title, summary);
+  if (state.estimates) {
+    const budget = document.createElement("p");
+    budget.className = state.estimates.status === "over_budget"
+      ? "discussion-context-preview__warning"
+      : "discussion-context-preview__muted";
+    budget.textContent = state.estimates.status === "over_budget"
+      ? `保守估算超出输入预算约 ${state.estimates.overByTokens.toLocaleString()} tokens；请先排除可选证据并重新预览。`
+      : `保守估算：约 ${state.estimates.estimatedInputTokens.toLocaleString()} 输入 tokens（上限 ${state.estimates.inputTokenLimit.toLocaleString()}）。`;
+    fragment.append(budget);
+  }
 
   if (preview.notes.length) {
     const heading = document.createElement("p");
@@ -1124,6 +1140,7 @@ function renderContextPreview(container, preview, state) {
       checkbox.addEventListener("change", () => {
         if (checkbox.checked) state.excludedNoteIds.delete(note.noteId);
         else state.excludedNoteIds.add(note.noteId);
+        invalidateContextPreview(state);
       });
       const text = document.createElement("span");
       text.textContent = `${note.relation === "exact" ? "同一选区" : "重叠选区"}：${note.body}`;
@@ -1148,7 +1165,9 @@ function renderContextPreview(container, preview, state) {
       if (entity.matchType === "candidate") label.className = "discussion-context-preview__muted";
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.checked = entity.matchType !== "candidate";
+      checkbox.checked = entity.matchType === "candidate"
+        ? state.includedTranslationSourceLines.has(entity.sourceLine)
+        : !state.excludedTranslationSourceLines.has(entity.sourceLine);
       checkbox.addEventListener("change", () => {
         if (entity.matchType === "candidate") {
           if (checkbox.checked) state.includedTranslationSourceLines.add(entity.sourceLine);
@@ -1158,6 +1177,7 @@ function renderContextPreview(container, preview, state) {
         } else {
           state.excludedTranslationSourceLines.add(entity.sourceLine);
         }
+        invalidateContextPreview(state);
       });
       const text = document.createElement("span");
       text.textContent = `${entity.chinese} ↔ ${entity.english}${entity.matchType === "candidate" ? "（候选，需确认）" : ""}`;
@@ -1180,6 +1200,7 @@ function renderContextPreview(container, preview, state) {
       checkbox.addEventListener("change", () => {
         if (checkbox.checked) state.excludedBookPassageIds.delete(passage.passageId);
         else state.excludedBookPassageIds.add(passage.passageId);
+        invalidateContextPreview(state);
       });
       const details = document.createElement("details");
       const summary = document.createElement("summary");
@@ -1243,6 +1264,10 @@ async function refreshDiscussionContextPreview(kind, selection, message, state) 
     excludedBookPassageIds: [...state.excludedBookPassageIds],
     bookPassageLimit: state.bookPassageLimit,
   };
+  if (kind === "reply") {
+    payload.discussionId = activeDiscussion.id;
+    payload.discussionEtag = activeDiscussionEtag;
+  }
   const response = await fetch(`${discussionsApiUrl}/context-preview`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-QFG-Write-Token": writeToken },
@@ -1250,18 +1275,25 @@ async function refreshDiscussionContextPreview(kind, selection, message, state) 
   });
   if (!response.ok) throw new Error(await responseError(response));
   const result = await response.json();
+  state.contextBuildId = result.contextBuildId;
+  state.expiresAt = result.expiresAt;
+  state.estimates = result.estimates;
+  state.budgetStatus = result.estimates.status;
   renderContextPreview(kind === "start" ? discussionContextPreview : discussionReplyContextPreview, result.preview, state);
   return state;
 }
 
 async function previewDiscussionContext(kind, selection, message) {
   const state = {
+    kind,
     fingerprint: previewFingerprint(selection, message),
     excludedNoteIds: new Set(),
     includedTranslationSourceLines: new Set(),
     excludedTranslationSourceLines: new Set(),
     excludedBookPassageIds: new Set(),
     bookPassageLimit: 5,
+    contextBuildId: null,
+    budgetStatus: null,
   };
   state.refresh = () => refreshDiscussionContextPreview(kind, selection, message, state);
   discussionPreviewState[kind] = state;
@@ -1294,16 +1326,20 @@ async function createDiscussion(event) {
   }
   const message = discussionFirstMessage.value;
   const fingerprint = previewFingerprint(discussionSelection, message);
-  if (discussionPreviewState.start?.fingerprint !== fingerprint) {
+  if (discussionPreviewState.start?.fingerprint !== fingerprint || !discussionPreviewState.start?.contextBuildId) {
     sendFirstMessage.disabled = true;
     try {
       await previewDiscussionContext("start", discussionSelection, message);
-      sendFirstMessage.textContent = "确认发送";
+      sendFirstMessage.textContent = discussionPreviewState.start.budgetStatus === "over_budget" ? "调整后重新预览" : "确认发送";
     } catch (error) {
       showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
     } finally {
       sendFirstMessage.disabled = false;
     }
+    return;
+  }
+  if (discussionPreviewState.start.budgetStatus === "over_budget") {
+    showDiscussionMessage("本轮上下文超过预算，请排除可选证据后重新预览。", "error");
     return;
   }
   const payload = {
@@ -1317,6 +1353,7 @@ async function createDiscussion(event) {
     excludedTranslationSourceLines: [...discussionPreviewState.start.excludedTranslationSourceLines],
     excludedBookPassageIds: [...discussionPreviewState.start.excludedBookPassageIds],
     bookPassageLimit: discussionPreviewState.start.bookPassageLimit,
+    contextBuildId: discussionPreviewState.start.contextBuildId,
   };
   sendFirstMessage.disabled = true;
   try {
@@ -1342,16 +1379,20 @@ async function continueDiscussion(event) {
     footnotes: activeDiscussion.context.footnotes,
   };
   const fingerprint = previewFingerprint(selection, message);
-  if (discussionPreviewState.reply?.fingerprint !== fingerprint) {
+  if (discussionPreviewState.reply?.fingerprint !== fingerprint || !discussionPreviewState.reply?.contextBuildId) {
     sendReply.disabled = true;
     try {
       await previewDiscussionContext("reply", selection, message);
-      sendReply.textContent = "确认发送";
+      sendReply.textContent = discussionPreviewState.reply.budgetStatus === "over_budget" ? "调整后重新预览" : "确认发送";
     } catch (error) {
       showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
     } finally {
       sendReply.disabled = false;
     }
+    return;
+  }
+  if (discussionPreviewState.reply.budgetStatus === "over_budget") {
+    showDiscussionMessage("本轮上下文超过预算，请排除可选证据或新建讨论。", "error");
     return;
   }
   try {
@@ -1365,6 +1406,7 @@ async function continueDiscussion(event) {
         excludedTranslationSourceLines: [...discussionPreviewState.reply.excludedTranslationSourceLines],
         excludedBookPassageIds: [...discussionPreviewState.reply.excludedBookPassageIds],
         bookPassageLimit: discussionPreviewState.reply.bookPassageLimit,
+        contextBuildId: discussionPreviewState.reply.contextBuildId,
       },
       activeDiscussionEtag,
     );

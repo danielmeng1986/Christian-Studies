@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 from datetime import datetime
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -43,6 +44,7 @@ DEFAULT_FOOTNOTE_PATHS = {
 }
 
 MAX_REQUEST_BYTES = 1_000_000
+CONTEXT_BUILD_TTL_SECONDS = 300
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
 DISCUSSION_LIST_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions\Z")
 DISCUSSION_PREVIEW_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions/context-preview\Z")
@@ -264,6 +266,8 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         self.notes_lock = threading.Lock()
         self.discussions_lock = threading.Lock()
         self.active_discussions: set[str] = set()
+        self.context_builds_lock = threading.Lock()
+        self.context_builds: dict[str, dict[str, Any]] = {}
         port = self.server_address[1]
         self.allowed_origins = {f"http://127.0.0.1:{port}", f"http://localhost:{port}"}
 
@@ -402,6 +406,72 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         path = self.server.note_paths[chapter_id]
         return normalize_note_document(json.loads(path.read_bytes()), chapter_id)
 
+    def context_options(self, payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+        excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
+        included_translation_source_lines = discussions.normalize_translation_source_lines(
+            payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
+        )
+        excluded_translation_source_lines = discussions.normalize_translation_source_lines(
+            payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+        )
+        excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
+            payload.get("excludedBookPassageIds")
+        )
+        book_passage_limit = discussions.normalize_book_passage_limit(payload.get("bookPassageLimit"))
+        options = {
+            "excluded_note_ids": excluded_note_ids,
+            "included_translation_source_lines": included_translation_source_lines,
+            "excluded_translation_source_lines": excluded_translation_source_lines,
+            "excluded_book_passage_ids": excluded_book_passage_ids,
+            "book_passage_limit": book_passage_limit,
+        }
+        selections = {
+            "excludedNoteIds": sorted(excluded_note_ids),
+            "includedTranslationSourceLines": sorted(included_translation_source_lines),
+            "excludedTranslationSourceLines": sorted(excluded_translation_source_lines),
+            "excludedBookPassageIds": sorted(excluded_book_passage_ids),
+            "bookPassageLimit": book_passage_limit,
+        }
+        return options, selections
+
+    def build_context_bundle(
+        self, document: dict[str, Any], chapter_markdown: str, note_document: dict[str, Any], options: dict[str, Any]
+    ) -> discussions.ContextBundle:
+        request = discussions.ContextRequest.from_discussion(
+            document,
+            chapter_markdown,
+            prompt_version=discussions.PROMPT_VERSION,
+            note_document=note_document,
+            **options,
+        )
+        return self.server.context_builder.build(request)
+
+    def save_context_build(self, record: dict[str, Any]) -> tuple[str, float]:
+        now = time.time()
+        build_id = secrets.token_urlsafe(24)
+        expires_at = now + CONTEXT_BUILD_TTL_SECONDS
+        record = {**record, "expiresAt": expires_at}
+        with self.server.context_builds_lock:
+            self.server.context_builds = {
+                key: value for key, value in self.server.context_builds.items() if value["expiresAt"] > now
+            }
+            self.server.context_builds[build_id] = record
+        return build_id, expires_at
+
+    def get_context_build(self, build_id: Any) -> dict[str, Any]:
+        if not isinstance(build_id, str) or not build_id:
+            raise discussions.DiscussionValidationError("contextBuildId is required")
+        with self.server.context_builds_lock:
+            record = self.server.context_builds.get(build_id)
+            if record is None or record["expiresAt"] <= time.time():
+                self.server.context_builds.pop(build_id, None)
+                raise discussions.DiscussionValidationError("context preview expired; preview again")
+        return record
+
+    def consume_context_build(self, build_id: str) -> None:
+        with self.server.context_builds_lock:
+            self.server.context_builds.pop(build_id, None)
+
     def run_discussion_stream(
         self,
         document: dict[str, Any],
@@ -414,6 +484,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         excluded_translation_source_lines: frozenset[int] = frozenset(),
         excluded_book_passage_ids: frozenset[str] = frozenset(),
         book_passage_limit: int = 5,
+        context_bundle: discussions.ContextBundle | None = None,
     ) -> None:
         discussion_id = document["id"]
         self.send_stream_headers()
@@ -436,6 +507,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 excluded_translation_source_lines=excluded_translation_source_lines,
                 excluded_book_passage_ids=excluded_book_passage_ids,
                 book_passage_limit=book_passage_limit,
+                context_bundle=context_bundle,
             ):
                 if event.get("type") == "response.delta":
                     self.write_stream_event(event)
@@ -582,91 +654,157 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     "excludedTranslationSourceLines",
                     "excludedBookPassageIds",
                     "bookPassageLimit",
+                    "discussionId",
+                    "discussionEtag",
                 }
                 if not set(payload) <= allowed or not required <= set(payload):
                     raise discussions.DiscussionValidationError("preview request has invalid fields")
-                excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
-                included_translation_source_lines = discussions.normalize_translation_source_lines(
-                    payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
-                )
-                excluded_translation_source_lines = discussions.normalize_translation_source_lines(
-                    payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
-                )
-                excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
-                    payload.get("excludedBookPassageIds")
-                )
-                book_passage_limit = discussions.normalize_book_passage_limit(
-                    payload.get("bookPassageLimit")
-                )
-                document = discussions.create_discussion_document(
-                    {key: value for key, value in payload.items() if key in required},
-                    chapter_id,
-                    self.chapter_context(chapter_id)[1],
-                )
-                chapter_markdown, _, current_revision = self.chapter_context(chapter_id)
+                options, selections = self.context_options(payload)
+                chapter_markdown, chapter_title, current_revision = self.chapter_context(chapter_id)
                 if payload["sourceRevision"] != current_revision:
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
                     return
+                discussion_id = payload.get("discussionId")
+                expected_etag = payload.get("discussionEtag")
+                if discussion_id is None:
+                    if expected_etag is not None:
+                        raise discussions.DiscussionValidationError("discussionEtag requires discussionId")
+                    document = discussions.create_discussion_document(
+                        {key: value for key, value in payload.items() if key in required},
+                        chapter_id,
+                        chapter_title,
+                    )
+                    kind = "create"
+                else:
+                    if not isinstance(expected_etag, str):
+                        raise discussions.DiscussionValidationError("discussionEtag is required for a reply preview")
+                    discussion_path = discussions.find_discussion_path(self.server.discussion_root, discussion_id)
+                    if discussion_path is None:
+                        raise discussions.DiscussionValidationError("discussion was not found")
+                    existing, content = discussions.load_discussion(discussion_path, chapter_id)
+                    if discussions.document_etag(content) != expected_etag:
+                        self.send_api_error(409, "revision_conflict", "Discussion changed on disk")
+                        return
+                    if existing["sourceRevision"] != payload["sourceRevision"]:
+                        raise discussions.DiscussionValidationError("discussion source revision does not match preview")
+                    if discussions.normalize_anchor(payload["anchor"]) != existing["anchor"]:
+                        raise discussions.DiscussionValidationError("reply preview anchor does not match discussion")
+                    supplied_context = discussions.normalize_context(
+                        {
+                            "chapterTitle": existing["context"]["chapterTitle"],
+                            "scriptures": payload["scriptures"],
+                            "footnotes": payload["footnotes"],
+                        }
+                    )
+                    if supplied_context != existing["context"]:
+                        raise discussions.DiscussionValidationError("reply preview snapshots do not match discussion")
+                    document = discussions.append_discussion_turn(existing, payload["message"])
+                    kind = "continue"
                 note_document = self.note_context(chapter_id)
-                builder = self.server.context_builder
-                request = discussions.ContextRequest.from_discussion(
+                bundle = self.build_context_bundle(document, chapter_markdown, note_document, options)
+                budget = discussions.estimate_request_budget(
                     document,
-                    chapter_markdown,
-                    prompt_version=discussions.PROMPT_VERSION,
-                    note_document=note_document,
-                    excluded_note_ids=excluded_note_ids,
-                    included_translation_source_lines=included_translation_source_lines,
-                    excluded_translation_source_lines=excluded_translation_source_lines,
-                    excluded_book_passage_ids=excluded_book_passage_ids,
-                    book_passage_limit=book_passage_limit,
+                    bundle,
+                    max_output_tokens=getattr(
+                        self.server.openai_client, "max_output_tokens", discussions.DEFAULT_MAX_OUTPUT_TOKENS
+                    ),
+                    context_window_tokens=getattr(
+                        self.server.openai_client,
+                        "context_window_tokens",
+                        discussions.DEFAULT_CONTEXT_WINDOW_TOKENS,
+                    ),
                 )
-                bundle = builder.build(request)
+                build_id, expires_at = self.save_context_build(
+                    {
+                        "kind": kind,
+                        "chapterId": chapter_id,
+                        "discussionId": discussion_id,
+                        "expectedEtag": expected_etag,
+                        "message": payload["message"],
+                        "document": document,
+                        "options": options,
+                        "selections": selections,
+                        "bundleHash": discussions.bundle_hash(bundle),
+                    }
+                )
             except (discussions.DiscussionValidationError, discussions.ContextBuildError, ValidationError) as error:
                 self.send_api_error(422, "invalid_context_preview", str(error))
                 return
             except (OSError, json.JSONDecodeError, UnicodeDecodeError):
                 self.send_api_error(500, "context_preview_unavailable", "无法读取本轮上下文。")
                 return
-            self.send_json(200, {"preview": bundle.preview, "estimates": bundle.estimates})
+            self.send_json(
+                200,
+                {
+                    "contextBuildId": build_id,
+                    "expiresAt": datetime.fromtimestamp(expires_at).astimezone().isoformat(),
+                    "preview": bundle.preview,
+                    "estimates": budget,
+                },
+            )
             return
 
         if create_route is not None:
             chapter_id, _ = create_route
             try:
                 chapter_markdown, chapter_title, current_revision = self.chapter_context(chapter_id)
+                create_required = {
+                    "sourceRevision", "anchor", "scriptures", "footnotes", "message", "contextBuildId"
+                }
+                create_allowed = create_required | {
+                    "excludedNoteIds",
+                    "includedTranslationSourceLines",
+                    "excludedTranslationSourceLines",
+                    "excludedBookPassageIds",
+                    "bookPassageLimit",
+                }
                 if not isinstance(payload, dict) or payload.get("sourceRevision") != current_revision:
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
                     return
-                excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
-                included_translation_source_lines = discussions.normalize_translation_source_lines(
-                    payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
-                )
-                excluded_translation_source_lines = discussions.normalize_translation_source_lines(
-                    payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
-                )
-                excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
-                    payload.get("excludedBookPassageIds")
-                )
-                book_passage_limit = discussions.normalize_book_passage_limit(
-                    payload.get("bookPassageLimit")
-                )
-                document = discussions.create_discussion_document(
+                if not create_required <= set(payload) or not set(payload) <= create_allowed:
+                    raise discussions.DiscussionValidationError("create request has invalid fields")
+                record = self.get_context_build(payload.get("contextBuildId"))
+                options, selections = self.context_options(payload)
+                if (
+                    record["kind"] != "create"
+                    or record["chapterId"] != chapter_id
+                    or record["message"] != payload.get("message")
+                    or record["selections"] != selections
+                ):
+                    raise discussions.DiscussionValidationError("context preview does not match this request")
+                document = record["document"]
+                if discussions.normalize_anchor(payload["anchor"]) != document["anchor"]:
+                    raise discussions.DiscussionValidationError("context preview anchor does not match request")
+                supplied_context = discussions.normalize_context(
                     {
-                        key: value
-                        for key, value in payload.items()
-                        if key
-                        not in {
-                            "excludedNoteIds",
-                            "includedTranslationSourceLines",
-                            "excludedTranslationSourceLines",
-                            "excludedBookPassageIds",
-                            "bookPassageLimit",
-                        }
-                    },
-                    chapter_id,
-                    chapter_title,
+                        "chapterTitle": chapter_title,
+                        "scriptures": payload["scriptures"],
+                        "footnotes": payload["footnotes"],
+                    }
                 )
+                if supplied_context != document["context"]:
+                    raise discussions.DiscussionValidationError("context preview snapshots do not match request")
                 note_document = self.note_context(chapter_id)
+                bundle = self.build_context_bundle(document, chapter_markdown, note_document, options)
+                if discussions.bundle_hash(bundle) != record["bundleHash"]:
+                    self.send_api_error(409, "context_changed", "上下文来源已变更，请重新预览。")
+                    return
+                budget = discussions.estimate_request_budget(
+                    document,
+                    bundle,
+                    max_output_tokens=getattr(
+                        self.server.openai_client, "max_output_tokens", discussions.DEFAULT_MAX_OUTPUT_TOKENS
+                    ),
+                    context_window_tokens=getattr(
+                        self.server.openai_client,
+                        "context_window_tokens",
+                        discussions.DEFAULT_CONTEXT_WINDOW_TOKENS,
+                    ),
+                )
+                if budget["status"] == "over_budget":
+                    self.send_api_error(422, "context_over_budget", "上下文超过预算，请排除可选证据后重新预览。")
+                    return
+                document = discussions.attach_context_bundle(document, bundle, selections)
                 discussion_path = discussions.discussion_path(
                     self.server.discussion_root, chapter_id, document["id"]
                 )
@@ -677,6 +815,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                         return
                     discussions.write_atomically(discussion_path, content)
                     self.server.active_discussions.add(document["id"])
+                self.consume_context_build(payload["contextBuildId"])
             except discussions.DiscussionValidationError as error:
                 self.send_api_error(422, "invalid_discussion", str(error))
                 return
@@ -691,11 +830,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 discussion_path,
                 chapter_markdown,
                 note_document=note_document,
-                excluded_note_ids=excluded_note_ids,
-                included_translation_source_lines=included_translation_source_lines,
-                excluded_translation_source_lines=excluded_translation_source_lines,
-                excluded_book_passage_ids=excluded_book_passage_ids,
-                book_passage_limit=book_passage_limit,
+                **options,
+                context_bundle=bundle,
             )
             return
 
@@ -715,23 +851,11 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             valid_message_request = (
                 isinstance(payload, dict)
                 and "message" in payload
-                and set(payload) <= {"message"} | optional_context_fields
+                and set(payload) <= {"message", "contextBuildId"} | optional_context_fields
+                and "contextBuildId" in payload
             )
             if not isinstance(payload, dict) or not (valid_message_request or set(payload) == {"retry"}):
                 raise discussions.DiscussionValidationError("request must contain message or retry")
-            excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
-            included_translation_source_lines = discussions.normalize_translation_source_lines(
-                payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
-            )
-            excluded_translation_source_lines = discussions.normalize_translation_source_lines(
-                payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
-            )
-            excluded_book_passage_ids = discussions.normalize_excluded_book_passage_ids(
-                payload.get("excludedBookPassageIds")
-            )
-            book_passage_limit = discussions.normalize_book_passage_limit(
-                payload.get("bookPassageLimit")
-            )
             with self.server.discussions_lock:
                 if discussion_id in self.server.active_discussions:
                     self.send_api_error(409, "discussion_busy", "Discussion already has a response in progress")
@@ -744,14 +868,56 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     if payload["retry"] is not True:
                         raise discussions.DiscussionValidationError("retry must be true")
                     pending = discussions.retry_failed_turn(document)
+                    turn = pending["turns"][-1]
+                    if turn["legacyContext"] or turn["contextSnapshot"] is None:
+                        raise discussions.DiscussionValidationError(
+                            "legacy failed turns cannot be retried without inventing historical context"
+                        )
+                    options, selections = self.context_options(turn["contextSnapshot"]["selections"])
                 else:
-                    pending = discussions.append_discussion_turn(document, payload["message"])
+                    record = self.get_context_build(payload.get("contextBuildId"))
+                    options, selections = self.context_options(payload)
+                    if (
+                        record["kind"] != "continue"
+                        or record["discussionId"] != discussion_id
+                        or record["expectedEtag"] != expected_revision
+                        or record["message"] != payload["message"]
+                        or record["selections"] != selections
+                    ):
+                        raise discussions.DiscussionValidationError("context preview does not match this reply")
+                    pending = record["document"]
                 chapter_markdown, _, _ = self.chapter_context(document["chapterId"])
                 note_document = self.note_context(document["chapterId"])
+                bundle = self.build_context_bundle(pending, chapter_markdown, note_document, options)
+                expected_bundle_hash = (
+                    turn["contextSnapshot"]["bundleHash"] if "retry" in payload else record["bundleHash"]
+                )
+                if discussions.bundle_hash(bundle) != expected_bundle_hash:
+                    self.send_api_error(409, "context_changed", "上下文来源已变更，无法复用已冻结的上下文。")
+                    return
+                budget = discussions.estimate_request_budget(
+                    pending,
+                    bundle,
+                    max_output_tokens=getattr(
+                        self.server.openai_client, "max_output_tokens", discussions.DEFAULT_MAX_OUTPUT_TOKENS
+                    ),
+                    context_window_tokens=getattr(
+                        self.server.openai_client,
+                        "context_window_tokens",
+                        discussions.DEFAULT_CONTEXT_WINDOW_TOKENS,
+                    ),
+                )
+                if budget["status"] == "over_budget":
+                    self.send_api_error(422, "context_over_budget", "上下文超过预算，请减少可选证据或新建讨论。")
+                    return
+                if "retry" not in payload:
+                    pending = discussions.attach_context_bundle(pending, bundle, selections)
                 pending_content = discussions.serialize_discussion_document(pending)
                 discussions.write_atomically(discussion_path, pending_content)
                 self.server.active_discussions.add(discussion_id)
-        except discussions.DiscussionValidationError as error:
+                if "retry" not in payload:
+                    self.consume_context_build(payload["contextBuildId"])
+        except (discussions.DiscussionValidationError, discussions.ContextBuildError) as error:
             self.send_api_error(422, "invalid_discussion", str(error))
             return
         except (OSError, json.JSONDecodeError, UnicodeDecodeError, ValidationError):
@@ -762,11 +928,8 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             discussion_path,
             chapter_markdown,
             note_document=note_document,
-            excluded_note_ids=excluded_note_ids,
-            included_translation_source_lines=included_translation_source_lines,
-            excluded_translation_source_lines=excluded_translation_source_lines,
-            excluded_book_passage_ids=excluded_book_passage_ids,
-            book_passage_limit=book_passage_limit,
+            **options,
+            context_bundle=bundle,
         )
 
     def do_DELETE(self) -> None:

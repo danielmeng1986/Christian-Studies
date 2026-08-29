@@ -427,6 +427,36 @@ Books/追寻敬虔/Notes/Discussions/
 
 流式中断时不要求保存不完整的 AI 文本。用户可以重试完整请求。
 
+### 11.5 讨论文档 schemaVersion 2
+
+M5 起，新写入讨论在顶层增加与用户消息同序的 `turns`：
+
+```json
+{
+  "schemaVersion": 2,
+  "turns": [
+    {
+      "userMessageId": "用户消息 UUID",
+      "contextManifest": {},
+      "contextSnapshot": {
+        "bundleHash": "lowercase-sha256",
+        "selections": {},
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ]
+}
+```
+
+- 每条用户消息必须恰好对应一个同序 turn；
+- `contextManifest` 是该轮实际发送证据的 manifest，而不是候选列表；
+- `bundleHash` 是最终 context envelope 的 canonical JSON SHA-256；
+- `selections` 保存该轮排除、确认与数量选择；
+- `optionalMutableEvidence` 只保存已实际使用、以后可能变化而又无法仅靠稳定引用复现的可选证据；M5 为个人笔记证据；
+- schema 1 文件读取时迁移到内存中的 schema 2 视图，旧 turn 使用 `legacyContext: true`，并将 manifest 与 snapshot 保持为 `null`；不得倒推或伪造历史上下文；
+- 读取旧讨论本身不得改写文件；只有用户发起新的轮次时，才按正常原子写入流程保存 schema 2 文档。
+
 ## 12. 本地 HTTP API 规范
 
 建议路由：
