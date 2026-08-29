@@ -47,6 +47,7 @@ SHA256_RE = re.compile(r"\A[0-9a-f]{64}\Z")
 TIMESTAMP_RE = re.compile(r"\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z\Z")
 CHAPTER_RE = re.compile(r"\A(?:0[1-9]|1[0-9]|20)\Z")
 BOOK_PASSAGE_ID_RE = re.compile(r"\Aqfg:(?:0[1-9]|1[0-9]|20):(?:0[1-9]|1[0-9]|20)-p-\d{4}\Z")
+LOCAL_CHUNK_ID_RE = re.compile(r"\A[0-9a-f-]{36}:\d{4}\Z")
 FRONT_MATTER_RE = re.compile(r"\A---\n(?P<meta>.*?)\n---\n(?P<body>.*)\Z", re.DOTALL)
 CHAPTER_META_RE = re.compile(r"^chapter:\s*['\"]?(?P<chapter>\d{2})['\"]?\s*$", re.MULTILINE)
 TITLE_RE = re.compile(r"^#\s+(?P<title>.+?)\s*$", re.MULTILINE)
@@ -619,6 +620,25 @@ def normalize_book_passage_limit(value: Any) -> int:
     return value
 
 
+def normalize_included_local_chunk_ids(value: Any) -> frozenset[str]:
+    if value is None:
+        return frozenset()
+    if not isinstance(value, list):
+        raise DiscussionValidationError("includedLocalChunkIds must be an array")
+    if len(value) > 5:
+        raise DiscussionValidationError("includedLocalChunkIds must contain at most 5 items")
+    result: set[str] = set()
+    for index, chunk_id in enumerate(value):
+        if not isinstance(chunk_id, str) or not LOCAL_CHUNK_ID_RE.fullmatch(chunk_id):
+            raise DiscussionValidationError(
+                f"includedLocalChunkIds[{index}] must be a valid local chunk id"
+            )
+        result.add(chunk_id)
+    if len(result) != len(value):
+        raise DiscussionValidationError("includedLocalChunkIds must not contain duplicates")
+    return frozenset(result)
+
+
 def create_discussion_document(payload: Any, chapter_id: str, chapter_title: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise DiscussionValidationError("request must be an object")
@@ -794,6 +814,7 @@ def build_response_input(
     excluded_translation_source_lines: frozenset[int] = frozenset(),
     excluded_book_passage_ids: frozenset[str] = frozenset(),
     book_passage_limit: int = 5,
+    included_local_chunk_ids: frozenset[str] = frozenset(),
 ) -> list[dict[str, Any]]:
     request = ContextRequest.from_discussion(
         document,
@@ -805,6 +826,7 @@ def build_response_input(
         excluded_translation_source_lines=excluded_translation_source_lines,
         excluded_book_passage_ids=excluded_book_passage_ids,
         book_passage_limit=book_passage_limit,
+        included_local_chunk_ids=included_local_chunk_ids,
     )
     bundle = (context_builder or ContextBuilder()).build(request)
     return build_response_input_from_bundle(document, bundle)
@@ -882,6 +904,7 @@ class OpenAIResponsesClient:
         excluded_translation_source_lines: frozenset[int] = frozenset(),
         excluded_book_passage_ids: frozenset[str] = frozenset(),
         book_passage_limit: int = 5,
+        included_local_chunk_ids: frozenset[str] = frozenset(),
         context_bundle: ContextBundle | None = None,
     ) -> dict[str, Any]:
         response_input = (
@@ -897,6 +920,7 @@ class OpenAIResponsesClient:
                 excluded_translation_source_lines=excluded_translation_source_lines,
                 excluded_book_passage_ids=excluded_book_passage_ids,
                 book_passage_limit=book_passage_limit,
+                included_local_chunk_ids=included_local_chunk_ids,
             )
         )
         return {
@@ -921,6 +945,7 @@ class OpenAIResponsesClient:
         excluded_translation_source_lines: frozenset[int] = frozenset(),
         excluded_book_passage_ids: frozenset[str] = frozenset(),
         book_passage_limit: int = 5,
+        included_local_chunk_ids: frozenset[str] = frozenset(),
         context_bundle: ContextBundle | None = None,
     ) -> Iterator[dict[str, Any]]:
         if not self.configured:
@@ -936,6 +961,7 @@ class OpenAIResponsesClient:
                     excluded_translation_source_lines=excluded_translation_source_lines,
                     excluded_book_passage_ids=excluded_book_passage_ids,
                     book_passage_limit=book_passage_limit,
+                    included_local_chunk_ids=included_local_chunk_ids,
                     context_bundle=context_bundle,
                 ),
                 ensure_ascii=False,

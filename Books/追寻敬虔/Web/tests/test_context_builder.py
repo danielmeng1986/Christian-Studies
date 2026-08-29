@@ -383,7 +383,7 @@ class ContextBuilderTests(unittest.TestCase):
         footnote_match = next(passage for passage in passages if passage["matchedFootnoteIds"])
         self.assertEqual(footnote_match["relatedFootnoteIds"], ["1"])
         self.assertIn("exact_entity", footnote_match["matchReasons"])
-        self.assertEqual(first.manifest["retrievalVersion"], 2)
+        self.assertEqual(first.manifest["retrievalVersion"], 3)
         self.assertTrue(first.manifest["capabilities"]["crossChapterSearch"])
         self.assertEqual(len(first.manifest["included"]["bookPassages"]), 5)
 

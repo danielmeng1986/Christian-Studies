@@ -101,6 +101,8 @@ class BuildTests(unittest.TestCase):
         self.assertIn('id="discussions-tab"', self.output)
         self.assertIn('id="discussion-start-form"', self.output)
         self.assertIn('id="study-panel-resizer"', self.output)
+        self.assertIn('id="library-tab"', self.output)
+        self.assertIn('id="library-import-form"', self.output)
         self.assertIn('role="separator"', self.output)
         self.assertIn("selectionReferences(range)", app_js)
         self.assertIn('event.type === "response.delta"', app_js)

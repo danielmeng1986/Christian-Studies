@@ -101,6 +101,7 @@
         <div class="study-tabs" role="tablist" aria-label="研读内容">
           <button type="button" id="notes-tab" role="tab" aria-selected="true" aria-controls="notes-view">笔记</button>
           <button type="button" id="discussions-tab" role="tab" aria-selected="false" aria-controls="discussions-view">AI 讨论</button>
+          <button type="button" id="library-tab" role="tab" aria-selected="false" aria-controls="library-view">资料库</button>
         </div>
 
         <div id="notes-view" role="tabpanel" aria-labelledby="notes-tab">
@@ -202,6 +203,43 @@
               </div>
             </form>
           </section>
+        </div>
+
+        <div class="library-view" id="library-view" role="tabpanel" aria-labelledby="library-tab" hidden>
+          <div class="discussion-message" id="library-message" aria-live="polite" hidden></div>
+          <form class="library-import-form" id="library-import-form">
+            <div class="discussion-section-heading">
+              <h3>添加资料</h3>
+              <span>只保存在本机</span>
+            </div>
+            <label for="library-file">文件（Markdown、TXT、JSON、PDF）</label>
+            <input id="library-file" type="file" accept=".md,.markdown,.txt,.json,.pdf" required>
+            <label for="library-title">标题</label>
+            <input id="library-title" type="text" maxlength="240" required>
+            <label for="library-author">作者（可留空）</label>
+            <input id="library-author" type="text" maxlength="240">
+            <div class="library-form-grid">
+              <label>语言<input id="library-language" type="text" value="zh" required></label>
+              <label>资料类型<select id="library-source-type"><option value="book">书籍</option><option value="article">文章</option><option value="paper">论文</option><option value="sermon">讲章</option><option value="reference">参考资料</option><option value="web_snapshot">网页快照</option></select></label>
+              <label>权威类别<select id="library-authority"><option value="scholarly">学术资料</option><option value="primary">一手资料</option><option value="confessional_secondary">信仰传统二手资料</option><option value="general_secondary">一般二手资料</option></select></label>
+              <label>敏感性<select id="library-sensitivity"><option value="standard">普通</option><option value="private">私密（默认停用）</option></select></label>
+            </div>
+            <label for="library-tradition">神学传统（可留空）</label>
+            <input id="library-tradition" type="text" maxlength="240">
+            <label for="library-license">版权／使用说明（可留空）</label>
+            <input id="library-license" type="text" maxlength="500">
+            <div id="library-import-preview" class="discussion-context-preview" hidden></div>
+            <div class="discussion-form-actions">
+              <button type="submit" class="primary-button" id="library-preview-button">预览转换</button>
+              <button type="button" class="primary-button" id="library-confirm-button" hidden>确认导入并建立索引</button>
+            </div>
+          </form>
+          <div class="discussion-section-heading library-list-heading">
+            <h3>已导入资料</h3>
+            <button type="button" id="library-rebuild">重建全部索引</button>
+          </div>
+          <div class="discussion-list" id="library-list"></div>
+          <div class="empty-state" id="library-empty-state"><p>尚未添加本地资料。</p></div>
         </div>
       </aside>
     </main>

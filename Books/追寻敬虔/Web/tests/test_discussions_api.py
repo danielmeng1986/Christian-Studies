@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import base64
 import http.client
 import importlib.util
 import json
@@ -237,6 +238,71 @@ class DiscussionAPITests(unittest.TestCase):
         self.assertEqual(status, 409)
         self.assertEqual(json.loads(content)["error"]["code"], "chapter_source_changed")
         self.assertEqual(list(self.discussion_root.rglob("*.json")), [])
+
+    def test_local_library_requires_source_approval_and_explicit_chunk_selection(self) -> None:
+        source_bytes = b"# Puritan study\n\nPuritan grace and godliness belong together.\n"
+        import_payload = {
+            "filename": "study.md",
+            "contentBase64": base64.b64encode(source_bytes).decode("ascii"),
+            "metadata": {
+                "title": "Puritan study",
+                "author": "Fixture Author",
+                "language": "en",
+                "sourceType": "book",
+                "theologicalTradition": "Reformed",
+                "authorityClass": "scholarly",
+                "url": None,
+                "licenseNote": "test fixture",
+                "sensitivity": "standard",
+            },
+        }
+        status, _, content = self.request("POST", "/api/library/imports/preview", import_payload)
+        self.assertEqual(status, 200)
+        preview_id = json.loads(content)["previewId"]
+        status, _, content = self.request(
+            "POST", f"/api/library/imports/{preview_id}/confirm", {"confirm": True}
+        )
+        self.assertEqual(status, 201)
+        source = json.loads(content)["source"]
+        original_path = self.server.local_library.root / source["originalPath"]
+        self.assertEqual(original_path.read_bytes(), source_bytes)
+
+        payload = self.create_payload()
+        payload["message"] = "Puritan grace 如何塑造 godliness？"
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        candidate = json.loads(content)["preview"]["localSourceCandidates"][0]
+        self.assertFalse(candidate["externalSharingApproved"])
+
+        payload["includedLocalChunkIds"] = [candidate["chunkId"]]
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 422)
+        self.assertIn("not been approved", json.loads(content)["error"]["message"])
+
+        status, _, _ = self.request(
+            "POST",
+            f"/api/library/sources/{source['sourceId']}",
+            {"approveExternalSharing": True},
+        )
+        self.assertEqual(status, 200)
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        payload["contextBuildId"] = json.loads(content)["contextBuildId"]
+        status, _, content = self.request("POST", "/api/chapters/05/discussions", payload)
+        self.assertEqual(status, 200)
+        discussion = self.stream_events(content)[-1]["discussion"]
+        persisted = json.loads(
+            (self.discussion_root / "05" / f"{discussion['id']}.json").read_text(encoding="utf-8")
+        )
+        included = persisted["turns"][0]["contextManifest"]["included"]["localSourceChunks"]
+        self.assertEqual([item["chunkId"] for item in included], [candidate["chunkId"]])
+        self.assertEqual(original_path.read_bytes(), source_bytes)
 
     def test_context_preview_lists_notes_and_accepts_round_exclusion(self) -> None:
         payload = self.create_payload()

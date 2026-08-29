@@ -862,6 +862,63 @@ body.is-resizing-study-panel * {
   font-weight: 650;
 }
 
+.library-view {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.library-import-form {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.library-import-form input,
+.library-import-form select {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--text);
+  background: var(--panel-bg);
+}
+
+.library-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.library-form-grid label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.library-list-heading {
+  margin-top: 1.5rem;
+}
+
+.library-source-card {
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--panel-bg);
+}
+
+.library-source-card p {
+  margin: 0.35rem 0;
+}
+
+.library-source-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+#library-import-preview {
+  white-space: pre-wrap;
+}
+
 .discussion-message {
   margin: 0.85rem;
   padding: 0.75rem 0.85rem;

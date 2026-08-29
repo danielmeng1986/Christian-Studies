@@ -28,7 +28,7 @@ Generated files are written to `Books/追寻敬虔/Web/dist/` and are intentiona
 
 Open `http://127.0.0.1:4173/chapters/01/` in Safari or Chrome. Use the top menu to navigate between all 20 chapters.
 
-The current reader deterministically builds all 20 chapters and includes working chapter navigation, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, and a per-chapter annotation workflow. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
+The current reader deterministically builds all 20 chapters and includes working chapter navigation, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, per-chapter annotations, AI discussions, and a local source library. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
 
 The divider beside the study panel can be dragged or adjusted with the arrow keys, and double-clicking restores the default width. Notes and AI discussions remember separate widths. AI discussion mode collapses the reference panel by default and opens it as an overlay on demand so it does not squeeze the reading or discussion columns. On narrow screens both side panels remain overlays.
 
@@ -39,6 +39,8 @@ The local service exposes a per-chapter note data layer. `GET /api/chapters/{cha
 The first AI discussion MVP is implemented. A same-block selection can include Scripture and footnote links and offers both note and AI discussion actions. Discussions stream through the local Python service and persist as one JSON file per thread under `Notes/Discussions/<chapter>/`. The browser never receives the OpenAI API key.
 
 Before a turn is sent, the reader now shows a compact local context preview. Exact and overlapping personal notes are selected by default and can be excluded individually; non-overlapping notes in the same block remain unsent candidates. Translation-index identity matches are shown separately: exact matches can be excluded, while ambiguous candidates require explicit selection. Relevant passages from other chapters are listed separately and can be expanded, opened at their source block, excluded one by one, or expanded with “find more book content.” These choices affect only that turn and never edit or delete the underlying notes or book sources.
+
+The Library tab imports Markdown, TXT, JSON, and text-extractable PDF files only after a conversion preview is confirmed. Originals remain unchanged under `Sources/`, while structured processed copies drive a disposable, fully rebuildable index. Private sources are disabled by default. A local-library hit is never sent automatically: its source first needs explicit outbound approval, and the exact chunk must then be selected in that turn's context preview. Removing a derived index never removes the original or processed copy.
 
 The preview now freezes a short-lived server-side context build. Sending requires the matching build ID; the server re-reads and hashes every source before using that exact bundle in the Responses payload. The preview shows a deliberately conservative token estimate and blocks visible overflow without truncating required evidence or history. New discussion files use schema version 2 with one manifest per user turn. Version 1 discussions remain readable and migrate only when the user continues them; historical turns are marked as legacy without invented manifests.
 

@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -28,6 +30,7 @@ if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
 
 import discussions
+import local_library
 
 
 WEB_ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +39,7 @@ DIST_ROOT = WEB_ROOT / "dist"
 NOTES_ROOT = BOOK_ROOT / "Notes/Annotations"
 DISCUSSIONS_ROOT = BOOK_ROOT / "Notes/Discussions"
 READING_ROOT = BOOK_ROOT / "Reading"
+SOURCES_ROOT = BOOK_ROOT / "Sources"
 DEFAULT_NOTE_PATHS = {f"{chapter:02d}": NOTES_ROOT / f"{chapter:02d}.json" for chapter in range(1, 21)}
 DEFAULT_CHAPTER_PATHS = discussions.discover_chapter_paths(READING_ROOT)
 DEFAULT_FOOTNOTE_PATHS = {
@@ -44,12 +48,16 @@ DEFAULT_FOOTNOTE_PATHS = {
 }
 
 MAX_REQUEST_BYTES = 1_000_000
+MAX_LIBRARY_REQUEST_BYTES = 28_000_000
 CONTEXT_BUILD_TTL_SECONDS = 300
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
 DISCUSSION_LIST_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions\Z")
 DISCUSSION_PREVIEW_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions/context-preview\Z")
 DISCUSSION_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)\Z")
 DISCUSSION_MESSAGES_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)/messages\Z")
+LIBRARY_IMPORT_CONFIRM_ROUTE_RE = re.compile(r"\A/api/library/imports/([^/]+)/confirm\Z")
+LIBRARY_SOURCE_ROUTE_RE = re.compile(r"\A/api/library/sources/([^/]+)\Z")
+LIBRARY_DERIVED_ROUTE_RE = re.compile(r"\A/api/library/sources/([^/]+)/derived\Z")
 SHA256_RE = re.compile(r"\A[0-9a-f]{64}\Z")
 TIMESTAMP_RE = re.compile(r"\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z\Z")
 
@@ -241,6 +249,7 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         discussion_root: Path,
         chapter_paths: dict[str, Path],
         footnote_paths: dict[str, Path],
+        sources_root: Path,
         openai_client: Any,
         write_token: str | None = None,
     ) -> None:
@@ -252,6 +261,8 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         self.chapter_paths = {chapter: path.resolve() for chapter, path in chapter_paths.items()}
         self.footnote_paths = {chapter: path.resolve() for chapter, path in footnote_paths.items()}
         self.openai_client = openai_client
+        self.local_library = local_library.LocalLibrary(sources_root)
+        self.local_library.ensure()
         client_builder = getattr(openai_client, "context_builder", None)
         base_builder = client_builder or discussions.ContextBuilder()
         self.context_builder = discussions.ContextBuilder(
@@ -259,6 +270,7 @@ class ReaderHTTPServer(ThreadingHTTPServer):
             translation_index_path=base_builder.translation_index_path,
             chapter_paths=self.chapter_paths,
             footnote_paths=self.footnote_paths,
+            local_library=self.local_library,
         )
         if client_builder is not None:
             openai_client.context_builder = self.context_builder
@@ -268,6 +280,8 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         self.active_discussions: set[str] = set()
         self.context_builds_lock = threading.Lock()
         self.context_builds: dict[str, dict[str, Any]] = {}
+        self.library_previews_lock = threading.Lock()
+        self.library_previews: dict[str, dict[str, Any]] = {}
         port = self.server_address[1]
         self.allowed_origins = {f"http://127.0.0.1:{port}", f"http://localhost:{port}"}
 
@@ -362,7 +376,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             return False
         return True
 
-    def read_json_body(self) -> Any | None:
+    def read_json_body(self, *, max_bytes: int = MAX_REQUEST_BYTES) -> Any | None:
         if self.headers.get_content_type() != "application/json":
             self.send_api_error(415, "unsupported_media_type", "Content-Type must be application/json")
             return None
@@ -373,7 +387,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         if content_length < 0:
             self.send_api_error(411, "length_required", "A valid Content-Length is required")
             return None
-        if content_length > MAX_REQUEST_BYTES:
+        if content_length > max_bytes:
             self.send_api_error(413, "request_too_large", "Request body is too large")
             return None
         try:
@@ -418,12 +432,16 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             payload.get("excludedBookPassageIds")
         )
         book_passage_limit = discussions.normalize_book_passage_limit(payload.get("bookPassageLimit"))
+        included_local_chunk_ids = discussions.normalize_included_local_chunk_ids(
+            payload.get("includedLocalChunkIds")
+        )
         options = {
             "excluded_note_ids": excluded_note_ids,
             "included_translation_source_lines": included_translation_source_lines,
             "excluded_translation_source_lines": excluded_translation_source_lines,
             "excluded_book_passage_ids": excluded_book_passage_ids,
             "book_passage_limit": book_passage_limit,
+            "included_local_chunk_ids": included_local_chunk_ids,
         }
         selections = {
             "excludedNoteIds": sorted(excluded_note_ids),
@@ -431,6 +449,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             "excludedTranslationSourceLines": sorted(excluded_translation_source_lines),
             "excludedBookPassageIds": sorted(excluded_book_passage_ids),
             "bookPassageLimit": book_passage_limit,
+            "includedLocalChunkIds": sorted(included_local_chunk_ids),
         }
         return options, selections
 
@@ -472,6 +491,26 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         with self.server.context_builds_lock:
             self.server.context_builds.pop(build_id, None)
 
+    def save_library_preview(self, preview: dict[str, Any]) -> tuple[str, float]:
+        now = time.time()
+        preview_id = secrets.token_urlsafe(24)
+        expires_at = now + CONTEXT_BUILD_TTL_SECONDS
+        with self.server.library_previews_lock:
+            self.server.library_previews = {
+                key: value
+                for key, value in self.server.library_previews.items()
+                if value["expiresAt"] > now
+            }
+            self.server.library_previews[preview_id] = {**preview, "expiresAt": expires_at}
+        return preview_id, expires_at
+
+    def pop_library_preview(self, preview_id: str) -> dict[str, Any]:
+        with self.server.library_previews_lock:
+            preview = self.server.library_previews.pop(preview_id, None)
+        if preview is None or preview["expiresAt"] <= time.time():
+            raise local_library.LocalLibraryError("import preview expired; preview again")
+        return preview
+
     def run_discussion_stream(
         self,
         document: dict[str, Any],
@@ -484,6 +523,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         excluded_translation_source_lines: frozenset[int] = frozenset(),
         excluded_book_passage_ids: frozenset[str] = frozenset(),
         book_passage_limit: int = 5,
+        included_local_chunk_ids: frozenset[str] = frozenset(),
         context_bundle: discussions.ContextBundle | None = None,
     ) -> None:
         discussion_id = document["id"]
@@ -507,6 +547,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 excluded_translation_source_lines=excluded_translation_source_lines,
                 excluded_book_passage_ids=excluded_book_passage_ids,
                 book_passage_limit=book_passage_limit,
+                included_local_chunk_ids=included_local_chunk_ids,
                 context_bundle=context_bundle,
             ):
                 if event.get("type") == "response.delta":
@@ -580,6 +621,13 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             )
             return
 
+        if path == "/api/library":
+            try:
+                self.send_json(200, self.server.local_library.list_sources())
+            except local_library.LocalLibraryError as error:
+                self.send_api_error(500, "library_unavailable", str(error))
+            return
+
         route = self.notes_route()
         if route is not None:
             chapter_id, note_path = route
@@ -627,6 +675,62 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self) -> None:
+        path = urlsplit(self.path).path
+        library_confirm_match = LIBRARY_IMPORT_CONFIRM_ROUTE_RE.fullmatch(path)
+        library_source_match = LIBRARY_SOURCE_ROUTE_RE.fullmatch(path)
+        is_library_route = path in {"/api/library/imports/preview", "/api/library/index/rebuild"} or bool(
+            library_confirm_match or library_source_match
+        )
+        if is_library_route:
+            if not self.authorize_write():
+                return
+            payload = self.read_json_body(max_bytes=MAX_LIBRARY_REQUEST_BYTES)
+            if payload is None:
+                return
+            try:
+                if path == "/api/library/imports/preview":
+                    if not isinstance(payload, dict) or set(payload) != {"filename", "contentBase64", "metadata"}:
+                        raise local_library.LocalLibraryError("import preview request has invalid fields")
+                    if not isinstance(payload["contentBase64"], str):
+                        raise local_library.LocalLibraryError("contentBase64 must be a string")
+                    try:
+                        content = base64.b64decode(payload["contentBase64"], validate=True)
+                    except (binascii.Error, ValueError) as error:
+                        raise local_library.LocalLibraryError("contentBase64 is invalid") from error
+                    preview = self.server.local_library.preview_import(
+                        payload["filename"], content, payload["metadata"]
+                    )
+                    preview_id, expires_at = self.save_library_preview(preview)
+                    public_preview = {key: value for key, value in preview.items() if key not in {"content", "chunks"}}
+                    self.send_json(200, {
+                        "previewId": preview_id,
+                        "expiresAt": datetime.fromtimestamp(expires_at).astimezone().isoformat(),
+                        **public_preview,
+                    })
+                    return
+                if library_confirm_match:
+                    if payload != {"confirm": True}:
+                        raise local_library.LocalLibraryError("confirm must be true")
+                    preview = self.pop_library_preview(library_confirm_match.group(1))
+                    source = self.server.local_library.confirm_import(preview)
+                    self.send_json(201, {"source": source})
+                    return
+                if path == "/api/library/index/rebuild":
+                    if payload != {"confirm": True}:
+                        raise local_library.LocalLibraryError("confirm must be true")
+                    self.send_json(200, self.server.local_library.rebuild_index())
+                    return
+                if library_source_match:
+                    source = self.server.local_library.update_source(library_source_match.group(1), payload)
+                    self.send_json(200, {"source": source})
+                    return
+            except local_library.LocalLibraryError as error:
+                self.send_api_error(422, "invalid_library_request", str(error))
+                return
+            except OSError:
+                self.send_api_error(500, "library_write_failed", "Local library could not be updated")
+                return
+
         create_route = self.discussion_list_route()
         preview_route = self.discussion_preview_route()
         continue_route = self.discussion_messages_route()
@@ -654,6 +758,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     "excludedTranslationSourceLines",
                     "excludedBookPassageIds",
                     "bookPassageLimit",
+                    "includedLocalChunkIds",
                     "discussionId",
                     "discussionEtag",
                 }
@@ -757,6 +862,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     "excludedTranslationSourceLines",
                     "excludedBookPassageIds",
                     "bookPassageLimit",
+                    "includedLocalChunkIds",
                 }
                 if not isinstance(payload, dict) or payload.get("sourceRevision") != current_revision:
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
@@ -847,6 +953,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 "excludedTranslationSourceLines",
                 "excludedBookPassageIds",
                 "bookPassageLimit",
+                "includedLocalChunkIds",
             }
             valid_message_request = (
                 isinstance(payload, dict)
@@ -933,6 +1040,21 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         )
 
     def do_DELETE(self) -> None:
+        path = urlsplit(self.path).path
+        library_match = LIBRARY_DERIVED_ROUTE_RE.fullmatch(path)
+        if library_match is not None:
+            if not self.authorize_write():
+                return
+            try:
+                removed = self.server.local_library.remove_derived_index(library_match.group(1))
+            except local_library.LocalLibraryError as error:
+                self.send_api_error(422, "invalid_library_request", str(error))
+                return
+            except OSError:
+                self.send_api_error(500, "library_write_failed", "Derived index could not be removed")
+                return
+            self.send_json(200, {"removedChunks": removed, "originalPreserved": True})
+            return
         route = self.discussion_route()
         if route is None:
             self.send_api_error(404, "not_found", "API route was not found")
@@ -1033,6 +1155,7 @@ def build_server(
     discussion_root: Path = DISCUSSIONS_ROOT,
     chapter_paths: dict[str, Path] | None = None,
     footnote_paths: dict[str, Path] | None = None,
+    sources_root: Path | None = None,
     openai_client: Any | None = None,
     write_token: str | None = None,
 ) -> ReaderHTTPServer:
@@ -1049,6 +1172,12 @@ def build_server(
         discussion_root=discussion_root,
         chapter_paths=resolved_chapter_paths,
         footnote_paths=resolved_footnote_paths,
+        sources_root=(
+            sources_root
+            if sources_root is not None
+            else SOURCES_ROOT if discussion_root == DISCUSSIONS_ROOT
+            else discussion_root.parent.parent / "Sources"
+        ),
         openai_client=openai_client or discussions.client_from_environment(),
         write_token=write_token,
     )

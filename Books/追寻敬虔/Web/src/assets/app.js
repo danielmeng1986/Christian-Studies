@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
   rightPanel: "qfg-reader-right-panel",
   notesPanelWidth: "qfg-reader-notes-panel-width",
   discussionPanelWidth: "qfg-reader-discussion-panel-width",
+  libraryPanelWidth: "qfg-reader-library-panel-width",
 };
 
 const THEMES = new Set(["light", "sepia", "dark"]);
@@ -61,8 +62,10 @@ const selectionNoteAction = document.querySelector("#selection-note-action");
 const selectionDiscussAction = document.querySelector("#selection-discuss-action");
 const notesTab = document.querySelector("#notes-tab");
 const discussionsTab = document.querySelector("#discussions-tab");
+const libraryTab = document.querySelector("#library-tab");
 const notesView = document.querySelector("#notes-view");
 const discussionsView = document.querySelector("#discussions-view");
+const libraryView = document.querySelector("#library-view");
 const studyPanelTitle = document.querySelector("#study-panel-title");
 const discussionMessage = document.querySelector("#discussion-message");
 const discussionHome = document.querySelector("#discussion-home");
@@ -92,6 +95,23 @@ const discussionReply = document.querySelector("#discussion-reply");
 const discussionReplyContextPreview = document.querySelector("#discussion-reply-context-preview");
 const sendReply = document.querySelector("#send-reply");
 const discussionModel = document.querySelector("#discussion-model");
+const libraryMessage = document.querySelector("#library-message");
+const libraryImportForm = document.querySelector("#library-import-form");
+const libraryFile = document.querySelector("#library-file");
+const libraryTitle = document.querySelector("#library-title");
+const libraryAuthor = document.querySelector("#library-author");
+const libraryLanguage = document.querySelector("#library-language");
+const librarySourceType = document.querySelector("#library-source-type");
+const libraryAuthority = document.querySelector("#library-authority");
+const librarySensitivity = document.querySelector("#library-sensitivity");
+const libraryTradition = document.querySelector("#library-tradition");
+const libraryLicense = document.querySelector("#library-license");
+const libraryImportPreview = document.querySelector("#library-import-preview");
+const libraryPreviewButton = document.querySelector("#library-preview-button");
+const libraryConfirmButton = document.querySelector("#library-confirm-button");
+const libraryRebuild = document.querySelector("#library-rebuild");
+const libraryList = document.querySelector("#library-list");
+const libraryEmptyState = document.querySelector("#library-empty-state");
 
 let notesDocument = null;
 let notesEtag = null;
@@ -110,6 +130,8 @@ let activeDiscussionEtag = null;
 let discussionSelection = null;
 let discussionBusy = false;
 let activeStudyMode = "notes";
+let librarySources = [];
+let libraryPreviewId = null;
 const discussionPreviewState = { start: null, reply: null };
 
 const DESKTOP_STUDY_LAYOUT = window.matchMedia("(min-width: 68.01rem)");
@@ -118,6 +140,7 @@ const RESIZER_WIDTH = 8;
 const STUDY_PANEL_WIDTHS = {
   notes: { min: 320, max: 520, storageKey: STORAGE_KEYS.notesPanelWidth },
   discussions: { min: 448, max: 720, storageKey: STORAGE_KEYS.discussionPanelWidth },
+  library: { min: 448, max: 720, storageKey: STORAGE_KEYS.libraryPanelWidth },
 };
 
 function preferredTheme() {
@@ -860,23 +883,161 @@ async function deleteActiveNote() {
 
 function switchStudyTab(tab) {
   const showNotes = tab === "notes";
-  const nextMode = showNotes ? "notes" : "discussions";
+  const showDiscussions = tab === "discussions";
+  const nextMode = showNotes ? "notes" : showDiscussions ? "discussions" : "library";
   const previousMode = activeStudyMode;
   activeStudyMode = nextMode;
   shell.classList.toggle("discussion-focus", !showNotes);
-  if (!showNotes && previousMode !== "discussions") {
+  if (!showNotes && previousMode === "notes") {
     applyPanelState("left", false, false);
-  } else if (showNotes && previousMode === "discussions") {
+  } else if (showNotes && previousMode !== "notes") {
     applyPanelState("left", storedPanelState(STORAGE_KEYS.leftPanel), false);
   }
   notesTab.setAttribute("aria-selected", String(showNotes));
-  discussionsTab.setAttribute("aria-selected", String(!showNotes));
+  discussionsTab.setAttribute("aria-selected", String(showDiscussions));
+  libraryTab.setAttribute("aria-selected", String(nextMode === "library"));
   notesView.hidden = !showNotes;
-  discussionsView.hidden = showNotes;
-  studyPanelTitle.textContent = showNotes ? "我的笔记" : "与 AI 讨论";
+  discussionsView.hidden = !showDiscussions;
+  libraryView.hidden = nextMode !== "library";
+  studyPanelTitle.textContent = showNotes ? "我的笔记" : showDiscussions ? "与 AI 讨论" : "本地资料库";
   saveStatus.hidden = !showNotes;
   applyPanelState("right", true);
   applyStoredStudyPanelWidth();
+  if (nextMode === "library") loadLibrary();
+}
+
+function showLibraryMessage(message, state = "info") {
+  libraryMessage.textContent = message;
+  libraryMessage.dataset.state = state;
+  libraryMessage.hidden = !message;
+}
+
+async function libraryWrite(path, payload, method = "POST") {
+  const response = await fetch(path, {
+    method,
+    headers: { "Content-Type": "application/json", "X-QFG-Write-Token": writeToken },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await responseError(response));
+  return response.json();
+}
+
+function renderLibrary() {
+  libraryEmptyState.hidden = librarySources.length > 0;
+  const fragment = document.createDocumentFragment();
+  librarySources.forEach((source) => {
+    const card = document.createElement("article");
+    card.className = "library-source-card";
+    const title = document.createElement("strong");
+    title.textContent = source.title;
+    const meta = document.createElement("p");
+    meta.textContent = [source.author, source.format.toUpperCase(), source.authorityClass].filter(Boolean).join(" · ");
+    const status = document.createElement("p");
+    status.className = "discussion-context-preview__muted";
+    status.textContent = `${source.enabled ? "已启用" : "已停用"} · ${source.indexed ? "已索引" : "索引已移除"} · ${source.externalSharingApprovedAt ? "已允许外发节选" : "尚未允许外发"}`;
+    const actions = document.createElement("div");
+    actions.className = "library-source-actions";
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.textContent = source.enabled ? "停用" : "启用";
+    toggle.addEventListener("click", async () => {
+      try {
+        await libraryWrite(`/api/library/sources/${encodeURIComponent(source.sourceId)}`, { enabled: !source.enabled });
+        await loadLibrary();
+      } catch (error) { showLibraryMessage(error.message, "error"); }
+    });
+    actions.append(toggle);
+    if (!source.externalSharingApprovedAt) {
+      const approve = document.createElement("button");
+      approve.type = "button";
+      approve.textContent = "允许向 OpenAI 发送所选节选";
+      approve.addEventListener("click", async () => {
+        if (!window.confirm("以后只有你在发送预览中明确勾选的节选才会发给 OpenAI。是否授权此资料？")) return;
+        try {
+          await libraryWrite(`/api/library/sources/${encodeURIComponent(source.sourceId)}`, { approveExternalSharing: true });
+          await loadLibrary();
+        } catch (error) { showLibraryMessage(error.message, "error"); }
+      });
+      actions.append(approve);
+    }
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "danger-button";
+    remove.textContent = "移除派生索引";
+    remove.addEventListener("click", async () => {
+      if (!window.confirm("仅移除派生索引；原件与转换稿会保留，可通过重建恢复。继续吗？")) return;
+      try {
+        await libraryWrite(`/api/library/sources/${encodeURIComponent(source.sourceId)}/derived`, {}, "DELETE");
+        await loadLibrary();
+      } catch (error) { showLibraryMessage(error.message, "error"); }
+    });
+    actions.append(remove);
+    card.append(title, meta, status, actions);
+    fragment.append(card);
+  });
+  libraryList.replaceChildren(fragment);
+}
+
+async function loadLibrary() {
+  try {
+    const response = await fetch("/api/library");
+    if (!response.ok) throw new Error(await responseError(response));
+    librarySources = (await response.json()).sources;
+    renderLibrary();
+    showLibraryMessage("");
+  } catch (error) { showLibraryMessage(`无法读取资料库：${error.message}`, "error"); }
+}
+
+function fileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",", 2)[1]);
+    reader.onerror = () => reject(reader.error || new Error("无法读取文件"));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function previewLibraryImport(event) {
+  event.preventDefault();
+  const file = libraryFile.files[0];
+  if (!file) return;
+  libraryPreviewButton.disabled = true;
+  try {
+    const optional = (input) => input.value.trim() || null;
+    const result = await libraryWrite("/api/library/imports/preview", {
+      filename: file.name,
+      contentBase64: await fileAsBase64(file),
+      metadata: {
+        title: libraryTitle.value.trim(), author: optional(libraryAuthor), language: libraryLanguage.value.trim(),
+        sourceType: librarySourceType.value, theologicalTradition: optional(libraryTradition),
+        authorityClass: libraryAuthority.value, url: null, licenseNote: optional(libraryLicense),
+        sensitivity: librarySensitivity.value,
+      },
+    });
+    libraryPreviewId = result.previewId;
+    const samples = result.sampleChunks.map((chunk) => `${chunk.locator}：${chunk.text.slice(0, 180)}`).join("\n\n");
+    libraryImportPreview.textContent = `${result.format.toUpperCase()} · ${result.chunkCount} 个可定位片段 · SHA-256 ${result.sha256}\n\n${samples}`;
+    libraryImportPreview.hidden = false;
+    libraryConfirmButton.hidden = false;
+    showLibraryMessage("请检查转换预览，确认后才会保存原件并建立索引。", "info");
+  } catch (error) { showLibraryMessage(`无法预览：${error.message}`, "error"); }
+  finally { libraryPreviewButton.disabled = false; }
+}
+
+async function confirmLibraryImport() {
+  if (!libraryPreviewId) return;
+  libraryConfirmButton.disabled = true;
+  try {
+    await libraryWrite(`/api/library/imports/${encodeURIComponent(libraryPreviewId)}/confirm`, { confirm: true });
+    libraryImportForm.reset();
+    libraryLanguage.value = "zh";
+    libraryPreviewId = null;
+    libraryImportPreview.hidden = true;
+    libraryConfirmButton.hidden = true;
+    showLibraryMessage("资料已导入；原件、转换稿和索引均保存在本地。", "success");
+    await loadLibrary();
+  } catch (error) { showLibraryMessage(`导入失败：${error.message}`, "error"); }
+  finally { libraryConfirmButton.disabled = false; }
 }
 
 function showDiscussionMessage(message, state = "info") {
@@ -1247,6 +1408,40 @@ function renderContextPreview(container, preview, state) {
     });
     fragment.append(more);
   }
+  if (preview.localSourceCandidates.length) {
+    const heading = document.createElement("p");
+    heading.className = "discussion-context-preview__heading";
+    heading.textContent = "本地资料库命中（默认不发送）";
+    fragment.append(heading);
+    preview.localSourceCandidates.forEach((chunk) => {
+      const item = document.createElement("div");
+      item.className = "discussion-context-preview__passage";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = state.includedLocalChunkIds.has(chunk.chunkId);
+      checkbox.disabled = !chunk.externalSharingApproved;
+      checkbox.setAttribute("aria-label", `纳入${chunk.sourceTitle}的资料片段`);
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) state.includedLocalChunkIds.add(chunk.chunkId);
+        else state.includedLocalChunkIds.delete(chunk.chunkId);
+        invalidateContextPreview(state);
+      });
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = `${chunk.sourceTitle} · ${chunk.locator}`;
+      const excerpt = document.createElement("blockquote");
+      excerpt.textContent = chunk.text;
+      details.append(summary, excerpt);
+      if (!chunk.externalSharingApproved) {
+        const warning = document.createElement("p");
+        warning.className = "discussion-context-preview__warning";
+        warning.textContent = "尚未授权外发。请到“资料库”确认授权后再选择。";
+        details.append(warning);
+      }
+      item.append(checkbox, details);
+      fragment.append(item);
+    });
+  }
   container.replaceChildren(fragment);
   container.hidden = false;
 }
@@ -1263,6 +1458,7 @@ async function refreshDiscussionContextPreview(kind, selection, message, state) 
     excludedTranslationSourceLines: [...state.excludedTranslationSourceLines],
     excludedBookPassageIds: [...state.excludedBookPassageIds],
     bookPassageLimit: state.bookPassageLimit,
+    includedLocalChunkIds: [...state.includedLocalChunkIds],
   };
   if (kind === "reply") {
     payload.discussionId = activeDiscussion.id;
@@ -1291,6 +1487,7 @@ async function previewDiscussionContext(kind, selection, message) {
     includedTranslationSourceLines: new Set(),
     excludedTranslationSourceLines: new Set(),
     excludedBookPassageIds: new Set(),
+    includedLocalChunkIds: new Set(),
     bookPassageLimit: 5,
     contextBuildId: null,
     budgetStatus: null,
@@ -1353,6 +1550,7 @@ async function createDiscussion(event) {
     excludedTranslationSourceLines: [...discussionPreviewState.start.excludedTranslationSourceLines],
     excludedBookPassageIds: [...discussionPreviewState.start.excludedBookPassageIds],
     bookPassageLimit: discussionPreviewState.start.bookPassageLimit,
+    includedLocalChunkIds: [...discussionPreviewState.start.includedLocalChunkIds],
     contextBuildId: discussionPreviewState.start.contextBuildId,
   };
   sendFirstMessage.disabled = true;
@@ -1406,6 +1604,7 @@ async function continueDiscussion(event) {
         excludedTranslationSourceLines: [...discussionPreviewState.reply.excludedTranslationSourceLines],
         excludedBookPassageIds: [...discussionPreviewState.reply.excludedBookPassageIds],
         bookPassageLimit: discussionPreviewState.reply.bookPassageLimit,
+        includedLocalChunkIds: [...discussionPreviewState.reply.includedLocalChunkIds],
         contextBuildId: discussionPreviewState.reply.contextBuildId,
       },
       activeDiscussionEtag,
@@ -1536,6 +1735,26 @@ selectionDiscussAction.addEventListener("click", () => {
 
 notesTab.addEventListener("click", () => switchStudyTab("notes"));
 discussionsTab.addEventListener("click", () => switchStudyTab("discussions"));
+libraryTab.addEventListener("click", () => switchStudyTab("library"));
+libraryImportForm.addEventListener("submit", previewLibraryImport);
+libraryConfirmButton.addEventListener("click", confirmLibraryImport);
+libraryFile.addEventListener("change", () => {
+  if (!libraryTitle.value.trim() && libraryFile.files[0]) {
+    libraryTitle.value = libraryFile.files[0].name.replace(/\.[^.]+$/, "");
+  }
+  libraryPreviewId = null;
+  libraryImportPreview.hidden = true;
+  libraryConfirmButton.hidden = true;
+});
+libraryRebuild.addEventListener("click", async () => {
+  libraryRebuild.disabled = true;
+  try {
+    const result = await libraryWrite("/api/library/index/rebuild", { confirm: true });
+    showLibraryMessage(`索引已由转换稿重建：${result.sourceCount} 份资料，${result.chunkCount} 个片段。`, "success");
+    await loadLibrary();
+  } catch (error) { showLibraryMessage(`重建失败：${error.message}`, "error"); }
+  finally { libraryRebuild.disabled = false; }
+});
 studyPanelResizer.addEventListener("pointerdown", (event) => {
   if (!DESKTOP_STUDY_LAYOUT.matches || rightToggle.getAttribute("aria-expanded") !== "true") return;
   event.preventDefault();

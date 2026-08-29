@@ -17,7 +17,7 @@ from markdown_it import MarkdownIt
 
 
 CONTEXT_SCHEMA_VERSION = 1
-RETRIEVAL_VERSION = 2
+RETRIEVAL_VERSION = 3
 SOURCE_REGISTRY_VERSION = 1
 
 SCRIPT_ROOT = Path(__file__).resolve().parent
@@ -79,6 +79,7 @@ class ContextRequest:
     excluded_translation_source_lines: frozenset[int] = frozenset()
     excluded_book_passage_ids: frozenset[str] = frozenset()
     book_passage_limit: int = 5
+    included_local_chunk_ids: frozenset[str] = frozenset()
 
     @classmethod
     def from_discussion(
@@ -93,6 +94,7 @@ class ContextRequest:
         excluded_translation_source_lines: frozenset[int] = frozenset(),
         excluded_book_passage_ids: frozenset[str] = frozenset(),
         book_passage_limit: int = 5,
+        included_local_chunk_ids: frozenset[str] = frozenset(),
     ) -> ContextRequest:
         return cls(
             book_id=document["bookId"],
@@ -118,6 +120,7 @@ class ContextRequest:
             excluded_translation_source_lines=excluded_translation_source_lines,
             excluded_book_passage_ids=excluded_book_passage_ids,
             book_passage_limit=book_passage_limit,
+            included_local_chunk_ids=included_local_chunk_ids,
         )
 
 
@@ -515,6 +518,7 @@ class ContextBuilder:
         *,
         chapter_paths: dict[str, Path] | None = None,
         footnote_paths: dict[str, Path] | None = None,
+        local_library: Any | None = None,
     ) -> None:
         self.metadata_path = metadata_path
         self.translation_index_path = translation_index_path
@@ -524,6 +528,7 @@ class ContextBuilder:
                 footnote_paths = discovered_footnotes
         self.chapter_paths = dict(chapter_paths)
         self.footnote_paths = dict(footnote_paths or {})
+        self.local_library = local_library
 
     def build(self, request: ContextRequest) -> ContextBundle:
         if request.book_passage_limit not in {5, 10}:
@@ -581,6 +586,29 @@ class ContextBuilder:
             if passage["passageId"] not in request.excluded_book_passage_ids
         ]
 
+        local_candidates: list[dict[str, Any]] = []
+        local_chunks: list[dict[str, Any]] = []
+        if self.local_library is not None:
+            query = "\n".join([request.question, focus["selection"]["exact"], *focus["headingPath"]])
+            try:
+                local_candidates = self.local_library.search_local_library(query, limit=5)
+            except ValueError as error:
+                raise ContextBuildError(str(error)) from error
+            candidate_by_id = {item["chunkId"]: item for item in local_candidates}
+            if request.included_local_chunk_ids - set(candidate_by_id):
+                raise ContextBuildError("selected local-library chunks are no longer available")
+            if any(
+                not candidate_by_id[chunk_id].get("externalSharingApproved")
+                for chunk_id in request.included_local_chunk_ids
+            ):
+                raise ContextBuildError(
+                    "selected local-library source has not been approved for external sharing"
+                )
+            local_chunks = [
+                candidate_by_id[chunk_id]
+                for chunk_id in sorted(request.included_local_chunk_ids)
+            ]
+
         manifest = {
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
             "promptVersion": request.prompt_version,
@@ -625,11 +653,20 @@ class ContextBuilder:
                     }
                     for item in book_passages
                 ],
-                "localSourceChunks": [],
+                "localSourceChunks": [
+                    {
+                        "chunkId": item["chunkId"],
+                        "sourceId": item["sourceId"],
+                        "locator": item["locator"],
+                        "sourceSha256": item["sourceSha256"],
+                        "processedSha256": item["processedSha256"],
+                    }
+                    for item in local_chunks
+                ],
                 "webSources": [],
             },
             "capabilities": {
-                "localLibrary": False,
+                "localLibrary": self.local_library is not None,
                 "crossChapterSearch": True,
                 "webSearch": False,
                 "researchDepth": "local",
@@ -656,7 +693,7 @@ class ContextBuilder:
             "referenceResolution": {"entities": entities, "terms": []},
             "retrieval": {
                 "bookPassages": book_passages,
-                "localSourceChunks": [],
+                "localSourceChunks": local_chunks,
                 "bibliographyMatches": [],
             },
             "externalResearch": {"enabled": False, "mode": "off", "sources": []},
@@ -679,6 +716,10 @@ class ContextBuilder:
             "bookPassages": book_passages,
             "bookPassageLimit": request.book_passage_limit,
             "hasMoreBookPassages": has_more_book_passages,
+            "localSourceCandidates": [
+                {**item, "included": item["chunkId"] in request.included_local_chunk_ids}
+                for item in local_candidates
+            ],
             "webSearchEnabled": False,
         }
         evidence_characters = len(request.chapter_markdown) + len(anchor["exact"])
@@ -686,6 +727,7 @@ class ContextBuilder:
         evidence_characters += sum(len(item["text"]) for item in footnotes)
         evidence_characters += sum(len(item["body"]) for item in notes)
         evidence_characters += sum(len(item["excerpt"]) for item in book_passages)
+        evidence_characters += sum(len(item["text"]) for item in local_chunks)
         evidence_characters += sum(
             len(footnote["text"])
             for item in book_passages

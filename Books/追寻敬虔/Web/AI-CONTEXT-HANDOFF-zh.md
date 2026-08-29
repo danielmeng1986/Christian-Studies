@@ -1,8 +1,8 @@
 # 《追寻敬虔》AI ContextBuilder 开发交接说明
 
-状态：M5 完成后的交接基线
+状态：M6 完成后的交接基线
 日期：2026-08-29  
-下一阶段：M6——本地资料库
+下一阶段：M7——Bibliography 与脚注书目解析
 Roadmap：[`AI-CONTEXT-ROADMAP-zh.md`](AI-CONTEXT-ROADMAP-zh.md)  
 产品规范：[`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md)  
 AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
@@ -15,9 +15,10 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 - M3 已完成：相关个人笔记和译名身份命中已进入 envelope/manifest，发送前可预览并做本轮排除或候选确认。
 - M4 已完成：20 章及其脚注关系已进入确定性跨章节检索，命中可预览、展开、跳转、扩展和逐项排除。
 - M5 已完成：预览使用短期 build ID 冻结；发送时重验完整 bundle；讨论 schema 2 保存逐轮 manifest、选择和可变证据快照；schema 1 旧轮次显式标记 legacy。
+- M6 已完成：本地资料经预览确认后保存原件、转换稿和可重建索引；命中默认不发送，只有已授权来源中明确勾选的片段进入冻结上下文。
 - 当前讨论继续使用 OpenAI Responses API、`store: false`、`truncation: disabled` 和流式输出。
 - 当前 `promptVersion` 为 2；版本 1 的讨论仍可读取，并在下一次继续讨论时升级。
-- 当前 `contextSchemaVersion` 与 `sourceRegistryVersion` 为 1，`retrievalVersion` 为 2。
+- 当前 `contextSchemaVersion` 与 `sourceRegistryVersion` 为 1，`retrievalVersion` 为 3。
 - 当前讨论写入 `schemaVersion: 2`；保守预算法为 `conservative_unicode_characters_v1`，默认 context window 配置值为 128,000 tokens。
 
 ## 2. 关键代码位置
@@ -26,6 +27,7 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 | --- | --- |
 | `Web/scripts/context_builder.py` | `ContextRequest`、`ContextBundle`、书籍元数据、block map、reading focus、envelope、manifest、preview、估算 |
 | `Web/scripts/context_retrieval.py` | 20 章/脚注检索单元、确定性查询词、来源感知排序、数量限制和定位 |
+| `Web/scripts/local_library.py` | 本地资料转换、严格 catalog、原件/转换稿哈希、派生索引和确定性检索 |
 | `Web/scripts/discussions.py` | 讨论 schema、消息状态、prompt adapter、Responses API 客户端和流式解析 |
 | `Web/scripts/serve.py` | 本地 HTTP API、文件持久化、权限与请求编排 |
 | `Web/scripts/build.py` | Markdown → HTML；`data-block-id` 的权威生成规则 |
@@ -115,12 +117,14 @@ M3 按“确定性证据 → payload/API → 最小预览”完成，没有升�
 5. schema 2 的 `turns` 与用户消息一一对应；保存 manifest、bundle hash、本轮选择和实际纳入的可变个人笔记证据。稳定书稿证据只保存 locator、revision/hash，不重复保存完整章节。
 6. schema 1 在内存中映射为 schema 2；所有旧轮次 `legacyContext: true`、manifest/snapshot 为 `null`。读取、列表或审计不会改写文件；继续讨论才正常写回 schema 2。
 
-## 8. M6 开始前需要做的设计决定
+## 8. M6 的完成实现
 
-- 本地资料目录、catalog 严格 schema 与导入状态机的最终字段。
-- Markdown、PDF、DOCX 的可复现转换、页码/段落 locator 和内容哈希策略。
-- 私人资料首次进入外发 context 前的明确授权如何持久化与撤销。
-- 如何在不改变 M5 freeze/manifest 合同的前提下接入 `localSourceChunks`。
+1. `Sources` 分为不可变原件、结构化转换稿、派生索引与严格目录；目录保存来源等级、传统、许可、敏感性、原件/转换稿哈希、启用状态和外发授权时间。
+2. Markdown、TXT、JSON、PDF 均先在内存转换并展示定位样本；确认前不写磁盘。PDF 使用固定版本 `pypdf`，页码 locator 为 `page:{n}:{paragraph}`；无可提取文字的扫描件明确失败。
+3. 私密资料默认停用，所有新资料默认 `externalSharingApprovedAt: null`。首次授权与逐轮命中勾选是两个独立门槛；服务器和 `ContextBuilder` 都不信任浏览器的单方面选择。
+4. 本地检索为只读确定性词法检索，最多 5 段。命中只进入 preview；用户勾选后才进入 `retrieval.localSourceChunks` 和 manifest，并继续受 M5 build ID、bundle hash 与预算合同保护。
+5. “移除派生索引”不删除原件或转换稿；“重建全部索引”只读 Processed，并在生成前验证原件与转换稿哈希。
+6. 第一版不支持 OCR、DOCX 或旧 `.doc`；这些属于不改变现有 catalog/processed 合同的后续格式扩展。
 
 ## 9. 用户数据保护
 
@@ -155,19 +159,19 @@ node --check 'Books/追寻敬虔/Web/src/assets/app.js'
 node --check 'Books/追寻敬虔/Web/dist/assets/app.js'
 ```
 
-完整测试需要绑定临时 `127.0.0.1` 端口。M5 完成时：
+完整测试需要绑定临时 `127.0.0.1` 端口。M6 完成时：
 
-- 全套测试 62 项通过；
+- 全套测试 67 项通过；
 - 20 章构建成功；
 - 真实讨论与笔记仅做不输出正文的只读兼容审计。
 
 ## 11. 推荐给下一任务的起始提示
 
 ```text
-继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M6：本地资料库。
+继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M7：Bibliography 与脚注书目解析。
 先完整阅读 Web/AI-CONTEXT-HANDOFF-zh.md、AI-CONTEXT-ROADMAP-zh.md、
 AI-CONTEXT-SPEC-zh.md 和 AI-CONTEXT-SPEC.md。严格保护真实的 05.json 与
 Notes/Discussions/，测试只用临时目录和脱敏 fixture。保持 M5 的 build ID、预算、
-逐轮 manifest 和 schema 1 legacy 合同不变；先设计 Sources 目录、catalog、导入确认与
-locator/hash，再接入可逐项排除的 localSourceChunks，最后运行全套测试并更新 Roadmap 状态。
+逐轮 manifest、schema 1 legacy 和 M6 本地资料授权合同不变；先审计脚注书目格式并建立
+脱敏 fixture，再设计规范书目记录与本地资料条目的可追溯连接，最后运行全套测试并更新 Roadmap 状态。
 ```
