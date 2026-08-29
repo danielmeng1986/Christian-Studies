@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 2,
+  "id": "ff886a59-7d27-4f71-a6ce-5901d2347f55",
+  "bookId": "qfg",
+  "chapterId": "05",
+  "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+  "anchor": {
+    "blockId": "05-p-0049",
+    "startOffset": 0,
+    "endOffset": 400,
+    "exact": "這就帶領我們進入第四個話題﹕用聖經建立信心(the establishing of faith in Scripture)。 藉著聖靈的內在見證(the internal testimony of the Holy Spirit)﹐歐文說﹐外在的見證才會得到認可與接受﹔它不是一個裏頭的聲音﹐用以啟示人否則就不知或不可能知道的事實(亦即私密的啟示)﹔它也不是不用理性的信念﹐在客觀上沒有根據﹐出其不意地臨到我們。它乃是一種內在光照的活動﹐而人天然的屬靈之盲目藉此移除了﹐帕子從他的心眼挪開了﹐他的驕傲和偏見也都一樣地被擊倒了﹔而對於屬靈的實際﹐他得著了一份瞭解和「品味」(來5:14)。歐文觀察到﹐這正是新約在馬太福音11:25-27所使用的動詞「顯出來」﹐和以弗所書1:17-19所使用的名詞「啟示」時﹐所指的事﹔這也是使徒約翰提及聖靈是「在凡事上教訓」的「恩膏」時(約壹2:27)﹐心中所想的事。",
+    "prefix": "",
+    "suffix": ""
+  },
+  "title": "這就帶領我們進入第四個話題﹕用聖經建立信心(the es｜这一段我觉得写的很妙。解释了前面所说的圣灵内在和外在的见证是相辅相成的观点。也就是说",
+  "status": "active",
+  "promptVersion": 2,
+  "context": {
+    "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
+    "scriptures": [
+      {
+        "citation": "来 5:14",
+        "translationLabel": "新标点和合本简体",
+        "translationId": "cuv-s",
+        "id": "HEB.5.14",
+        "text": "惟独长大成人的才能吃干粮；他们的心窍习练得通达，就能分辨好歹了。"
+      },
+      {
+        "citation": "太 11:25–27",
+        "translationLabel": "新标点和合本简体",
+        "translationId": "cuv-s",
+        "id": "MAT.11.25-27",
+        "text": "那时，耶稣说：「父啊，天地的主，我感谢你！因为你将这些事向聪明通达人就藏起来，向婴孩就显出来。父啊，是的，因为你的美意本是如此。一切所有的，都是我父交付我的；除了父，没有人知道子；除了子和子所愿意指示的，没有人知道父。"
+      },
+      {
+        "citation": "弗 1:17–19",
+        "translationLabel": "新标点和合本简体",
+        "translationId": "cuv-s",
+        "id": "EPH.1.17-19",
+        "text": "求我们主耶稣基督的　神，荣耀的父，将那赐人智慧和启示的灵赏给你们，使你们真知道他，并且照明你们心中的眼睛，使你们知道他的恩召有何等指望，他在圣徒中得的基业有何等丰盛的荣耀；并[知道]他向我们这信的人所显的能力是何等浩大，"
+      },
+      {
+        "citation": "约壹 2:27",
+        "translationLabel": "新标点和合本简体",
+        "translationId": "cuv-s",
+        "id": "1JO.2.27",
+        "text": "你们从主所受的[恩]膏常存在你们心里，并不用人教训你们，自有主的[恩]膏在凡事上教训你们。这[恩]膏是真的，不是假的；你们要按这[恩]膏的教训住在主里面。"
+      }
+    ],
+    "footnotes": [
+      {
+        "id": "译者注2",
+        "text": "本章在原書裏只有六大分段﹐譯者為求思路清晰﹐加了兩個分段﹐即「肆﹑陸」兩段﹐分別在原書的第86, 90頁。"
+      }
+    ]
+  },
+  "messages": [
+    {
+      "id": "52eda2f3-5db3-4fdf-b5f0-dc8129068395",
+      "role": "user",
+      "content": "这一段我觉得写的很妙。解释了前面所说的圣灵内在和外在的见证是相辅相成的观点。也就是说，尽管我们知道外在的见证是真实的，属神的，但是需要有内在圣灵的见证，我们才会认外在的见证是属神的。这着实有点拗口。不过，这里的解释让我安心。圣灵在内里的见证，不在于说了什么隐秘的话语，乃是光照，去除了前文中提到的，因着罪，蒙住了信的属灵的盲目。这让这里的整个概念变得豁然开朗了。这也能解释，为何信徒觉得无比真实的证据，在非信徒那边常被看作循环论证了。这是很多人没说清楚的地方。因为圣灵内在的工作打开了人的眼睛，让人看到了圣经里圣灵外在的见证，就像看到了光的人一样。",
+      "format": "markdown",
+      "status": "completed",
+      "model": null,
+      "responseId": null,
+      "usage": null,
+      "error": null,
+      "createdAt": "2026-08-29T13:19:19.390Z"
+    },
+    {
+      "id": "667a1e4c-ca1a-4579-b7b2-4960dd497b60",
+      "role": "assistant",
+      "content": "你的把握很准确，而且确实抓住了这一段用来解除误解的关键：**内在见证不是在圣经之外追加一条新的、私人化的信息；它乃是使人能够看见并接受圣经自身已经具有的外在见证。**\n\n在本章紧接前文的脉络中，帕克先说明欧文所谓圣灵的**外在见证**：圣灵既是圣经的作者，也就在圣经中、借圣经显出其属神的光、能力、庄严与使人知罪、更新的功效。圣经不是靠教会或读者“赋予”权威；它本来就带着属神的特征和权柄。\n\n然后，选段转入第四题“用圣经建立信心”。这里的重点正如你说的：问题不在于外在见证是否存在，而在于罪人为何不认出它、不接受它。欧文的回答是人的属灵盲目、骄傲和偏见遮蔽了心眼；因此圣灵的**内在见证**乃是光照、除去帕子，使人对属灵实际获得“了解和品味”。如此，人并非得到一个脱离对象、无客观根据的主观确信，而是终于能合宜地领会那原已在圣经中的见证。\n\n可以将这关系简化为：\n\n- **外在见证**回答：*我所信的对象有什么根据？*  \n  答案是圣经自身所呈现的属神光照、能力、合一、权威与果效。\n- **内在见证**回答：*为什么我会真正承认并信服这些根据？*  \n  答案是圣灵医治属灵的盲目，使人看见、尝到并接受它。\n\n所以，不是“我感觉圣灵告诉我圣经是真的，因此圣经是真的”；而更接近于：**圣灵使我看见，圣经以其自身所显出的真理、光与能力，确实是神的话。**\n\n你所说“像看到了光的人一样”，很贴合本章前面对外在见证的比喻：光照进黑暗，就显明自己是光；但一个人的眼睛若被遮蔽，即使光在那里，他仍不看见。内在工作不是创造那光，也不是替代那光，而是挪去遮蔽眼睛的帕子。\n\n这也确实有助于说明你提出的“循环论证”质疑。按帕克对欧文的转述，信徒并不是以一个纯粹私人的内在感受来证明圣经；信徒所指向的仍是公共地临到人的圣经及其信息。但非信徒未必承认这些特征具有“属神”的意义，甚至会把同一现象作别的解释。欧文会将这个分歧至少部分归于属灵状态，而不只是证据数量或逻辑技巧不足。\n\n不过，也需保留本章已有的一个平衡：欧文并没有因此把理性、历史性考量或辩论都当作毫无价值。前文说，这些可以帮助移除疑惑，或使人形成“篤定的意见、判断和信服”；但它们本身不能产生他所称的“属神的信心”。因此，内在见证并非反理性，而是反对一种**没有客观根基的跳跃式信念**，也反对把人类论证当成信心最终根基。\n\n本段所援引的经文也朝这个方向说话：\n\n- **以弗所书 1:17–19**：求神赐智慧和启示的灵，“照明你们心中的眼睛”，使人真知道神；\n- **马太福音 11:25–27**：父向“小孩子”显明，且人认识父在乎子的启示；\n- **约翰一书 2:27**：恩膏在凡事上教导信徒；\n- **希伯来书 5:14**：心窍经过操练，能分辨好歹。帕克用“品味”一词，强调这不只是抽象推理，也包括对属灵真实的实际辨识。\n\n而下一段进一步给出一个可观察的标记：蒙光照的人会逐渐看见圣经不是杂乱拼凑，而是在其各部分的和谐、一致和真理的“能力与切需”中显为一个整体。换言之，这内在见证也不只是一次强烈感觉，而会表现为对整本圣经越来越能辨认其连贯性与现实穿透力。",
+      "format": "markdown",
+      "status": "completed",
+      "model": "gpt-5.6-terra",
+      "responseId": "resp_057e3062b00d22de016a92dc65970887d2817935574bc57133",
+      "usage": {
+        "inputTokens": 26473,
+        "outputTokens": 1138,
+        "totalTokens": 27611
+      },
+      "error": null,
+      "createdAt": "2026-08-29T13:19:47.799Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "52eda2f3-5db3-4fdf-b5f0-dc8129068395",
+      "contextManifest": {
+        "contextSchemaVersion": 1,
+        "promptVersion": 2,
+        "retrievalVersion": 2,
+        "sourceRegistryVersion": 1,
+        "chapterRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+        "sourceHashes": {
+          "bookMetadata": "2f56dd70fbec8fc42138c8e8516ffe0689922756c50b9675678400822bef2064",
+          "translationIndex": "f5e815eb7a7922e87ebc3586804fddfb682f153013a6fc3d826cbf109bd54479",
+          "scriptures": "3a63a7fee28b590a4dc552fee2479213df47a705ee605376e121f27f8cfa40ef",
+          "footnotes": "7e1aac5621c4aaea7db769e5da6de6be1bdc3803a08ad2f2de41ab10aa23d412"
+        },
+        "included": {
+          "scriptureIds": [
+            "HEB.5.14",
+            "MAT.11.25-27",
+            "EPH.1.17-19",
+            "1JO.2.27"
+          ],
+          "footnoteIds": [
+            "译者注2"
+          ],
+          "noteIds": [],
+          "noteRevisions": [],
+          "translationSourceLines": [
+            233,
+            416
+          ],
+          "bookPassages": [
+            {
+              "passageId": "qfg:07:07-p-0049",
+              "chapterId": "07",
+              "blockId": "07-p-0049",
+              "sourceRevision": "1fa6782a3c215b865d64a0c507e083ea181450da4d8a717e428392d4d2c3a036",
+              "footnoteRevision": "e9feeea6c75b8296108ab218c823569b21e03cc6272050f235ef510927eb2967",
+              "relatedFootnoteIds": [
+                "20"
+              ]
+            },
+            {
+              "passageId": "qfg:07:07-p-0040",
+              "chapterId": "07",
+              "blockId": "07-p-0040",
+              "sourceRevision": "1fa6782a3c215b865d64a0c507e083ea181450da4d8a717e428392d4d2c3a036",
+              "footnoteRevision": "e9feeea6c75b8296108ab218c823569b21e03cc6272050f235ef510927eb2967",
+              "relatedFootnoteIds": [
+                "14"
+              ]
+            },
+            {
+              "passageId": "qfg:15:15-p-0025",
+              "chapterId": "15",
+              "blockId": "15-p-0025",
+              "sourceRevision": "2e1c8f280c579ad91a6b31f7522a83f5b508ef27a1e1daf05cd9f7a8ad2f995a",
+              "footnoteRevision": "89497461588d21fc36bb64e9fab3c6d9c60da22498be031a1adf5260587ca44f",
+              "relatedFootnoteIds": [
+                "3"
+              ]
+            },
+            {
+              "passageId": "qfg:02:02-p-0009",
+              "chapterId": "02",
+              "blockId": "02-p-0009",
+              "sourceRevision": "9712f1ae4026d5ddb24500fcc4246e6543470cedb4b9b31764e664cf14ef1149",
+              "footnoteRevision": "33bb4fefda8c82bf67e282b2d833c681eaff6647934eda93b8976ed0f624ba43",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:12:12-p-0108",
+              "chapterId": "12",
+              "blockId": "12-p-0108",
+              "sourceRevision": "1f4ac73f7dc0f86d50f011cff458782e07e2f2956d521dca60583080aa72f74d",
+              "footnoteRevision": "a7b69ad9308e8e194b2194a81d4522db562748874dad3a0876b9c68b46eec0cc",
+              "relatedFootnoteIds": []
+            }
+          ],
+          "localSourceChunks": [],
+          "webSources": []
+        },
+        "capabilities": {
+          "localLibrary": false,
+          "crossChapterSearch": true,
+          "webSearch": false,
+          "researchDepth": "local"
+        }
+      },
+      "contextSnapshot": {
+        "bundleHash": "8ef05c8ce77f7c9777a9b3b69cee5e541cf8943c88d23db6282892a592abf782",
+        "selections": {
+          "excludedNoteIds": [],
+          "includedTranslationSourceLines": [],
+          "excludedTranslationSourceLines": [],
+          "excludedBookPassageIds": [],
+          "bookPassageLimit": 5
+        },
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ],
+  "createdAt": "2026-08-29T13:19:19.390Z",
+  "updatedAt": "2026-08-29T13:19:47.799Z"
+}
