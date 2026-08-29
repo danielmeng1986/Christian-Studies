@@ -32,8 +32,9 @@ class FakeOpenAIClient:
     configured = True
     model = "gpt-test"
 
-    def stream(self, document, chapter_markdown):
+    def stream(self, document, chapter_markdown, **context_options):
         assert "完整章节" in chapter_markdown
+        assert context_options["note_document"]["chapterId"] == "05"
         yield {"type": "response.delta", "delta": "流式"}
         yield {"type": "response.delta", "delta": "回复"}
         yield {
@@ -54,7 +55,26 @@ class DiscussionAPITests(unittest.TestCase):
         (self.dist / "index.html").write_text("<!doctype html><title>test</title>\n", encoding="utf-8")
         note_path = root / "Notes/Annotations/05.json"
         note_path.parent.mkdir(parents=True)
-        note_path.write_bytes(SERVE.serialize_note_document(SERVE.empty_note_document("05")))
+        note_document = SERVE.empty_note_document("05")
+        note_document["notes"] = [
+            {
+                "id": "11111111-1111-4111-8111-111111111111",
+                "sourceRevision": "a" * 64,
+                "anchor": {
+                    "blockId": "05-p-0002",
+                    "startOffset": 0,
+                    "endOffset": 4,
+                    "exact": "完整章节",
+                    "prefix": "",
+                    "suffix": "正文。",
+                },
+                "body": "脱敏测试笔记",
+                "format": "plain-text",
+                "createdAt": "2026-08-29T08:00:00.000Z",
+                "updatedAt": "2026-08-29T08:00:00.000Z",
+            }
+        ]
+        note_path.write_bytes(SERVE.serialize_note_document(note_document))
         self.discussion_root = root / "Notes/Discussions"
         self.chapter_markdown = "\n# 第五章\n\n完整章节正文。\n"
         self.revision = hashlib.sha256(self.chapter_markdown.encode("utf-8")).hexdigest()
@@ -109,10 +129,10 @@ class DiscussionAPITests(unittest.TestCase):
         return {
             "sourceRevision": self.revision,
             "anchor": {
-                "blockId": "05-p-0001",
+                "blockId": "05-p-0002",
                 "startOffset": 0,
                 "endOffset": 4,
-                "exact": "测试文字",
+                "exact": "完整章节",
                 "prefix": "",
                 "suffix": "",
             },
@@ -182,6 +202,24 @@ class DiscussionAPITests(unittest.TestCase):
         self.assertEqual(status, 409)
         self.assertEqual(json.loads(content)["error"]["code"], "chapter_source_changed")
         self.assertEqual(list(self.discussion_root.rglob("*.json")), [])
+
+    def test_context_preview_lists_notes_and_accepts_round_exclusion(self) -> None:
+        payload = self.create_payload()
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        preview = json.loads(content)["preview"]
+        self.assertEqual(preview["notes"][0]["body"], "脱敏测试笔记")
+
+        payload["excludedNoteIds"] = ["11111111-1111-4111-8111-111111111111"]
+        status, _, content = self.request(
+            "POST", "/api/chapters/05/discussions/context-preview", payload
+        )
+        self.assertEqual(status, 200)
+        preview = json.loads(content)["preview"]
+        self.assertEqual(preview["notes"], [])
+        self.assertTrue(preview["noteCandidates"][0]["excluded"])
 
 
 if __name__ == "__main__":

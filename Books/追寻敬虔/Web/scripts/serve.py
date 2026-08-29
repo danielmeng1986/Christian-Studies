@@ -41,6 +41,7 @@ DEFAULT_CHAPTER_PATHS = discussions.discover_chapter_paths(READING_ROOT)
 MAX_REQUEST_BYTES = 1_000_000
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
 DISCUSSION_LIST_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions\Z")
+DISCUSSION_PREVIEW_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions/context-preview\Z")
 DISCUSSION_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)\Z")
 DISCUSSION_MESSAGES_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)/messages\Z")
 SHA256_RE = re.compile(r"\A[0-9a-f]{64}\Z")
@@ -295,6 +296,17 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             return None
         return chapter_id, chapter_path
 
+    def discussion_preview_route(self) -> tuple[str, Path] | None:
+        path = urlsplit(self.path).path
+        match = DISCUSSION_PREVIEW_ROUTE_RE.fullmatch(path)
+        if not match:
+            return None
+        chapter_id = match.group(1)
+        chapter_path = self.server.chapter_paths.get(chapter_id)
+        if chapter_path is None or chapter_id not in self.server.note_paths:
+            return None
+        return chapter_id, chapter_path
+
     def discussion_route(self) -> tuple[str, Path] | None:
         path = urlsplit(self.path).path
         match = DISCUSSION_ROUTE_RE.fullmatch(path)
@@ -370,7 +382,21 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         revision = hashlib.sha256(chapter_markdown.encode("utf-8")).hexdigest()
         return chapter_markdown, title, revision
 
-    def run_discussion_stream(self, document: dict[str, Any], path: Path, chapter_markdown: str) -> None:
+    def note_context(self, chapter_id: str) -> dict[str, Any]:
+        path = self.server.note_paths[chapter_id]
+        return normalize_note_document(json.loads(path.read_bytes()), chapter_id)
+
+    def run_discussion_stream(
+        self,
+        document: dict[str, Any],
+        path: Path,
+        chapter_markdown: str,
+        *,
+        note_document: dict[str, Any],
+        excluded_note_ids: frozenset[str] = frozenset(),
+        included_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_translation_source_lines: frozenset[int] = frozenset(),
+    ) -> None:
         discussion_id = document["id"]
         self.send_stream_headers()
         pending_content = discussions.serialize_discussion_document(document)
@@ -383,7 +409,14 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         )
         try:
             completed_event = None
-            for event in self.server.openai_client.stream(document, chapter_markdown):
+            for event in self.server.openai_client.stream(
+                document,
+                chapter_markdown,
+                note_document=note_document,
+                excluded_note_ids=excluded_note_ids,
+                included_translation_source_lines=included_translation_source_lines,
+                excluded_translation_source_lines=excluded_translation_source_lines,
+            ):
                 if event.get("type") == "response.delta":
                     self.write_stream_event(event)
                 elif event.get("type") == "response.completed":
@@ -503,8 +536,9 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:
         create_route = self.discussion_list_route()
+        preview_route = self.discussion_preview_route()
         continue_route = self.discussion_messages_route()
-        if create_route is None and continue_route is None:
+        if create_route is None and preview_route is None and continue_route is None:
             self.send_api_error(404, "not_found", "API route was not found")
             return
         if not self.authorize_write():
@@ -516,6 +550,56 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         if payload is None:
             return
 
+        if preview_route is not None:
+            chapter_id, _ = preview_route
+            try:
+                if not isinstance(payload, dict):
+                    raise discussions.DiscussionValidationError("request must be an object")
+                required = {"sourceRevision", "anchor", "scriptures", "footnotes", "message"}
+                allowed = required | {
+                    "excludedNoteIds",
+                    "includedTranslationSourceLines",
+                    "excludedTranslationSourceLines",
+                }
+                if not set(payload) <= allowed or not required <= set(payload):
+                    raise discussions.DiscussionValidationError("preview request has invalid fields")
+                excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
+                included_translation_source_lines = discussions.normalize_translation_source_lines(
+                    payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
+                )
+                excluded_translation_source_lines = discussions.normalize_translation_source_lines(
+                    payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+                )
+                document = discussions.create_discussion_document(
+                    {key: value for key, value in payload.items() if key in required},
+                    chapter_id,
+                    self.chapter_context(chapter_id)[1],
+                )
+                chapter_markdown, _, current_revision = self.chapter_context(chapter_id)
+                if payload["sourceRevision"] != current_revision:
+                    self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
+                    return
+                note_document = self.note_context(chapter_id)
+                builder = getattr(self.server.openai_client, "context_builder", None) or discussions.ContextBuilder()
+                request = discussions.ContextRequest.from_discussion(
+                    document,
+                    chapter_markdown,
+                    prompt_version=discussions.PROMPT_VERSION,
+                    note_document=note_document,
+                    excluded_note_ids=excluded_note_ids,
+                    included_translation_source_lines=included_translation_source_lines,
+                    excluded_translation_source_lines=excluded_translation_source_lines,
+                )
+                bundle = builder.build(request)
+            except (discussions.DiscussionValidationError, discussions.ContextBuildError, ValidationError) as error:
+                self.send_api_error(422, "invalid_context_preview", str(error))
+                return
+            except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+                self.send_api_error(500, "context_preview_unavailable", "无法读取本轮上下文。")
+                return
+            self.send_json(200, {"preview": bundle.preview, "estimates": bundle.estimates})
+            return
+
         if create_route is not None:
             chapter_id, _ = create_route
             try:
@@ -523,7 +607,28 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 if not isinstance(payload, dict) or payload.get("sourceRevision") != current_revision:
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
                     return
-                document = discussions.create_discussion_document(payload, chapter_id, chapter_title)
+                excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
+                included_translation_source_lines = discussions.normalize_translation_source_lines(
+                    payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
+                )
+                excluded_translation_source_lines = discussions.normalize_translation_source_lines(
+                    payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+                )
+                document = discussions.create_discussion_document(
+                    {
+                        key: value
+                        for key, value in payload.items()
+                        if key
+                        not in {
+                            "excludedNoteIds",
+                            "includedTranslationSourceLines",
+                            "excludedTranslationSourceLines",
+                        }
+                    },
+                    chapter_id,
+                    chapter_title,
+                )
+                note_document = self.note_context(chapter_id)
                 discussion_path = discussions.discussion_path(
                     self.server.discussion_root, chapter_id, document["id"]
                 )
@@ -537,10 +642,21 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             except discussions.DiscussionValidationError as error:
                 self.send_api_error(422, "invalid_discussion", str(error))
                 return
+            except (ValidationError, json.JSONDecodeError, UnicodeDecodeError):
+                self.send_api_error(500, "invalid_notes_file", "当前章节笔记无法读取。")
+                return
             except OSError:
                 self.send_api_error(500, "write_failed", "Discussion could not be saved")
                 return
-            self.run_discussion_stream(document, discussion_path, chapter_markdown)
+            self.run_discussion_stream(
+                document,
+                discussion_path,
+                chapter_markdown,
+                note_document=note_document,
+                excluded_note_ids=excluded_note_ids,
+                included_translation_source_lines=included_translation_source_lines,
+                excluded_translation_source_lines=excluded_translation_source_lines,
+            )
             return
 
         discussion_id, discussion_path = continue_route
@@ -549,8 +665,25 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             self.send_api_error(428, "revision_required", "If-Match is required")
             return
         try:
-            if not isinstance(payload, dict) or set(payload) not in ({"message"}, {"retry"}):
+            optional_context_fields = {
+                "excludedNoteIds",
+                "includedTranslationSourceLines",
+                "excludedTranslationSourceLines",
+            }
+            valid_message_request = (
+                isinstance(payload, dict)
+                and "message" in payload
+                and set(payload) <= {"message"} | optional_context_fields
+            )
+            if not isinstance(payload, dict) or not (valid_message_request or set(payload) == {"retry"}):
                 raise discussions.DiscussionValidationError("request must contain message or retry")
+            excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
+            included_translation_source_lines = discussions.normalize_translation_source_lines(
+                payload.get("includedTranslationSourceLines"), "includedTranslationSourceLines"
+            )
+            excluded_translation_source_lines = discussions.normalize_translation_source_lines(
+                payload.get("excludedTranslationSourceLines"), "excludedTranslationSourceLines"
+            )
             with self.server.discussions_lock:
                 if discussion_id in self.server.active_discussions:
                     self.send_api_error(409, "discussion_busy", "Discussion already has a response in progress")
@@ -566,16 +699,25 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 else:
                     pending = discussions.append_discussion_turn(document, payload["message"])
                 chapter_markdown, _, _ = self.chapter_context(document["chapterId"])
+                note_document = self.note_context(document["chapterId"])
                 pending_content = discussions.serialize_discussion_document(pending)
                 discussions.write_atomically(discussion_path, pending_content)
                 self.server.active_discussions.add(discussion_id)
         except discussions.DiscussionValidationError as error:
             self.send_api_error(422, "invalid_discussion", str(error))
             return
-        except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError, ValidationError):
             self.send_api_error(500, "discussion_unavailable", "Discussion could not be loaded or saved")
             return
-        self.run_discussion_stream(pending, discussion_path, chapter_markdown)
+        self.run_discussion_stream(
+            pending,
+            discussion_path,
+            chapter_markdown,
+            note_document=note_document,
+            excluded_note_ids=excluded_note_ids,
+            included_translation_source_lines=included_translation_source_lines,
+            excluded_translation_source_lines=excluded_translation_source_lines,
+        )
 
     def do_DELETE(self) -> None:
         route = self.discussion_route()

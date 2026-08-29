@@ -494,6 +494,34 @@ def validate_user_content(value: Any) -> str:
     return value
 
 
+def normalize_excluded_note_ids(value: Any) -> frozenset[str]:
+    if value is None:
+        return frozenset()
+    if not isinstance(value, list):
+        raise DiscussionValidationError("excludedNoteIds must be an array")
+    result: set[str] = set()
+    for index, note_id in enumerate(value):
+        result.add(validate_uuid(note_id, f"excludedNoteIds[{index}]"))
+    if len(result) != len(value):
+        raise DiscussionValidationError("excludedNoteIds must not contain duplicates")
+    return frozenset(result)
+
+
+def normalize_translation_source_lines(value: Any, field: str) -> frozenset[int]:
+    if value is None:
+        return frozenset()
+    if not isinstance(value, list):
+        raise DiscussionValidationError(f"{field} must be an array")
+    result: set[int] = set()
+    for index, source_line in enumerate(value):
+        if not isinstance(source_line, int) or isinstance(source_line, bool) or source_line <= 0:
+            raise DiscussionValidationError(f"{field}[{index}] must be a positive integer")
+        result.add(source_line)
+    if len(result) != len(value):
+        raise DiscussionValidationError(f"{field} must not contain duplicates")
+    return frozenset(result)
+
+
 def create_discussion_document(payload: Any, chapter_id: str, chapter_title: str) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise DiscussionValidationError("request must be an object")
@@ -610,11 +638,20 @@ def build_response_input(
     document: dict[str, Any],
     chapter_markdown: str,
     context_builder: ContextBuilder | None = None,
+    *,
+    note_document: dict[str, Any] | None = None,
+    excluded_note_ids: frozenset[str] = frozenset(),
+    included_translation_source_lines: frozenset[int] = frozenset(),
+    excluded_translation_source_lines: frozenset[int] = frozenset(),
 ) -> list[dict[str, Any]]:
     request = ContextRequest.from_discussion(
         document,
         chapter_markdown,
         prompt_version=PROMPT_VERSION,
+        note_document=note_document,
+        excluded_note_ids=excluded_note_ids,
+        included_translation_source_lines=included_translation_source_lines,
+        excluded_translation_source_lines=excluded_translation_source_lines,
     )
     bundle = (context_builder or ContextBuilder()).build(request)
     items = [
@@ -660,11 +697,28 @@ class OpenAIResponsesClient:
     def configured(self) -> bool:
         return bool(self._api_key)
 
-    def _request_payload(self, document: dict[str, Any], chapter_markdown: str) -> dict[str, Any]:
+    def _request_payload(
+        self,
+        document: dict[str, Any],
+        chapter_markdown: str,
+        *,
+        note_document: dict[str, Any] | None = None,
+        excluded_note_ids: frozenset[str] = frozenset(),
+        included_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_translation_source_lines: frozenset[int] = frozenset(),
+    ) -> dict[str, Any]:
         return {
             "model": self.model,
             "instructions": DEVELOPER_INSTRUCTIONS,
-            "input": build_response_input(document, chapter_markdown, self.context_builder),
+            "input": build_response_input(
+                document,
+                chapter_markdown,
+                self.context_builder,
+                note_document=note_document,
+                excluded_note_ids=excluded_note_ids,
+                included_translation_source_lines=included_translation_source_lines,
+                excluded_translation_source_lines=excluded_translation_source_lines,
+            ),
             "store": False,
             "stream": True,
             "max_output_tokens": self.max_output_tokens,
@@ -672,11 +726,30 @@ class OpenAIResponsesClient:
             "reasoning": {"effort": "medium"},
         }
 
-    def stream(self, document: dict[str, Any], chapter_markdown: str) -> Iterator[dict[str, Any]]:
+    def stream(
+        self,
+        document: dict[str, Any],
+        chapter_markdown: str,
+        *,
+        note_document: dict[str, Any] | None = None,
+        excluded_note_ids: frozenset[str] = frozenset(),
+        included_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_translation_source_lines: frozenset[int] = frozenset(),
+    ) -> Iterator[dict[str, Any]]:
         if not self.configured:
             raise OpenAIClientError("api_not_configured", "尚未配置 OpenAI API Key。", False, 503)
         try:
-            payload = json.dumps(self._request_payload(document, chapter_markdown), ensure_ascii=False).encode("utf-8")
+            payload = json.dumps(
+                self._request_payload(
+                    document,
+                    chapter_markdown,
+                    note_document=note_document,
+                    excluded_note_ids=excluded_note_ids,
+                    included_translation_source_lines=included_translation_source_lines,
+                    excluded_translation_source_lines=excluded_translation_source_lines,
+                ),
+                ensure_ascii=False,
+            ).encode("utf-8")
         except ContextBuildError as error:
             raise OpenAIClientError(
                 "context_invalid",

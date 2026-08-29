@@ -77,6 +77,7 @@ const startNewDiscussionButton = document.querySelector("#start-new-discussion")
 const cancelNewDiscussionButton = document.querySelector("#cancel-new-discussion");
 const discussionStartForm = document.querySelector("#discussion-start-form");
 const discussionFirstMessage = document.querySelector("#discussion-first-message");
+const discussionContextPreview = document.querySelector("#discussion-context-preview");
 const sendFirstMessage = document.querySelector("#send-first-message");
 const discussionList = document.querySelector("#discussion-list");
 const discussionEmptyState = document.querySelector("#discussion-empty-state");
@@ -88,6 +89,7 @@ const discussionThreadQuote = document.querySelector("#discussion-thread-quote")
 const discussionMessages = document.querySelector("#discussion-messages");
 const discussionReplyForm = document.querySelector("#discussion-reply-form");
 const discussionReply = document.querySelector("#discussion-reply");
+const discussionReplyContextPreview = document.querySelector("#discussion-reply-context-preview");
 const sendReply = document.querySelector("#send-reply");
 const discussionModel = document.querySelector("#discussion-model");
 
@@ -108,6 +110,7 @@ let activeDiscussionEtag = null;
 let discussionSelection = null;
 let discussionBusy = false;
 let activeStudyMode = "notes";
+const discussionPreviewState = { start: null, reply: null };
 
 const DESKTOP_STUDY_LAYOUT = window.matchMedia("(min-width: 68.01rem)");
 const READING_MIN_WIDTH = 512;
@@ -1019,6 +1022,9 @@ async function openDiscussion(id) {
     if (!response.ok) throw new Error(await responseError(response));
     activeDiscussion = await response.json();
     activeDiscussionEtag = response.headers.get("ETag");
+    discussionPreviewState.reply = null;
+    discussionReplyContextPreview.hidden = true;
+    sendReply.textContent = "发送";
     discussionSelection = {
       anchor: activeDiscussion.anchor,
       scriptures: activeDiscussion.context.scriptures,
@@ -1092,6 +1098,102 @@ async function postDiscussion(url, payload, etag = null) {
   }
 }
 
+function previewFingerprint(selection, message) {
+  return JSON.stringify([selection.anchor, message.trim()]);
+}
+
+function renderContextPreview(container, preview, state) {
+  const title = document.createElement("strong");
+  title.textContent = "本轮上下文预览";
+  const summary = document.createElement("p");
+  summary.textContent = `将发送完整章节、${preview.scriptureCount} 处经文、${preview.footnoteCount} 条脚注。`;
+  const fragment = document.createDocumentFragment();
+  fragment.append(title, summary);
+
+  if (preview.notes.length) {
+    const heading = document.createElement("p");
+    heading.className = "discussion-context-preview__heading";
+    heading.textContent = "你的相关笔记（可排除）";
+    fragment.append(heading);
+    preview.notes.forEach((note) => {
+      const label = document.createElement("label");
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = !state.excludedNoteIds.has(note.noteId);
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) state.excludedNoteIds.delete(note.noteId);
+        else state.excludedNoteIds.add(note.noteId);
+      });
+      const text = document.createElement("span");
+      text.textContent = `${note.relation === "exact" ? "同一选区" : "重叠选区"}：${note.body}`;
+      label.append(checkbox, text);
+      fragment.append(label);
+    });
+  }
+  if (preview.noteCandidates.length) {
+    const candidate = document.createElement("p");
+    candidate.className = "discussion-context-preview__muted";
+    candidate.textContent = `另有 ${preview.noteCandidates.length} 条同段但不重叠的笔记，本轮不发送。`;
+    fragment.append(candidate);
+  }
+  const translations = [...preview.translationEntities, ...preview.translationCandidates];
+  if (translations.length) {
+    const heading = document.createElement("p");
+    heading.className = "discussion-context-preview__heading";
+    heading.textContent = "译名命中（仅用于身份解析）";
+    fragment.append(heading);
+    translations.forEach((entity) => {
+      const label = document.createElement("label");
+      if (entity.matchType === "candidate") label.className = "discussion-context-preview__muted";
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = entity.matchType !== "candidate";
+      checkbox.addEventListener("change", () => {
+        if (entity.matchType === "candidate") {
+          if (checkbox.checked) state.includedTranslationSourceLines.add(entity.sourceLine);
+          else state.includedTranslationSourceLines.delete(entity.sourceLine);
+        } else if (checkbox.checked) {
+          state.excludedTranslationSourceLines.delete(entity.sourceLine);
+        } else {
+          state.excludedTranslationSourceLines.add(entity.sourceLine);
+        }
+      });
+      const text = document.createElement("span");
+      text.textContent = `${entity.chinese} ↔ ${entity.english}${entity.matchType === "candidate" ? "（候选，需确认）" : ""}`;
+      label.append(checkbox, text);
+      fragment.append(label);
+    });
+  }
+  container.replaceChildren(fragment);
+  container.hidden = false;
+}
+
+async function previewDiscussionContext(kind, selection, message) {
+  const state = {
+    fingerprint: previewFingerprint(selection, message),
+    excludedNoteIds: new Set(),
+    includedTranslationSourceLines: new Set(),
+    excludedTranslationSourceLines: new Set(),
+  };
+  const payload = {
+    sourceRevision: article.dataset.sourceRevision,
+    anchor: selection.anchor,
+    scriptures: selection.scriptures,
+    footnotes: selection.footnotes,
+    message,
+  };
+  const response = await fetch(`${discussionsApiUrl}/context-preview`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "X-QFG-Write-Token": writeToken },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error(await responseError(response));
+  const result = await response.json();
+  discussionPreviewState[kind] = state;
+  renderContextPreview(kind === "start" ? discussionContextPreview : discussionReplyContextPreview, result.preview, state);
+  return state;
+}
+
 function beginSelectedDiscussion(anchor, context) {
   pendingSelectionAnchor = null;
   pendingSelectionContext = null;
@@ -1100,6 +1202,9 @@ function beginSelectedDiscussion(anchor, context) {
   discussionSelection = { anchor, ...context };
   activeDiscussion = null;
   activeDiscussionEtag = null;
+  discussionPreviewState.start = null;
+  discussionContextPreview.hidden = true;
+  sendFirstMessage.textContent = "发送";
   discussionHome.hidden = false;
   discussionThread.hidden = true;
   switchStudyTab("discussions");
@@ -1113,17 +1218,37 @@ async function createDiscussion(event) {
     showDiscussionMessage("尚未安全注入 OPENAI_API_KEY，请先从已配置密钥的终端启动阅读器。", "error");
     return;
   }
+  const message = discussionFirstMessage.value;
+  const fingerprint = previewFingerprint(discussionSelection, message);
+  if (discussionPreviewState.start?.fingerprint !== fingerprint) {
+    sendFirstMessage.disabled = true;
+    try {
+      await previewDiscussionContext("start", discussionSelection, message);
+      sendFirstMessage.textContent = "确认发送";
+    } catch (error) {
+      showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
+    } finally {
+      sendFirstMessage.disabled = false;
+    }
+    return;
+  }
   const payload = {
     sourceRevision: article.dataset.sourceRevision,
     anchor: discussionSelection.anchor,
     scriptures: discussionSelection.scriptures,
     footnotes: discussionSelection.footnotes,
-    message: discussionFirstMessage.value,
+    message,
+    excludedNoteIds: [...discussionPreviewState.start.excludedNoteIds],
+    includedTranslationSourceLines: [...discussionPreviewState.start.includedTranslationSourceLines],
+    excludedTranslationSourceLines: [...discussionPreviewState.start.excludedTranslationSourceLines],
   };
   sendFirstMessage.disabled = true;
   try {
     await postDiscussion(discussionsApiUrl, payload);
     discussionFirstMessage.value = "";
+    discussionPreviewState.start = null;
+    discussionContextPreview.hidden = true;
+    sendFirstMessage.textContent = "发送";
   } catch (error) {
     showDiscussionMessage(`无法发起讨论：${error.message}`, "error");
   } finally {
@@ -1135,13 +1260,39 @@ async function continueDiscussion(event) {
   event.preventDefault();
   const message = discussionReply.value;
   if (!activeDiscussion || !message.trim()) return;
+  const selection = {
+    anchor: activeDiscussion.anchor,
+    scriptures: activeDiscussion.context.scriptures,
+    footnotes: activeDiscussion.context.footnotes,
+  };
+  const fingerprint = previewFingerprint(selection, message);
+  if (discussionPreviewState.reply?.fingerprint !== fingerprint) {
+    sendReply.disabled = true;
+    try {
+      await previewDiscussionContext("reply", selection, message);
+      sendReply.textContent = "确认发送";
+    } catch (error) {
+      showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
+    } finally {
+      sendReply.disabled = false;
+    }
+    return;
+  }
   try {
     discussionReply.value = "";
     await postDiscussion(
       `/api/discussions/${encodeURIComponent(activeDiscussion.id)}/messages`,
-      { message },
+      {
+        message,
+        excludedNoteIds: [...discussionPreviewState.reply.excludedNoteIds],
+        includedTranslationSourceLines: [...discussionPreviewState.reply.includedTranslationSourceLines],
+        excludedTranslationSourceLines: [...discussionPreviewState.reply.excludedTranslationSourceLines],
+      },
       activeDiscussionEtag,
     );
+    discussionPreviewState.reply = null;
+    discussionReplyContextPreview.hidden = true;
+    sendReply.textContent = "发送";
   } catch (error) {
     discussionReply.value = message;
     showDiscussionMessage(`无法继续讨论：${error.message}`, "error");
@@ -1313,6 +1464,16 @@ cancelNewDiscussionButton.addEventListener("click", () => {
 });
 discussionStartForm.addEventListener("submit", createDiscussion);
 discussionReplyForm.addEventListener("submit", continueDiscussion);
+discussionFirstMessage.addEventListener("input", () => {
+  discussionPreviewState.start = null;
+  discussionContextPreview.hidden = true;
+  sendFirstMessage.textContent = "发送";
+});
+discussionReply.addEventListener("input", () => {
+  discussionPreviewState.reply = null;
+  discussionReplyContextPreview.hidden = true;
+  sendReply.textContent = "发送";
+});
 backToDiscussions.addEventListener("click", () => {
   activeDiscussion = null;
   activeDiscussionEtag = null;

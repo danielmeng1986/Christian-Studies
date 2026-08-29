@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 import sys
 import tempfile
 import unittest
@@ -39,9 +40,9 @@ tags: [puritans, christian-life]
 """
 
 
-def request(chapter_markdown: str) -> object:
+def request(chapter_markdown: str, **overrides) -> object:
     revision = hashlib.sha256(chapter_markdown.encode("utf-8")).hexdigest()
-    return CONTEXT.ContextRequest(
+    values = dict(
         book_id="qfg",
         chapter_id="05",
         chapter_title="测试章",
@@ -59,6 +60,8 @@ def request(chapter_markdown: str) -> object:
         chapter_markdown=chapter_markdown,
         prompt_version=2,
     )
+    values.update(overrides)
+    return CONTEXT.ContextRequest(**values)
 
 
 class ContextBuilderTests(unittest.TestCase):
@@ -66,6 +69,22 @@ class ContextBuilderTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.metadata_path = Path(self.temporary.name) / "book.yml"
         self.metadata_path.write_text(metadata_source(), encoding="utf-8")
+        self.translation_path = Path(self.temporary.name) / "translations.json"
+        self.translation_path.write_text(
+            json.dumps(
+                {
+                    "entries": [
+                        {
+                            "english": "Owen, John",
+                            "chinese": "約翰．歐文",
+                            "sourceLine": 416,
+                        }
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -90,7 +109,7 @@ class ContextBuilderTests(unittest.TestCase):
 
     def test_build_is_deterministic_and_contains_no_network_or_writes(self) -> None:
         chapter = "\n# 测试章\n\n虚构选区正文。\n"
-        builder = CONTEXT.ContextBuilder(self.metadata_path)
+        builder = CONTEXT.ContextBuilder(self.metadata_path, self.translation_path)
         first = builder.build(request(chapter))
         second = builder.build(request(chapter))
         self.assertEqual(first, second)
@@ -111,6 +130,91 @@ class ContextBuilderTests(unittest.TestCase):
         self.metadata_path.write_text(metadata_source(book_id="another-book"), encoding="utf-8")
         with self.assertRaisesRegex(CONTEXT.ContextBuildError, "does not match"):
             CONTEXT.ContextBuilder(self.metadata_path).build(request("# 测试章\n"))
+
+    def test_classifies_and_excludes_user_notes_without_mutation(self) -> None:
+        chapter = "# 测试章\n\n虚构选区正文。\n"
+        notes = {
+            "schemaVersion": 1,
+            "bookId": "qfg",
+            "chapterId": "05",
+            "notes": [
+                {
+                    "id": "11111111-1111-4111-8111-111111111111",
+                    "sourceRevision": "a" * 64,
+                    "anchor": {"blockId": "05-p-0002", "startOffset": 0, "endOffset": 4, "exact": "虚构选区"},
+                    "body": "同一选区笔记",
+                    "updatedAt": "2026-08-29T08:00:00.000Z",
+                },
+                {
+                    "id": "22222222-2222-4222-8222-222222222222",
+                    "sourceRevision": "b" * 64,
+                    "anchor": {"blockId": "05-p-0002", "startOffset": 2, "endOffset": 6, "exact": "选区正文"},
+                    "body": "重叠笔记",
+                    "updatedAt": "2026-08-29T09:00:00.000Z",
+                },
+                {
+                    "id": "33333333-3333-4333-8333-333333333333",
+                    "sourceRevision": "c" * 64,
+                    "anchor": {"blockId": "05-p-0002", "startOffset": 6, "endOffset": 7, "exact": "。"},
+                    "body": "同段候选",
+                    "updatedAt": "2026-08-29T10:00:00.000Z",
+                },
+            ],
+        }
+        original = json.loads(json.dumps(notes))
+        bundle = CONTEXT.ContextBuilder(self.metadata_path, self.translation_path).build(
+            request(
+                chapter,
+                note_document=notes,
+                excluded_note_ids=frozenset({"22222222-2222-4222-8222-222222222222"}),
+            )
+        )
+        self.assertEqual([note["relation"] for note in bundle.envelope["personalStudy"]["notes"]], ["exact"])
+        self.assertEqual(bundle.manifest["included"]["noteIds"], ["11111111-1111-4111-8111-111111111111"])
+        self.assertEqual([note["relation"] for note in bundle.preview["noteCandidates"]], ["overlap", "sameBlock"])
+        self.assertEqual(notes, original)
+
+    def test_resolves_chinese_and_reversed_english_translation_names(self) -> None:
+        chapter = "# 测试章\n\n虚构选区正文。\n"
+        builder = CONTEXT.ContextBuilder(self.metadata_path, self.translation_path)
+        chinese = builder.build(request(chapter, question="約翰·歐文是谁？"))
+        english = builder.build(request(chapter, question="What did John   Owen write?"))
+        for bundle in (chinese, english):
+            entity = bundle.envelope["referenceResolution"]["entities"][0]
+            self.assertEqual(entity["indexForm"], "Owen, John")
+            self.assertEqual(entity["canonicalSearchName"], "John Owen")
+            self.assertEqual(bundle.manifest["included"]["translationSourceLines"], [416])
+
+    def test_ambiguous_translation_candidates_require_explicit_selection(self) -> None:
+        self.translation_path.write_text(
+            json.dumps(
+                {
+                    "entries": [
+                        {"english": "Example, Alpha", "chinese": "同名人", "sourceLine": 10},
+                        {"english": "Example, Beta", "chinese": "同名人", "sourceLine": 20},
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        chapter = "# 测试章\n\n虚构选区正文。\n"
+        builder = CONTEXT.ContextBuilder(self.metadata_path, self.translation_path)
+        default = builder.build(request(chapter, question="同名人是谁？"))
+        self.assertEqual(default.envelope["referenceResolution"]["entities"], [])
+        self.assertEqual(
+            [item["sourceLine"] for item in default.preview["translationCandidates"]],
+            [10, 20],
+        )
+        selected = builder.build(
+            request(
+                chapter,
+                question="同名人是谁？",
+                included_translation_source_lines=frozenset({20}),
+            )
+        )
+        self.assertEqual(selected.manifest["included"]["translationSourceLines"], [20])
+        self.assertEqual(selected.envelope["referenceResolution"]["entities"][0]["english"], "Example, Beta")
 
     def test_rejects_nested_or_unsupported_yaml(self) -> None:
         self.metadata_path.write_text(metadata_source() + "  nested: value\n", encoding="utf-8")

@@ -166,6 +166,7 @@
             <form class="discussion-start-form" id="discussion-start-form" hidden>
               <label for="discussion-first-message">你想从哪里开始讨论？</label>
               <textarea id="discussion-first-message" rows="6" maxlength="12000" required placeholder="例如：这段话如何理解？它与这里引用的经文有什么关系？"></textarea>
+              <div class="discussion-context-preview" id="discussion-context-preview" hidden></div>
               <div class="discussion-form-actions">
                 <button type="button" class="secondary-button" id="cancel-new-discussion">取消</button>
                 <button type="submit" class="primary-button" id="send-first-message">发送</button>
@@ -194,6 +195,7 @@
             <form class="discussion-reply-form" id="discussion-reply-form">
               <label for="discussion-reply">继续讨论</label>
               <textarea id="discussion-reply" rows="4" maxlength="12000" required placeholder="写下你的问题或回应……"></textarea>
+              <div class="discussion-context-preview" id="discussion-reply-context-preview" hidden></div>
               <div class="discussion-form-actions">
                 <span class="discussion-model" id="discussion-model"></span>
                 <button type="submit" class="primary-button" id="send-reply">发送</button>

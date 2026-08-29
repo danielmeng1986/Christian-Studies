@@ -1,8 +1,8 @@
 # 《追寻敬虔》AI ContextBuilder 开发交接说明
 
-状态：M2 完成后的交接基线  
+状态：M3 完成后的交接基线
 日期：2026-08-29  
-下一阶段：M3——个人笔记与译名解析  
+下一阶段：M4——本书跨章节检索
 Roadmap：[`AI-CONTEXT-ROADMAP-zh.md`](AI-CONTEXT-ROADMAP-zh.md)  
 产品规范：[`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md)  
 AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
@@ -12,6 +12,7 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 - M0 已完成：payload、安全边界、prompt 和现有讨论行为已有脱敏回归基线。
 - M1 已完成：`ContextBuilder` 已独立，书籍身份从 `Metadata/book.yml` 读取。
 - M2 已完成：标题路径、选中 block、前后正文 block 和服务器端锚点验证已经进入 context envelope。
+- M3 已完成：相关个人笔记和译名身份命中已进入 envelope/manifest，发送前可预览并做本轮排除或候选确认。
 - 当前讨论继续使用 OpenAI Responses API、`store: false`、`truncation: disabled` 和流式输出。
 - 当前 `promptVersion` 为 2；版本 1 的讨论仍可读取，并在下一次继续讨论时升级。
 - 当前 `contextSchemaVersion`、`retrievalVersion`、`sourceRegistryVersion` 均为 1。
@@ -61,9 +62,9 @@ Browser selection
 - `previousBlock` / `nextBlock` 指前后非空 paragraph；标题本身被选中时仍使用相邻 paragraph。
 - 章节、block、exact、prefix 或 suffix 不匹配时抛出 `ContextBuildError`；流式客户端映射为 `context_invalid`。
 
-## 5. 下一阶段 M3 的实施范围
+## 5. M3 的完成实现
 
-M3 分为两个可以分别测试、最后一起接入 preview 的子能力。
+M3 按“确定性证据 → payload/API → 最小预览”完成，没有升级讨论持久化 schema。
 
 ### 5.1 个人笔记
 
@@ -87,12 +88,12 @@ M3 分为两个可以分别测试、最后一起接入 preview 的子能力。
 6. 命中写入 `referenceResolution.entities`；manifest 写入实际使用的 `translationSourceLines`。
 7. developer instructions 已明确：译名命中只解决身份，不能证明人物观点。
 
-## 6. M3 开始前需要做的设计决定
+## 6. M4 开始前需要做的设计决定
 
-- `ContextRequest` 如何接收 note document 和当前 question，同时保持不主动读取真实用户文件。
-- 简化 preview 是增加只读 API，还是先在创建讨论请求中返回候选再确认。正式 preview/freeze API 属于 M5，不应在 M3 过度实现。
-- M3 是否先完成服务器 evidence，再做可排除 UI。建议按“确定性证据 → payload 测试 → 最小 UI”顺序。
-- exclusions 的临时请求字段如何设计，并确保旧客户端请求仍然合法。
+- 跨章节检索文档是否直接复用 `build_block_map`，并如何保留章节标题、heading path、block ID 和修订哈希。
+- 第一版候选生成使用纯内存确定性检索，还是建立可重建的 SQLite FTS5 索引。
+- 如何将 M3 确认的 `canonicalSearchName` 与当前问题关键词用于候选和排序，同时避免弱相关结果。
+- M4 仍应使用当前轻量预览字段，正式 freeze/turn manifest 持久化留到 M5。
 
 若上述选择会改变讨论创建的交互流程或 JSON schema，应先更新规范或 Roadmap，再实施。
 
@@ -129,20 +130,20 @@ node --check 'Books/追寻敬虔/Web/src/assets/app.js'
 node --check 'Books/追寻敬虔/Web/dist/assets/app.js'
 ```
 
-完整测试需要绑定临时 `127.0.0.1` 端口。M2 完成时：
+完整测试需要绑定临时 `127.0.0.1` 端口。M3 完成时：
 
-- 聚焦测试 23 项通过；
-- 全套测试 46 项通过；
+- 聚焦测试 27 项通过；
+- 全套测试 51 项通过；
 - 20 章构建成功；
 - 当前 3 个真实讨论通过只读锚点兼容审计。
 
 ## 9. 推荐给下一任务的起始提示
 
 ```text
-继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M3：个人笔记与译名解析。
+继续《追寻敬虔》AI ContextBuilder Roadmap，实施 M4：本书跨章节检索。
 先完整阅读 Web/AI-CONTEXT-HANDOFF-zh.md、AI-CONTEXT-ROADMAP-zh.md、
 AI-CONTEXT-SPEC-zh.md 和 AI-CONTEXT-SPEC.md。严格保护真实的 05.json 与
-Notes/Discussions/，测试只用临时目录和脱敏 fixture。先实现确定性的 note
-relation 与 translation index resolution，再接入 envelope/manifest 和最小预览 UI，
-最后运行全套测试并更新 Roadmap 状态。
+Notes/Discussions/，测试只用临时目录和脱敏 fixture。先建立全部 20 章的可定位
+检索单元和确定性候选，再实现来源感知排序、默认最多 5 段且每章最多 2 段的可排除预览，
+最后运行固定检索评估与全套测试并更新 Roadmap 状态。
 ```

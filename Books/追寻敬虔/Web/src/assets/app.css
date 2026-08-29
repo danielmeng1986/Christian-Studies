@@ -1031,6 +1031,44 @@ body.is-resizing-study-panel * {
   line-height: 1.6;
 }
 
+.discussion-context-preview {
+  display: grid;
+  gap: 0.42rem;
+  padding: 0.72rem;
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  color: var(--text);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.discussion-context-preview[hidden] {
+  display: none;
+}
+
+.discussion-context-preview p,
+.discussion-context-preview strong {
+  margin: 0;
+}
+
+.discussion-context-preview label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.45rem;
+  color: var(--text);
+}
+
+.discussion-context-preview__heading {
+  padding-top: 0.22rem;
+  font-weight: 650;
+}
+
+.discussion-context-preview__muted {
+  color: var(--muted);
+}
+
 .discussion-form-actions button,
 .discussion-thread__toolbar button,
 .discussion-message-card button {

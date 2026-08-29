@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -21,6 +23,7 @@ SCRIPT_ROOT = Path(__file__).resolve().parent
 WEB_ROOT = SCRIPT_ROOT.parent
 BOOK_ROOT = WEB_ROOT.parent
 DEFAULT_BOOK_METADATA_PATH = BOOK_ROOT / "Metadata/book.yml"
+DEFAULT_TRANSLATION_INDEX_PATH = BOOK_ROOT / "References/追寻敬虔译名对照表.json"
 
 KEY_RE = re.compile(r"\A[a-z][a-z0-9_]*\Z")
 INTEGER_RE = re.compile(r"\A-?(?:0|[1-9]\d*)\Z")
@@ -63,6 +66,11 @@ class ContextRequest:
     footnotes: list[dict[str, Any]]
     chapter_markdown: str
     prompt_version: int
+    question: str = ""
+    note_document: dict[str, Any] | None = None
+    excluded_note_ids: frozenset[str] = frozenset()
+    included_translation_source_lines: frozenset[int] = frozenset()
+    excluded_translation_source_lines: frozenset[int] = frozenset()
 
     @classmethod
     def from_discussion(
@@ -71,6 +79,10 @@ class ContextRequest:
         chapter_markdown: str,
         *,
         prompt_version: int,
+        note_document: dict[str, Any] | None = None,
+        excluded_note_ids: frozenset[str] = frozenset(),
+        included_translation_source_lines: frozenset[int] = frozenset(),
+        excluded_translation_source_lines: frozenset[int] = frozenset(),
     ) -> ContextRequest:
         return cls(
             book_id=document["bookId"],
@@ -82,7 +94,161 @@ class ContextRequest:
             footnotes=document["context"]["footnotes"],
             chapter_markdown=chapter_markdown,
             prompt_version=prompt_version,
+            question=next(
+                (
+                    message["content"]
+                    for message in reversed(document["messages"])
+                    if message["role"] == "user" and message["status"] == "completed"
+                ),
+                "",
+            ),
+            note_document=note_document,
+            excluded_note_ids=excluded_note_ids,
+            included_translation_source_lines=included_translation_source_lines,
+            excluded_translation_source_lines=excluded_translation_source_lines,
         )
+
+
+def resolve_note_evidence(
+    note_document: dict[str, Any] | None,
+    chapter_id: str,
+    selection: dict[str, Any],
+    excluded_note_ids: frozenset[str] = frozenset(),
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Classify validated chapter notes without reading or mutating their source."""
+
+    if note_document is None:
+        return [], []
+    if note_document.get("bookId") != "qfg" or note_document.get("chapterId") != chapter_id:
+        raise ContextBuildError("note document does not match the current chapter")
+    notes = note_document.get("notes")
+    if not isinstance(notes, list):
+        raise ContextBuildError("note document notes must be an array")
+
+    included: list[dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
+    for note in notes:
+        anchor = note.get("anchor", {})
+        if anchor.get("blockId") != selection["blockId"]:
+            continue
+        same_range = (
+            anchor.get("startOffset") == selection["startOffset"]
+            and anchor.get("endOffset") == selection["endOffset"]
+            and anchor.get("exact") == selection["exact"]
+        )
+        overlaps = (
+            isinstance(anchor.get("startOffset"), int)
+            and isinstance(anchor.get("endOffset"), int)
+            and anchor["startOffset"] < selection["endOffset"]
+            and anchor["endOffset"] > selection["startOffset"]
+        )
+        relation = "exact" if same_range else "overlap" if overlaps else "sameBlock"
+        evidence = {
+            "evidenceType": "user_note",
+            "relation": relation,
+            "noteId": note.get("id"),
+            "body": note.get("body"),
+            "sourceRevision": note.get("sourceRevision"),
+            "updatedAt": note.get("updatedAt"),
+        }
+        if relation in {"exact", "overlap"} and evidence["noteId"] not in excluded_note_ids:
+            included.append(evidence)
+        else:
+            evidence["includedByDefault"] = relation in {"exact", "overlap"}
+            evidence["excluded"] = evidence["noteId"] in excluded_note_ids
+            candidates.append(evidence)
+    return included, candidates
+
+
+def _search_normalize(value: str, *, strip_punctuation: bool = False) -> str:
+    normalized = unicodedata.normalize("NFKC", value).casefold()
+    normalized = normalized.translate(str.maketrans({"·": ".", "‧": ".", "・": ".", "．": "."}))
+    if strip_punctuation:
+        normalized = "".join(character if character.isalnum() else " " for character in normalized)
+    return " ".join(normalized.split())
+
+
+def _canonical_english_name(value: str) -> str:
+    family, separator, given = value.partition(",")
+    return f"{given.strip()} {family.strip()}" if separator and given.strip() else value.strip()
+
+
+def load_translation_index(path: Path) -> list[dict[str, Any]]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise ContextBuildError(f"translation index could not be read: {path}") from error
+    entries = value.get("entries") if isinstance(value, dict) else None
+    if not isinstance(entries, list):
+        raise ContextBuildError("translation index entries must be an array")
+    return entries
+
+
+def resolve_translation_entities(
+    entries: list[dict[str, Any]], focus: dict[str, Any], question: str
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Resolve deterministic exact/alias matches; retain ambiguity as candidates."""
+
+    primary_texts = [focus["selection"]["exact"], question, *focus["headingPath"]]
+    neighboring_texts = [
+        block["text"] for block in (focus.get("previousBlock"), focus.get("nextBlock")) if block
+    ]
+
+    def matches(texts: list[str]) -> list[tuple[dict[str, Any], str, str]]:
+        found: list[tuple[dict[str, Any], str, str]] = []
+        normalized_text = "\n".join(_search_normalize(text) for text in texts if text)
+        loose_text = _search_normalize("\n".join(texts), strip_punctuation=True)
+        for entry in entries:
+            english = entry.get("english")
+            chinese = entry.get("chinese")
+            if not isinstance(english, str) or not isinstance(chinese, str):
+                continue
+            canonical = _canonical_english_name(english)
+            variants = ((chinese, "exact"), (english, "exact"), (canonical, "alias"))
+            for surface, match_type in variants:
+                needle = _search_normalize(surface)
+                if needle and needle in normalized_text:
+                    found.append((entry, surface, match_type))
+                    break
+            else:
+                for surface in (chinese, english, canonical):
+                    needle = _search_normalize(surface, strip_punctuation=True)
+                    if needle and len(needle) >= 4 and needle in loose_text:
+                        found.append((entry, surface, "candidate"))
+                        break
+        return found
+
+    found = matches(primary_texts)
+    if not found:
+        found = matches(neighboring_texts)
+
+    grouped: dict[str, list[tuple[dict[str, Any], str, str]]] = {}
+    for item in found:
+        grouped.setdefault(_search_normalize(item[1], strip_punctuation=True), []).append(item)
+
+    entities: list[dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
+    seen_lines: set[int] = set()
+    for items in grouped.values():
+        ambiguous = len({item[0].get("sourceLine") for item in items}) > 1
+        for entry, surface, match_type in items:
+            source_line = entry.get("sourceLine")
+            if source_line in seen_lines:
+                continue
+            seen_lines.add(source_line)
+            effective_type = "candidate" if ambiguous else match_type
+            result = {
+                "evidenceType": "translation_index_match",
+                "surface": surface,
+                "canonicalSearchName": _canonical_english_name(entry["english"]),
+                "indexForm": entry["english"],
+                "english": entry["english"],
+                "chinese": entry["chinese"],
+                "matchType": effective_type,
+                "sourceLine": source_line,
+            }
+            (candidates if effective_type == "candidate" else entities).append(result)
+    return entities, candidates
 
 
 def _parse_scalar(raw_value: str, field: str) -> Any:
@@ -300,8 +466,13 @@ def resolve_reading_focus(chapter_markdown: str, chapter_id: str, anchor: dict[s
 class ContextBuilder:
     """Build a versioned evidence envelope without network access or filesystem writes."""
 
-    def __init__(self, metadata_path: Path = DEFAULT_BOOK_METADATA_PATH) -> None:
+    def __init__(
+        self,
+        metadata_path: Path = DEFAULT_BOOK_METADATA_PATH,
+        translation_index_path: Path = DEFAULT_TRANSLATION_INDEX_PATH,
+    ) -> None:
         self.metadata_path = metadata_path
+        self.translation_index_path = translation_index_path
 
     def build(self, request: ContextRequest) -> ContextBundle:
         book = load_book_metadata(self.metadata_path)
@@ -313,6 +484,22 @@ class ContextBuilder:
         footnotes = request.footnotes
         anchor = request.anchor
         focus = resolve_reading_focus(request.chapter_markdown, request.chapter_id, anchor)
+        notes, note_candidates = resolve_note_evidence(
+            request.note_document, request.chapter_id, focus["selection"], request.excluded_note_ids
+        )
+        default_entities, entity_candidates = resolve_translation_entities(
+            load_translation_index(self.translation_index_path), focus, request.question
+        )
+        entities = [
+            item
+            for item in default_entities
+            if item["sourceLine"] not in request.excluded_translation_source_lines
+        ]
+        entities.extend(
+            item
+            for item in entity_candidates
+            if item["sourceLine"] in request.included_translation_source_lines
+        )
 
         manifest = {
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
@@ -323,8 +510,8 @@ class ContextBuilder:
             "included": {
                 "scriptureIds": [item["id"] for item in scriptures],
                 "footnoteIds": [item["id"] for item in footnotes],
-                "noteIds": [],
-                "translationSourceLines": [],
+                "noteIds": [item["noteId"] for item in notes],
+                "translationSourceLines": [item["sourceLine"] for item in entities],
                 "bookPassages": [],
                 "localSourceChunks": [],
                 "webSources": [],
@@ -353,8 +540,8 @@ class ContextBuilder:
                 "scriptures": scriptures,
                 "footnotes": footnotes,
             },
-            "personalStudy": {"notes": []},
-            "referenceResolution": {"entities": [], "terms": []},
+            "personalStudy": {"notes": notes},
+            "referenceResolution": {"entities": entities, "terms": []},
             "retrieval": {
                 "bookPassages": [],
                 "localSourceChunks": [],
@@ -370,11 +557,19 @@ class ContextBuilder:
             "selection": anchor["exact"],
             "scriptureCount": len(scriptures),
             "footnoteCount": len(footnotes),
+            "notes": notes,
+            "noteCandidates": note_candidates,
+            "translationEntities": entities,
+            "translationCandidates": [
+                {**item, "included": item["sourceLine"] in request.included_translation_source_lines}
+                for item in entity_candidates
+            ],
             "webSearchEnabled": False,
         }
         evidence_characters = len(request.chapter_markdown) + len(anchor["exact"])
         evidence_characters += sum(len(item["text"]) for item in scriptures)
         evidence_characters += sum(len(item["text"]) for item in footnotes)
+        evidence_characters += sum(len(item["body"]) for item in notes)
         estimates = {
             "method": "characters",
             "evidenceCharacters": evidence_characters,
