@@ -117,6 +117,8 @@ M1–M5 构成本地上下文架构的第一个完整版本。M6 以后均为独
 
 ## 4. 阶段 0：冻结当前行为与建立评估基线
 
+实施状态：**已完成（2026-08-29）**。脱敏 payload fixture 与固定问题集位于 `Web/tests/fixtures/`；人工回答质量 rubric 见 [`AI-CONTEXT-EVAL-BASELINE-zh.md`](AI-CONTEXT-EVAL-BASELINE-zh.md)。完成时全套 33 项自动测试通过。
+
 ### 工作
 
 - 为当前 `build_response_input` 和 Responses API payload 建立快照或结构测试。

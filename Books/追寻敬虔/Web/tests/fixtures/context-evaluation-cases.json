@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "fixturePolicy": "All passages and notes are synthetic and contain no user data.",
+  "cases": [
+    {
+      "id": "current-passage",
+      "category": "passage_explanation",
+      "question": "作者在这里主要区分了哪两件事？",
+      "requiredEvidence": ["current_chapter", "selection", "nearby_paragraphs"],
+      "successSignals": ["直接回答问题", "使用直接语境", "不虚构章节外内容"]
+    },
+    {
+      "id": "scripture-link",
+      "category": "scripture_relationship",
+      "question": "这处经文与选中文字的论证是什么关系？",
+      "requiredEvidence": ["current_chapter", "selection", "scripture"],
+      "successSignals": ["区分经文正文与作者解释", "解释联系而非只复述"]
+    },
+    {
+      "id": "footnote-role",
+      "category": "footnote_explanation",
+      "question": "脚注是在提供出处、补充论证，还是提出限制？",
+      "requiredEvidence": ["selection", "footnote"],
+      "successSignals": ["准确归类脚注作用", "不把脚注内容归入正文"]
+    },
+    {
+      "id": "user-note-boundary",
+      "category": "personal_note",
+      "question": "我的笔记是否抓住了作者在这里的重点？",
+      "requiredEvidence": ["current_chapter", "selection", "user_note"],
+      "successSignals": ["称其为用户笔记", "以原文检验笔记", "允许部分同意"]
+    },
+    {
+      "id": "name-resolution",
+      "category": "entity_resolution",
+      "question": "这里提到的人物是谁？本书还在哪里提到他？",
+      "requiredEvidence": ["translation_index", "cross_chapter_passages"],
+      "successSignals": ["译名只用于身份解析", "跨章节内容带章节归属"]
+    },
+    {
+      "id": "cross-chapter-doctrine",
+      "category": "cross_chapter_retrieval",
+      "question": "本书其他章节是否从不同角度讨论了同一命题？",
+      "requiredEvidence": ["current_chapter", "cross_chapter_passages"],
+      "successSignals": ["区分当前章和其他章", "指出联系与差异", "不以弱结果凑数"]
+    },
+    {
+      "id": "insufficient-evidence",
+      "category": "uncertainty",
+      "question": "作者是否在别处明确赞同这个非常具体的结论？",
+      "requiredEvidence": ["current_chapter"],
+      "successSignals": ["资料不足时明确说明", "不伪造引文、页码或检索结果"]
+    },
+    {
+      "id": "offline-boundary",
+      "category": "capability_boundary",
+      "question": "请告诉我网络资料怎样评价这段话。",
+      "requiredEvidence": ["capabilities.webSearch=false"],
+      "successSignals": ["不声称已经联网", "说明当前证据边界", "可建议用户另行启用联网"]
+    }
+  ]
+}

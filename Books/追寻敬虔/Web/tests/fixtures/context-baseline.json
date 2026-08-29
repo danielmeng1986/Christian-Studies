@@ -1,0 +1,112 @@
+{
+  "chapterMarkdown": "\n# 测试章\n\n第一段是纯虚构的测试正文。\n\n第二段用于验证上下文组装，不来自真实笔记。\n",
+  "document": {
+    "schemaVersion": 1,
+    "id": "11111111-1111-4111-8111-111111111111",
+    "bookId": "qfg",
+    "chapterId": "05",
+    "sourceRevision": "6153627c2031bdc195c2b64c0828f307f1aecebbffc9a91d53810e573ebdfa39",
+    "anchor": {
+      "blockId": "05-p-0002",
+      "startOffset": 0,
+      "endOffset": 4,
+      "exact": "第二段用",
+      "prefix": "",
+      "suffix": "于验证"
+    },
+    "title": "第二段用｜这段话和所引经文有什么关系？",
+    "status": "active",
+    "promptVersion": 1,
+    "context": {
+      "chapterTitle": "测试章",
+      "scriptures": [
+        {
+          "id": "TST.1.1",
+          "translationId": "test-translation",
+          "translationLabel": "测试译本",
+          "citation": "测试 1:1",
+          "text": "这是虚构的经文测试快照。"
+        }
+      ],
+      "footnotes": [
+        {
+          "id": "test-note-1",
+          "text": "这是虚构的脚注测试快照。"
+        }
+      ]
+    },
+    "messages": [
+      {
+        "id": "22222222-2222-4222-8222-222222222222",
+        "role": "user",
+        "content": "这段话和所引经文有什么关系？",
+        "format": "markdown",
+        "status": "completed",
+        "model": null,
+        "responseId": null,
+        "usage": null,
+        "error": null,
+        "createdAt": "2026-08-29T08:00:00.000Z"
+      },
+      {
+        "id": "33333333-3333-4333-8333-333333333333",
+        "role": "assistant",
+        "content": "第一轮的虚构回答。",
+        "format": "markdown",
+        "status": "completed",
+        "model": "gpt-test",
+        "responseId": "resp_fixture_1",
+        "usage": {
+          "inputTokens": 100,
+          "outputTokens": 20,
+          "totalTokens": 120
+        },
+        "error": null,
+        "createdAt": "2026-08-29T08:00:01.000Z"
+      },
+      {
+        "id": "44444444-4444-4444-8444-444444444444",
+        "role": "user",
+        "content": "请再说明脚注在这里的作用。",
+        "format": "markdown",
+        "status": "completed",
+        "model": null,
+        "responseId": null,
+        "usage": null,
+        "error": null,
+        "createdAt": "2026-08-29T08:01:00.000Z"
+      },
+      {
+        "id": "55555555-5555-4555-8555-555555555555",
+        "role": "assistant",
+        "content": "",
+        "format": "markdown",
+        "status": "pending",
+        "model": null,
+        "responseId": null,
+        "usage": null,
+        "error": null,
+        "createdAt": "2026-08-29T08:01:00.000Z"
+      }
+    ],
+    "createdAt": "2026-08-29T08:00:00.000Z",
+    "updatedAt": "2026-08-29T08:01:00.000Z"
+  },
+  "expectedContextKeys": [
+    "bookId",
+    "chapterId",
+    "chapterTitle",
+    "sourceRevision",
+    "currentSourceRevision",
+    "sourceChanged",
+    "selection",
+    "scriptures",
+    "footnotes",
+    "chapterMarkdown"
+  ],
+  "expectedCompletedHistory": [
+    ["user", "这段话和所引经文有什么关系？"],
+    ["assistant", "第一轮的虚构回答。"],
+    ["user", "请再说明脚注在这里的作用。"]
+  ]
+}
