@@ -28,7 +28,7 @@ Generated files are written to `Books/追寻敬虔/Web/dist/` and are intentiona
 
 Open `http://127.0.0.1:4173/chapters/01/` in Safari or Chrome. Use the top menu to navigate between all 20 chapters.
 
-The current reader deterministically builds all 20 chapters and includes working chapter navigation, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, per-chapter annotations, AI discussions, and a local source library. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
+The current reader deterministically builds all 20 chapters and includes working chapter navigation, a current-chapter outline with live section/progress feedback, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, per-chapter annotations, AI discussions, and a local source library. The outline opens from the top toolbar and stays separate from reading-context references. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
 
 The divider beside the study panel can be dragged or adjusted with the arrow keys, and double-clicking restores the default width. Notes and AI discussions remember separate widths. AI discussion mode collapses the reference panel by default and opens it as an overlay on demand so it does not squeeze the reading or discussion columns. On narrow screens both side panels remain overlays.
 

@@ -28,6 +28,30 @@
 {{CHAPTER_NAVIGATION}}
           </div>
         </div>
+
+        <div class="outline-menu">
+          <button type="button" class="outline-menu__trigger" id="section-navigation" aria-label="打开本章目录" aria-haspopup="true" aria-expanded="false" aria-controls="section-menu-panel">
+            <span class="outline-menu__icon" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span class="outline-menu__label">目录</span>
+            <span class="outline-menu__progress-value" id="reading-progress-value">0%</span>
+          </button>
+          <nav class="outline-menu__panel" id="section-menu-panel" aria-label="本章目录" hidden>
+            <div class="outline-menu__header">
+              <div>
+                <p class="eyebrow">IN THIS CHAPTER</p>
+                <h2>本章目录</h2>
+              </div>
+              <span class="outline-menu__header-progress" id="reading-progress-label">已读 0%</span>
+            </div>
+            <div class="outline-menu__progress" aria-hidden="true">
+              <span id="reading-progress-bar"></span>
+            </div>
+            <p class="outline-menu__current" id="current-section-label">章首</p>
+            <ol class="outline-menu__list">
+{{SECTION_NAVIGATION}}
+            </ol>
+          </nav>
+        </div>
       </div>
 
       <div class="toolbar__group theme-switcher" role="group" aria-label="阅读主题">

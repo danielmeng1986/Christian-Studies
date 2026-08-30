@@ -184,12 +184,14 @@ a {
 .toolbar__navigation {
   min-width: 10rem;
   flex: 1 1 24rem;
+  gap: 0.45rem;
   justify-content: center;
 }
 
 .chapter-menu {
   position: relative;
   width: min(100%, 28rem);
+  min-width: 0;
 }
 
 .chapter-menu__trigger {
@@ -279,6 +281,197 @@ a {
   color: var(--accent);
   background: var(--accent-soft);
   font-weight: 650;
+}
+
+.outline-menu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.outline-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 2.25rem;
+  padding: 0 0.65rem;
+  color: var(--muted);
+  background: var(--button-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  cursor: pointer;
+}
+
+.outline-menu__trigger:hover,
+.outline-menu__trigger[aria-expanded="true"] {
+  color: var(--text);
+  background: var(--button-hover);
+  border-color: var(--border-strong);
+}
+
+.outline-menu__icon {
+  display: grid;
+  gap: 0.18rem;
+  width: 0.85rem;
+}
+
+.outline-menu__icon span {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+.outline-menu__icon span:nth-child(2) {
+  width: 72%;
+}
+
+.outline-menu__label,
+.outline-menu__progress-value {
+  font-size: 0.76rem;
+}
+
+.outline-menu__progress-value {
+  min-width: 2.1rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.outline-menu__panel {
+  position: fixed;
+  z-index: 120;
+  top: calc(var(--toolbar-height) + 0.45rem);
+  left: 50%;
+  width: min(25rem, calc(100vw - 1.2rem));
+  max-height: calc(100vh - var(--toolbar-height) - 1rem);
+  overflow: auto;
+  padding: 1rem;
+  color: var(--text);
+  background: var(--panel-bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 0.7rem;
+  box-shadow: var(--shadow);
+  scrollbar-gutter: stable;
+  transform: translateX(-50%);
+}
+
+.outline-menu__panel[hidden] {
+  display: none;
+}
+
+.outline-menu__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.outline-menu__header .eyebrow {
+  margin: 0 0 0.25rem;
+}
+
+.outline-menu__header h2 {
+  margin: 0;
+  font-family: ui-serif, "Songti TC", "Songti SC", STSong, serif;
+  font-size: 1.15rem;
+}
+
+.outline-menu__header-progress {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 0.74rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.outline-menu__progress {
+  height: 0.22rem;
+  margin: 0.85rem 0 0.9rem;
+  overflow: hidden;
+  background: var(--button-bg);
+  border-radius: 999px;
+}
+
+.outline-menu__progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 120ms ease-out;
+}
+
+.outline-menu__current {
+  overflow: hidden;
+  margin: 0 0 0.55rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.outline-menu__current::before {
+  margin-right: 0.35rem;
+  color: var(--faint);
+  content: "正在阅读";
+}
+
+.outline-menu__list {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: outline-section;
+}
+
+.outline-menu__item[data-level="h2"] {
+  counter-increment: outline-section;
+}
+
+.outline-menu__option {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  gap: 0.35rem;
+  align-items: baseline;
+  padding: 0.55rem 0.6rem;
+  color: var(--muted);
+  border-radius: 0.42rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.outline-menu__option::before {
+  color: var(--faint);
+  content: counter(outline-section, decimal-leading-zero);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+.outline-menu__item[data-level="h1"] .outline-menu__option::before {
+  color: var(--accent);
+  content: "章首";
+  letter-spacing: 0;
+}
+
+.outline-menu__option:hover,
+.outline-menu__option:focus-visible {
+  color: var(--text);
+  background: var(--button-hover);
+  outline: none;
+}
+
+.outline-menu__option[aria-current="location"] {
+  color: var(--text);
+  background: var(--accent-soft);
+  box-shadow: inset 0.18rem 0 var(--accent);
+  font-weight: 650;
+}
+
+.outline-menu__option[aria-current="location"]::before {
+  color: var(--accent);
 }
 
 .theme-switcher {
@@ -1511,6 +1704,7 @@ body.is-resizing-study-panel * {
 .chapter-article h1,
 .chapter-article h2 {
   color: var(--text);
+  scroll-margin-top: 2rem;
   text-align: left;
   text-wrap: balance;
 }
@@ -1694,6 +1888,10 @@ body.is-resizing-study-panel * {
     min-width: 0;
   }
 
+  .chapter-menu {
+    flex: 1 1 auto;
+  }
+
   .toolbar__identity .toolbar__divider,
   .toolbar__identity .toolbar__chapter {
     display: none;
@@ -1748,6 +1946,7 @@ body.is-resizing-study-panel * {
 
   .toolbar {
     padding: 0 0.6rem;
+    backdrop-filter: none;
   }
 
   .toolbar__book,
@@ -1761,6 +1960,18 @@ body.is-resizing-study-panel * {
 
   .chapter-menu__trigger {
     padding-left: 0.5rem;
+  }
+
+  .outline-menu__trigger {
+    padding: 0 0.55rem;
+  }
+
+  .outline-menu__progress-value {
+    display: none;
+  }
+
+  .outline-menu__panel {
+    padding: 0.85rem;
   }
 
   .theme-switcher {

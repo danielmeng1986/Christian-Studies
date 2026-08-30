@@ -11,6 +11,7 @@ const THEMES = new Set(["light", "sepia", "dark"]);
 const root = document.documentElement;
 const shell = document.querySelector("#app-shell");
 const article = document.querySelector("#chapter-article");
+const readingColumn = document.querySelector(".reading-column");
 const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
 const leftToggle = document.querySelector("#toggle-references");
 const rightToggle = document.querySelector("#toggle-notes");
@@ -20,6 +21,14 @@ const studyPanelResizer = document.querySelector("#study-panel-resizer");
 const chapterNavigation = document.querySelector("#chapter-navigation");
 const chapterMenu = document.querySelector("#chapter-menu-list");
 const currentChapterLink = chapterMenu.querySelector('[aria-current="page"]');
+const sectionNavigation = document.querySelector("#section-navigation");
+const sectionMenu = document.querySelector("#section-menu-panel");
+const outlineLinks = [...sectionMenu.querySelectorAll("[data-outline-target]")];
+const outlineSections = outlineLinks.map((link) => ({ link, target: document.getElementById(link.dataset.outlineTarget) }));
+const readingProgressValue = document.querySelector("#reading-progress-value");
+const readingProgressLabel = document.querySelector("#reading-progress-label");
+const readingProgressBar = document.querySelector("#reading-progress-bar");
+const currentSectionLabel = document.querySelector("#current-section-label");
 const chapterId = article.dataset.chapterId;
 const notesApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/notes`;
 const discussionsApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/discussions`;
@@ -134,6 +143,7 @@ let activeStudyMode = "notes";
 let librarySources = [];
 let libraryPreviewId = null;
 const discussionPreviewState = { start: null, reply: null };
+let readingPositionFrame = null;
 
 const DESKTOP_STUDY_LAYOUT = window.matchMedia("(min-width: 68.01rem)");
 const READING_MIN_WIDTH = 512;
@@ -245,9 +255,56 @@ function resetStudyPanelWidth() {
 }
 
 function setChapterMenuOpen(open) {
+  if (open) {
+    sectionMenu.hidden = true;
+    sectionNavigation.setAttribute("aria-expanded", "false");
+  }
   chapterMenu.hidden = !open;
   chapterNavigation.setAttribute("aria-expanded", String(open));
   if (open) currentChapterLink?.scrollIntoView({ block: "nearest" });
+}
+
+function setOutlineMenuOpen(open) {
+  if (open) {
+    chapterMenu.hidden = true;
+    chapterNavigation.setAttribute("aria-expanded", "false");
+  }
+  sectionMenu.hidden = !open;
+  sectionNavigation.setAttribute("aria-expanded", String(open));
+  sectionNavigation.setAttribute("aria-label", open ? "关闭本章目录" : "打开本章目录");
+  if (open) {
+    sectionMenu.querySelector('[aria-current="location"]')?.scrollIntoView({ block: "nearest" });
+  }
+}
+
+function updateReadingPosition() {
+  readingPositionFrame = null;
+  const articleBottom = article.offsetTop + article.offsetHeight;
+  const scrollableArticle = Math.max(1, articleBottom - readingColumn.clientHeight);
+  const progress = Math.round(Math.max(0, Math.min(1, readingColumn.scrollTop / scrollableArticle)) * 100);
+  readingProgressValue.textContent = `${progress}%`;
+  readingProgressLabel.textContent = `已读 ${progress}%`;
+  readingProgressBar.style.width = `${progress}%`;
+
+  const readingTop = readingColumn.getBoundingClientRect().top;
+  const activationLine = readingTop + Math.max(96, Math.min(180, readingColumn.clientHeight * 0.22));
+  let active = outlineSections.find((section) => section.target) || null;
+  outlineSections.forEach((section) => {
+    if (section.target && section.target.getBoundingClientRect().top <= activationLine) active = section;
+  });
+  if (!active) return;
+
+  outlineSections.forEach((section) => {
+    if (section === active) section.link.setAttribute("aria-current", "location");
+    else section.link.removeAttribute("aria-current");
+  });
+  currentSectionLabel.textContent = active.target.textContent.trim();
+  sectionNavigation.title = `当前：${active.target.textContent.trim()}（已读 ${progress}%）`;
+}
+
+function scheduleReadingPositionUpdate() {
+  if (readingPositionFrame !== null) return;
+  readingPositionFrame = window.requestAnimationFrame(updateReadingPosition);
 }
 
 function footnoteTemplate(footnoteId) {
@@ -1724,19 +1781,32 @@ themeButtons.forEach((button) => button.addEventListener("click", () => applyThe
 chapterNavigation.addEventListener("click", () => {
   setChapterMenuOpen(chapterNavigation.getAttribute("aria-expanded") !== "true");
 });
+sectionNavigation.addEventListener("click", () => {
+  setOutlineMenuOpen(sectionNavigation.getAttribute("aria-expanded") !== "true");
+});
 chapterMenu.addEventListener("click", (event) => {
   const link = event.target.closest("a[href]");
   if (!link) return;
   if (!confirmDiscard()) event.preventDefault();
   setChapterMenuOpen(false);
 });
+sectionMenu.addEventListener("click", (event) => {
+  if (!event.target.closest("a[data-outline-target]")) return;
+  setOutlineMenuOpen(false);
+});
 document.addEventListener("click", (event) => {
   if (!event.target.closest(".chapter-menu")) setChapterMenuOpen(false);
+  if (!event.target.closest(".outline-menu")) setOutlineMenuOpen(false);
 });
 document.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape" || chapterMenu.hidden) return;
-  setChapterMenuOpen(false);
-  chapterNavigation.focus();
+  if (event.key !== "Escape") return;
+  if (!chapterMenu.hidden) {
+    setChapterMenuOpen(false);
+    chapterNavigation.focus();
+  } else if (!sectionMenu.hidden) {
+    setOutlineMenuOpen(false);
+    sectionNavigation.focus();
+  }
 });
 leftToggle.addEventListener("click", () => applyPanelState("left", leftToggle.getAttribute("aria-expanded") !== "true"));
 rightToggle.addEventListener("click", () => applyPanelState("right", rightToggle.getAttribute("aria-expanded") !== "true"));
@@ -1921,10 +1991,13 @@ window.addEventListener("beforeunload", (event) => {
   event.returnValue = "";
 });
 window.addEventListener("resize", applyStoredStudyPanelWidth);
+window.addEventListener("resize", scheduleReadingPositionUpdate);
+readingColumn.addEventListener("scroll", scheduleReadingPositionUpdate, { passive: true });
 
 applyTheme(preferredTheme(), false);
 applyPanelState("left", storedPanelState(STORAGE_KEYS.leftPanel), false);
 applyPanelState("right", storedPanelState(STORAGE_KEYS.rightPanel), false);
 applyStoredStudyPanelWidth();
+updateReadingPosition();
 renderReferences();
 loadNotes();

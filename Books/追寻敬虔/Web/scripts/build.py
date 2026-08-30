@@ -151,15 +151,16 @@ def render_markdown(
     books: dict[str, dict],
     available_translations: list[str],
     default_translation: str,
-) -> tuple[str, list[str], list[dict]]:
+) -> tuple[str, list[str], list[dict], list[dict[str, str]]]:
     parser = markdown_parser()
     tokens = parser.parse(markdown_source)
     block_index = 0
     referenced_footnotes: list[str] = []
     referenced_scriptures: list[dict] = []
+    outline_headings: list[dict[str, str]] = []
     scripture_ids: set[str] = set()
 
-    for token in tokens:
+    for token_index, token in enumerate(tokens):
         if token.type == "inline" and token.children:
             for child in token.children:
                 if child.type != "link_open":
@@ -199,8 +200,33 @@ def render_markdown(
         block_id = f"{chapter_id}-{tag}-{block_index:04d}"
         token.attrSet("id", block_id)
         token.attrSet("data-block-id", block_id)
+        if token.type == "heading_open":
+            inline = tokens[token_index + 1] if token_index + 1 < len(tokens) else None
+            if inline is None or inline.type != "inline" or not inline.content.strip():
+                raise ValueError(f"Missing text for chapter heading: {block_id}")
+            outline_headings.append({"id": block_id, "level": tag, "text": inline.content.strip()})
 
-    return parser.renderer.render(tokens, parser.options, {}), referenced_footnotes, referenced_scriptures
+    return (
+        parser.renderer.render(tokens, parser.options, {}),
+        referenced_footnotes,
+        referenced_scriptures,
+        outline_headings,
+    )
+
+
+def render_section_navigation(headings: list[dict[str, str]]) -> str:
+    items = []
+    for index, heading in enumerate(headings):
+        heading_id = html.escape(heading["id"], quote=True)
+        level = html.escape(heading["level"], quote=True)
+        label = html.escape(heading["text"])
+        current = ' aria-current="location"' if index == 0 else ""
+        items.append(
+            f'<li class="outline-menu__item" data-level="{level}">'
+            f'<a class="outline-menu__option" data-outline-target="{heading_id}" '
+            f'href="#{heading_id}"{current}>{label}</a></li>'
+        )
+    return "\n".join(items)
 
 
 def citation_selector(reference: dict) -> str:
@@ -358,7 +384,7 @@ def build_chapter(
     title = str(chapter["title"])
     source_revision = hashlib.sha256(body.encode("utf-8")).hexdigest()
     scripture_config, translations, books = scripture_context
-    article_html, referenced_footnotes, referenced_scriptures = render_markdown(
+    article_html, referenced_footnotes, referenced_scriptures, outline_headings = render_markdown(
         body,
         chapter_id,
         books,
@@ -382,6 +408,7 @@ def build_chapter(
         html.escape(f'{chapter["label"]} · {chapter["short_title"]}'),
     )
     output = output.replace("{{CHAPTER_NAVIGATION}}", render_chapter_navigation(chapters, chapter_id))
+    output = output.replace("{{SECTION_NAVIGATION}}", render_section_navigation(outline_headings))
     output = output.replace("{{SOURCE_REVISION}}", source_revision)
     output = output.replace("{{ARTICLE_HTML}}", article_html)
     output = output.replace("{{FOOTNOTE_TEMPLATES}}", footnote_templates)

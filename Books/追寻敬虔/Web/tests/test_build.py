@@ -33,6 +33,8 @@ class StructureParser(HTMLParser):
         self.article_counts: dict[str, int] = {}
         self.block_ids: list[str] = []
         self.block_anchor_ids: list[str] = []
+        self.heading_ids: list[str] = []
+        self.outline_targets: list[str] = []
         self.footnote_refs: list[str] = []
         self.footnote_templates: list[str] = []
         self.scripture_refs: list[str] = []
@@ -44,12 +46,16 @@ class StructureParser(HTMLParser):
             self.in_article = True
         if tag == "template" and attributes.get("data-footnote-id"):
             self.footnote_templates.append(attributes["data-footnote-id"] or "")
+        if attributes.get("data-outline-target"):
+            self.outline_targets.append(attributes["data-outline-target"] or "")
         if not self.in_article:
             return
         self.article_counts[tag] = self.article_counts.get(tag, 0) + 1
         if "data-block-id" in attributes and attributes["data-block-id"]:
             self.block_ids.append(attributes["data-block-id"] or "")
             self.block_anchor_ids.append(attributes.get("id") or "")
+            if tag in {"h1", "h2"}:
+                self.heading_ids.append(attributes.get("id") or "")
         if "footnote-ref" in (attributes.get("class") or ""):
             self.footnote_refs.append(attributes.get("data-footnote-id") or "")
         if "scripture-ref" in (attributes.get("class") or ""):
@@ -85,6 +91,12 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(self.output.count('class="chapter-menu__option"'), 20)
         self.assertIn('aria-selected="true" aria-current="page" href="/chapters/05/"', self.output)
         self.assertIn('role="listbox" aria-label="选择章节"', self.output)
+        self.assertIn('id="section-navigation"', self.output)
+        self.assertIn('id="section-menu-panel" aria-label="本章目录"', self.output)
+        parser = StructureParser()
+        parser.feed(self.output)
+        self.assertEqual(parser.outline_targets, parser.heading_ids)
+        self.assertEqual(len(parser.outline_targets), 9)
         for chapter_id in range(1, 21):
             self.assertTrue((BUILD.DIST_ROOT / f"chapters/{chapter_id:02d}/index.html").is_file())
 
@@ -92,6 +104,15 @@ class BuildTests(unittest.TestCase):
         app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
         self.assertIn("sortedNotes.slice(0, 3)", app_js)
         self.assertIn('id="toggle-all-notes"', self.output)
+
+    def test_outline_tracks_section_and_reading_progress(self) -> None:
+        app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
+        app_css = (BUILD.ASSET_ROOT / "app.css").read_text(encoding="utf-8")
+        self.assertIn("function updateReadingPosition()", app_js)
+        self.assertIn('readingColumn.addEventListener("scroll"', app_js)
+        self.assertIn('section.link.setAttribute("aria-current", "location")', app_js)
+        self.assertIn(".outline-menu__option[aria-current=\"location\"]", app_css)
+        self.assertIn("@media (prefers-reduced-motion: reduce)", app_css)
 
     def test_ai_discussion_controls_are_built(self) -> None:
         app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")

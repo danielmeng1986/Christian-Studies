@@ -142,7 +142,7 @@ The canonical annotatable text:
 
 Identical source input must produce byte-stable or semantically stable output. Generated files must not contain build timestamps, random IDs, absolute user paths, or note JSON.
 
-Any clean operation must target only the explicit `Web/dist/` directory. Post-build validation must check headings, footnote count and targets, resource paths, and the absence of note content.
+Any clean operation must target only the explicit `Web/dist/` directory. Post-build validation must check headings, outline targets, footnote count and targets, resource paths, and the absence of note content.
 
 ## 5. Page and style contract
 
@@ -158,7 +158,9 @@ Application toolbar
 
 ### 5.1 Toolbar and columns
 
-The toolbar includes the chapter title, a reserved chapter-navigation control, three theme choices, left/right panel toggles, and note save status. In the Chapter 05 MVP, navigation may be a disabled single-option dropdown; it must not link to unbuilt chapters.
+The toolbar includes the chapter title, chapter navigation, a current-chapter outline control, three theme choices, left/right panel toggles, and note save status. The build derives the outline in source order from the rendered `h1` and `h2` tokens and links each entry to the same deterministic block ID assigned to that heading.
+
+The outline opens as a toolbar popover, not as content in the reference panel. Browser code updates `aria-current="location"`, the current-section label, and reading percentage from the center column's scroll position. Opening, closing, or using the outline must not change reference, note, or discussion state. Escape closes the popover and restores focus to its trigger; narrow viewports use the same outline and reduce only nonessential trigger text.
 
 - Use CSS Grid when all three columns fit.
 - Target 42–48 full-width Chinese characters in the reading column.

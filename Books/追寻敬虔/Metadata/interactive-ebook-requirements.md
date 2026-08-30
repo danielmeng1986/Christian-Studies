@@ -120,10 +120,12 @@ Provide a compact fixed toolbar with:
 - left-panel toggle;
 - right-panel toggle;
 - current chapter title;
-- a reserved chapter-navigation control, shown as a disabled or single-option menu in the Chapter 05 MVP;
+- chapter navigation for every built chapter;
+- a separate current-chapter outline generated from the chapter title and section headings;
 - note save status.
 
 “Show all” and “Clear” belong at the top of the footnote panel. The note panel must clearly show the current editor state.
+The current-chapter outline belongs in a toolbar popover rather than the left reference panel: it is persistent navigation, while the reference panel holds footnotes and Scripture opened from the current reading context. The outline must highlight the current section, expose reading progress, support in-page heading navigation, and remain usable by keyboard on narrow viewports.
 
 ## 7. Functional requirements
 
@@ -167,7 +169,7 @@ Requirements:
 
 The left-panel internal model must reserve a content `type`, initially `footnote`, so that `scripture` can be added later without rewriting the panel architecture.
 
-The toolbar must reserve a table-of-contents or chapter dropdown location even though the MVP contains only Chapter 05. It must not fabricate links to chapters that have not been built.
+The toolbar must keep chapter-to-chapter navigation distinct from the current-chapter outline. Outline links must be derived from rendered headings and target the same deterministic heading IDs used by the article.
 
 ### 7.4 Creating a note
 
@@ -316,6 +318,7 @@ Workflow:
 - the complete Chapter 05 body and all 35 footnote entries;
 - light, dark, and sepia themes;
 - desktop three-column layout with narrow-screen drawers;
+- a navigable chapter outline with current-section and reading-progress feedback;
 - individual and multiple footnote opening, closing, show-all, and clear-all;
 - same-block selection and a floating “Write note” action;
 - plain-text create, save, hide, reopen, edit, and delete;
@@ -331,6 +334,8 @@ Workflow:
 - The chapter title, eight section headings, paragraphs, quotations, and emphasis render correctly.
 - Themes switch immediately and survive refresh.
 - Independent panel scrolling does not cause unrelated columns to jump.
+- Every chapter title and section heading appears in source order in the chapter outline, and selecting an item moves the reading column to that heading.
+- Scrolling updates the current outline item and reading percentage without changing footnote, note, or discussion state.
 
 ### Footnotes
 
@@ -365,6 +370,7 @@ Workflow:
 6. Use one repository JSON file per chapter as the sole source of truth; do not use IndexedDB in version 1.
 7. Keep notes out of `Web/dist`; deterministic generated output is not committed.
 8. Use one orange highlight palette adjusted for each theme.
+9. Keep the chapter outline in an independent toolbar popover rather than mixing it into the reference panel.
 
 The MVP uses only the minimum loopback endpoints needed for chapter notes. The local API may later be reorganized into a broader REST API when multiple chapters or additional resources justify it; that future shape is not required for the Chapter 05 MVP.
 
