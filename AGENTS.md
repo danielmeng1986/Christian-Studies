@@ -35,6 +35,12 @@ intentionally changes architecture must update the governing document in the
 same change. Do not silently choose between conflicting specifications: report
 the conflict and either resolve it in scope or ask for direction.
 
+Planning drafts, architecture proposals, recommendations, and open questions do
+not become implementation authority merely because they exist under `Docs/`.
+Their status labels control. Implement a proposed structural decision only
+after it has an accepted decision record and the affected current normative
+documents have been updated.
+
 ## Non-negotiable boundaries
 
 - Never edit `Books/*/Web/dist/` directly. Change its inputs and rebuild it.

@@ -1,6 +1,7 @@
 # Reader Architecture
 
-**Status:** Core normative specification  
+**Status:** Core normative specification
+
 **Current implementation:** `Books/追寻敬虔/Web/`
 
 This document defines the repository-level contract for local book readers. The

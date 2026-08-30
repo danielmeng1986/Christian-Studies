@@ -1,6 +1,7 @@
 # Validation Contract
 
-**Status:** Core normative specification  
+**Status:** Core normative specification
+
 **Scope:** Generation, automated checks, and verification claims
 
 Documentation defines repository truth and boundaries. Generators make derived

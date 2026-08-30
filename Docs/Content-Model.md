@@ -1,6 +1,7 @@
 # Content Model
 
-**Status:** Core normative specification  
+**Status:** Core normative specification
+
 **Scope:** Repository content, user data, and derived artifacts
 
 This document classifies repository data so that editors and tools know what

@@ -1,6 +1,6 @@
 # Christian Studies Documentation
 
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Active repository specification
 
 This directory defines the repository's architectural truth, content
@@ -32,6 +32,7 @@ may add detail but may not silently redefine them.
 | Change AI discussion, retrieval, or local library | Above + `AI-Context-Architecture.md`, local AI context/discussion specs |
 | Change reusable knowledge or cross-book links | Above + `06-Knowledge-Graph.md` |
 | Change architecture or roadmap | All core documents + affected numbered specifications |
+| Discuss or plan the future platform/refactor | All core documents + `Product-Plan.md`, `Platform-Architecture-Proposal.md`, `Open-Questions.md`, and affected numbered specifications |
 
 Reading a required document means reading the current file, not relying on a
 summary from an earlier task.
@@ -53,6 +54,23 @@ study conventions:
 The design principles used throughout are collected in
 [`01-Vision.md`](01-Vision.md#design-principles).
 
+## Product direction and planning drafts
+
+These documents describe intended direction and unresolved choices. Their
+status labels are significant: a proposal is not current implementation
+authority.
+
+- [Product Plan](Product-Plan.md) / [产品规划书](Product-Plan-zh.md)
+- [Platform Architecture Proposal](Platform-Architecture-Proposal.md) /
+  [平台架构规范草案](Platform-Architecture-Proposal-zh.md)
+- [Open Questions](Open-Questions.md) / [未决问题](Open-Questions-zh.md)
+
+English planning and specification documents are the agent-facing source;
+Chinese companions are full human-review versions. Product decisions must be
+reviewed in Chinese and reflected in both versions in the same change. If the
+two versions conflict, stop and reconcile them before planning or implementation
+continues.
+
 ## Conflict and change policy
 
 Use the authority order in [`AGENTS.md`](../AGENTS.md). When implementation and
@@ -63,3 +81,7 @@ An architectural change is incomplete until the owning core document, affected
 domain specifications, implementation, generation flow, and validations agree.
 The validation contract distinguishes rules enforced by current tests from
 rules that still require review.
+
+Accepted future decisions must also update the relevant Open Question status.
+An unaccepted recommendation or target proposal does not authorize code, schema,
+or directory migration.

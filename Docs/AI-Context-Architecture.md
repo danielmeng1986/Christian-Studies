@@ -1,6 +1,7 @@
 # AI Context Architecture
 
-**Status:** Core normative specification  
+**Status:** Core normative specification
+
 **Scope:** AI-assisted discussion, retrieval, and context generation
 
 This document defines how repository material may become AI context. It is a

@@ -1,6 +1,7 @@
 # Repository Architecture
 
-**Status:** Core normative specification  
+**Status:** Core normative specification
+
 **Scope:** Entire repository
 
 This document defines the repository's structural truth and system boundaries.
