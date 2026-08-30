@@ -11,12 +11,14 @@ Books/
   <Book-Slug>/
     Original/
     Reading/
-    Notes/
-    Metadata/
     References/
+    Metadata/
+    Notes/
+    Sources/       # optional supplemental local library
+    Web/           # optional local reader
 ```
 
-Every canonical book contains one slug, one metadata file, one preserved-source area, one normalized-reading area, and one reference area. `Notes/` is part of the standard layout but may remain empty until book-specific notes are needed.
+Every canonical book contains one slug, one metadata file, one preserved-source area, one normalized-reading area, and one reference area. `Notes/` is part of the standard layout but may remain empty until book-specific notes are needed. `Sources/` and `Web/` are optional capabilities and are not required for books that do not have a supplemental library or local reader.
 
 `Original/` preserves raw source files exactly as received. A source file is never modified in place or replaced by normalized Markdown.
 
@@ -27,6 +29,12 @@ Every canonical book contains one slug, one metadata file, one preserved-source 
 `Metadata/` contains structured book metadata and concise records of normalization or provenance decisions.
 
 `References/` contains the book's reference documents, especially footnotes, bibliography-related material, Scripture conventions, and external-source context when needed.
+
+`Sources/` contains supplemental materials added after the primary book source. It is distinct from `Original/`: the latter establishes the provenance of `Reading/`, while the former is an optional local research library with its own preserved imports, processed projections, registry, and rebuildable indexes.
+
+`Web/` contains an optional reader implementation. Its `src/` and `scripts/` directories are implementation sources; `dist/` is generated output and must never be edited directly.
+
+Ownership and editability are defined centrally in [`Content-Model.md`](Content-Model.md). The complete dependency direction is defined in [`Architecture.md`](Architecture.md).
 
 The book slug must be stable once established. Use a concise, descriptive, filesystem-safe name; do not casually rename an active book directory because its path is a durable reference.
 

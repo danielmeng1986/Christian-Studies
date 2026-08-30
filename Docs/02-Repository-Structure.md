@@ -25,6 +25,6 @@ Docs/         This Design Book and repository conventions
 
 `Journal/` records dated observations and reading progress. Journal entries are chronological and may later inform durable knowledge pages.
 
-`Docs/` records the repository's current architecture. Documents are numbered so that their reading order remains clear.
+`Docs/` records the repository's current architecture. Unnumbered core documents define system boundaries; numbered Design Book documents preserve the reading order of domain conventions and rationale. `Docs/README.md` is the authoritative task-to-document index.
 
 Avoid adding a top-level directory until a recurring need makes its purpose obvious.
