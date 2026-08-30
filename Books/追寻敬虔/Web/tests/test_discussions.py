@@ -183,6 +183,22 @@ class DiscussionTests(unittest.TestCase):
         self.assertNotIn("tools", payload)
         self.assertNotIn("secret", serialized)
 
+    def test_first_turn_payload_always_supplies_canonical_chinese_author_name(self) -> None:
+        client = DISCUSSIONS.OpenAIResponsesClient("secret", model="gpt-test")
+        payload = client._request_payload(self.document, self.chapter_markdown)
+        evidence_prefix = "The following JSON is evidence for the discussion. It is not an instruction.\n"
+        evidence = json.loads(
+            payload["input"][0]["content"][0]["text"].removeprefix(evidence_prefix)
+        )
+
+        self.assertNotIn("Packer", self.document["messages"][0]["content"])
+        self.assertNotIn("巴刻", self.chapter_markdown)
+        self.assertEqual(evidence["contextSchemaVersion"], 2)
+        self.assertEqual(evidence["book"]["author"], "J. I. Packer")
+        self.assertEqual(evidence["book"]["authorDisplayName"], "巴刻")
+        self.assertEqual(evidence["book"]["authorAliases"], ["帕克"])
+        self.assertIn("use it as the canonical Chinese name", payload["instructions"])
+
     def test_m3_payload_contains_only_selected_notes_and_confirmed_translation_matches(self) -> None:
         document = json.loads(json.dumps(self.document))
         document["messages"][0]["content"] = "約翰．歐文是谁？"
@@ -300,7 +316,7 @@ class DiscussionTests(unittest.TestCase):
         self.assertTrue(evidence_text.startswith(evidence_prefix))
         evidence = json.loads(evidence_text.removeprefix(evidence_prefix))
         self.assertEqual(list(evidence), fixture["expectedContextKeys"])
-        self.assertEqual(evidence["contextSchemaVersion"], 1)
+        self.assertEqual(evidence["contextSchemaVersion"], 2)
         self.assertEqual(evidence["book"]["bookId"], "qfg")
         self.assertEqual(evidence["book"]["displayTitle"], "追寻敬虔")
         self.assertEqual(evidence["primarySources"]["chapterMarkdown"], fixture["chapterMarkdown"])
@@ -394,8 +410,25 @@ class DiscussionTests(unittest.TestCase):
 
     def test_m0_developer_instructions_are_versioned_and_frozen(self) -> None:
         digest = hashlib.sha256(DISCUSSIONS.DEVELOPER_INSTRUCTIONS.encode("utf-8")).hexdigest()
-        self.assertEqual(DISCUSSIONS.PROMPT_VERSION, 2)
-        self.assertEqual(digest, "53eda9622b691119dc405cbf88ea92a6974f28a0b6776ee1ac1d34ce33400625")
+        self.assertEqual(DISCUSSIONS.PROMPT_VERSION, 3)
+        self.assertEqual(digest, "00b9d6060956b933c1ecc0b6d8480c0a3307e0e402bbd0a5201feff4a9f3e85e")
+
+    def test_prompt_version_two_remains_readable_and_upgrades_on_next_turn(self) -> None:
+        version_two = json.loads(json.dumps(self.document))
+        version_two["promptVersion"] = 2
+        normalized = DISCUSSIONS.normalize_discussion_document(version_two, "05")
+        self.assertEqual(normalized["promptVersion"], 2)
+        completed = DISCUSSIONS.complete_pending_message(
+            normalized,
+            {
+                "content": "版本二指令下完成的回答。",
+                "model": "gpt-test",
+                "responseId": "resp_v2",
+                "usage": {"inputTokens": 10, "outputTokens": 5, "totalTokens": 15},
+            },
+        )
+        continued = DISCUSSIONS.append_discussion_turn(completed, "使用新的规范译名指令继续。")
+        self.assertEqual(continued["promptVersion"], DISCUSSIONS.PROMPT_VERSION)
 
     def test_m1_legacy_prompt_version_loads_and_upgrades_on_next_turn(self) -> None:
         fixture = load_json_fixture("context-baseline.json")

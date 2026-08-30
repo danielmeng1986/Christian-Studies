@@ -1,8 +1,8 @@
 # 《追寻敬虔》AI 讨论上下文规范
 
 状态：规划基线  
-版本：1.0  
-制定日期：2026-08-29  
+版本：1.1
+制定日期：2026-08-30
 适用范围：《追寻敬虔》本地阅读器“与 AI 讨论”功能  
 关联规范：[`AI-DISCUSSION-SPEC-zh.md`](AI-DISCUSSION-SPEC-zh.md)
 
@@ -95,6 +95,8 @@
   "subtitle": "The Puritan Vision of the Christian Life",
   "displayTitle": "追寻敬虔",
   "author": "J. I. Packer",
+  "authorDisplayName": "巴刻",
+  "authorAliases": ["帕克"],
   "publisher": "Crossway",
   "publicationYear": 1990,
   "language": "zh",
@@ -102,7 +104,7 @@
 }
 ```
 
-不得用模型猜测填充 `translator`、ISBN 或缺失出版信息。元数据完善后再从文件读取。
+`authorDisplayName` 是 AI 回答和阅读器显示中的规范本地化姓名；`authorAliases` 只用于识别和检索，不是首选输出形式。两者都必须来自元数据，不得由模型猜测。也不得用模型猜测填充 `translator`、ISBN 或缺失出版信息。
 
 ## 6. 第二层：当前阅读现场
 
@@ -448,7 +450,7 @@ AI 回答必须能区分：
 
 ```json
 {
-  "contextSchemaVersion": 1,
+  "contextSchemaVersion": 2,
   "promptVersion": 1,
   "retrievalVersion": 1,
   "sourceRegistryVersion": 1,
@@ -536,13 +538,14 @@ AI 回答必须能区分：
 12. 每轮实际上下文可由 manifest 追溯；
 13. 超限时不静默删除资料；
 14. 现有阅读、笔记和不联网讨论继续正常工作。
+15. 即使选区和问题未提及作者，每轮上下文仍包含规范中文作者名，别名不得取代规范名成为首选输出。
 
 ## 17. Roadmap 待决策项
 
 后续 Roadmap 需要确定：
 
 - 上下文 schema 与讨论 JSON 的升级方式；
-- 书籍元数据需要补充哪些字段；
+- 除已确定的规范作者显示名与别名外，书籍元数据还需要补充哪些字段；
 - 标题路径与邻近段落提取算法；
 - 笔记 exact/overlap/sameBlock 的 UI；
 - 中文、繁体、英文及异译的人物识别算法；

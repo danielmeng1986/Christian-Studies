@@ -34,6 +34,8 @@ display_title: 追寻敬虔
 title: A Quest for Godliness
 subtitle: The Puritan Vision of the Christian Life
 author: J. I. Packer
+author_display_name: 巴刻
+author_aliases: [帕克]
 translator: null
 publisher: Crossway
 publication_year: 1990
@@ -101,6 +103,8 @@ class ContextBuilderTests(unittest.TestCase):
                 "title": "A Quest for Godliness",
                 "subtitle": "The Puritan Vision of the Christian Life",
                 "author": "J. I. Packer",
+                "authorDisplayName": "巴刻",
+                "authorAliases": ["帕克"],
                 "publisher": "Crossway",
                 "publicationYear": 1990,
                 "language": "zh",
@@ -116,6 +120,9 @@ class ContextBuilderTests(unittest.TestCase):
         second = builder.build(request(chapter))
         self.assertEqual(first, second)
         self.assertEqual(first.envelope["book"]["author"], "J. I. Packer")
+        self.assertEqual(first.envelope["book"]["authorDisplayName"], "巴刻")
+        self.assertEqual(first.envelope["book"]["authorAliases"], ["帕克"])
+        self.assertEqual(first.envelope["contextSchemaVersion"], 2)
         self.assertEqual(first.envelope["chapter"]["sourceChanged"], False)
         self.assertEqual(first.manifest["included"]["scriptureIds"], ["TST.1.1"])
         self.assertEqual(first.manifest["included"]["footnoteIds"], ["1"])
@@ -127,6 +134,19 @@ class ContextBuilderTests(unittest.TestCase):
         self.metadata_path.write_text("title: A Quest for Godliness\n", encoding="utf-8")
         with self.assertRaisesRegex(CONTEXT.ContextBuildError, "missing"):
             CONTEXT.load_book_metadata(self.metadata_path)
+
+    def test_rejects_invalid_or_duplicate_author_aliases(self) -> None:
+        invalid_cases = (
+            "author_aliases: [\"\"]\n",
+            "author_aliases: [帕克, 帕克]\n",
+            "author_aliases: [巴刻]\n",
+        )
+        for replacement in invalid_cases:
+            with self.subTest(replacement=replacement):
+                source = metadata_source().replace("author_aliases: [帕克]\n", replacement)
+                self.metadata_path.write_text(source, encoding="utf-8")
+                with self.assertRaisesRegex(CONTEXT.ContextBuildError, "author_aliases"):
+                    CONTEXT.load_book_metadata(self.metadata_path)
 
     def test_rejects_book_identity_mismatch(self) -> None:
         self.metadata_path.write_text(metadata_source(book_id="another-book"), encoding="utf-8")

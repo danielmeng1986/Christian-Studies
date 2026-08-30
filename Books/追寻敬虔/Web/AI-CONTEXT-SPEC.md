@@ -1,8 +1,8 @@
 # AI Context Acquisition and Grounding Contract
 
 Status: normative planning baseline  
-Version: 1.0  
-Date: 2026-08-29  
+Version: 1.1
+Date: 2026-08-30
 Audience: implementation agents, retrieval components, and the runtime discussion assistant  
 Product: the local reader for *A Quest for Godliness* / 《追寻敬虔》  
 Companion product specification: [`AI-CONTEXT-SPEC-zh.md`](AI-CONTEXT-SPEC-zh.md)  
@@ -193,7 +193,7 @@ The assembler SHOULD produce one versioned envelope with this logical shape:
 
 ```json
 {
-  "contextSchemaVersion": 1,
+  "contextSchemaVersion": 2,
   "book": {},
   "chapter": {},
   "focus": {},
@@ -243,6 +243,8 @@ Required fields:
   "title": "A Quest for Godliness",
   "subtitle": "The Puritan Vision of the Christian Life",
   "author": "J. I. Packer",
+  "authorDisplayName": "巴刻",
+  "authorAliases": ["帕克"],
   "publisher": "Crossway",
   "publicationYear": 1990,
   "language": "zh",
@@ -250,7 +252,7 @@ Required fields:
 }
 ```
 
-Omit unknown values or preserve explicit `null`. Do not guess translator, edition, ISBN, or publication history.
+`authorDisplayName` is the canonical localized form for generated discussion text. `authorAliases` supports recognition and retrieval only; aliases are not preferred output forms. Both values must come from metadata rather than model knowledge. Omit unknown values or preserve explicit `null`. Do not guess translator, edition, ISBN, publication history, or localized author names.
 
 ## 8. Layer 2: current reading scene
 
@@ -557,7 +559,7 @@ Minimum shape:
 
 ```json
 {
-  "contextSchemaVersion": 1,
+  "contextSchemaVersion": 2,
   "promptVersion": 1,
   "retrievalVersion": 1,
   "sourceRegistryVersion": 1,
@@ -612,6 +614,7 @@ The runtime assistant MUST:
 - label cross-chapter evidence as coming from another chapter;
 - label personal notes as the user's notes;
 - use translation matches only for identity resolution and search;
+- use `book.authorDisplayName` as the canonical localized author name when supplied, and treat `book.authorAliases` only as recognition aliases;
 - distinguish a historical author's primary text from later interpretation;
 - distinguish model background knowledge from retrieved evidence;
 - cite external claims with the supplied source link;
@@ -642,6 +645,12 @@ A translation-index match establishes a search identity only; it does not prove
 the person's view. A user note is the user's interpretation, not the author's.
 When evidence conflicts or is incomplete, identify the uncertainty. Do not turn
 one theological interpretation into the only possible Christian conclusion.
+
+When the book identity supplies `authorDisplayName`, use it as the canonical
+localized name for the author. Treat `authorAliases` only as recognition aliases,
+not preferred output. Likewise, prefer the `chinese` name in resolved entity
+records. If no canonical localized form is supplied, preserve the source name
+rather than inventing a translation.
 
 If external research is disabled, do not claim to have searched or verified the
 web. If it is enabled, cite the supplied URLs for externally sourced claims and
@@ -674,6 +683,7 @@ An implementation is conformant only if tests demonstrate that:
 15. context overflow produces a visible error or user choice instead of silent truncation;
 16. the final answer correctly attributes current-chapter, cross-chapter, user-note, and external claims;
 17. existing local-only discussions remain functional when every optional retrieval result is empty.
+18. the canonical localized author name is present even when the selection and question do not mention the author, and aliases are not used as the preferred output form.
 
 ## 18. Change control
 

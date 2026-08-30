@@ -46,6 +46,8 @@ The required metadata file is `Metadata/book.yml`. It is renderer-independent an
 title: A Quest for Godliness
 subtitle: The Puritan Vision of the Christian Life
 author: J. I. Packer
+author_display_name: 巴刻
+author_aliases: [帕克]
 translator: null
 editor: null
 publisher: Crossway
@@ -64,6 +66,8 @@ tags: [puritans, christian-life]
 | `title` | Required | The book's main title. |
 | `subtitle` | Optional | The subtitle, if known. |
 | `author` | Required | The author or responsible creator. |
+| `author_display_name` | Optional | The canonical localized author name to use in reader-facing output and AI discussion. |
+| `author_aliases` | Optional | Alternate author names used only for recognition and retrieval, not as the preferred display form. |
 | `translator` | Optional | Translator name when applicable. |
 | `editor` | Optional | Editor name when applicable. |
 | `publisher` | Optional | Publisher of the studied edition. |
@@ -76,7 +80,7 @@ tags: [puritans, christian-life]
 | `reading_progress` | Required | Whole-number percentage from `0` to `100`. |
 | `tags` | Required | Short topical labels. |
 
-Use `null` for an unknown scalar value and `[]` for an intentionally empty list. Required fields must be present even when their value is unknown, except where a format cannot meaningfully supply the field; record the exception in a normalization note. Add new metadata fields only when they represent a stable need across multiple books.
+Use `null` for an unknown scalar value and `[]` for an intentionally empty list. Required fields must be present even when their value is unknown, except where a format cannot meaningfully supply the field; record the exception in a normalization note. When `author_display_name` is present, applications must treat it as the preferred localized form; entries in `author_aliases` remain recognition aliases and must not silently replace it in generated prose. Add new metadata fields only when they represent a stable need across multiple books.
 
 ## 3.3 Reading chapters
 

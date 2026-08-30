@@ -16,7 +16,7 @@ from typing import Any
 from markdown_it import MarkdownIt
 
 
-CONTEXT_SCHEMA_VERSION = 1
+CONTEXT_SCHEMA_VERSION = 2
 RETRIEVAL_VERSION = 3
 SOURCE_REGISTRY_VERSION = 1
 
@@ -334,12 +334,23 @@ def load_book_metadata(path: Path) -> dict[str, Any]:
         "language": "language",
         "tags": "tags",
     }
+    optional_field_map = {
+        "author_display_name": "authorDisplayName",
+        "author_aliases": "authorAliases",
+    }
     required = set(field_map)
     missing = sorted(required - set(raw))
     if missing:
         raise ContextBuildError(f"book metadata is missing: {', '.join(missing)}")
 
     result = {target: raw[source] for source, target in field_map.items()}
+    result.update(
+        {
+            target: raw[source]
+            for source, target in optional_field_map.items()
+            if source in raw
+        }
+    )
     for field in ("bookId", "displayTitle", "title", "subtitle", "author", "publisher", "language"):
         if not isinstance(result[field], str) or not result[field].strip():
             raise ContextBuildError(f"book metadata field {field} must be a non-empty string")
@@ -347,6 +358,24 @@ def load_book_metadata(path: Path) -> dict[str, Any]:
         raise ContextBuildError("book metadata field publicationYear must be an integer")
     if not isinstance(result["tags"], list) or any(not isinstance(tag, str) or not tag for tag in result["tags"]):
         raise ContextBuildError("book metadata field tags must be a list of strings")
+    author_display_name = result.get("authorDisplayName")
+    if author_display_name is not None and (
+        not isinstance(author_display_name, str) or not author_display_name.strip()
+    ):
+        raise ContextBuildError("book metadata field author_display_name must be a non-empty string")
+    author_aliases = result.get("authorAliases")
+    if author_aliases is not None:
+        if not isinstance(author_aliases, list) or any(
+            not isinstance(alias, str) or not alias.strip() for alias in author_aliases
+        ):
+            raise ContextBuildError("book metadata field author_aliases must be a list of non-empty strings")
+        if len(author_aliases) != len(set(author_aliases)):
+            raise ContextBuildError("book metadata field author_aliases must not contain duplicates")
+        canonical_names = {result["author"], author_display_name}
+        if any(alias in canonical_names for alias in author_aliases):
+            raise ContextBuildError(
+                "book metadata field author_aliases must not repeat a canonical author name"
+            )
     return result
 
 
