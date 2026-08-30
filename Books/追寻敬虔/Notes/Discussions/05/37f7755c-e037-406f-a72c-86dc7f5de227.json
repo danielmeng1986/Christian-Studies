@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "id": "37f7755c-e037-406f-a72c-86dc7f5de227",
+  "bookId": "qfg",
+  "chapterId": "05",
+  "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+  "anchor": {
+    "blockId": "05-p-0069",
+    "startOffset": 0,
+    "endOffset": 278,
+    "exact": "這個研究給我們帶來什麼教訓呢﹖它提醒我們﹐聖經永遠是它自己最好的證據﹔而靠著聖靈的能力所傳講聖經的真理﹐比起任何份量的辯駁﹐更能使人相信聖經的靈感﹐和聖經所宣揚的屬神的實際。它也挑戰我們問問自己﹐在我們查考並教導聖經時﹐我們是否按我們當尊榮聖靈的本份去尊榮祂。當詮釋的問題興起時﹐我們的禱告有多少﹑有多擺上呢﹖我們講道的人﹐全然是屬乎[神的]話語之人嗎﹖身為基督教的教師﹐除了詮釋並應用神的話語之外﹐拒絕做其他的事﹐是我們的榮耀嗎﹖但願研究歐文從神而來之交通的教義﹐更新我們要實踐這樣的職事之熱心﹐也更新我們相信在神的引導下﹐這樣的職事將會結果纍纍的信念。",
+    "prefix": "",
+    "suffix": ""
+  },
+  "title": "這個研究給我們帶來什麼教訓呢﹖它提醒我們﹐聖經永遠是它自｜似乎这里最后提到了“结果累累”以表达为何第八节是“丰收的信念”。似乎是说，教会要想要",
+  "status": "active",
+  "promptVersion": 2,
+  "context": {
+    "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
+    "scriptures": [],
+    "footnotes": []
+  },
+  "messages": [
+    {
+      "id": "004c86e3-4ffe-4351-966a-c8391ed44e17",
+      "role": "user",
+      "content": "似乎这里最后提到了“结果累累”以表达为何第八节是“丰收的信念”。似乎是说，教会要想要丰收，那还是得在神的话语上扎根。而当我们如此行，也会有丰收的信念。\n\n读到结尾，我更想提出的问题是：第五章关于“从神而来的交通”这个主题，在整本书中的地位或者作用是什么呢？它在为什么做解释，做准备，或者是处于什么结构的考量？",
+      "format": "markdown",
+      "status": "completed",
+      "model": null,
+      "responseId": null,
+      "usage": null,
+      "error": null,
+      "createdAt": "2026-08-29T23:47:42.059Z"
+    },
+    {
+      "id": "6cf19468-6503-4507-8568-152972490d86",
+      "role": "assistant",
+      "content": "你对「豐收的信念」的理解基本抓住了本段的重心，但可稍作限定：这里的「結果纍纍」首先是指一种**以解释、应用神的话为中心，并倚靠圣灵工作的职事**所结出的属灵果效；它未必直接等同于人数增长或教会事工规模上的「丰收」。\n\n## 从本章结尾看：第五章在做什么？\n\n第五章的结尾把全章落在一个实际问题上：既然神藉着圣灵、透过圣经，把祂的心意带进人的心，那么教会的讲道、教导、读经和释经，应当如何进行？\n\n帕克最后的答案是：\n\n- 圣经本身有其见证神圣来源的亮光、能力和权威；\n- 但罪人的心需要圣灵内在的光照，才能真正领受；\n- 因此，最合宜的教会职事不是以大量辩论取代圣经，而是**祷告地、依靠圣灵地传讲并应用圣经**；\n- 这种职事在神的引导下「将会结果纍纍」。\n\n所以，「丰收的信念」不是一种技术性的成功公式，而是基于欧文的「道与灵」教义而来的盼望：神既定意藉祂的话和祂的灵工作，忠心的释经与应用就不是徒然的。\n\n## 它在整本书中的位置：更像一个“基础性的方法论章节”\n\n按第一章所提供的资料，第五章原是帕克一篇较早的独立文章，后来收入本书。因此，我们不能仅凭现有材料断言它原先就是为全书预设好的、严格线性的第五步。不过，在《追寻敬虔》如今的整体中，它确实发挥一种很重要的**基础与校正**作用。\n\n### 1. 它解释清教徒敬虔为何不是离开圣经的“内在经验”\n\n本章开首把问题界定为：「神如何使人认识祂，并了解属灵实存的世界？」帕克藉欧文回答：神的交通不是纯粹主观的「相遇」或感觉，而是圣灵使人领受神在圣经中已经说出的话。\n\n这对整本书讨论清教徒的基督徒生活很关键。因为它表明清教徒所重视的：\n\n- 与神相交，\n- 罪的对付，\n- 确据，\n- 成圣，\n- 教会生活，\n\n都不该理解为脱离圣经的灵性技巧；它们的根基乃是神借着圣经说话，而圣灵使人明白、相信、顺服这话。\n\n换言之，第五章给全书的「敬虔」提供了认识论和属灵方法的底座：**我们如何认识神，决定我们如何追求敬虔。**\n\n### 2. 它解释“圣灵的工作”与“圣经的权威”怎样不彼此竞争\n\n本章最有特色的结构，是将欧文的教义分成五方面：\n\n1. 启示的赐予；\n2. 圣经的灵感；\n3. 圣经的自我证实；\n4. 人对圣经之信心的建立；\n5. 圣经的诠释。\n\n这个次序说明：圣灵不是把人从圣经带开，反而是圣经的作者、见证者和解释者。圣灵外在地在圣经中显出其亮光和能力，也内在地除去人的盲目，使人真能领受。\n\n因此，第五章也在反驳两种相反的偏差：\n\n- **只靠外在论证、传统权威或理性可能性**来建立信仰；\n- **诉诸圣经以外的新启示或私下声音**，仿佛圣灵的工作不受神已经赐下的话约束。\n\n这使全书后来谈清教徒经验时，读者不会误以为那些经验只是情绪化、神秘化，或单靠内省而得。\n\n### 3. 它为本书后来有关“圣灵见证”与“欧文灵命观”的讨论预备概念\n\n这是根据本书其他章节的相互关联所作的观察。\n\n第十一章题为「清教徒思想中的圣灵的见证」，直接讨论圣灵如何使信徒得到救恩确据，并且在末段再次引入欧文，对某些经文的解释作修订。第五章已先区分：\n\n- 圣灵对圣经的**外在见证**：在圣经自身的亮光、能力和庄严中；\n- 圣灵在信徒心中的**内在见证**：除去属灵盲目，使人对神的真理有认识和「品味」。\n\n这并不等于第十一章只是在重复第五章：第五章主要谈人为何、如何相信**圣经是神的话**；第十一章主要谈信徒如何得着自己是**神儿女**的确据。但第五章所建立的「圣灵不是离开圣道而作见证」这一框架，显然有助于读者理解后者。\n\n第十二章则转而论「欧文的灵命观」，包括与基督交通、蒙恩之道、祷告、默想、自省与圣餐等。第五章先表明，欧文所说的神人交通有一个认知性的层面：神的心意从神的心思传达给人的心思；而这种认识最终不是停在知识本身，乃是为着「认识并享受神」。因此，第五章也为第十二章那种更直接讨论灵命经历和与基督相交的内容，提供了神学前提。\n\n## 结构上可这样概括\n\n若用一句话概括第五章在全书的功能：\n\n> 它把清教徒的敬虔生活重新系在「圣灵借着圣经使人认识、相信、顺服并享受神」这一中心事实上。\n\n或者用一个较清楚的流程表示：\n\n**神的话被赐下并写成圣经**  \n→ **圣经自身显出神圣的亮光、能力与权威**  \n→ **圣灵光照人心，使人相信、明白和领受**  \n→ **教会以祷告、讲道、教导、共同学习来服事这道**  \n→ **信徒的敬虔、确据、与神交通及生命成长得以发生。**\n\n最后，帕克以「结果累累」收束，正因为他不愿这章只成为有关启示、灵感、权威和释经的抽象理论。他所关心的是：这样的「道与灵」教义若是真的，就应塑造教会的职事，也应产生真实的属灵生命。\n\n你所说的「教会要想丰收，就得在神的话语上扎根」是合乎本章方向的；若更贴近帕克的措辞，可说为：**教会不是单单“在圣经上扎根”，而是在祷告和顺服中，让圣灵借着所传讲、解释并应用的圣经作工。**",
+      "format": "markdown",
+      "status": "completed",
+      "model": "gpt-5.6-terra",
+      "responseId": "resp_0f703b696dca2ef4016a936fa4afbc87d28bf10e6c52aba443",
+      "usage": {
+        "inputTokens": 22359,
+        "outputTokens": 1813,
+        "totalTokens": 24172
+      },
+      "error": null,
+      "createdAt": "2026-08-29T23:48:09.893Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "004c86e3-4ffe-4351-966a-c8391ed44e17",
+      "contextManifest": {
+        "contextSchemaVersion": 1,
+        "promptVersion": 2,
+        "retrievalVersion": 3,
+        "sourceRegistryVersion": 1,
+        "chapterRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+        "sourceHashes": {
+          "bookMetadata": "2f56dd70fbec8fc42138c8e8516ffe0689922756c50b9675678400822bef2064",
+          "translationIndex": "f5e815eb7a7922e87ebc3586804fddfb682f153013a6fc3d826cbf109bd54479",
+          "scriptures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "footnotes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "included": {
+          "scriptureIds": [],
+          "footnoteIds": [],
+          "noteIds": [],
+          "noteRevisions": [],
+          "translationSourceLines": [
+            416
+          ],
+          "bookPassages": [
+            {
+              "passageId": "qfg:01:01-p-0033",
+              "chapterId": "01",
+              "blockId": "01-p-0033",
+              "sourceRevision": "9e02e8c2e6b55daf1ed0ed4e3d873b8d8b4e7c98d353c987a73310b5c85b0105",
+              "footnoteRevision": "86890ab836f28a1dcbb03cab07c8e0e8b836b848e63d355ec6010da4afadec00",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:11:11-p-0054",
+              "chapterId": "11",
+              "blockId": "11-p-0054",
+              "sourceRevision": "44089f6f86558b54085eab0b27971a96000a538f7b97d0601298c3c5661d002a",
+              "footnoteRevision": "e97d8441b706f3af4aeda92a52715f32eacd533e88232b646e49b9bbd0c8d0f6",
+              "relatedFootnoteIds": [
+                "34",
+                "35",
+                "36",
+                "37"
+              ]
+            },
+            {
+              "passageId": "qfg:20:20-p-0029",
+              "chapterId": "20",
+              "blockId": "20-p-0029",
+              "sourceRevision": "a1f44104db7041292efe492d35d76e72c47568be8c4bbe6b6a0a77b6e5994be4",
+              "footnoteRevision": "bb1f9c9d201ffb39a4e3643d984bb25af34abd0aa4aefba28f4f6bc337370a80",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:12:12-p-0120",
+              "chapterId": "12",
+              "blockId": "12-p-0120",
+              "sourceRevision": "1f4ac73f7dc0f86d50f011cff458782e07e2f2956d521dca60583080aa72f74d",
+              "footnoteRevision": "a7b69ad9308e8e194b2194a81d4522db562748874dad3a0876b9c68b46eec0cc",
+              "relatedFootnoteIds": [
+                "70",
+                "71"
+              ]
+            },
+            {
+              "passageId": "qfg:11:11-p-0003",
+              "chapterId": "11",
+              "blockId": "11-p-0003",
+              "sourceRevision": "44089f6f86558b54085eab0b27971a96000a538f7b97d0601298c3c5661d002a",
+              "footnoteRevision": "e97d8441b706f3af4aeda92a52715f32eacd533e88232b646e49b9bbd0c8d0f6",
+              "relatedFootnoteIds": []
+            }
+          ],
+          "localSourceChunks": [],
+          "webSources": []
+        },
+        "capabilities": {
+          "localLibrary": true,
+          "crossChapterSearch": true,
+          "webSearch": false,
+          "researchDepth": "local"
+        }
+      },
+      "contextSnapshot": {
+        "bundleHash": "0ac5e0b4886fa59dcd4d16f9822fc21df48a484035f5f86ff77c1dd7da819391",
+        "selections": {
+          "excludedNoteIds": [],
+          "includedTranslationSourceLines": [],
+          "excludedTranslationSourceLines": [],
+          "excludedBookPassageIds": [],
+          "bookPassageLimit": 5,
+          "includedLocalChunkIds": []
+        },
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ],
+  "createdAt": "2026-08-29T23:47:42.059Z",
+  "updatedAt": "2026-08-29T23:48:09.893Z"
+}

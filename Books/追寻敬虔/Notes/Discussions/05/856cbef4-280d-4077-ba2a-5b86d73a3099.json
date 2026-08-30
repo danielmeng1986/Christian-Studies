@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 2,
+  "id": "856cbef4-280d-4077-ba2a-5b86d73a3099",
+  "bookId": "qfg",
+  "chapterId": "05",
+  "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+  "anchor": {
+    "blockId": "05-p-0019",
+    "startOffset": 0,
+    "endOffset": 158,
+    "exact": "在聖經付諸寫作之前﹐神曾給予世人一次試驗﹐看看用傳統來保存這種啟示﹐會是怎樣。在[挪亞]大洪水之後的數百年以內﹐所有不可言喻的關乎神的知識﹐由於撒但的詭詐﹑人心的虛空﹐都失落了﹐以至於除了新世界的再造﹑或說藉著新的啟示而有的新的教會國度之建立﹐是無可取代的。在這個大試驗之後﹐再有什麼以傳統自居的說法﹐我就不知道了。",
+    "prefix": "",
+    "suffix": ""
+  },
+  "title": "在聖經付諸寫作之前﹐神曾給予世人一次試驗﹐看看用傳統來保｜这一段似乎是说，大洪水后，亚伯拉罕之前，没有圣经来保存启示，且是神给予世人的一次试验",
+  "status": "active",
+  "promptVersion": 2,
+  "context": {
+    "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
+    "scriptures": [],
+    "footnotes": []
+  },
+  "messages": [
+    {
+      "id": "3736fa6f-ba2c-45f7-a093-216c79310be0",
+      "role": "user",
+      "content": "这一段似乎是说，大洪水后，亚伯拉罕之前，没有圣经来保存启示，且是神给予世人的一次试验？听起来有点奇怪",
+      "format": "markdown",
+      "status": "completed",
+      "model": null,
+      "responseId": null,
+      "usage": null,
+      "error": null,
+      "createdAt": "2026-08-29T23:42:42.110Z"
+    },
+    {
+      "id": "0a634cf3-a3e5-4e89-8410-382a57d9ffe8",
+      "role": "assistant",
+      "content": "你的感觉是对的：这段若按字面读，确实显得很奇怪，甚至会让人问：「神为什么需要用一次历史试验，才知道口传传统靠不住？」\n\n**先看本段紧邻的上下文。**帕克正在说明欧文为何坚持：对教会有普遍用途的启示，必须写下来保存。前一段说先知和使徒领受的信息，凡关乎全教会的，就成为旧、新约经书；紧接着这段是欧文反对罗马天主教以传统作为保存并确证启示之权威根据的一项论证。下一段则进一步说：使徒对基督的见证完成、圣经写成后，不该再诉诸新的「私下启示」。\n\n所以，这里中心并不是要建立一套精密的洪水后史前史，而是一个**反对「口传传统足以可靠保存神启示」的论战性论点**。\n\n## 这段大概是在说什么？\n\n可分三层理解：\n\n1. **「在圣经付诸写作之前」**  \n   欧文所指看来不是「当时世上绝对没有任何文字」，而是尚没有一份为全教会保存神启示、具规范性和持久性的**圣经性书面记录**。按本章前文的路线，这种书面保存随着旧约经书的形成而展开，并在使徒见证写成新约后完成。\n\n2. **「大洪水之后数百年以内……关乎神的知识都失落了」**  \n   这是一个很强烈的概括。其意大概是：单靠家族、族群和社会的口传，关于真神的知识在罪、人心的虚空和撒但的工作之下迅速败坏，最终普遍陷入偶像崇拜和属灵无知。于是，神需要藉着新的启示、特别是呼召亚伯拉罕，重新建立祂的约民／教会国度。\n\n3. **「神曾给世人一次试验」**  \n   不宜理解为神因不知道结果，所以做实验来获取资讯。较合理的读法是：神在祂的护理中**容许历史显明**，若只把启示托付给口传传统，它在人类罪恶的实际状况中会怎样败坏、遗失。所谓「试验」是显露传统之不可靠，而不是补足神自己的知识。\n\n## 为什么仍然令人不安？\n\n因为这不是圣经明确给出的历史判断，而是欧文的神学性重构和辩论修辞。\n\n从《创世记》的叙事本身看，洪水之后并非每一点对神的认识立即消失：挪亚领受神的话，也敬拜神；洪水后的世代仍在神的审判和应许之下；亚伯拉罕蒙召时，也不是在一个圣经明说「所有关乎神的知识完全归零」的真空中。因此，若把「所有……知识都失落了」当作严格、逐字的历史陈述，就会过度了。\n\n较稳妥的说法是：\n\n> 欧文不是在断言洪水后每一个人都完全失去一切真神知识；他是在强调，未有书面、规范性保存的启示，无法靠世代口传而不被广泛扭曲、遗忘和取代。\n\n## 本章里的帕克怎样看待欧文？\n\n帕克在这里主要是**转述并引用欧文**，而且明确交代这些著作「基本上是反天主教的，具有与后者辩论的倾向」。所以我们应当把这句话放在它的目标之下读：欧文要否定的是「后来的教会传统可以与、甚至高于书面圣经，作为保存神启示的可靠管道」这一主张。\n\n这也解释了他最后那句很尖锐的话：「在这个大试验之后，再有什么以传统自居的说法，我就不知道了。」那不是中性的历史研究结论，而是反对传统权威论的反诘。\n\n## 可以保留什么、不能轻易推出什么？\n\n可以保留的洞见是：  \n- 人的记忆、制度和传统会受罪、利益、偏见及世代变迁影响；  \n- 因而，把神给全教会的信息写下，确实具有保存、检验和公开传承的作用。\n\n但不能仅凭此段推出：  \n- 一切口传传统都毫无价值；  \n- 洪水后至亚伯拉罕之间完全没有真神知识；  \n- 圣经本身把那段时期明定为神对人类所作的一次「实验」。\n\n简言之：**这段的神学方向是「书面圣经比单靠传统更能保守启示」；但「洪水后是一次试验、所有知识皆失」是欧文为这个方向提出的强烈论战性历史判断，不是本章所证明、也不是圣经在这里直接明说的命题。**",
+      "format": "markdown",
+      "status": "completed",
+      "model": "gpt-5.6-terra",
+      "responseId": "resp_04b6622df9275ea5016a936e78536487d2a9caf08cd42ea61c",
+      "usage": {
+        "inputTokens": 25650,
+        "outputTokens": 1390,
+        "totalTokens": 27040
+      },
+      "error": null,
+      "createdAt": "2026-08-29T23:43:04.720Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "3736fa6f-ba2c-45f7-a093-216c79310be0",
+      "contextManifest": {
+        "contextSchemaVersion": 1,
+        "promptVersion": 2,
+        "retrievalVersion": 3,
+        "sourceRegistryVersion": 1,
+        "chapterRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+        "sourceHashes": {
+          "bookMetadata": "2f56dd70fbec8fc42138c8e8516ffe0689922756c50b9675678400822bef2064",
+          "translationIndex": "f5e815eb7a7922e87ebc3586804fddfb682f153013a6fc3d826cbf109bd54479",
+          "scriptures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "footnotes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "included": {
+          "scriptureIds": [],
+          "footnoteIds": [],
+          "noteIds": [],
+          "noteRevisions": [],
+          "translationSourceLines": [
+            416,
+            497,
+            498
+          ],
+          "bookPassages": [
+            {
+              "passageId": "qfg:13:13-p-0004",
+              "chapterId": "13",
+              "blockId": "13-p-0004",
+              "sourceRevision": "2a0ab450883fbe0d56a49d853626282bc0f2dc1eb4a936316c6cd7339f0a8d0a",
+              "footnoteRevision": "2f4c31196ca8ba79c395476e6508a71b6b9332aad758403599d08f082b10426b",
+              "relatedFootnoteIds": [
+                "1"
+              ]
+            },
+            {
+              "passageId": "qfg:12:12-p-0108",
+              "chapterId": "12",
+              "blockId": "12-p-0108",
+              "sourceRevision": "1f4ac73f7dc0f86d50f011cff458782e07e2f2956d521dca60583080aa72f74d",
+              "footnoteRevision": "a7b69ad9308e8e194b2194a81d4522db562748874dad3a0876b9c68b46eec0cc",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:12:12-p-0126",
+              "chapterId": "12",
+              "blockId": "12-p-0126",
+              "sourceRevision": "1f4ac73f7dc0f86d50f011cff458782e07e2f2956d521dca60583080aa72f74d",
+              "footnoteRevision": "a7b69ad9308e8e194b2194a81d4522db562748874dad3a0876b9c68b46eec0cc",
+              "relatedFootnoteIds": [
+                "72"
+              ]
+            },
+            {
+              "passageId": "qfg:11:11-p-0003",
+              "chapterId": "11",
+              "blockId": "11-p-0003",
+              "sourceRevision": "44089f6f86558b54085eab0b27971a96000a538f7b97d0601298c3c5661d002a",
+              "footnoteRevision": "e97d8441b706f3af4aeda92a52715f32eacd533e88232b646e49b9bbd0c8d0f6",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:01:01-p-0007",
+              "chapterId": "01",
+              "blockId": "01-p-0007",
+              "sourceRevision": "9e02e8c2e6b55daf1ed0ed4e3d873b8d8b4e7c98d353c987a73310b5c85b0105",
+              "footnoteRevision": "86890ab836f28a1dcbb03cab07c8e0e8b836b848e63d355ec6010da4afadec00",
+              "relatedFootnoteIds": [
+                "1"
+              ]
+            }
+          ],
+          "localSourceChunks": [],
+          "webSources": []
+        },
+        "capabilities": {
+          "localLibrary": true,
+          "crossChapterSearch": true,
+          "webSearch": false,
+          "researchDepth": "local"
+        }
+      },
+      "contextSnapshot": {
+        "bundleHash": "25e7e5cccb1566916b16c416a741fdb4315716fab0c0f37b07185fbb902cc8ba",
+        "selections": {
+          "excludedNoteIds": [],
+          "includedTranslationSourceLines": [],
+          "excludedTranslationSourceLines": [],
+          "excludedBookPassageIds": [],
+          "bookPassageLimit": 5,
+          "includedLocalChunkIds": []
+        },
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ],
+  "createdAt": "2026-08-29T23:42:42.110Z",
+  "updatedAt": "2026-08-29T23:43:04.720Z"
+}

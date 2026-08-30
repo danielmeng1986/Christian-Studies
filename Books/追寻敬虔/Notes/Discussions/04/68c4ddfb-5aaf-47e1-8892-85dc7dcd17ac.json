@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "id": "68c4ddfb-5aaf-47e1-8892-85dc7dcd17ac",
+  "bookId": "qfg",
+  "chapterId": "04",
+  "sourceRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+  "anchor": {
+    "blockId": "04-p-0091",
+    "startOffset": 0,
+    "endOffset": 421,
+    "exact": "如此我就長久以來一耳聽聞將臨死亡的召喚﹐而另一耳則質問我自己生疑的良心﹗從那時起﹐我發現神所用的這種的方法非常有智慧﹐沒有別的方法像它這樣地照顧到我的益處。…這也觸發了我讀書的方法﹐從那時起﹐我發現到這種方法的好處﹐雖然那時候我對我自己並不滿意。\n這種方法首先促使我尋求神的國度和祂的公義﹐叫我最在乎所需要的「那一件事」﹐並決定[何為]我終極目的裏的首位。藉此﹐我才從事選擇並進行所有其他的研究﹐不過是為著那個「目的」打算的。所以﹐我著手研讀神學不只是用我做其他的研究同等的精力﹐並且它總是佔有優先與主要的地位。於是﹐這種方法使我先在最實用的書卷裏﹐按實用的次序﹐研讀實用神學﹔我做這一切事存心是在知會我自己的靈魂﹐並復興它。\n因此﹐在我讀過任何其他的神學書籍之前﹐我已讀過許多我們英國人所寫的實用論文﹐而非厄賽那斯(Zacharias Ursinus, 1534~1583)和愛姆士(William Ames, 1576~1633)的作品。",
+    "prefix": "",
+    "suffix": "…"
+  },
+  "title": "如此我就長久以來一耳聽聞將臨死亡的召喚﹐而另一耳則質問我｜这一段讨论是在说，因为巴克斯特当时身体不好，甚至濒死，因此他在研究神学时的优先次序是",
+  "status": "active",
+  "promptVersion": 2,
+  "context": {
+    "chapterTitle": "第四章：英國清教徒的實用作品",
+    "scriptures": [],
+    "footnotes": []
+  },
+  "messages": [
+    {
+      "id": "7e5e7432-ff67-433f-9302-2d9fd48194f0",
+      "role": "user",
+      "content": "这一段讨论是在说，因为巴克斯特当时身体不好，甚至濒死，因此他在研究神学时的优先次序是以实用为主。可以这么理解吗？",
+      "format": "markdown",
+      "status": "completed",
+      "model": null,
+      "responseId": null,
+      "usage": null,
+      "error": null,
+      "createdAt": "2026-08-30T07:01:57.238Z"
+    },
+    {
+      "id": "75cbc700-f5c2-4205-97b1-7fa630d3d510",
+      "role": "assistant",
+      "content": "可以这样理解，但需要稍作限定。\n\n在这段中，巴克斯特确实把自己早年的病弱、常常面对死亡的意识，视为塑造其读书方法的重要经历。死亡的逼近和受质问的良心，使他首先追求「神的国和祂的义」，并把这个终极目的放在一切研究的首位。因此，他研读神学不只是与其他学问并列，而是优先于其他研究；并且先读「最实用的书卷」，目的是「知会我自己的灵魂，并复兴它」。\n\n不过，帕克的重点不只是说：**巴克斯特因身体不好，所以偏好实用神学。** 更深一层是：\n\n1. **病弱使巴克斯特更迫切地面对死亡、良心与人生终向**，从而重整知识追求的目的。  \n2. **神学本身在清教徒看来就是实用的**：不是供人抽象讨论的理论，而是神所启示、要医治罪人与引人顺服的真理。  \n3. 所谓「实用优先」，不是反对教义、学术或系统神学；而是说，研究教义应当以认识神、复兴灵魂、实行顺服为目标。紧接着帕克便说：「福音的教义是要我们顺服的；真理不只是让人承认的，也是要人实行的。」\n\n所以，更准确的概括可以是：\n\n> 巴克斯特的病弱和濒死意识，使他把寻求神、预备永恒和灵魂的复兴置于首位；这也使他按「能使真理进入生命并带来顺服」的次序研读神学。帕克借此说明清教徒的信念：真正的神学必然具有实用、医治和塑造生命的方向。\n\n他提到在读厄赛那斯和爱姆士以前，已先读许多英国实用论著，说的是他的**阅读次序与灵性目的**，不必理解成他认为这两位的著作不重要，或认为严谨教义研究没有价值。",
+      "format": "markdown",
+      "status": "completed",
+      "model": "gpt-5.6-terra",
+      "responseId": "resp_0e5ea56c7ed82a9a016a93d56eaec087d19043f0c04c85f616",
+      "usage": {
+        "inputTokens": 38379,
+        "outputTokens": 590,
+        "totalTokens": 38969
+      },
+      "error": null,
+      "createdAt": "2026-08-30T07:02:14.913Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "7e5e7432-ff67-433f-9302-2d9fd48194f0",
+      "contextManifest": {
+        "contextSchemaVersion": 1,
+        "promptVersion": 2,
+        "retrievalVersion": 3,
+        "sourceRegistryVersion": 1,
+        "chapterRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+        "sourceHashes": {
+          "bookMetadata": "2f56dd70fbec8fc42138c8e8516ffe0689922756c50b9675678400822bef2064",
+          "translationIndex": "f5e815eb7a7922e87ebc3586804fddfb682f153013a6fc3d826cbf109bd54479",
+          "scriptures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "footnotes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "included": {
+          "scriptureIds": [],
+          "footnoteIds": [],
+          "noteIds": [],
+          "noteRevisions": [],
+          "translationSourceLines": [
+            26,
+            62,
+            147,
+            446,
+            476,
+            582
+          ],
+          "bookPassages": [
+            {
+              "passageId": "qfg:03:03-p-0020",
+              "chapterId": "03",
+              "blockId": "03-p-0020",
+              "sourceRevision": "aa15b339d718c632425bc2f202984c465b53fe8120a7c9991f016590c67c14b6",
+              "footnoteRevision": "7cca5140a172e8fdae18ec04e618de752e8c3689dc83c21220da0385bf298126",
+              "relatedFootnoteIds": [
+                "9",
+                "10",
+                "译者注2"
+              ]
+            },
+            {
+              "passageId": "qfg:19:19-p-0026",
+              "chapterId": "19",
+              "blockId": "19-p-0026",
+              "sourceRevision": "0df3e146486d68269718dec1365c7fc0d22eb70b055655b9fa81cba1efa69443",
+              "footnoteRevision": "a1701dee54b8e11fe9d371839a9fd87807fa40dd1298f6fde88b203727f95fe0",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:18:18-p-0081",
+              "chapterId": "18",
+              "blockId": "18-p-0081",
+              "sourceRevision": "91052c19b9b4d217262582ac5fb1942f09a1fca88f61bd117cbbddeb97cac293",
+              "footnoteRevision": "f12ce985f58c42e860f3f2d7cf422eabcb84338cf0da53295b499089900e78ee",
+              "relatedFootnoteIds": [
+                "26"
+              ]
+            },
+            {
+              "passageId": "qfg:19:19-p-0030",
+              "chapterId": "19",
+              "blockId": "19-p-0030",
+              "sourceRevision": "0df3e146486d68269718dec1365c7fc0d22eb70b055655b9fa81cba1efa69443",
+              "footnoteRevision": "a1701dee54b8e11fe9d371839a9fd87807fa40dd1298f6fde88b203727f95fe0",
+              "relatedFootnoteIds": [
+                "5"
+              ]
+            }
+          ],
+          "localSourceChunks": [],
+          "webSources": []
+        },
+        "capabilities": {
+          "localLibrary": true,
+          "crossChapterSearch": true,
+          "webSearch": false,
+          "researchDepth": "local"
+        }
+      },
+      "contextSnapshot": {
+        "bundleHash": "5000c6e0f68ef7637f8e66c5c0622c518a38ee2f0b20f40e4274947206ef8ba4",
+        "selections": {
+          "excludedNoteIds": [],
+          "includedTranslationSourceLines": [],
+          "excludedTranslationSourceLines": [],
+          "excludedBookPassageIds": [
+            "qfg:20:20-p-0014"
+          ],
+          "bookPassageLimit": 5,
+          "includedLocalChunkIds": []
+        },
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ],
+  "createdAt": "2026-08-30T07:01:57.238Z",
+  "updatedAt": "2026-08-30T07:02:14.913Z"
+}

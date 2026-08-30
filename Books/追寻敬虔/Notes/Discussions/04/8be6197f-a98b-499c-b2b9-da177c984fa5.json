@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 2,
+  "id": "8be6197f-a98b-499c-b2b9-da177c984fa5",
+  "bookId": "qfg",
+  "chapterId": "04",
+  "sourceRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+  "anchor": {
+    "blockId": "04-p-0094",
+    "startOffset": 0,
+    "endOffset": 221,
+    "exact": "清教徒牧師們頻頻地為他們自己的罪性哀傷一事﹐不應該當作文化上的習俗﹐而掉以輕心﹔其實對我們而言﹐那是一項保證﹐如同對首度聆聽與研讀他們的人一樣﹐就是當他們在「撕碎」我們的良心(他們的用語)﹐診斷我們屬靈的疾病﹐並開出一套聖經的指引來治療我們之時﹐他們知道他們在說什麼。他們在神面前的自我鑒察與認知﹐佔了他們醫治人心竅門之密訣的一大部份﹔有了這個竅門﹐他們測透人心﹑鎖定罪惡﹐並且告訴我們﹐基督的醫治大能可以如何拯救我們脫離德性的與靈性的邪惡。",
+    "prefix": "",
+    "suffix": ""
+  },
+  "title": "清教徒牧師們頻頻地為他們自己的罪性哀傷一事﹐不應該當作文｜这段话我读的不是太清晰。清教徒为自己的罪性哀伤，具体表现为什么？作者似乎提醒我们，这",
+  "status": "active",
+  "promptVersion": 2,
+  "context": {
+    "chapterTitle": "第四章：英國清教徒的實用作品",
+    "scriptures": [],
+    "footnotes": []
+  },
+  "messages": [
+    {
+      "id": "57dda1de-8a3d-4623-9850-4e39f64c7a2f",
+      "role": "user",
+      "content": "这段话我读的不是太清晰。清教徒为自己的罪性哀伤，具体表现为什么？作者似乎提醒我们，这不是一种文化上的习俗，而是需要我们重视的一件事。",
+      "format": "markdown",
+      "status": "completed",
+      "model": null,
+      "responseId": null,
+      "usage": null,
+      "error": null,
+      "createdAt": "2026-08-30T07:22:11.623Z"
+    },
+    {
+      "id": "f48c1a50-6c52-47a0-a85f-5f219a3a65aa",
+      "role": "assistant",
+      "content": "这段的核心不是说清教徒特别喜欢自责，或有一种“忧郁的宗教气质”；巴刻的意思是：**他们认真把自己也放在神话语的审判与医治之下。**\n\n紧接前一段，作者已经给出一些较具体的表现：\n\n1. **在神面前自我鉴察**  \n   他们会察看、发现并“记录自己的罪过与软弱”。这不是笼统说“我是罪人”，而是留意自己真实的失败、内在倾向和脆弱之处。\n\n2. **为自己的罪性忧伤**  \n   所谓“为罪性哀伤”，不只是为某一次做错事感到懊恼，也包括认识到罪仍在自己里面活动。即使牧师也会受“世俗、肉体和魔鬼”的压力，并受“利害、宴乐和骄傲”的诱惑而软弱。\n\n3. **先把圣经当作医药用在自己身上**  \n   牧者不是站在病人之外的医生，而是“医治人者，也是伤痕人士”。所以，他们在劝勉、责备、安慰别人以前，也须让圣经责备、引导、安慰自己。\n\n4. **不把属灵衰退看作不可能**  \n   本段把教会比作医院：没有人已经完全痊愈，任何人都可能“旧病复发”。因此，持续悔改、警醒和依靠恩典，是正常的基督徒生活，而非只给“严重犯罪者”的特殊程序。\n\n巴刻说这“不应当作文化上的习俗”，大概是在排除两种误解：\n\n- **误解一：那只是十七世纪清教徒惯有的表达方式。**  \n  仿佛他们按时代习惯，说些严厉的自责话，并不一定有真实内容。巴刻不同意；他认为这反映了他们在神面前实际的自省与认识。\n\n- **误解二：为罪忧伤本身就是目的。**  \n  这里的哀伤不是沉迷于自我谴责。它的目标是更准确地“诊断”罪，并接受基督借着圣经所赐的医治；重点仍是“基督的医治大能可以如何拯救我们”。\n\n所以，作者要我们重视的并不是模仿清教徒强烈的措辞或情绪，而是学习他们的次序：  \n**先让真理照出我自己的罪与软弱，再用同一真理面对、服事和劝勉别人。**\n\n这也解释了为何巴刻认为他们有资格“撕碎”人的良心：不是因为他们高高在上、特别会批评人，而是因为他们知道自己同样需要被神的话刺透、诊断和医治。\n\n与本书其他章节也相呼应：第三章说清教徒的讲道会“撕碎”良心，却“倒上福音的乳香”；第十章将悔改描述为认识罪的污秽与可憎、为罪忧伤、恨恶罪并转向神。这里则特别强调：这不只适用于初次归正的人，也适用于牧者和所有基督徒持续的属灵生活。",
+      "format": "markdown",
+      "status": "completed",
+      "model": "gpt-5.6-terra",
+      "responseId": "resp_0e8af64a92d8cb6e016a93da34631487d185f4ca1425596bbf",
+      "usage": {
+        "inputTokens": 39164,
+        "outputTokens": 867,
+        "totalTokens": 40031
+      },
+      "error": null,
+      "createdAt": "2026-08-30T07:22:39.995Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "57dda1de-8a3d-4623-9850-4e39f64c7a2f",
+      "contextManifest": {
+        "contextSchemaVersion": 1,
+        "promptVersion": 2,
+        "retrievalVersion": 3,
+        "sourceRegistryVersion": 1,
+        "chapterRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+        "sourceHashes": {
+          "bookMetadata": "2f56dd70fbec8fc42138c8e8516ffe0689922756c50b9675678400822bef2064",
+          "translationIndex": "f5e815eb7a7922e87ebc3586804fddfb682f153013a6fc3d826cbf109bd54479",
+          "scriptures": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "footnotes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "included": {
+          "scriptureIds": [],
+          "footnoteIds": [],
+          "noteIds": [],
+          "noteRevisions": [],
+          "translationSourceLines": [
+            147,
+            446
+          ],
+          "bookPassages": [
+            {
+              "passageId": "qfg:03:03-p-0077",
+              "chapterId": "03",
+              "blockId": "03-p-0077",
+              "sourceRevision": "aa15b339d718c632425bc2f202984c465b53fe8120a7c9991f016590c67c14b6",
+              "footnoteRevision": "7cca5140a172e8fdae18ec04e618de752e8c3689dc83c21220da0385bf298126",
+              "relatedFootnoteIds": [
+                "42",
+                "43"
+              ]
+            },
+            {
+              "passageId": "qfg:18:18-p-0055",
+              "chapterId": "18",
+              "blockId": "18-p-0055",
+              "sourceRevision": "91052c19b9b4d217262582ac5fb1942f09a1fca88f61bd117cbbddeb97cac293",
+              "footnoteRevision": "f12ce985f58c42e860f3f2d7cf422eabcb84338cf0da53295b499089900e78ee",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:10:10-p-0072",
+              "chapterId": "10",
+              "blockId": "10-p-0072",
+              "sourceRevision": "2930f2b3653795bcef74478666254967160f586c4a5c65069dad5331fb4f3160",
+              "footnoteRevision": "649d149fcad4a79492c2221ae8946d302b01574252c391b2ded4d901058b4f75",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:18:18-p-0021",
+              "chapterId": "18",
+              "blockId": "18-p-0021",
+              "sourceRevision": "91052c19b9b4d217262582ac5fb1942f09a1fca88f61bd117cbbddeb97cac293",
+              "footnoteRevision": "f12ce985f58c42e860f3f2d7cf422eabcb84338cf0da53295b499089900e78ee",
+              "relatedFootnoteIds": []
+            },
+            {
+              "passageId": "qfg:07:07-p-0028",
+              "chapterId": "07",
+              "blockId": "07-p-0028",
+              "sourceRevision": "1fa6782a3c215b865d64a0c507e083ea181450da4d8a717e428392d4d2c3a036",
+              "footnoteRevision": "e9feeea6c75b8296108ab218c823569b21e03cc6272050f235ef510927eb2967",
+              "relatedFootnoteIds": [
+                "9"
+              ]
+            }
+          ],
+          "localSourceChunks": [
+            {
+              "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0112",
+              "sourceId": "0d042084-c5de-4f22-a139-9e2218dc0317",
+              "locator": "section:28:3",
+              "sourceSha256": "adb6eac7ff68f39ff6d927bd09f7dfa172b706bad20d3e28a07e030d5793f30c",
+              "processedSha256": "ea8cc84ac6afdc935ac9b152d3679eab37b6f0d76689d3a0498dcf69d5d5f8ea"
+            }
+          ],
+          "webSources": []
+        },
+        "capabilities": {
+          "localLibrary": true,
+          "crossChapterSearch": true,
+          "webSearch": false,
+          "researchDepth": "local"
+        }
+      },
+      "contextSnapshot": {
+        "bundleHash": "46581275e2f80f44ecf9c6a8b98e2ddeb455efc160472ffedaa7574a0143d61a",
+        "selections": {
+          "excludedNoteIds": [],
+          "includedTranslationSourceLines": [],
+          "excludedTranslationSourceLines": [],
+          "excludedBookPassageIds": [],
+          "bookPassageLimit": 5,
+          "includedLocalChunkIds": [
+            "0d042084-c5de-4f22-a139-9e2218dc0317:0112"
+          ]
+        },
+        "optionalMutableEvidence": []
+      },
+      "legacyContext": false
+    }
+  ],
+  "createdAt": "2026-08-30T07:22:11.623Z",
+  "updatedAt": "2026-08-30T07:22:39.995Z"
+}
