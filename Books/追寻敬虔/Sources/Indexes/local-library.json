@@ -5,7 +5,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0001",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [],
       "locator": "section:1:1",
       "processedSha256": "ea8cc84ac6afdc935ac9b152d3679eab37b6f0d76689d3a0498dcf69d5d5f8ea",
@@ -19,7 +19,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0002",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [],
       "locator": "section:1:2",
       "processedSha256": "ea8cc84ac6afdc935ac9b152d3679eab37b6f0d76689d3a0498dcf69d5d5f8ea",
@@ -33,7 +33,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0003",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -49,7 +49,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0004",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -65,7 +65,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0005",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -81,7 +81,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0006",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -97,7 +97,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0007",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -113,7 +113,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0008",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -129,7 +129,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0009",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -145,7 +145,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0010",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Pastoral Application of Puritan Studies"
       ],
@@ -161,7 +161,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0011",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "序言"
       ],
@@ -177,7 +177,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0012",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "序言"
       ],
@@ -193,7 +193,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0013",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -209,7 +209,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0014",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -225,7 +225,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0015",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -241,7 +241,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0016",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -257,7 +257,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0017",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -273,7 +273,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0018",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -289,7 +289,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0019",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -305,7 +305,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0020",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -321,7 +321,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0021",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -337,7 +337,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0022",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -353,7 +353,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0023",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -369,7 +369,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0024",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -385,7 +385,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0025",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -401,7 +401,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0026",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -417,7 +417,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0027",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -433,7 +433,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0028",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -449,7 +449,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0029",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -465,7 +465,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0030",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -481,7 +481,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0031",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -497,7 +497,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0032",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -513,7 +513,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0033",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -529,7 +529,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0034",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -545,7 +545,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0035",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -561,7 +561,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0036",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -577,7 +577,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0037",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -593,7 +593,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0038",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -609,7 +609,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0039",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -625,7 +625,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0040",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第一部份 清教主義概論"
       ],
@@ -641,7 +641,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0041",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -657,7 +657,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0042",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -673,7 +673,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0043",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -689,7 +689,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0044",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -705,7 +705,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0045",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -721,7 +721,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0046",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -737,7 +737,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0047",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -753,7 +753,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0048",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -769,7 +769,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0049",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -785,7 +785,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0050",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #1 巴刻的見證[11-17/9-18]"
       ],
@@ -801,7 +801,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0051",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #2 為何仍需清教徒[21-34/21-39]"
       ],
@@ -817,7 +817,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0052",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #2 為何仍需清教徒[21-34/21-39]"
       ],
@@ -833,7 +833,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0053",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #2 為何仍需清教徒[21-34/21-39]"
       ],
@@ -849,7 +849,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0054",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述"
       ],
@@ -865,7 +865,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0055",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述"
       ],
@@ -881,7 +881,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0056",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述"
       ],
@@ -897,7 +897,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0057",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述"
       ],
@@ -913,7 +913,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0058",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(1)清教徒運動的先驅(1558~1570)"
@@ -930,7 +930,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0059",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(1)清教徒運動的先驅(1558~1570)"
@@ -947,7 +947,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0060",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)"
@@ -964,7 +964,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0061",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)"
@@ -981,7 +981,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0062",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)"
@@ -998,7 +998,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0063",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1016,7 +1016,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0064",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1034,7 +1034,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0065",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1052,7 +1052,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0066",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1070,7 +1070,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0067",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1088,7 +1088,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0068",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1106,7 +1106,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0069",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1124,7 +1124,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0070",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1142,7 +1142,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0071",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1160,7 +1160,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0072",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1178,7 +1178,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0073",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1196,7 +1196,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0074",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1214,7 +1214,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0075",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(2)清教徒運動的濫觴(1570~88)",
@@ -1232,7 +1232,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0076",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1249,7 +1249,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0077",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1266,7 +1266,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0078",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1283,7 +1283,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0079",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1300,7 +1300,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0080",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1317,7 +1317,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0081",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1334,7 +1334,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0082",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1351,7 +1351,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0083",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1368,7 +1368,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0084",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(3)屬靈的守主日運動(1584~1603)"
@@ -1385,7 +1385,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0085",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(4)史都亞特受迫時代(1604~1643)"
@@ -1402,7 +1402,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0086",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(4)史都亞特受迫時代(1604~1643)"
@@ -1419,7 +1419,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0087",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(4)史都亞特受迫時代(1604~1643)"
@@ -1436,7 +1436,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0088",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(5)革命與改教的時代(1643~1660)"
@@ -1453,7 +1453,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0089",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(5)革命與改教的時代(1643~1660)"
@@ -1470,7 +1470,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0090",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(5)革命與改教的時代(1643~1660)"
@@ -1487,7 +1487,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0091",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(6)復辟與冬天的再臨(1660~)"
@@ -1504,7 +1504,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0092",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(6)復辟與冬天的再臨(1660~)"
@@ -1521,7 +1521,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0093",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(6)復辟與冬天的再臨(1660~)"
@@ -1538,7 +1538,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0094",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(6)復辟與冬天的再臨(1660~)"
@@ -1555,7 +1555,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0095",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Toon)：清教徒運動簡述",
         "(6)復辟與冬天的再臨(1660~)"
@@ -1572,7 +1572,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0096",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]"
       ],
@@ -1588,7 +1588,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0097",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]"
       ],
@@ -1604,7 +1604,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0098",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "壹 動人心弦的故事"
@@ -1621,7 +1621,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0099",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "壹 動人心弦的故事",
@@ -1639,7 +1639,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0100",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "壹 動人心弦的故事",
@@ -1657,7 +1657,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0101",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "壹 動人心弦的故事",
@@ -1675,7 +1675,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0102",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "壹 動人心弦的故事",
@@ -1693,7 +1693,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0103",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "貳 獨領風騷一百年"
@@ -1710,7 +1710,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0104",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "貳 獨領風騷一百年"
@@ -1727,7 +1727,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0105",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "參 姣姣者巴克斯特"
@@ -1744,7 +1744,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0106",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "參 姣姣者巴克斯特"
@@ -1761,7 +1761,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0107",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1779,7 +1779,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0108",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1797,7 +1797,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0109",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1815,7 +1815,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0110",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1833,7 +1833,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0111",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1851,7 +1851,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0112",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1869,7 +1869,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0113",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1887,7 +1887,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0114",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1905,7 +1905,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0115",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #4 清教徒作品[49-77/53-90]",
         "肆 清教徒文學概覽",
@@ -1923,7 +1923,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0116",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -1939,7 +1939,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0117",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -1955,7 +1955,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0118",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -1971,7 +1971,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0119",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -1987,7 +1987,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0120",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2003,7 +2003,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0121",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2019,7 +2019,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0122",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2035,7 +2035,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0123",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2051,7 +2051,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0124",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2067,7 +2067,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0125",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2083,7 +2083,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0126",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2099,7 +2099,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0127",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第二部份 清教徒論聖道"
       ],
@@ -2115,7 +2115,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0128",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "壹 福音派健將"
@@ -2132,7 +2132,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0129",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2149,7 +2149,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0130",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2166,7 +2166,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0131",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2183,7 +2183,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0132",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2200,7 +2200,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0133",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2217,7 +2217,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0134",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2234,7 +2234,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0135",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "貳 神人能交通"
@@ -2251,7 +2251,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0136",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "參 啟示的賜予"
@@ -2268,7 +2268,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0137",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "肆 聖經的靈感"
@@ -2285,7 +2285,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0138",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "肆 聖經的靈感"
@@ -2302,7 +2302,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0139",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "伍 聖經的證實"
@@ -2319,7 +2319,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0140",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "陸 信心的建立"
@@ -2336,7 +2336,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0141",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #5 從神來的啟示[81-96/111-132]",
         "柒 聖經的詮釋"
@@ -2353,7 +2353,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0142",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #6 聖經的詮釋[97-105/133-145]"
       ],
@@ -2369,7 +2369,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0143",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #6 聖經的詮釋[97-105/133-145]"
       ],
@@ -2385,7 +2385,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0144",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2401,7 +2401,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0145",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2417,7 +2417,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0146",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2433,7 +2433,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0147",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2449,7 +2449,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0148",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2465,7 +2465,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0149",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2481,7 +2481,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0150",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2497,7 +2497,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0151",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2513,7 +2513,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0152",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2529,7 +2529,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0153",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2545,7 +2545,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0154",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2561,7 +2561,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0155",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2577,7 +2577,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0156",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2593,7 +2593,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0157",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第三部份 清教徒論靈命"
       ],
@@ -2609,7 +2609,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0158",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Chang)清教徒論聖靈的工作[113-338]"
       ],
@@ -2625,7 +2625,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0159",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "壹 基督之死有乾坤"
@@ -2642,7 +2642,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0160",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇"
@@ -2659,7 +2659,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0161",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2677,7 +2677,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0162",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2695,7 +2695,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0163",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2713,7 +2713,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0164",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2731,7 +2731,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0165",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2749,7 +2749,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0166",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2767,7 +2767,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0167",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2785,7 +2785,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0168",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2803,7 +2803,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0169",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2821,7 +2821,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0170",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2839,7 +2839,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0171",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2857,7 +2857,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0172",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2875,7 +2875,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0173",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2893,7 +2893,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0174",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2911,7 +2911,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0175",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "貳 時光倒流穿越劇",
@@ -2929,7 +2929,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0176",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "參 釐清福音的核心"
@@ -2946,7 +2946,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0177",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴"
@@ -2963,7 +2963,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0178",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -2982,7 +2982,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0179",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3001,7 +3001,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0180",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3020,7 +3020,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0181",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3039,7 +3039,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0182",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3058,7 +3058,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0183",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3076,7 +3076,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0184",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3095,7 +3095,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0185",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3114,7 +3114,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0186",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3133,7 +3133,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0187",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "肆 普救主義的死穴",
@@ -3152,7 +3152,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0188",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "伍 解讀歐文的秘訣"
@@ -3169,7 +3169,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0189",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "伍 解讀歐文的秘訣"
@@ -3186,7 +3186,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0190",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "伍 解讀歐文的秘訣"
@@ -3203,7 +3203,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0191",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "伍 解讀歐文的秘訣"
@@ -3220,7 +3220,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0192",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #8 寶血的救贖[125-148/171-208]",
         "伍 解讀歐文的秘訣"
@@ -3237,7 +3237,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0193",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3253,7 +3253,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0194",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3269,7 +3269,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0195",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3285,7 +3285,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0196",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3301,7 +3301,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0197",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3317,7 +3317,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0198",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3333,7 +3333,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0199",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3349,7 +3349,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0200",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3365,7 +3365,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0201",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3381,7 +3381,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0202",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3397,7 +3397,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0203",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3413,7 +3413,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0204",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3429,7 +3429,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0205",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3445,7 +3445,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0206",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #10 所傳揚之福音觀[163-176/229-248]"
       ],
@@ -3461,7 +3461,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0207",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3477,7 +3477,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0208",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3493,7 +3493,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0209",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3509,7 +3509,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0210",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3525,7 +3525,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0211",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3541,7 +3541,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0212",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3557,7 +3557,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0213",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3573,7 +3573,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0214",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3589,7 +3589,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0215",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]"
       ],
@@ -3605,7 +3605,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0216",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]",
         "稱義教義之扭曲"
@@ -3622,7 +3622,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0217",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]",
         "稱義教義之扭曲"
@@ -3639,7 +3639,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0218",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #9 清教徒稱義教義興衰[149-61/209-28]",
         "稱義教義之扭曲"
@@ -3656,7 +3656,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0219",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "壹 時代的身影"
@@ -3673,7 +3673,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0220",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "壹 時代的身影"
@@ -3690,7 +3690,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0221",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況"
@@ -3707,7 +3707,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0222",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況",
@@ -3725,7 +3725,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0223",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況",
@@ -3743,7 +3743,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0224",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況",
@@ -3761,7 +3761,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0225",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況",
@@ -3779,7 +3779,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0226",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "貳 人論四景況",
@@ -3797,7 +3797,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0227",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "參 治死與得生"
@@ -3814,7 +3814,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0228",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "肆 與神交通論"
@@ -3831,7 +3831,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0229",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3848,7 +3848,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0230",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3865,7 +3865,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0231",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3882,7 +3882,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0232",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3899,7 +3899,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0233",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3916,7 +3916,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0234",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #12 歐文的靈命觀[191-218/269-310]",
         "伍 靈命再進深"
@@ -3933,7 +3933,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0235",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -3949,7 +3949,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0236",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -3965,7 +3965,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0237",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -3981,7 +3981,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0238",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -3997,7 +3997,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0239",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -4013,7 +4013,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0240",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #11 聖靈的見證[179-190/251-267]"
       ],
@@ -4029,7 +4029,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0241",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Edwards)：論宗教情操"
       ],
@@ -4045,7 +4045,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0242",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Edwards)：論宗教情操"
       ],
@@ -4061,7 +4061,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0243",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Edwards)：論宗教情操"
       ],
@@ -4077,7 +4077,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0244",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4093,7 +4093,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0245",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4109,7 +4109,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0246",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4125,7 +4125,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0247",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4141,7 +4141,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0248",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4157,7 +4157,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0249",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4173,7 +4173,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0250",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4189,7 +4189,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0251",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4205,7 +4205,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0252",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4221,7 +4221,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0253",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4237,7 +4237,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0254",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4253,7 +4253,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0255",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4269,7 +4269,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0256",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4285,7 +4285,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0257",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4301,7 +4301,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0258",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4317,7 +4317,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0259",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4333,7 +4333,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0260",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4349,7 +4349,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0261",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4365,7 +4365,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0262",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4381,7 +4381,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0263",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第四部份 清教徒論靈戰(附篇)"
       ],
@@ -4397,7 +4397,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0264",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4413,7 +4413,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0265",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4429,7 +4429,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0266",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4445,7 +4445,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0267",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4461,7 +4461,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0268",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4477,7 +4477,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0269",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4493,7 +4493,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0270",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4509,7 +4509,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0271",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4525,7 +4525,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0272",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4541,7 +4541,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0273",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4557,7 +4557,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0274",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4573,7 +4573,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0275",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4589,7 +4589,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0276",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(John Bunyan)：天路歷程"
       ],
@@ -4605,7 +4605,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0277",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Powlison)：*Power Encounters*"
       ],
@@ -4621,7 +4621,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0278",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4637,7 +4637,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0279",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4653,7 +4653,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0280",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4669,7 +4669,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0281",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4685,7 +4685,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0282",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4701,7 +4701,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0283",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4717,7 +4717,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0284",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4733,7 +4733,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0285",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Zacharias)：*The Embattled Christian*"
       ],
@@ -4749,7 +4749,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0286",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4765,7 +4765,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0287",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4781,7 +4781,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0288",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4797,7 +4797,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0289",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4813,7 +4813,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0290",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4829,7 +4829,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0291",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4845,7 +4845,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0292",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4861,7 +4861,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0293",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4877,7 +4877,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0294",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4893,7 +4893,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0295",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4909,7 +4909,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0296",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4925,7 +4925,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0297",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4941,7 +4941,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0298",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第五部份 清教徒論職事"
       ],
@@ -4957,7 +4957,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0299",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "壹 應對處境高手"
@@ -4974,7 +4974,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0300",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "貳 守主日爭戰史"
@@ -4991,7 +4991,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0301",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "貳 守主日爭戰史"
@@ -5008,7 +5008,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0302",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡"
@@ -5025,7 +5025,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0303",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡",
@@ -5043,7 +5043,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0304",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡",
@@ -5061,7 +5061,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0305",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡",
@@ -5079,7 +5079,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0306",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡",
@@ -5097,7 +5097,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0307",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "參 活學活用四誡",
@@ -5115,7 +5115,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0308",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #14 守主日 [233-243/331-346]",
         "肆 見證以及警誡"
@@ -5132,7 +5132,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0309",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #15 崇拜 [245-257/347-364]",
         "壹 崇拜爭議三問題"
@@ -5149,7 +5149,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0310",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #15 崇拜 [245-257/347-364]",
         "參 崇拜實行的內容"
@@ -5166,7 +5166,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0311",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5184,7 +5184,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0312",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5202,7 +5202,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0313",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5220,7 +5220,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0314",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5238,7 +5238,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0315",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5256,7 +5256,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0316",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5274,7 +5274,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0317",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5292,7 +5292,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0318",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5310,7 +5310,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0319",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5328,7 +5328,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0320",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "壹 講道的展示",
@@ -5346,7 +5346,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0321",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "貳 清教徒傳統"
@@ -5363,7 +5363,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0322",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "參 講道的準則"
@@ -5380,7 +5380,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0323",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態"
@@ -5397,7 +5397,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0324",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態",
@@ -5415,7 +5415,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0325",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態",
@@ -5433,7 +5433,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0326",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態",
@@ -5451,7 +5451,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0327",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態",
@@ -5469,7 +5469,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0328",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #17 講道 [277-289/389-407]",
         "肆 講道的型態",
@@ -5487,7 +5487,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0329",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]"
       ],
@@ -5503,7 +5503,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0330",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義"
@@ -5520,7 +5520,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0331",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5538,7 +5538,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0332",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5556,7 +5556,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0333",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5574,7 +5574,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0334",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5592,7 +5592,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0335",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5610,7 +5610,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0336",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #18 傳福音 [291-308/331-346]",
         "貳 有效呼召教義",
@@ -5629,7 +5629,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0337",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "壹 清教徒向前看"
@@ -5646,7 +5646,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0338",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "壹 清教徒向前看"
@@ -5663,7 +5663,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0339",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "壹 清教徒向前看",
@@ -5681,7 +5681,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0340",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "壹 清教徒向前看",
@@ -5699,7 +5699,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0341",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "參 清教徒恩賜論"
@@ -5716,7 +5716,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0342",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "參 清教徒恩賜論",
@@ -5735,7 +5735,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0343",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "參 清教徒恩賜論",
@@ -5754,7 +5754,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0344",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #13 恩賜 [219-230/311-328]",
         "參 清教徒恩賜論",
@@ -5773,7 +5773,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0345",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5789,7 +5789,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0346",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5805,7 +5805,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0347",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5821,7 +5821,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0348",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5837,7 +5837,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0349",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5853,7 +5853,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0350",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5869,7 +5869,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0351",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5885,7 +5885,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0352",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5901,7 +5901,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0353",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5917,7 +5917,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0354",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5933,7 +5933,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0355",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5949,7 +5949,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0356",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5965,7 +5965,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0357",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5981,7 +5981,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0358",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -5997,7 +5997,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0359",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6013,7 +6013,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0360",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6029,7 +6029,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0361",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6045,7 +6045,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0362",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6061,7 +6061,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0363",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6077,7 +6077,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0364",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6093,7 +6093,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0365",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6109,7 +6109,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0366",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6125,7 +6125,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0367",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6141,7 +6141,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0368",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第六部份 清教徒論倫理"
       ],
@@ -6157,7 +6157,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0369",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #7 良心[107-122/147-168]"
       ],
@@ -6173,7 +6173,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0370",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #7 良心[107-122/147-168]",
         "參 真正恩膏職事"
@@ -6190,7 +6190,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0371",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #7 良心[107-122/147-168]",
         "肆 真倫理憑良心"
@@ -6207,7 +6207,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0372",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #16 婚姻與家庭[259-273/365-386]"
       ],
@@ -6223,7 +6223,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0373",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #16 婚姻與家庭[259-273/365-386]",
         "壹 斧正以往錯謬"
@@ -6240,7 +6240,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0374",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #16 婚姻與家庭[259-273/365-386]",
         "參 具體而微教會"
@@ -6257,7 +6257,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0375",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒"
       ],
@@ -6273,7 +6273,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0376",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒"
       ],
@@ -6289,7 +6289,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0377",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6306,7 +6306,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0378",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6323,7 +6323,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0379",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6340,7 +6340,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0380",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6357,7 +6357,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0381",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6374,7 +6374,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0382",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "工作(原第二章)"
@@ -6391,7 +6391,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0383",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6408,7 +6408,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0384",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6425,7 +6425,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0385",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6442,7 +6442,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0386",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6459,7 +6459,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0387",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6476,7 +6476,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0388",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6493,7 +6493,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0389",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6510,7 +6510,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0390",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6527,7 +6527,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0391",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6544,7 +6544,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0392",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "婚姻與性(原第三章)"
@@ -6561,7 +6561,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0393",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6578,7 +6578,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0394",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6595,7 +6595,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0395",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6612,7 +6612,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0396",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6629,7 +6629,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0397",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6646,7 +6646,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0398",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "金錢(原第四章)"
@@ -6663,7 +6663,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0399",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6680,7 +6680,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0400",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6697,7 +6697,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0401",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6714,7 +6714,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0402",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6731,7 +6731,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0403",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6748,7 +6748,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0404",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6765,7 +6765,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0405",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6782,7 +6782,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0406",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "家庭(原第五章)"
@@ -6799,7 +6799,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0407",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6816,7 +6816,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0408",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6833,7 +6833,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0409",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6850,7 +6850,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0410",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6867,7 +6867,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0411",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6884,7 +6884,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0412",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6901,7 +6901,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0413",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6918,7 +6918,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0414",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6935,7 +6935,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0415",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "教育(原第九章)"
@@ -6952,7 +6952,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0416",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -6969,7 +6969,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0417",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -6986,7 +6986,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0418",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -7003,7 +7003,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0419",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -7020,7 +7020,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0420",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -7037,7 +7037,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0421",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "附篇(Ryken)：入世的聖徒",
         "社會行動(原第十章)"
@@ -7054,7 +7054,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0422",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7070,7 +7070,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0423",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7086,7 +7086,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0424",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7102,7 +7102,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0425",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7118,7 +7118,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0426",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7134,7 +7134,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0427",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7150,7 +7150,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0428",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7166,7 +7166,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0429",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7182,7 +7182,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0430",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7198,7 +7198,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0431",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7214,7 +7214,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0432",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7230,7 +7230,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0433",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7246,7 +7246,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0434",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7262,7 +7262,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0435",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7278,7 +7278,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0436",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "第七部份 清教徒論復興"
       ],
@@ -7294,7 +7294,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0437",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒運動"
@@ -7311,7 +7311,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0438",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7328,7 +7328,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0439",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7345,7 +7345,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0440",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7362,7 +7362,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0441",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7379,7 +7379,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0442",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7396,7 +7396,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0443",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7413,7 +7413,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0444",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7430,7 +7430,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0445",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7447,7 +7447,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0446",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7464,7 +7464,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0447",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #3 清教徒運動乃復興運動[35-48/41-64]",
         "清教徒復興"
@@ -7481,7 +7481,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0448",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "壹 愛氏生平掃描"
@@ -7498,7 +7498,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0449",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "貳 清教徒的本色",
@@ -7516,7 +7516,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0450",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "貳 清教徒的本色",
@@ -7534,7 +7534,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0451",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "貳 清教徒的本色",
@@ -7552,7 +7552,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0452",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "貳 清教徒的本色",
@@ -7570,7 +7570,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0453",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "貳 清教徒的本色",
@@ -7588,7 +7588,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0454",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7606,7 +7606,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0455",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7624,7 +7624,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0456",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7642,7 +7642,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0457",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7660,7 +7660,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0458",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7678,7 +7678,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0459",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7696,7 +7696,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0460",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7714,7 +7714,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0461",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7732,7 +7732,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0462",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7750,7 +7750,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0463",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7768,7 +7768,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0464",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "參 三重誤解愛氏",
@@ -7786,7 +7786,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0465",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7805,7 +7805,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0466",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7824,7 +7824,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0467",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7843,7 +7843,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0468",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7861,7 +7861,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0469",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7879,7 +7879,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0470",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7897,7 +7897,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0471",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7915,7 +7915,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0472",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #19 論屬靈復興[309-327/439-465]",
         "肆 愛氏論大復興",
@@ -7933,7 +7933,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0473",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -7949,7 +7949,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0474",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -7965,7 +7965,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0475",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -7981,7 +7981,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0476",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -7997,7 +7997,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0477",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8013,7 +8013,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0478",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8029,7 +8029,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0479",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8045,7 +8045,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0480",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8061,7 +8061,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0481",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8077,7 +8077,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0482",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8093,7 +8093,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0483",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8109,7 +8109,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0484",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8125,7 +8125,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0485",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8141,7 +8141,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0486",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8157,7 +8157,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0487",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8173,7 +8173,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0488",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8189,7 +8189,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0489",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8205,7 +8205,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0490",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8221,7 +8221,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0491",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8237,7 +8237,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0492",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8253,7 +8253,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0493",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "Packer #20 跋語[329-336/467-477]"
       ],
@@ -8269,7 +8269,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0494",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8285,7 +8285,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0495",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8301,7 +8301,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0496",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8317,7 +8317,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0497",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8333,7 +8333,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0498",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8349,7 +8349,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0499",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8365,7 +8365,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0500",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8381,7 +8381,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0501",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8397,7 +8397,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0502",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8413,7 +8413,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0503",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8429,7 +8429,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0504",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8445,7 +8445,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0505",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8461,7 +8461,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0506",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8477,7 +8477,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0507",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8493,7 +8493,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0508",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8509,7 +8509,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0509",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8525,7 +8525,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0510",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8541,7 +8541,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0511",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8557,7 +8557,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0512",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8573,7 +8573,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0513",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8589,7 +8589,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0514",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8605,7 +8605,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0515",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8621,7 +8621,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0516",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8637,7 +8637,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0517",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8653,7 +8653,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0518",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8669,7 +8669,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0519",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8685,7 +8685,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0520",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8701,7 +8701,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0521",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8717,7 +8717,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0522",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8733,7 +8733,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0523",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8749,7 +8749,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0524",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8765,7 +8765,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0525",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8781,7 +8781,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0526",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8797,7 +8797,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0527",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8813,7 +8813,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0528",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8829,7 +8829,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0529",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8845,7 +8845,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0530",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8861,7 +8861,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0531",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8877,7 +8877,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0532",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8893,7 +8893,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0533",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目"
       ],
@@ -8909,7 +8909,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0534",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -8926,7 +8926,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0535",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -8943,7 +8943,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0536",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -8960,7 +8960,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0537",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -8977,7 +8977,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0538",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -8994,7 +8994,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0539",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -9011,7 +9011,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0540",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -9028,7 +9028,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0541",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -9045,7 +9045,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0542",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -9062,7 +9062,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0543",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "清教徒網站"
@@ -9079,7 +9079,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0544",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9096,7 +9096,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0545",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9113,7 +9113,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0546",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9130,7 +9130,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0547",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9147,7 +9147,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0548",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9164,7 +9164,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0549",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9181,7 +9181,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0550",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "書目",
         "一般性靈修文學"
@@ -9198,7 +9198,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0551",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "教學進度表"
       ],
@@ -9214,7 +9214,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0552",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "教學進度表"
       ],
@@ -9230,7 +9230,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0553",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1"
@@ -9247,7 +9247,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0554",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9265,7 +9265,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0555",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9283,7 +9283,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0556",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9301,7 +9301,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0557",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9319,7 +9319,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0558",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9337,7 +9337,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0559",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9355,7 +9355,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0560",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9373,7 +9373,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0561",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9391,7 +9391,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0562",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9409,7 +9409,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0563",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9427,7 +9427,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0564",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9445,7 +9445,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0565",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9463,7 +9463,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0566",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9481,7 +9481,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0567",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9499,7 +9499,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0568",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9517,7 +9517,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0569",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9535,7 +9535,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0570",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9553,7 +9553,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0571",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9571,7 +9571,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0572",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9589,7 +9589,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0573",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9607,7 +9607,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0574",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9625,7 +9625,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0575",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9643,7 +9643,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0576",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9661,7 +9661,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0577",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",
@@ -9679,7 +9679,7 @@
       "authorityClass": "confessional_secondary",
       "chunkId": "0d042084-c5de-4f22-a139-9e2218dc0317:0578",
       "enabled": true,
-      "externalSharingApproved": false,
+      "externalSharingApproved": true,
       "headingPath": [
         "脚注",
         "脚注 1",

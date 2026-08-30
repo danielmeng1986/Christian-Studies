@@ -56,6 +56,7 @@
           <div class="side-panel__actions" aria-label="脚注与经文操作">
             <button type="button" id="show-all-references">显示全部</button>
             <button type="button" id="clear-references">清空</button>
+            <button type="button" id="hide-references" aria-label="隐藏脚注与经文栏" title="隐藏脚注与经文栏">×</button>
           </div>
         </div>
         <div class="empty-state" id="reference-empty-state">
@@ -170,7 +171,7 @@
               <div class="discussion-context-preview" id="discussion-context-preview" hidden></div>
               <div class="discussion-form-actions">
                 <button type="button" class="secondary-button" id="cancel-new-discussion">取消</button>
-                <button type="submit" class="primary-button" id="send-first-message">发送</button>
+                <button type="submit" class="primary-button" id="send-first-message">预览上下文</button>
               </div>
             </form>
 
@@ -199,7 +200,7 @@
               <div class="discussion-context-preview" id="discussion-reply-context-preview" hidden></div>
               <div class="discussion-form-actions">
                 <span class="discussion-model" id="discussion-model"></span>
-                <button type="submit" class="primary-button" id="send-reply">发送</button>
+                <button type="submit" class="primary-button" id="send-reply">预览上下文</button>
               </div>
             </form>
           </section>

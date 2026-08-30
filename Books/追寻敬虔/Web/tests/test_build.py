@@ -100,6 +100,9 @@ class BuildTests(unittest.TestCase):
         self.assertIn('id="selection-discuss-action"', self.output)
         self.assertIn('id="discussions-tab"', self.output)
         self.assertIn('id="discussion-start-form"', self.output)
+        self.assertIn('id="hide-references"', self.output)
+        self.assertIn('id="send-first-message">预览上下文</button>', self.output)
+        self.assertIn('id="send-reply">预览上下文</button>', self.output)
         self.assertIn('id="study-panel-resizer"', self.output)
         self.assertIn('id="library-tab"', self.output)
         self.assertIn('id="library-import-form"', self.output)
@@ -108,6 +111,12 @@ class BuildTests(unittest.TestCase):
         self.assertIn('event.type === "response.delta"', app_js)
         self.assertIn('shell.classList.toggle("discussion-focus"', app_js)
         self.assertIn("qfg-reader-discussion-panel-width", app_js)
+        self.assertIn('hideReferences.addEventListener("click"', app_js)
+        self.assertIn("state?.fingerprint !== fingerprint", app_js)
+        self.assertIn("已保留你的上下文选择，请重新预览", app_js)
+        self.assertNotIn("checkbox.disabled = !chunk.externalSharingApproved", app_js)
+        self.assertIn("是否授权此资料并选择当前片段", app_js)
+        self.assertIn("await state.refresh()", app_js)
         self.assertIn(".app-shell.discussion-focus", app_css)
 
     def test_each_chapter_has_a_repository_note_source(self) -> None:

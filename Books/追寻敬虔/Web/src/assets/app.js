@@ -28,6 +28,7 @@ const referenceList = document.querySelector("#reference-list");
 const referenceEmptyState = document.querySelector("#reference-empty-state");
 const showAllReferences = document.querySelector("#show-all-references");
 const clearReferences = document.querySelector("#clear-references");
+const hideReferences = document.querySelector("#hide-references");
 const footnoteRefs = [...document.querySelectorAll(".footnote-ref[data-footnote-id]")];
 const scriptureRefs = [...document.querySelectorAll(".scripture-ref[data-scripture-id]")];
 const interactiveRefs = [...document.querySelectorAll(".footnote-ref[data-footnote-id], .scripture-ref[data-scripture-id]")];
@@ -1186,7 +1187,7 @@ async function openDiscussion(id) {
     activeDiscussionEtag = response.headers.get("ETag");
     discussionPreviewState.reply = null;
     discussionReplyContextPreview.hidden = true;
-    sendReply.textContent = "发送";
+    sendReply.textContent = "预览上下文";
     discussionSelection = {
       anchor: activeDiscussion.anchor,
       scriptures: activeDiscussion.context.scriptures,
@@ -1266,8 +1267,15 @@ function previewFingerprint(selection, message) {
 
 function invalidateContextPreview(state) {
   state.contextBuildId = null;
+  state.expiresAt = null;
+  state.estimates = null;
   state.budgetStatus = null;
   (state.kind === "start" ? sendFirstMessage : sendReply).textContent = "重新预览";
+}
+
+function markContextPreviewReady(state) {
+  (state.kind === "start" ? sendFirstMessage : sendReply).textContent =
+    state.budgetStatus === "over_budget" ? "调整后重新预览" : "确认发送";
 }
 
 function renderContextPreview(container, preview, state) {
@@ -1419,23 +1427,63 @@ function renderContextPreview(container, preview, state) {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = state.includedLocalChunkIds.has(chunk.chunkId);
-      checkbox.disabled = !chunk.externalSharingApproved;
       checkbox.setAttribute("aria-label", `纳入${chunk.sourceTitle}的资料片段`);
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) state.includedLocalChunkIds.add(chunk.chunkId);
-        else state.includedLocalChunkIds.delete(chunk.chunkId);
-        invalidateContextPreview(state);
+      if (!chunk.externalSharingApproved) {
+        checkbox.title = "勾选后会先请求此资料的外发授权";
+      }
+      checkbox.addEventListener("change", async () => {
+        if (!checkbox.checked) {
+          state.includedLocalChunkIds.delete(chunk.chunkId);
+          invalidateContextPreview(state);
+          return;
+        }
+        if (chunk.externalSharingApproved) {
+          state.includedLocalChunkIds.add(chunk.chunkId);
+          invalidateContextPreview(state);
+          return;
+        }
+
+        checkbox.checked = false;
+        const approved = window.confirm(
+          `“${chunk.sourceTitle}”尚未授权将节选发送给 OpenAI。` +
+          "授权后，仍只有你在每轮上下文预览中明确勾选的片段才会发送。是否授权此资料并选择当前片段？",
+        );
+        if (!approved) return;
+
+        checkbox.disabled = true;
+        try {
+          await libraryWrite(`/api/library/sources/${encodeURIComponent(chunk.sourceId)}`, {
+            approveExternalSharing: true,
+          });
+        } catch (error) {
+          checkbox.disabled = false;
+          showDiscussionMessage(`无法授权资料：${error.message}`, "error");
+          return;
+        }
+
+        chunk.externalSharingApproved = true;
+        checkbox.title = "";
+        checkbox.checked = true;
+        checkbox.disabled = false;
+        state.includedLocalChunkIds.add(chunk.chunkId);
+        try {
+          await state.refresh();
+          showDiscussionMessage(`已授权“${chunk.sourceTitle}”并选择当前资料片段。`, "success");
+        } catch (error) {
+          invalidateContextPreview(state);
+          showDiscussionMessage(`资料已授权，但无法刷新上下文：${error.message}`, "error");
+        }
       });
       const details = document.createElement("details");
       const summary = document.createElement("summary");
-      summary.textContent = `${chunk.sourceTitle} · ${chunk.locator}`;
+      summary.textContent = `${chunk.sourceTitle} · ${chunk.locator}${chunk.externalSharingApproved ? "" : "（勾选时授权）"}`;
       const excerpt = document.createElement("blockquote");
       excerpt.textContent = chunk.text;
       details.append(summary, excerpt);
       if (!chunk.externalSharingApproved) {
         const warning = document.createElement("p");
         warning.className = "discussion-context-preview__warning";
-        warning.textContent = "尚未授权外发。请到“资料库”确认授权后再选择。";
+        warning.textContent = "尚未授权外发。勾选后可授权此资料，并将当前片段加入本轮上下文。";
         details.append(warning);
       }
       item.append(checkbox, details);
@@ -1447,6 +1495,7 @@ function renderContextPreview(container, preview, state) {
 }
 
 async function refreshDiscussionContextPreview(kind, selection, message, state) {
+  invalidateContextPreview(state);
   const payload = {
     sourceRevision: article.dataset.sourceRevision,
     anchor: selection.anchor,
@@ -1476,24 +1525,29 @@ async function refreshDiscussionContextPreview(kind, selection, message, state) 
   state.estimates = result.estimates;
   state.budgetStatus = result.estimates.status;
   renderContextPreview(kind === "start" ? discussionContextPreview : discussionReplyContextPreview, result.preview, state);
+  markContextPreviewReady(state);
   return state;
 }
 
 async function previewDiscussionContext(kind, selection, message) {
-  const state = {
-    kind,
-    fingerprint: previewFingerprint(selection, message),
-    excludedNoteIds: new Set(),
-    includedTranslationSourceLines: new Set(),
-    excludedTranslationSourceLines: new Set(),
-    excludedBookPassageIds: new Set(),
-    includedLocalChunkIds: new Set(),
-    bookPassageLimit: 5,
-    contextBuildId: null,
-    budgetStatus: null,
-  };
-  state.refresh = () => refreshDiscussionContextPreview(kind, selection, message, state);
-  discussionPreviewState[kind] = state;
+  const fingerprint = previewFingerprint(selection, message);
+  let state = discussionPreviewState[kind];
+  if (state?.fingerprint !== fingerprint) {
+    state = {
+      kind,
+      fingerprint,
+      excludedNoteIds: new Set(),
+      includedTranslationSourceLines: new Set(),
+      excludedTranslationSourceLines: new Set(),
+      excludedBookPassageIds: new Set(),
+      includedLocalChunkIds: new Set(),
+      bookPassageLimit: 5,
+      contextBuildId: null,
+      budgetStatus: null,
+    };
+    state.refresh = () => refreshDiscussionContextPreview(kind, selection, message, state);
+    discussionPreviewState[kind] = state;
+  }
   return state.refresh();
 }
 
@@ -1507,7 +1561,7 @@ function beginSelectedDiscussion(anchor, context) {
   activeDiscussionEtag = null;
   discussionPreviewState.start = null;
   discussionContextPreview.hidden = true;
-  sendFirstMessage.textContent = "发送";
+  sendFirstMessage.textContent = "预览上下文";
   discussionHome.hidden = false;
   discussionThread.hidden = true;
   switchStudyTab("discussions");
@@ -1527,7 +1581,6 @@ async function createDiscussion(event) {
     sendFirstMessage.disabled = true;
     try {
       await previewDiscussionContext("start", discussionSelection, message);
-      sendFirstMessage.textContent = discussionPreviewState.start.budgetStatus === "over_budget" ? "调整后重新预览" : "确认发送";
     } catch (error) {
       showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
     } finally {
@@ -1559,9 +1612,14 @@ async function createDiscussion(event) {
     discussionFirstMessage.value = "";
     discussionPreviewState.start = null;
     discussionContextPreview.hidden = true;
-    sendFirstMessage.textContent = "发送";
+    sendFirstMessage.textContent = "预览上下文";
   } catch (error) {
-    showDiscussionMessage(`无法发起讨论：${error.message}`, "error");
+    if (discussionPreviewState.start && (error.status === 409 || error.status === 422)) {
+      invalidateContextPreview(discussionPreviewState.start);
+      showDiscussionMessage(`无法发起讨论：${error.message} 已保留你的上下文选择，请重新预览。`, "error");
+    } else {
+      showDiscussionMessage(`无法发起讨论：${error.message}`, "error");
+    }
   } finally {
     sendFirstMessage.disabled = false;
   }
@@ -1581,7 +1639,6 @@ async function continueDiscussion(event) {
     sendReply.disabled = true;
     try {
       await previewDiscussionContext("reply", selection, message);
-      sendReply.textContent = discussionPreviewState.reply.budgetStatus === "over_budget" ? "调整后重新预览" : "确认发送";
     } catch (error) {
       showDiscussionMessage(`无法预览上下文：${error.message}`, "error");
     } finally {
@@ -1611,10 +1668,15 @@ async function continueDiscussion(event) {
     );
     discussionPreviewState.reply = null;
     discussionReplyContextPreview.hidden = true;
-    sendReply.textContent = "发送";
+    sendReply.textContent = "预览上下文";
   } catch (error) {
     discussionReply.value = message;
-    showDiscussionMessage(`无法继续讨论：${error.message}`, "error");
+    if (discussionPreviewState.reply && (error.status === 409 || error.status === 422)) {
+      invalidateContextPreview(discussionPreviewState.reply);
+      showDiscussionMessage(`无法继续讨论：${error.message} 已保留你的上下文选择，请重新预览。`, "error");
+    } else {
+      showDiscussionMessage(`无法继续讨论：${error.message}`, "error");
+    }
   }
 }
 
@@ -1700,6 +1762,7 @@ clearReferences.addEventListener("click", () => {
   openReferenceKeys = [];
   renderReferences();
 });
+hideReferences.addEventListener("click", () => applyPanelState("left", false));
 
 article.addEventListener("click", (event) => {
   const highlight = event.target.closest("mark.annotation-highlight");
@@ -1806,12 +1869,12 @@ discussionReplyForm.addEventListener("submit", continueDiscussion);
 discussionFirstMessage.addEventListener("input", () => {
   discussionPreviewState.start = null;
   discussionContextPreview.hidden = true;
-  sendFirstMessage.textContent = "发送";
+  sendFirstMessage.textContent = "预览上下文";
 });
 discussionReply.addEventListener("input", () => {
   discussionPreviewState.reply = null;
   discussionReplyContextPreview.hidden = true;
-  sendReply.textContent = "发送";
+  sendReply.textContent = "预览上下文";
 });
 backToDiscussions.addEventListener("click", () => {
   activeDiscussion = null;
