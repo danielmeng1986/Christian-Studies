@@ -61,9 +61,15 @@ context assembly, model orchestration, and controlled tool or skill access. The
 frontend is expected to become a multi-book workspace for importing, managing,
 reading, annotating, discussing, and developing structured notes.
 
+The accepted first-product boundary is local-first and single-reader. Development
+continues as a browser plus loopback service, while the first distributable
+release targets a desktop application built on the web application. Personal,
+internal reading-group, and external distribution stages have different Git and
+user-data rules.
+
 This direction is a planning target, not yet the current architecture. Major
-refactoring begins only after the product boundaries and open architectural
-questions have explicit decisions.
+refactoring proceeds only through accepted decisions, compatibility fixtures,
+versioned contracts, and migration plans.
 
 ## Core principles
 
@@ -90,6 +96,8 @@ questions have explicit decisions.
   ([中文](Docs/Platform-Architecture-Proposal-zh.md)).
 - [`Docs/Open-Questions.md`](Docs/Open-Questions.md) — decisions required before
   major refactoring ([中文](Docs/Open-Questions-zh.md)).
+- [`Docs/Decisions/README.md`](Docs/Decisions/README.md) — accepted architecture
+  decision records.
 
 Current normative architecture remains under `Docs/`. The target proposal does
 not authorize implementation changes by itself.
@@ -97,6 +105,8 @@ not authorize implementation changes by itself.
 ## Project status
 
 The single-book environment is working and has been used for real reading. The
-next stage is product and architecture planning: preserve what has already
-proved valuable, extract book-independent contracts, decide the unresolved
-boundaries, and only then begin the multi-book refactor.
+next stage is contract and migration planning: preserve what has already proved
+valuable, create compatibility fixtures, define book-independent contracts and
+stable block identity, specify SQLite authority by entity, and only then begin
+the multi-book refactor. User-data database and graph-projection engine
+selection remain deliberately deferred.

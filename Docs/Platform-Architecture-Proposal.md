@@ -1,16 +1,17 @@
 # Platform Architecture Proposal
 
-**Version:** 0.1
-**Status:** Discussion draft — not current architecture
+**Version:** 0.2
+**Status:** Accepted target direction — implementation gated, not current architecture
 **Scope:** Proposed multi-book AI-assisted reading platform
 
 > Chinese review version:
 > [`Platform-Architecture-Proposal-zh.md`](Platform-Architecture-Proposal-zh.md).
 
-The English version is the agent-facing proposal. Accepted decisions must be
-reflected in both language versions in the same change. Until this document is
-formally accepted and the current core specifications are revised, the
-normative architecture remains [`Architecture.md`](Architecture.md),
+The English version is the agent-facing target proposal. Accepted decisions
+must be reflected in both language versions in the same change. The target
+direction is accepted, but it is not the current implementation architecture;
+until the gated migrations revise the core specifications, normative behavior
+remains under [`Architecture.md`](Architecture.md),
 [`Reader-Architecture.md`](Reader-Architecture.md), and
 [`AI-Context-Architecture.md`](AI-Context-Architecture.md).
 
@@ -18,12 +19,34 @@ normative architecture remains [`Architecture.md`](Architecture.md),
 
 This proposal describes the target shape of Christian Studies after the
 single-book implementation is generalized. It focuses on logical boundaries and
-data flow before selecting a final repository layout, framework, database, or
-deployment package.
+data flow before selecting a final physical layout, frontend framework,
+user-data/graph engine, or desktop packaging technology.
 
 The target is not merely a bookshelf UI. It is a reading environment in which
 source preservation, reviewed Markdown, interactive study, transparent AI
 context, and durable knowledge form one traceable lifecycle.
+
+## Accepted decision baseline
+
+- The first product is local-first and single-reader.
+- Development continues with a browser plus loopback service; the first
+  distributable release targets a desktop application built on the web app.
+- Personal, internal reading-group, and external distribution stages have
+  different Git, bundled-content, and user-data policies.
+- Reviewed Markdown remains authoritative normalized prose.
+- Book packages are portable data units; generic application behavior belongs
+  to the shared platform.
+- SQLite may own the platform Book Catalog and migrated platform metadata;
+  search/retrieval indexes remain derived.
+- Reviewed semantic blocks receive stable UUIDs while precise selections retain
+  quote/range/revision selectors.
+- Context contracts are provider-neutral; model routing is initially
+  deterministic and user-overridable; capabilities are registered,
+  least-privilege, and consent-aware.
+- Structured knowledge requires user acceptance, and source rights/visibility
+  are recorded and enforced.
+
+Cross-cutting rationale is indexed in [`Decisions/README.md`](Decisions/README.md).
 
 ## 2. Architectural drivers
 
@@ -89,14 +112,15 @@ every current technology.
 ```
 
 The diagram shows logical services. They may begin in one local process and one
-repository. Separate network services are not required unless measured scale or
-deployment decisions justify them.
+repository, accessed through the development browser and later packaged in the
+desktop application. Separate network services are not required unless a future
+product decision and measured scale justify them.
 
 ## 5. Durable book package
 
-A book package is the portable boundary between content and platform. The exact
-directory layout remains subject to [OQ-005](Open-Questions.md#oq-005-platform-and-book-package-boundary),
-but the logical package contains:
+A book package is the accepted portable boundary between content and platform.
+Its exact physical layout remains to be specified and versioned, but the logical
+package contains:
 
 - stable book and edition identity;
 - preserved primary source files;
@@ -302,10 +326,15 @@ technology:
 | User-owned state | notes, discussions, consent, accepted knowledge | Conflict-safe, recoverable, never rebuild-only |
 | Operational/derived state | indexes, caches, token estimates, build assets, job state | Disposable or reconstructable from declared inputs |
 
-Whether durable user state remains Git-managed files, moves partly to SQLite,
-or supports both is unresolved in [OQ-003](Open-Questions.md#oq-003-durable-storage-and-git)
-and [OQ-006](Open-Questions.md#oq-006-database-role). A database must not become
-an undocumented second source of truth.
+Authority is declared per entity or table. In the personal stage, current
+annotations and discussions remain JSON file authorities and may be
+Git-managed. SQLite may become authoritative for the platform Book Catalog and
+migrated platform-managed metadata, while search/retrieval data remains derived.
+The internal/external user-data engine is deferred to
+[OQ-016](Open-Questions.md#oq-016-internalexternal-user-data-persistence-engine),
+and graph projection technology to
+[OQ-017](Open-Questions.md#oq-017-knowledge-graph-projection-engine). See
+[ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
 
 ## 13. Security and privacy
 
@@ -354,14 +383,20 @@ data. Directory moves and schema changes must not be bundled casually.
 
 ## 16. Readiness gates
 
-Implementation of the structural refactor should not begin until:
+The initial OQ decision gate is complete. Implementation of the structural
+refactor should still not begin until:
 
-- OQ-001 through OQ-006 have accepted decisions;
 - current reader behavior and user-data schemas have compatibility fixtures;
 - the target book-package contract is versioned;
+- the Reading Document Model defines stable block UUID representation;
+- SQLite schemas declare authoritative, derived, or operational role per table
+  and define metadata export/migration;
 - the migration and rollback path for 《追寻敬虔》 is documented;
 - a representative second-book import fixture is selected; and
 - success measures for import, anchoring, context, and portability are defined.
+
+OQ-016 and OQ-017 do not block these contract-design steps; they block changing
+user-data authority and implementing a persistent graph projection respectively.
 
 The proposal then becomes normative only through an explicit architecture
 decision that updates the current core documents and validation contract.

@@ -128,3 +128,16 @@ The following current documents add implementation detail:
 
 If a local document contradicts a core repository boundary, the core boundary
 controls until the architecture is deliberately revised.
+
+## 8. Accepted evolution direction
+
+[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md) keeps the
+browser plus loopback service as the development runtime and targets a desktop
+application built on the web application for the first distributable release.
+It does not authorize a packaging framework yet.
+
+[ADR-0003](Decisions/ADR-0003-Stable-Block-Anchoring.md) replaces
+rendering-order identity in the future Reading Document Model with stable UUIDs
+for reviewed semantic blocks while retaining exact range/context/revision
+selectors. Current anchors are not migrated until that model and its
+compatibility tests exist.

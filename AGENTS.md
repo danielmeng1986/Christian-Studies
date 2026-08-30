@@ -10,8 +10,8 @@ Before reasoning about or changing repository content:
 1. Read [`Docs/README.md`](Docs/README.md).
 2. Read every core document that the task matrix in that file marks as
    required for the task.
-3. Read any linked, book-local specification or README that governs the files
-   in scope.
+3. Read any accepted ADR and linked, book-local specification or README that
+   governs the files in scope.
 4. Classify each file to be touched as authoritative, user data, derived data,
    generated output, or implementation source.
 5. Identify the relevant generation and validation commands before editing a

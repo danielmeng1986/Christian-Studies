@@ -1,7 +1,7 @@
 # Christian Studies Product Plan
 
-**Version:** 0.1
-**Status:** Discussion draft
+**Version:** 0.2
+**Status:** Accepted planning baseline — implementation gated
 **Authority:** Planning document; not a current implementation specification
 
 > Chinese review version: [`Product-Plan-zh.md`](Product-Plan-zh.md).
@@ -17,8 +17,9 @@ reader into a multi-book AI-assisted reading environment without losing the
 qualities that made the current system valuable.
 
 It establishes outcomes, sequencing, refactoring gates, and measures of success.
-It does not select every technology or authorize the target architecture; those
-decisions are tracked in [`Open-Questions.md`](Open-Questions.md).
+It does not select every implementation technology or make the target
+architecture current. Accepted decisions and remaining questions are tracked in
+[`Open-Questions.md`](Open-Questions.md) and [`Decisions/`](Decisions/README.md).
 
 ## 2. Origin and product insight
 
@@ -58,8 +59,9 @@ The environment should help a reader:
 8. move from isolated annotations to reviewed, structured knowledge; and
 9. retain understandable, portable data independent of one model or UI.
 
-The initial product remains local-first and centered on an individual reader
-until [OQ-001](Open-Questions.md#oq-001-product-boundary) is decided otherwise.
+The accepted first product is local-first and centered on an individual reader.
+A collaborative or hosted edition requires a new product decision after demand
+has been tested with the project owner's reading group.
 
 ## 4. Current validated baseline
 
@@ -93,13 +95,26 @@ This baseline is an asset to extract and generalize, not a prototype to discard.
 - structured-note and cross-book knowledge workflows with human review; and
 - reproducible generation, migrations, tests, and evaluation.
 
+### Accepted distribution model
+
+- **Personal:** durable content, annotations, and discussions may be
+  Git-managed on the project owner's machine.
+- **Internal:** reading-group friends deploy locally; shared books and resources
+  may use Git, while each reader's notes and discussions remain local.
+- **External:** the application ships without books, may bundle redistributable
+  Scripture resources, and lets readers import their own supported material.
+
+Development remains browser plus loopback service. The first distributable
+release targets a desktop application built on the web application. See
+[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
+
 ### Not assumed yet
 
 - a hosted multi-user service;
 - accounts, collaboration, or public sharing;
-- mobile-native or desktop packaging;
+- a specific desktop packaging technology or operating-system matrix;
 - automatic acceptance of AI conversions or theological conclusions;
-- a database as the sole source of book or note truth;
+- a database as the authority for current annotations and discussions;
 - unrestricted web, MCP, filesystem, or model access; or
 - support for every ebook and document format in the first platform release.
 
@@ -122,8 +137,9 @@ Outcome: current and target responsibilities are documented before refactoring.
 - inventory current 《追寻敬虔》 behavior and test coverage; and
 - define compatibility fixtures that future implementations must preserve.
 
-Exit gate: all questions marked “Before structural refactor” have accepted
-decision records and matching bilingual documents.
+The decision portion of this gate is complete. Phase 0 exits when current
+behavior is inventoried, compatibility fixtures exist, initial domain contracts
+are versioned, and the migration/rollback outline is documented.
 
 ### Phase 1 — Extract stable domain contracts
 
@@ -162,6 +178,10 @@ Outcome: the frontend and backend manage books rather than one fixed directory.
   stable application interfaces;
 - provide import, validation status, library management, and reading entry
   points in one dashboard;
+- keep the shared web application usable through the development browser/local
+  service and ready for a later desktop shell;
+- provide local-profile onboarding and local AI-provider configuration without
+  introducing remote accounts;
 - retain current reading features as a vertical slice; and
 - keep all mutations inside validated, scoped APIs.
 
@@ -216,6 +236,8 @@ Outcome: annotations and discussions can become reviewed knowledge that remains
 linked to evidence.
 
 - propose structured notes from existing study material;
+- first evaluate one completed chapter to determine whether its annotations and
+  discussions support useful synthesis;
 - keep proposals separate from accepted user knowledge;
 - preserve citations to chapters, references, discussions, and external
   evidence;
@@ -271,16 +293,21 @@ explicit user decisions.
 
 ## 10. Decision process and next step
 
-Open decisions live in [`Open-Questions.md`](Open-Questions.md), using stable
-IDs so that plans, specifications, and commits can reference them. An accepted
-decision must record rationale, consequences, migration impact, and the
-documents it changes.
+Accepted decisions and remaining questions live in
+[`Open-Questions.md`](Open-Questions.md), with cross-cutting rationale under
+[`Decisions/`](Decisions/README.md). Stable IDs allow plans, specifications,
+tests, and commits to reference the same boundary.
 
-The immediate next step is not implementation. It is to decide, in order:
+The immediate next step is still planning rather than structural migration:
 
-1. [OQ-001: product boundary](Open-Questions.md#oq-001-product-boundary);
-2. [OQ-003: durable storage and Git](Open-Questions.md#oq-003-durable-storage-and-git);
-3. [OQ-004: canonical normalized representation](Open-Questions.md#oq-004-canonical-normalized-representation); and
-4. [OQ-005: platform and book-package boundary](Open-Questions.md#oq-005-platform-and-book-package-boundary).
+1. inventory current behavior and define compatibility fixtures;
+2. specify the versioned Book Package and Reading Document Model, including
+   stable block UUID representation;
+3. specify SQLite schemas with an explicit authoritative/derived/operational
+   role for every table and a metadata migration/export plan;
+4. specify provider-neutral Context Service contracts; and
+5. select a representative second-book fixture.
 
-Those decisions constrain most later architecture choices.
+[OQ-016](Open-Questions.md#oq-016-internalexternal-user-data-persistence-engine)
+and [OQ-017](Open-Questions.md#oq-017-knowledge-graph-projection-engine) remain
+open but do not block these contract-design steps.

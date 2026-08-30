@@ -146,3 +146,15 @@ A schema change must specify:
 
 Do not bulk-rewrite user data merely to make formatting uniform. Prefer a
 validated migration with a recoverable backup or a lazy upgrade when practical.
+
+## 7. Accepted future authority changes
+
+[ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md) permits a
+future local SQLite database to become authoritative for the platform Book
+Catalog and, after explicit migration, platform-managed book metadata. Every
+table must declare whether it is authoritative, derived, or operational.
+
+This does not change current ownership: `Metadata/book.yml`, annotation JSON,
+and discussion JSON remain file authorities until their respective migrations
+are specified, tested, and executed. Search, retrieval, and graph indexes remain
+derived even when stored in the same database as authoritative records.

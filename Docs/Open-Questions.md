@@ -1,8 +1,8 @@
 # Christian Studies Open Questions
 
-**Version:** 0.1
-**Status:** Active decision queue
-**Authority:** Questions and recommendations are not accepted decisions
+**Version:** 0.2
+**Status:** Active decision registry
+**Authority:** Accepted decision records govern planning; open recommendations do not
 
 > Chinese review version: [`Open-Questions-zh.md`](Open-Questions-zh.md).
 
@@ -11,28 +11,31 @@ before their dependent work begins. Stable IDs allow plans, specifications,
 tests, and commits to refer to the same question.
 
 A “suggested starting position” is a concrete proposal for discussion, not an
-authorization to implement it. A question is closed only when its decision
-record is accepted and all affected English and Chinese documents are updated.
+authorization to implement it. An accepted record governs future planning but
+does not claim that migration or implementation has occurred. Cross-cutting
+decisions are preserved under [`Decisions/`](Decisions/README.md).
 
 ## Decision priority
 
 | ID | Decision | Needed before | Status |
 | --- | --- | --- | --- |
-| OQ-001 | Product boundary | Structural refactor | Open |
-| OQ-002 | Runtime and deployment shape | Application shell | Open |
-| OQ-003 | Durable storage and Git | Structural refactor | Open |
-| OQ-004 | Canonical normalized representation | Structural refactor | Open |
-| OQ-005 | Platform and book-package boundary | Structural refactor | Open |
-| OQ-006 | Database role | Structural refactor | Open |
-| OQ-007 | Import formats and review boundary | Ingestion pipeline | Open |
-| OQ-008 | Annotation anchor identity | Shared reader/data model | Open |
-| OQ-009 | Context Service contract | Context generalization | Open |
-| OQ-010 | Model-routing policy | Multiple models | Open |
-| OQ-011 | MCP and skill trust model | First external capability | Open |
-| OQ-012 | Privacy and provider eligibility | Multiple providers/tools | Open |
-| OQ-013 | Structured-note workflow | Knowledge features | Open |
-| OQ-014 | Cross-book knowledge identity | Knowledge features | Open |
-| OQ-015 | Source rights and repository exposure | Broader importing/sharing | Open |
+| OQ-001 | Product boundary | Structural refactor | Accepted — ADR-0001 |
+| OQ-002 | Runtime and deployment shape | Application shell | Accepted — ADR-0001 |
+| OQ-003 | Durable storage and Git | Structural refactor | Accepted — ADR-0001/0002; engine follow-up OQ-016 |
+| OQ-004 | Canonical normalized representation | Structural refactor | Accepted |
+| OQ-005 | Platform and book-package boundary | Structural refactor | Accepted |
+| OQ-006 | Database role | Structural refactor | Accepted — ADR-0002; engine follow-ups OQ-016/OQ-017 |
+| OQ-007 | Import formats and review boundary | Ingestion pipeline | Accepted |
+| OQ-008 | Annotation anchor identity | Shared reader/data model | Accepted — ADR-0003 |
+| OQ-009 | Context Service contract | Context generalization | Accepted |
+| OQ-010 | Model-routing policy | Multiple models | Accepted |
+| OQ-011 | MCP and skill trust model | First external capability | Accepted |
+| OQ-012 | Privacy and provider eligibility | Multiple providers/tools | Accepted |
+| OQ-013 | Structured-note workflow | Knowledge features | Accepted with evaluation gate |
+| OQ-014 | Cross-book knowledge identity | Knowledge features | Accepted; graph engine follow-up OQ-017 |
+| OQ-015 | Source rights and repository exposure | Broader importing/sharing | Accepted |
+| OQ-016 | Internal/external user-data persistence engine | Internal/external release | Open |
+| OQ-017 | Knowledge graph projection engine | Graph implementation | Open |
 
 ## OQ-001 Product boundary
 
@@ -52,6 +55,19 @@ without a separate product decision.
 expectations, remote access expectations, and which future scenarios must remain
 possible.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** The first platform is a local-first, single-reader personal
+  environment. APIs and identities should preserve a possible future multi-user
+  path, but accounts, cloud sync, tenancy, and collaborative reading are out of
+  scope until a new product decision.
+- **Rationale:** Real personal use has already established value; broader demand
+  must first be tested with the project owner's reading group.
+- **Consequences:** The user's machine is the trusted boundary. A collaborative
+  edition is a future product branch, not a hidden first-release requirement.
+- **Record:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
+
 ## OQ-002 Runtime and deployment shape
 
 **Question:** Should the next platform remain a browser plus local service,
@@ -67,6 +83,20 @@ multi-book workflow exposes a concrete need.
 
 **Decision must state:** supported operating systems, launch experience, offline
 expectations, update method, secret-storage method, and remote-access policy.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Continue browser plus loopback local service during core
+  development. Target the first distributable release as a desktop application
+  built on the web application, with one local onboarding and reading entry
+  point.
+- **Clarification:** A personal-release “registration” creates a local profile;
+  it is not a remote account. The user's API key is configured and stored
+  locally through an approved secret boundary.
+- **Deferred detail:** Packaging technology, supported operating systems, and
+  update delivery belong to the desktop implementation specification.
+- **Record:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
 
 ## OQ-003 Durable storage and Git
 
@@ -88,6 +118,22 @@ and workflow measurements.
 rules, privacy expectations, backup/export, conflict behavior, and migration
 between storage modes.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30, with a storage-engine follow-up.
+- **Chosen option:** Use three distribution stages. In the personal stage,
+  durable content, notes, and discussions may be Git-managed. In the internal
+  stage, shared books/resources may use Git while each reader's notes and
+  discussions remain local. The external application ships without books;
+  users import their own sources, while redistributable Scripture resources may
+  be bundled.
+- **Current authority:** Existing annotation and discussion JSON files remain
+  authoritative in the personal stage.
+- **Deferred detail:** The internal/external user-data persistence engine is
+  OQ-016.
+- **Records:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md)
+  and [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
+
 ## OQ-004 Canonical normalized representation
 
 **Question:** Should reviewed Markdown remain the canonical normalized reading
@@ -103,6 +149,19 @@ that are naturally records, not as a second prose copy.
 
 **Decision must state:** supported Markdown dialect, extension syntax, stable
 identity mechanism, round-trip expectations, and what requires human approval.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Reviewed Markdown remains the authoritative normalized prose.
+  A versioned intermediate document model may support rendering, indexing, and
+  anchors, but remains derived. Structured records may use structured storage
+  without creating a second prose authority.
+- **Consequences:** Import promotion requires human approval; renderers and
+  indexes must rebuild from Markdown. The exact Markdown dialect and identity
+  encoding will be specified in the Reading Document Model.
+- **Tests required:** Parser fixtures, deterministic projection tests, and proof
+  that no derived representation becomes the only prose copy.
 
 ## OQ-005 Platform and book-package boundary
 
@@ -122,6 +181,19 @@ before moving any durable files.
 **Decision must state:** logical package contract, physical repository layout,
 user-data ownership, package version, discovery mechanism, and migration path.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Book packages are portable, data-centered units containing
+  originals, reviewed content, references, metadata, and explicitly owned user
+  data. Generic converters, UI, build logic, model clients, and indexes belong
+  to the shared platform.
+- **Migration:** Wrap the current 《追寻敬虔》 layout with a compatibility adapter
+  before moving durable files. Physical layout and package schema are specified
+  and tested before migration.
+- **Consequences:** A book remains understandable without application code;
+  shared application behavior is not copied into every book.
+
 ## OQ-006 Database role
 
 **Question:** Should the platform use SQLite or another database, and if so,
@@ -138,6 +210,21 @@ that a specific entity needs transactional database ownership.
 
 **Decision must state:** authoritative tables versus projections, rebuild rules,
 backup/export, schema migrations, failure recovery, and Git interaction.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30, with engine-specific follow-ups.
+- **Chosen option:** Introduce local SQLite for an authoritative platform Book
+  Catalog and, after explicit migration, authoritative platform-managed book
+  metadata. SQLite may also hold operational jobs and derived search/retrieval
+  projections.
+- **Authority rule:** Authority is declared per entity or table. Retrieval and
+  search indexes remain derived even when stored beside authoritative records.
+  Current file metadata remains authoritative until a tested migration changes
+  that boundary.
+- **User data:** Current annotation/discussion JSON remains file-authoritative;
+  the future engine is OQ-016. Graph storage is OQ-017.
+- **Record:** [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
 
 ## OQ-007 Import formats and review boundary
 
@@ -158,6 +245,19 @@ authoritative without explicit approval.
 quality threshold, review workflow, image/table/footnote treatment, and failure
 behavior.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Start the generic pipeline with Markdown, DOCX,
+  text-extractable PDF, and plain text. Preserve the legacy DOC workflow as a
+  controlled compatibility adapter. Add EPUB and OCR only after representative
+  fixtures exist.
+- **Review boundary:** Every adapter produces diagnostics and a conversion
+  preview. Extracted prose becomes authoritative only after explicit human
+  approval.
+- **Tests required:** Per-format fidelity fixtures, visible ambiguity, original
+  preservation, and failure behavior for unsupported structures.
+
 ## OQ-008 Annotation anchor identity
 
 **Question:** How should notes and discussions remain attached when Markdown,
@@ -174,6 +274,18 @@ accepts ambiguous matches silently. Do not use DOM paths as durable identity.
 
 **Decision must state:** where IDs live, how imports generate them, how human
 editing preserves them, recovery order, ambiguity UI, and migration tests.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Assign a stable opaque UUID to each reviewed semantic block,
+  normally a paragraph. Preserve precise sub-block selection through exact text,
+  offsets, prefix/suffix context, and source revision. Do not require persistent
+  sentence UUIDs in the first platform model.
+- **Consequences:** Neighboring insertions do not change a block's durable
+  identity; revision and ambiguity checks remain required. Cross-block anchors
+  need a later schema extension.
+- **Record:** [ADR-0003](Decisions/ADR-0003-Stable-Block-Anchoring.md).
 
 ## OQ-009 Context Service contract
 
@@ -193,6 +305,18 @@ evidence before sending.
 **Decision must state:** schemas, extension mechanism, required evidence order,
 budget behavior, cache rules, revision verification, and evaluation fixtures.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Define provider-neutral, versioned `ContextRequest`,
+  `EvidenceCandidate`, `ContextPreview`, `ContextBundle`, and
+  `EvidenceManifest` contracts. Separate discovery/ranking, user selection,
+  budgeting, prompt rendering, model execution, and persistence.
+- **Integrity rule:** Freeze and hash selected evidence before sending; reject
+  stale or unresolvable evidence rather than silently substituting it.
+- **Migration:** Refactor the current `ContextBuilder` in layers behind
+  compatibility tests, without tying the contract to one UI or provider.
+
 ## OQ-010 Model-routing policy
 
 **Question:** How should the system select a model for a question while balancing
@@ -211,6 +335,18 @@ an AI classifier to choose another AI model.
 **Decision must state:** task classes, supported providers/models, user modes,
 quality floors, cost caps, fallback, logging, and evaluation criteria.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Begin with a small deterministic routing policy and
+  user-selectable Economy, Automatic, and Deep modes. Permit user override when
+  privacy and capability constraints remain satisfied.
+- **Guardrail:** Do not add an AI model to select another model until evaluation
+  demonstrates value. Context quality is repaired before model capability is
+  escalated.
+- **Tests required:** Fixed reading tasks comparing grounding, focus, cost,
+  latency, fallback, and mode override.
+
 ## OQ-011 MCP and skill trust model
 
 **Question:** How are MCP servers and skills registered, permitted, invoked, and
@@ -226,6 +362,17 @@ record tool results as untrusted typed evidence in the manifest.
 
 **Decision must state:** capability manifest, permission lifetime, user prompts,
 secret access, sandboxing, write policy, provenance, and failure behavior.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Capabilities are disabled until registered, use least
+  privilege, and default to read-only. External transmission and writes require
+  explicit permission. Tool results remain untrusted typed evidence recorded in
+  the manifest.
+- **Consequences:** Imported content cannot grant tool access. Each capability
+  must declare inputs, side effects, secrets, permission lifetime, provenance,
+  and failure behavior before use.
 
 ## OQ-012 Privacy and provider eligibility
 
@@ -244,6 +391,17 @@ to no external transmission.
 **Decision must state:** data classifications, provider policy, local-model
 behavior, consent persistence, revocation, audit records, and UI language.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Assign durable outbound policy to every source and user-data
+  category, maintain a provider allowlist, and require both source eligibility
+  and per-request inclusion. New private supplemental sources default to no
+  external transmission.
+- **Consequences:** Derived chunks inherit—not broaden—their source policy.
+  Consent can be revoked, and the UI must show the relevant provider and data
+  categories before transmission when a choice is required.
+
 ## OQ-013 Structured-note workflow
 
 **Question:** What does “more structured notes” mean, and how does an AI proposal
@@ -261,6 +419,18 @@ knowledge.
 **Decision must state:** first knowledge types, required citations, proposal
 schema, review actions, authorship, revision history, and rejection behavior.
 
+### Decision
+
+- **Status:** Accepted on 2026-08-30 with an evaluation gate.
+- **Chosen option:** First evaluate whether one completed chapter's annotations
+  and discussions contain enough quality to support useful synthesis. Begin
+  structured output with evidence-linked synthesis notes and stable person,
+  concept, and Scripture entities.
+- **Review boundary:** AI output enters a separate proposal queue. Only explicit
+  user acceptance or editing creates durable knowledge.
+- **Gate:** Do not design a broader ontology until the chapter-level experiment
+  identifies what the reader actually understood and gained.
+
 ## OQ-014 Cross-book knowledge identity
 
 **Question:** How should the same person, work, concept, or Scripture passage be
@@ -277,6 +447,18 @@ do not treat a shared label as proof of identical meaning.
 
 **Decision must state:** entity types, ID rules, aliases, merge/split workflow,
 citation edges, Markdown representation, and index rebuilding.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30; projection engine remains open.
+- **Chosen option:** Accepted knowledge entities receive stable IDs and
+  human-readable Markdown pages with aliases and evidence links. Ambiguous
+  merges require review; identical labels do not prove identical meaning.
+- **Projection rule:** Search and graph stores are derived by default. A graph
+  database is a candidate, not an accepted Source of Truth.
+- **Follow-up:** OQ-017 selects a graph projection engine only after real graph
+  queries and scale are known.
+- **Record:** [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
 
 ## OQ-015 Source rights and repository exposure
 
@@ -296,6 +478,61 @@ distribution unless permission or public-domain status is documented.
 **Decision must state:** rights metadata schema, visibility classes, Git/remote
 rules, export checks, redaction or exclusion behavior, and responsibility for
 review.
+
+### Decision
+
+- **Status:** Accepted on 2026-08-30.
+- **Chosen option:** Record acquisition, rights basis, permitted use, and
+  repository visibility during import. Copyrighted originals and full derived
+  reading text default to local/private use and are excluded from public
+  distribution without documented permission or public-domain status.
+- **Application requirement:** Import, export, synchronization, and distribution
+  interfaces must present and enforce this declaration rather than relying only
+  on documentation.
+- **Tests required:** Distribution-package and export checks must reject or omit
+  content whose visibility and rights do not permit the requested operation.
+
+## OQ-016 Internal/external user-data persistence engine
+
+**Question:** After the personal file-backed stage, which embedded or external
+database should own annotations and discussions?
+
+**Why it remains open:** The internal and external editions need local privacy,
+JSON document fidelity, revision conflicts, backup/export, migrations, and easy
+deployment. Current real-use data has not yet shown whether JSON files are
+insufficient or which database tradeoff matters most.
+
+**Candidates:** Continue schema-versioned JSON files; use an embedded database
+with robust JSON document operations; or use a service database only if a later
+multi-user product boundary requires it.
+
+**Evaluation criteria:** lossless JSON semantics, transactions, revision
+conflicts, migration tooling, backup/export, portability, encryption options,
+desktop packaging, operational burden, and performance on representative notes
+and discussions.
+
+**Needed before:** The internal/external release changes user-data authority.
+
+## OQ-017 Knowledge graph projection engine
+
+**Question:** Which technology, if any, should implement the derived cross-book
+knowledge graph and graph queries?
+
+**Why it remains open:** A graph database may fit entity relationships, but the
+project does not yet have accepted knowledge volume or concrete query patterns
+that justify an engine. Selecting one now would confuse the knowledge identity
+decision with a storage implementation choice.
+
+**Candidates:** Derived adjacency/index tables in SQLite, an embedded graph
+engine, or a dedicated graph database. Accepted Markdown knowledge remains the
+default authority unless a later decision explicitly changes it.
+
+**Evaluation criteria:** required graph queries, provenance edges, rebuildability,
+local deployment, backup/export, ecosystem maturity, query complexity, and
+measured data size.
+
+**Needed before:** Implementing a persistent graph projection beyond simple
+derived indexes.
 
 ## Decision record template
 

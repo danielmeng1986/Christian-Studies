@@ -147,3 +147,15 @@ The implementation lives primarily in `Web/scripts/context_builder.py`,
 `Web/scripts/context_retrieval.py`, `Web/scripts/local_library.py`, and the
 validated service APIs. Changes must run the context, retrieval, discussion,
 library, and API tests selected by [`Validation.md`](Validation.md).
+
+## 9. Accepted platform extraction
+
+OQ-009 through OQ-012 accept a provider-neutral, versioned Context Service;
+deterministic user-overridable model modes; registered least-privilege
+capabilities; and the combination of durable source eligibility plus per-turn
+selection. These decisions align with this document's current boundaries but do
+not imply that the book-local implementation has already been extracted.
+
+The extraction must preserve current context fixtures, freeze and hash selected
+evidence, and keep model routing and capability execution outside evidence
+discovery and user selection.

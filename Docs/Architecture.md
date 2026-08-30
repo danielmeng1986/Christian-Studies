@@ -151,3 +151,23 @@ Do not move, rename, or reclassify these files during unrelated work. A cleanup
 must first identify each file's ownership and references, choose its canonical
 destination, update all dependent metadata and tooling, and verify the migration
 as a dedicated change.
+
+## 9. Accepted evolution constraints
+
+The future platform direction has accepted decisions, indexed in
+[`Decisions/README.md`](Decisions/README.md), that constrain later refactoring:
+
+- the first product remains local-first and single-reader, with a desktop
+  application as the distributable target and the current browser/local service
+  as the development path;
+- portable book packages become data-centered while generic application code
+  moves to a shared platform;
+- reviewed Markdown remains authoritative normalized prose;
+- SQLite may become authoritative for a platform Book Catalog and migrated
+  platform-managed metadata, while retrieval indexes remain derived; and
+- reviewed semantic blocks gain stable UUIDs for durable anchoring.
+
+These are accepted migration targets, not claims about current implementation.
+The authorities and paths in this document remain controlling until a scoped
+migration updates this specification, schemas, data, implementation, and tests
+together.

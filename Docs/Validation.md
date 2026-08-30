@@ -52,6 +52,7 @@ full suite is required before declaring a cross-cutting reader change complete.
 | Context assembly or retrieval | `test_context_builder.py`, `test_context_retrieval.py`, and discussion tests |
 | Local source library | `test_local_library.py` and affected context/service tests |
 | Core architecture or canonical paths | Documentation link/path audit and every subsystem test affected by the decision |
+| Planning decision or ADR only | Documentation link/anchor audit; English/Chinese OQ and ADR parity; verify accepted/open status and current-vs-target wording |
 | Generated or derived format | Rebuild twice when determinism is part of the contract; compare declared outputs |
 
 This matrix is a minimum. A change that crosses rows inherits all applicable
@@ -82,6 +83,7 @@ following across every book:
 - every generated path is ignored and reproducible;
 - no generated index or `dist/` file was hand-edited;
 - every Markdown link in `Docs/` resolves;
+- every accepted OQ has matching bilingual status and every ADR has a bilingual pair;
 - every reading unit has complete provenance; or
 - all user-data schemas preserve unknown compatible fields.
 

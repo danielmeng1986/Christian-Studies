@@ -18,17 +18,23 @@ The roadmap describes staged direction, not a commitment to build every possible
 
 This working reader is the compatibility baseline for future refactoring.
 
-## Current stage — Decide before restructuring
+## Current stage — Formalize contracts before restructuring
 
-The current stage is product and target-architecture planning:
+The initial product and target-architecture decision pass is complete:
 
 - preserve the project history and product insight in the root README;
 - define a multi-book product plan and target architecture proposal;
-- inventory current behavior and create compatibility fixtures;
-- decide product, storage, Markdown, package, and database boundaries; and
-- define migration and rollback before moving durable files.
+- accept the local-first product, staged distribution, reviewed-Markdown,
+  data-centered book package, SQLite-role, stable-anchor, context, model,
+  capability, knowledge, and rights decisions; and
+- retain user-data database and graph-projection engines as later choices.
 
-The decision queue is [`Open-Questions.md`](Open-Questions.md), with a Chinese review version in [`Open-Questions-zh.md`](Open-Questions-zh.md).
+The work now is to inventory current behavior, create compatibility fixtures,
+version the domain contracts, and define migration and rollback before moving
+durable files. Accepted records are indexed in
+[`Decisions/README.md`](Decisions/README.md); remaining questions are in
+[`Open-Questions.md`](Open-Questions.md) and
+[`Open-Questions-zh.md`](Open-Questions-zh.md).
 
 ## Planned sequence
 

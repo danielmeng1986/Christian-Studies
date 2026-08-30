@@ -19,3 +19,9 @@ Use a stable, descriptive filename and begin each page with a concise statement 
 Book-specific interpretation remains in `Books/<book>/Notes/` unless it has value beyond that book. When promoting an insight to a reusable page, preserve its provenance with a link back to the original note or reading chapter.
 
 Future versions may add index pages, structured relationships, or semantic linking. Any such addition must continue to expose its evidence in human-readable Markdown.
+
+## Accepted evolution direction
+
+Accepted knowledge entities will use stable IDs, human-readable Markdown pages, aliases, and evidence links. AI-created structure remains a proposal until the reader accepts or edits it. Ambiguous entity merges require review; a matching label does not prove identical meaning.
+
+Graph and search stores remain derived projections of accepted knowledge by default. A Graph database is a candidate implementation, not an accepted source of truth. Engine selection remains open in [`Open-Questions.md`](Open-Questions.md#oq-017-knowledge-graph-projection-engine) and [`Open-Questions-zh.md`](Open-Questions-zh.md#oq-017-知识图谱投影引擎).
