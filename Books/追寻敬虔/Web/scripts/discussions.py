@@ -37,6 +37,7 @@ DEFAULT_CONTEXT_WINDOW_TOKENS = 128_000
 DEFAULT_TIMEOUT_SECONDS = 120
 MAX_USER_MESSAGE_CHARS = 12_000
 MAX_ASSISTANT_MESSAGE_CHARS = 250_000
+MAX_OPENAI_ERROR_BODY_BYTES = 64_000
 
 MARKDOWN_RENDERER = MarkdownIt(
     "commonmark",
@@ -797,10 +798,34 @@ def build_response_input_from_bundle(
     for message in document["messages"]:
         if message["status"] != "completed":
             continue
-        items.append(
-            {"role": message["role"], "content": [{"type": "input_text", "text": message["content"]}]}
-        )
+        # Use the Responses API's documented EasyInputMessage string form for
+        # local user and assistant history. The explicit discriminator keeps
+        # these replayed messages unambiguous as the input union evolves.
+        items.append({"type": "message", "role": message["role"], "content": message["content"]})
     return items
+
+
+def openai_error_metadata(body: bytes | None) -> dict[str, str]:
+    """Extract only stable routing fields from an OpenAI error response.
+
+    The upstream message can contain request excerpts or other user data, so it
+    must never be returned to the browser, persisted in a discussion, or logged.
+    """
+    if not body:
+        return {}
+    try:
+        payload = json.loads(body.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return {}
+    error_value = payload.get("error") if isinstance(payload, dict) else None
+    if not isinstance(error_value, dict):
+        return {}
+    metadata: dict[str, str] = {}
+    for field, limit in (("code", 128), ("type", 128), ("param", 256)):
+        value = error_value.get(field)
+        if isinstance(value, str) and value:
+            metadata[field] = value[:limit]
+    return metadata
 
 
 def build_response_input(
@@ -931,7 +956,9 @@ class OpenAIResponsesClient:
             "stream": True,
             "max_output_tokens": self.max_output_tokens,
             "truncation": "disabled",
-            "reasoning": {"effort": "medium"},
+            # This application replays its authoritative local text history,
+            # not opaque reasoning items from a prior OpenAI response.
+            "reasoning": {"effort": "medium", "context": "current_turn"},
         }
 
     def stream(
@@ -988,12 +1015,20 @@ class OpenAIResponsesClient:
             with urllib_request.urlopen(request, timeout=self.timeout_seconds) as response:
                 yield from self._read_stream(response)
         except urllib_error.HTTPError as exc:
-            raise self._http_error(exc.code) from exc
+            try:
+                error_body = exc.read(MAX_OPENAI_ERROR_BODY_BYTES)
+            except (OSError, ValueError):
+                error_body = b""
+            raise self._http_error(exc.code, error_body) from exc
         except (urllib_error.URLError, TimeoutError, OSError) as exc:
             raise OpenAIClientError("network_error", "无法连接 OpenAI，请检查网络后重试。", True) from exc
 
     @staticmethod
-    def _http_error(status: int) -> OpenAIClientError:
+    def _http_error(status: int, body: bytes | None = None) -> OpenAIClientError:
+        metadata = openai_error_metadata(body)
+        upstream_code = metadata.get("code", "").lower()
+        upstream_type = metadata.get("type", "").lower()
+        upstream_param = metadata.get("param", "").lower()
         if status == 401:
             return OpenAIClientError("authentication_failed", "OpenAI API Key 无效。", False, status)
         if status == 403:
@@ -1001,7 +1036,53 @@ class OpenAIResponsesClient:
         if status == 429:
             return OpenAIClientError("rate_limited", "OpenAI 暂时限流或项目额度不足，请稍后检查用量。", True, status)
         if status == 400:
-            return OpenAIClientError("invalid_openai_request", "OpenAI 拒绝了请求，请检查模型和上下文设置。", False, status)
+            if upstream_code in {
+                "context_length_exceeded",
+                "context_window_exceeded",
+                "input_too_large",
+            }:
+                return OpenAIClientError(
+                    "context_length_exceeded",
+                    "发送内容超过模型上下文限制，请减少可选证据或新建讨论。",
+                    False,
+                    status,
+                )
+            if (
+                upstream_code in {"model_not_found", "invalid_model", "model_not_supported"}
+                or upstream_param == "model"
+            ):
+                return OpenAIClientError(
+                    "model_unavailable",
+                    "所配置的 OpenAI 模型不可用，请检查 OPENAI_MODEL 和项目权限。",
+                    False,
+                    status,
+                )
+            if upstream_code in {"content_policy_violation", "content_policy_rejection"}:
+                return OpenAIClientError(
+                    "content_rejected",
+                    "OpenAI 因内容策略未处理这次请求。",
+                    False,
+                    status,
+                )
+            if upstream_code in {
+                "invalid_parameter",
+                "invalid_type",
+                "invalid_value",
+                "unsupported_parameter",
+                "unsupported_value",
+            } or upstream_type == "invalid_request_error":
+                return OpenAIClientError(
+                    "invalid_openai_request",
+                    "OpenAI 拒绝了请求格式；本地请求可能与所选模型不兼容。",
+                    False,
+                    status,
+                )
+            return OpenAIClientError(
+                "invalid_openai_request",
+                "OpenAI 拒绝了请求，但未返回可安全分类的原因。",
+                False,
+                status,
+            )
         if status >= 500:
             return OpenAIClientError("openai_unavailable", "OpenAI 服务暂时不可用，请稍后重试。", True, status)
         return OpenAIClientError("openai_request_failed", f"OpenAI 请求失败（{status}）。", False, status)

@@ -316,10 +316,81 @@ class DiscussionTests(unittest.TestCase):
         self.assertEqual(evidence["manifest"]["promptVersion"], DISCUSSIONS.PROMPT_VERSION)
 
         completed_history = [
-            (item["role"], item["content"][0]["text"])
+            (item["role"], item["content"])
             for item in payload["input"][1:]
         ]
         self.assertEqual(completed_history, [tuple(item) for item in fixture["expectedCompletedHistory"]])
+
+    def test_multi_turn_payload_uses_explicit_easy_messages_for_assistant_history(self) -> None:
+        first_completed = DISCUSSIONS.complete_pending_message(
+            self.document,
+            {
+                "content": "第一轮回复。",
+                "model": "gpt-test",
+                "responseId": "resp_first",
+                "usage": {"inputTokens": 20, "outputTokens": 5, "totalTokens": 25},
+            },
+        )
+        continued = DISCUSSIONS.append_discussion_turn(first_completed, "请继续说明。")
+        payload = DISCUSSIONS.OpenAIResponsesClient("secret", model="gpt-test")._request_payload(
+            continued, self.chapter_markdown
+        )
+
+        self.assertEqual(
+            payload["input"][1:],
+            [
+                {"type": "message", "role": "user", "content": "请解释这段话。"},
+                {"type": "message", "role": "assistant", "content": "第一轮回复。"},
+                {"type": "message", "role": "user", "content": "请继续说明。"},
+            ],
+        )
+        self.assertEqual(payload["reasoning"], {"effort": "medium", "context": "current_turn"})
+        self.assertFalse(
+            any(
+                isinstance(item.get("content"), list)
+                and any(part.get("type") == "input_text" for part in item["content"])
+                for item in payload["input"][1:]
+            )
+        )
+
+    def test_http_400_error_classification_uses_only_sanitized_metadata(self) -> None:
+        cases = [
+            (
+                {"code": "context_length_exceeded", "type": "invalid_request_error", "param": "input"},
+                "context_length_exceeded",
+                "上下文限制",
+            ),
+            (
+                {"code": "model_not_found", "type": "invalid_request_error", "param": "model"},
+                "model_unavailable",
+                "OPENAI_MODEL",
+            ),
+            (
+                {"code": "invalid_value", "type": "invalid_request_error", "param": "input[2].content[0]"},
+                "invalid_openai_request",
+                "请求格式",
+            ),
+        ]
+        for metadata, expected_code, expected_message in cases:
+            with self.subTest(expected_code=expected_code):
+                body = json.dumps(
+                    {
+                        "error": {
+                            **metadata,
+                            "message": "不得透出的用户内容 sk-test-secret",
+                        }
+                    },
+                    ensure_ascii=False,
+                ).encode("utf-8")
+                error = DISCUSSIONS.OpenAIResponsesClient._http_error(400, body)
+                self.assertEqual(error.code, expected_code)
+                self.assertIn(expected_message, error.message)
+                self.assertNotIn("不得透出", error.message)
+                self.assertNotIn("sk-test-secret", error.message)
+
+        unknown = DISCUSSIONS.OpenAIResponsesClient._http_error(400, b"not-json")
+        self.assertEqual(unknown.code, "invalid_openai_request")
+        self.assertIn("未返回可安全分类", unknown.message)
 
     def test_m0_developer_instructions_are_versioned_and_frozen(self) -> None:
         digest = hashlib.sha256(DISCUSSIONS.DEVELOPER_INSTRUCTIONS.encode("utf-8")).hexdigest()
