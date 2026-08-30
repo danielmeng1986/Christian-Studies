@@ -1,4 +1,25 @@
 {
   "schemaVersion": 1,
-  "sources": []
+  "sources": [
+    {
+      "author": "Paul Chang（張麟至）",
+      "authorityClass": "confessional_secondary",
+      "createdAt": "2026-08-30T06:28:51Z",
+      "enabled": true,
+      "externalSharingApprovedAt": null,
+      "format": "markdown",
+      "language": "zh-Hant",
+      "licenseNote": null,
+      "originalPath": "Originals/Puritan Studies Study Guide 2026 April.md",
+      "processedPath": "Processed/0d042084-c5de-4f22-a139-9e2218dc0317.json",
+      "processedSha256": "ea8cc84ac6afdc935ac9b152d3679eab37b6f0d76689d3a0498dcf69d5d5f8ea",
+      "sensitivity": "standard",
+      "sha256": "adb6eac7ff68f39ff6d927bd09f7dfa172b706bad20d3e28a07e030d5793f30c",
+      "sourceId": "0d042084-c5de-4f22-a139-9e2218dc0317",
+      "sourceType": "reference",
+      "theologicalTradition": "Reformed / Puritan studies",
+      "title": "清教徒研究的教牧應用（2026年4月學習指南）",
+      "url": null
+    }
+  ]
 }

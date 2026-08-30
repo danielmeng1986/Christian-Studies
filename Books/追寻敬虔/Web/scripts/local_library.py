@@ -53,6 +53,7 @@ def _atomic_write(path: Path, content: bytes) -> None:
             temporary.write(content)
             temporary.flush()
             os.fsync(temporary.fileno())
+        os.chmod(temporary_path, 0o644)
         os.replace(temporary_path, path)
         temporary_path = None
     finally:
@@ -284,12 +285,18 @@ class LocalLibrary:
             "chunks": chunks,
         }
 
-    def confirm_import(self, preview: dict[str, Any]) -> dict[str, Any]:
+    def confirm_import(
+        self, preview: dict[str, Any], *, preserved_original_name: str | None = None
+    ) -> dict[str, Any]:
         self.ensure()
         source_id = str(uuid4())
         safe_name = re.sub(r"[^A-Za-z0-9._-]+", "-", preview["filename"]).strip(".-") or "source"
-        original_name = f"{source_id}--{safe_name}"
+        original_name = preserved_original_name or f"{source_id}--{safe_name}"
+        if Path(original_name).name != original_name or not original_name.strip():
+            raise LocalLibraryError("preserved original name must be a plain file name")
         original_path = self.originals_root / original_name
+        if original_path.exists():
+            raise LocalLibraryError("an original with this preserved file name already exists")
         processed_path = self.processed_root / f"{source_id}.json"
         chunks = []
         for index, chunk in enumerate(preview["chunks"], 1):

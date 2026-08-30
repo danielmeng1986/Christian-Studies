@@ -116,6 +116,15 @@ class LocalLibraryTests(unittest.TestCase):
         self.library.update_source(source["sourceId"], {"enabled": True})
         self.assertEqual(len(self.library.search("pastoral note")), 1)
 
+    def test_confirm_can_preserve_a_reviewed_markdown_filename(self) -> None:
+        original = b"# Reviewed source\n\nStable source text.\n"
+        preview = self.library.preview_import("reviewed.md", original, self.metadata())
+        source = self.library.confirm_import(preview, preserved_original_name="reviewed.md")
+        self.assertEqual(source["originalPath"], "Originals/reviewed.md")
+        self.assertEqual((self.root / source["originalPath"]).read_bytes(), original)
+        with self.assertRaises(LIBRARY.LocalLibraryError):
+            self.library.confirm_import(preview, preserved_original_name="reviewed.md")
+
     def test_json_uses_json_pointer_locators(self) -> None:
         preview = self.library.preview_import(
             "entry.json", b'{"topic":{"name":"godliness"}}', self.metadata()
