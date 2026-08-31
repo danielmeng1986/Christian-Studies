@@ -1,6 +1,6 @@
 # Christian Studies Product Plan
 
-**Version:** 0.2
+**Version:** 0.3
 **Status:** Accepted planning baseline — implementation gated
 **Authority:** Planning document; not a current implementation specification
 
@@ -12,9 +12,11 @@ the two versions conflict, stop planning or implementation and reconcile them.
 
 ## 1. Purpose
 
-This plan describes how Christian Studies can grow from a working single-book
-reader into a multi-book AI-assisted reading environment without losing the
-qualities that made the current system valuable.
+This plan describes how Christian Studies can keep serving real theological
+reading while becoming the first domain profile for a broader personal
+AI-assisted reading environment. It may grow from a working single-book reader
+into reusable reading infrastructure without losing the qualities that made the
+current system valuable.
 
 It establishes outcomes, sequencing, refactoring gates, and measures of success.
 It does not select every implementation technology or make the target
@@ -45,6 +47,12 @@ The product thesis is:
 Christian Studies should make that context an inspectable product feature, not
 an invisible implementation detail.
 
+Real use also changed the product boundary. The reusable opportunity is not
+specifically “theology features,” but a source-aware reading loop that may serve
+English and German books, technical material, and other deep reading. Christian
+Studies remains the first domain; language learning is the most important
+candidate second domain. Neither domain should be hard-coded into the other.
+
 ## 3. Primary user outcomes
 
 The environment should help a reader:
@@ -56,8 +64,12 @@ The environment should help a reader:
 5. ask AI questions without manually rebuilding book context;
 6. understand which evidence the AI used and what it did not know;
 7. control whether personal or supplemental material leaves the machine;
-8. move from isolated annotations to reviewed, structured knowledge; and
-9. retain understandable, portable data independent of one model or UI.
+8. move from isolated annotations to reviewed, structured knowledge;
+9. retain understandable, portable data independent of one model or UI;
+10. read, search, consult bundled trusted sources, and write notes on the active
+    device without requiring a server on another machine; and
+11. move personal data through an explicit versioned export/import path before
+    relying on automatic synchronization.
 
 The accepted first product is local-first and centered on an individual reader.
 A collaborative or hosted edition requires a new product decision after demand
@@ -92,8 +104,14 @@ This baseline is an asset to extract and generalize, not a prototype to discard.
 - book-independent context construction and retrieval;
 - cost- and capability-aware model selection with user control;
 - controlled MCP tools and reusable skills;
-- structured-note and cross-book knowledge workflows with human review; and
-- reproducible generation, migrations, tests, and evaluation.
+- structured-note and cross-book knowledge workflows with human review;
+- reproducible generation, migrations, tests, and evaluation;
+- a shared Reader Core, Context Service, source-provider boundary, and domain
+  profiles when a second real use case demonstrates that they are reusable;
+- device-local offline reading with explicitly networked AI capabilities;
+- dictionary and grammar evidence as candidate first-class Source Providers;
+- portable user data whose archival representation is separate from runtime
+  storage.
 
 ### Accepted distribution model
 
@@ -104,19 +122,27 @@ This baseline is an asset to extract and generalize, not a prototype to discard.
 - **External:** the application ships without books, may bundle redistributable
   Scripture resources, and lets readers import their own supported material.
 
-Development remains browser plus loopback service. The first distributable
-release targets a desktop application built on the web application. See
-[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
+Development and need discovery remain browser plus loopback service. The first
+dedicated-device target is a self-contained iPhone application; desktop remains
+a possible later client. The first personal mobile stage does not require App
+Store distribution, public users, remote accounts, a cloud backend, a Mac
+server, or mandatory iCloud. See
+[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md) and its
+[ADR-0004 amendment](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md).
 
 ### Not assumed yet
 
 - a hosted multi-user service;
 - accounts, collaboration, or public sharing;
-- a specific desktop packaging technology or operating-system matrix;
+- a specific native/mobile framework, desktop packaging technology, or
+  operating-system matrix;
 - automatic acceptance of AI conversions or theological conclusions;
 - a database as the authority for current annotations and discussions;
-- unrestricted web, MCP, filesystem, or model access; or
-- support for every ebook and document format in the first platform release.
+- unrestricted web, MCP, filesystem, or model access;
+- support for every ebook and document format in the first platform release;
+- a complete cross-domain ontology before the language-learning workflow exists;
+- automatic LAN or cloud synchronization before export/import is proven; or
+- a platform refactor merely because a target architecture can be drawn.
 
 These are decision areas, not hidden requirements.
 
@@ -125,6 +151,21 @@ These are decision areas, not hidden requirements.
 Work proceeds through evidence-based phases rather than target dates. Each phase
 must leave the current reader usable and must have explicit entry and exit
 criteria before implementation begins.
+
+### Current operating mode — Read, observe, and batch
+
+The immediate phase is continued real reading with the existing
+《追寻敬虔》 Reader. Problems are recorded instead of triggering isolated tweaks,
+then grouped into coherent work such as mobile Reader UX, Context extraction,
+portable user data, second-book integration, or a language-learning prototype.
+
+No phase below starts merely to complete the roadmap. Platform extraction
+starts only after a second representative real use case—preferably an English
+or German non-theological book—shows which Reader, anchoring, Source Provider,
+discussion, annotation, and Context contracts are genuinely shared.
+
+The numbered phases below are a gated candidate sequence after that evidence
+exists, not the current development queue.
 
 ### Phase 0 — Architecture and decision baseline
 
@@ -137,9 +178,10 @@ Outcome: current and target responsibilities are documented before refactoring.
 - inventory current 《追寻敬虔》 behavior and test coverage; and
 - define compatibility fixtures that future implementations must preserve.
 
-The decision portion of this gate is complete. Phase 0 exits when current
-behavior is inventoried, compatibility fixtures exist, initial domain contracts
-are versioned, and the migration/rollback outline is documented.
+The initial decision portion of this gate is complete. Phase 0 does not exit
+until current behavior is inventoried, compatibility fixtures exist, a second
+representative use case has been selected and used, initial domain contracts are
+versioned from that evidence, and the migration/rollback outline is documented.
 
 ### Phase 1 — Extract stable domain contracts
 
@@ -149,8 +191,10 @@ Outcome: book-independent contracts exist before code is physically moved.
   `Discussion`, `Source`, `ContextBundle`, and `EvidenceManifest` identities;
 - separate domain behavior from 《追寻敬虔》 paths and UI assumptions;
 - create contract tests using the existing book as a compatibility fixture;
-- define schema versioning and migration policy; and
-- establish repository-wide policy validation.
+- define schema versioning and migration policy;
+- establish repository-wide policy validation; and
+- distinguish shared Reading Core contracts from Christian Studies and language
+  learning Domain Profile contracts.
 
 Exit gate: current reader behavior passes through documented, book-independent
 interfaces without moving authoritative user data.
@@ -179,7 +223,7 @@ Outcome: the frontend and backend manage books rather than one fixed directory.
 - provide import, validation status, library management, and reading entry
   points in one dashboard;
 - keep the shared web application usable through the development browser/local
-  service and ready for a later desktop shell;
+  service and define a device-neutral boundary for the later iPhone client;
 - provide local-profile onboarding and local AI-provider configuration without
   introducing remote accounts;
 - retain current reading features as a vertical slice; and
@@ -187,6 +231,22 @@ Outcome: the frontend and backend manage books rather than one fixed directory.
 
 Exit gate: both 《追寻敬虔》 and the second book can be opened and studied through
 the same application flow.
+
+### Phase 3a — Prove portable device-local user data
+
+Outcome: personal data can move without becoming dependent on a copied runtime
+database or cloud account.
+
+- separate managed content from mutable user-owned data;
+- define stable user-entity identities and a versioned export manifest;
+- export and import progress, highlights, notes, discussions, accepted
+  knowledge, and attachments without exporting credentials;
+- preserve unknown compatible fields and provide conflict preview and recovery;
+  and
+- test round trips before designing automatic synchronization.
+
+Exit gate: a representative export/import round trip preserves user data and
+provenance across clean and populated destinations with recoverable failures.
 
 ### Phase 4 — Generalize the context platform
 
@@ -196,8 +256,10 @@ Outcome: `ContextBuilder` becomes a book-independent, evaluated service.
 - separate evidence discovery, ranking, user selection, budgeting, and prompt
   rendering;
 - add repeatable retrieval and answer-quality evaluation cases;
-- preserve per-source consent and prompt-injection boundaries; and
-- make context explainability part of the UI.
+- preserve per-source consent and prompt-injection boundaries;
+- make context explainability part of the UI; and
+- allow typed Source Providers, including a later dictionary or grammar
+  provider, without letting a provider or model blur evidence provenance.
 
 Exit gate: the same context pipeline handles multiple books without weakening
 source labels, revision checks, or user control.
@@ -260,6 +322,8 @@ The platform should use an incremental replacement strategy:
 
 Avoid a big-bang rewrite. Do not combine directory migration, schema migration,
 frontend replacement, model routing, and new product behavior in one change.
+Do not begin extraction until the second real use case exists, and do not treat
+an iPhone target as permission to discard the current Reader.
 
 ## 8. Measures of success
 
@@ -273,6 +337,9 @@ frontend replacement, model routing, and new product behavior in one change.
 | Economics | Cost and latency are measured per task class; routing does not sacrifice acceptance quality |
 | Portability | Books, reviewed text, notes, and manifests remain understandable outside one UI or provider |
 | Reuse | A second book requires configuration and content review, not copied application code |
+| Offline autonomy | Reading, local evidence lookup, search, notes, and history work without a Mac or network |
+| Mobile continuity | A contextual action closes back to the same reading location without an app-switching workflow |
+| Data recovery | Versioned export/import round trips preserve user data, provenance, and unknown compatible fields |
 
 Metrics should be defined with concrete fixtures before a phase claims success.
 
@@ -285,8 +352,12 @@ Metrics should be defined with concrete fixtures before a phase claims success.
 - model routing may optimize price while hiding inconsistent behavior;
 - MCP tools or imported documents may widen trust and data-exposure boundaries;
 - a database may become an opaque second source of truth;
-- structured-note automation may blur user judgment and AI proposals; and
-- a large refactor may interrupt the working reading environment.
+- structured-note automation may blur user judgment and AI proposals;
+- a large refactor may interrupt the working reading environment;
+- bundled content may violate rights or overwrite user state during updates;
+- a mobile credential may leak into content, logs, databases, or exports; and
+- a premature language-learning ontology may encode assumptions that real use
+  later disproves.
 
 Each phase must convert its relevant risks into tests, previews, permissions, or
 explicit user decisions.
@@ -298,16 +369,17 @@ Accepted decisions and remaining questions live in
 [`Decisions/`](Decisions/README.md). Stable IDs allow plans, specifications,
 tests, and commits to reference the same boundary.
 
-The immediate next step is still planning rather than structural migration:
+The immediate next step is use rather than structural migration:
 
-1. inventory current behavior and define compatibility fixtures;
-2. specify the versioned Book Package and Reading Document Model, including
-   stable block UUID representation;
-3. specify SQLite schemas with an explicit authoritative/derived/operational
-   role for every table and a metadata migration/export plan;
-4. specify provider-neutral Context Service contracts; and
-5. select a representative second-book fixture.
+1. continue reading 《追寻敬虔》 with the current Reader;
+2. record issues and batch them only after a coherent theme emerges;
+3. choose and genuinely begin a representative English or German second book;
+4. use that workflow to identify what is shared and what belongs to a Domain
+   Profile; and
+5. only then inventory compatibility fixtures and specify the smallest contracts
+   needed for a scoped extraction.
 
-[OQ-016](Open-Questions.md#oq-016-internalexternal-user-data-persistence-engine)
-and [OQ-017](Open-Questions.md#oq-017-knowledge-graph-projection-engine) remain
-open but do not block these contract-design steps.
+The accepted mobile direction does not bypass this evidence gate. OQ-018 through
+OQ-022 define the native mobile, portable-data, Source Provider,
+language-learning, and managed-content decisions that must be resolved before
+their dependent implementation. OQ-016 and OQ-017 remain later engine choices.

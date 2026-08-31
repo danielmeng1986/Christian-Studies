@@ -157,9 +157,16 @@ as a dedicated change.
 The future platform direction has accepted decisions, indexed in
 [`Decisions/README.md`](Decisions/README.md), that constrain later refactoring:
 
-- the first product remains local-first and single-reader, with a desktop
-  application as the distributable target and the current browser/local service
-  as the development path;
+- the first product remains local-first and single-reader; the current
+  browser/local service is the development and compatibility path, while the
+  first dedicated-device target is a self-contained iPhone application rather
+  than a desktop-first release;
+- local-first means the active device owns core reading capability and its
+  authoritative personal data; a Mac service, remote account, cloud backend,
+  and automatic synchronization are not first-stage requirements;
+- managed content and mutable user data remain separate, provider credentials
+  stay in platform secret storage, and explicit versioned export/import
+  precedes automatic synchronization;
 - portable book packages become data-centered while generic application code
   moves to a shared platform;
 - reviewed Markdown remains authoritative normalized prose;
@@ -171,3 +178,8 @@ These are accepted migration targets, not claims about current implementation.
 The authorities and paths in this document remain controlling until a scoped
 migration updates this specification, schemas, data, implementation, and tests
 together.
+
+The current Reader remains the compatibility baseline. Platform extraction and
+native mobile implementation are not authorized merely by this target: a second
+representative real use case must first validate the shared contracts. See
+[ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md).

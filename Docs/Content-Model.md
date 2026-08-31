@@ -158,3 +158,11 @@ This does not change current ownership: `Metadata/book.yml`, annotation JSON,
 and discussion JSON remain file authorities until their respective migrations
 are specified, tested, and executed. Search, retrieval, and graph indexes remain
 derived even when stored in the same database as authoritative records.
+
+[ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md)
+permits a future device-local store to become authoritative for migrated user
+entities only through an explicit, tested schema migration. That store must
+remain distinct from bundled managed content and must have a versioned portable
+export/import representation; copying a whole SQLite file is not the archival
+or synchronization contract. This future direction does not migrate or rewrite
+current `Books/*/Notes/` data.

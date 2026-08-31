@@ -1,6 +1,6 @@
 # Christian Studies 未决问题
 
-**版本：** 0.2
+**版本：** 0.3
 **状态：** 活跃决策登记
 **效力：** 已接受决议约束未来规划；未决建议不构成决定
 
@@ -14,9 +14,9 @@
 
 | ID | 决策 | 必须完成的阶段 | 状态 |
 | --- | --- | --- | --- |
-| OQ-001 | 产品边界 | 结构性重构前 | 已接受——ADR-0001 |
-| OQ-002 | 运行与部署形态 | 应用外壳前 | 已接受——ADR-0001 |
-| OQ-003 | 持久存储与 Git | 结构性重构前 | 已接受——ADR-0001/0002；引擎后续见 OQ-016 |
+| OQ-001 | 产品边界 | 结构性重构前 | 已接受——ADR-0001/0004 |
+| OQ-002 | 运行与部署形态 | 专用设备实现前 | 方向已接受——ADR-0001/0004；移动契约后续见 OQ-018 |
+| OQ-003 | 持久存储与 Git | 结构性重构前 | 已接受——ADR-0001/0002/0004；引擎/Package 后续见 OQ-016/OQ-019 |
 | OQ-004 | 规范化内容的权威表示 | 结构性重构前 | 已接受 |
 | OQ-005 | 平台与书籍包边界 | 结构性重构前 | 已接受 |
 | OQ-006 | 数据库角色 | 结构性重构前 | 已接受——ADR-0002；引擎后续见 OQ-016/OQ-017 |
@@ -31,6 +31,11 @@
 | OQ-015 | 来源权利与仓库可见性 | 扩大导入/分享前 | 已接受 |
 | OQ-016 | 内部版/外部版用户数据持久化引擎 | 内部版/外部版发布前 | 未决 |
 | OQ-017 | 知识图谱投影引擎 | 图谱实现前 | 未决 |
+| OQ-018 | 原生移动应用与交互边界 | 原生移动实现前 | Mobile-first 方向已接受，具体仍未决 |
+| OQ-019 | 可迁移用户数据 Package 与同步边界 | Export/Import 实现前 | Export 先于 Sync 的方向已接受，具体仍未决 |
+| OQ-020 | Dictionary 与 Grammar Source Provider 契约 | 语言学习原型前 | 未决 |
+| OQ-021 | Language Learning Domain 与持久知识模型 | 保存语言知识前 | 未决 |
+| OQ-022 | Managed Content 打包、权利与升级隔离 | 移动端内置内容前 | 未决 |
 
 ## OQ-001 产品边界
 
@@ -49,6 +54,7 @@
 - **理由：** 真实的个人使用已经证明价值；更广泛需求要先通过向读书会朋友介绍项目来验证。
 - **后果：** 用户自己的机器是可信边界。协作版是未来可能的产品分支，不是第一版隐藏需求。
 - **记录：** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md)。
+- **修订：** ADR-0004 保留个人产品边界，并把 iPhone 设为首个专用设备目标；它没有引入公开用户或远程账户。
 
 ## OQ-002 运行与部署形态
 
@@ -63,10 +69,12 @@
 ### 决议
 
 - **状态：** 2026-08-30 已接受。
-- **选择方案：** 核心开发期间继续使用浏览器加 loopback 本地服务。第一个可分发版本以 Web 应用为基础打包成桌面应用，并通过一个本地入口完成初始化和阅读工作。
+- **修订后的选择方案：** 核心开发期间继续使用浏览器加 loopback 本地服务，并以它作为兼容性基线。首个专用设备版本以能够独立运行的 iPhone App 为目标；桌面端保留为以后可能的客户端。
 - **澄清：** 个人版的“注册”是建立本地 Profile，不是创建远程账户。用户 API Key 通过批准的秘密边界在本机配置和保存。
-- **后续细节：** 套壳技术、支持的操作系统和更新分发由桌面版实施规范决定。
+- **后续细节：** 原生/Web 边界、iOS 基线、更新分发与移动交互契约由 OQ-018 决定。
 - **记录：** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md)。
+- **修订：** [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md)
+  已用设备本地的 iPhone 目标取代桌面优先的可分发目标。浏览器加 loopback 服务继续作为当前开发与兼容运行方式。原生 App 契约继续由 OQ-018 决定。
 
 ## OQ-003 持久存储与 Git
 
@@ -83,8 +91,8 @@
 - **状态：** 2026-08-30 已接受，持久化引擎另行决定。
 - **选择方案：** 采用三个分发阶段。个人阶段的持久内容、笔记和讨论可以由 Git 管理；内部阶段的共享书籍/资料可以由 Git 管理，但每位读者的笔记与讨论只留在本地；外部应用不附带书籍，读者自行导入，只有允许再分发的圣经资源可以随应用提供。
 - **当前权威：** 个人阶段现有注释和讨论 JSON 文件继续作为权威数据。
-- **后续细节：** 内部版/外部版的用户数据持久化引擎由 OQ-016 决定。
-- **记录：** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md) 与 [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles-zh.md)。
+- **后续细节：** 内部版/外部版的用户数据持久化引擎由 OQ-016 决定。第一版可迁移 Export/Import Package 与后续同步边界由 OQ-019 决定。
+- **记录：** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md)、[ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles-zh.md) 和 [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md)。
 
 ## OQ-004 规范化内容的权威表示
 
@@ -313,6 +321,79 @@
 **评估标准：** 需要支持的图查询、来源边、可重建性、本地部署、备份/导出、生态成熟度、查询复杂度和实际数据规模。
 
 **必须完成的阶段：** 实现超出简单派生索引的持久图谱投影之前。
+
+## OQ-018 原生移动应用与交互边界
+
+**问题：** 怎样用原生应用架构和交互契约实现已经接受的 Mobile-first 方向，同时不把 Reading Core 绑定到单一 Apple UI，也不提前重写当前 Reader？
+
+**为什么仍未决定：** ADR-0004 已选择完全本地运行的 iPhone App 作为首个专用设备目标，但没有选择 SwiftUI、嵌入式 Web Runtime、共享渲染层、Package 布局、后台行为或具体的选区/Bottom Sheet 交互。这些决定需要第二个真实阅读 Use Case 和兼容 fixture。
+
+**建议起点：** Reader 始终是主界面。文字选区可以在临时移动面板中显示 Look Up、Explain、Grammar、Translate、Ask AI、Note 与 Save 等上下文动作，关闭后回到原阅读位置。这只是交互假设，不是已经实现的契约。
+
+**正式决定必须说明：** 原生/Web 边界、iOS 基线、书籍 Package 访问、离线行为、导航和位置恢复、选区模型、无障碍、升级/迁移、Secret Storage 与兼容 fixture。
+
+**必须完成的阶段：** 原生移动实现之前。平台提取继续以第二个具有代表性的真实 Use Case 为门槛。
+
+## OQ-019 可迁移用户数据 Package 与同步边界
+
+**问题：** 用户数据的版本化可迁移表示是什么？目标设备已经存在相关数据时，Import 应如何处理？
+
+**已接受方向：** ADR-0004 要求显式 Export/Import 早于自动同步，禁止把覆盖整个数据库作为长期协议，并保持 Cloud Infrastructure 可选。Package 细节和合并策略仍未决定。
+
+**建议起点：** Export 包含 Manifest，以及 Progress、Highlight、Note、Discussion、已接受 Knowledge 和 Attachment 的人类可读或有明确规范的记录。使用稳定 Entity ID，保留兼容的未知字段，验证 Checksum 与 Schema Version，预览冲突，并在 Import 前保存可恢复备份。Provider Credential 不能进入 Export。
+
+**正式决定必须说明：** Package 布局与 Schema、包含/排除数据、Identity 与 Revision 规则、Import 模式、重复/冲突行为、Attachment、完整性与加密、降级/前向兼容、恢复和权利过滤。
+
+**必须完成的阶段：** Export/Import 实现之前。LAN Transfer、LAN Sync、AirDrop/Share Sheet 或 Cloud Replication 只有经过独立的 Transport 与 Threat Model 决议后，才能传输该 Package 或未来 Change Set。
+
+## OQ-020 Dictionary 与 Grammar Source Provider 契约
+
+**问题：** Dictionary 与 Grammar Evidence 应怎样参与 Search、Context Builder、Citation、Licensing、离线打包和 AI Discussion？
+
+**为什么仍未决定：** Dictionary 是正式 Evidence Source，不只是 UI 附件；但目前尚未用真实语言学习书籍验证 Provider Schema、授权策略、Language Pair、Lookup Normalization 或 Citation Contract。
+
+**建议起点：** 定义共享 `SourceProvider` 契约，其结果必须有明确类型、Source Link、Revision、Rights，并且可以独立显示。Dictionary 与 Grammar Provider 负责提供证据；模型可以解释和比较，但不能伪装成字典条目。
+
+**正式决定必须说明：** Provider Identity 与 Version、支持的 Language Pair、Headword/Expression Lookup、Morphology、Sense 与 Example Provenance、离线/Index 规则、授权与 Export 限制、Context Priority、失败行为和评估 fixture。
+
+**必须完成的阶段：** 语言学习原型把 Dictionary 或 Grammar 结果作为持久证据之前。
+
+## OQ-021 Language Learning Domain 与持久知识模型
+
+**问题：** 哪些语言学习 Entity 和 Workflow 属于 Domain Profile？哪些契约经证据证明可以与 Christian Studies 共享？
+
+**为什么仍未决定：** Lexeme、Expression、Collocation、Grammar Pattern、Usage Contrast、Example、Personal Example 与 Mistake 都是合理候选，但在真实英文或德文阅读前设计它们，会重复 Roadmap 想要避免的过早抽象。
+
+**建议起点：** 使用一本具有代表性的英文或德文书，验证从选区、可信查阅、AI 解释、个人造句、审核、保存到再次遇见的完整流程。AI Proposal 与用户已接受 Knowledge 必须分开；只有真实证据支持时才复用 Stable Anchor、Evidence、Provenance 与 Discussion 契约。
+
+**正式决定必须说明：** 第一批知识类型、Stable Identity 与再次遇见记录、Source Sentence/Anchor Link、Personal Example Review、AI Authorship、接受与纠错流程、Cross-language Relation 和 Portable Export。
+
+**必须完成的阶段：** 实现持久语言学习 Knowledge 或通用 Cross-domain Ontology 之前。
+
+## OQ-022 Managed Content 打包、权利与升级隔离
+
+**问题：** 怎样把书籍、圣经、字典、语法资料与其他可信材料内置到个人设备，同时不与可变 User Data 混淆，也不违反权利约束？
+
+**为什么仍未决定：** ADR-0004 允许个人阶段内置权利合适的资料，但 Package 布局、授权记录、升级 Diff、移除行为和 User Data 生存规则仍未规范。
+
+**建议起点：** 每个 Managed Content Package 都有稳定 Identity、Version、Checksum、Provenance、Rights/Visibility Record 和声明的 Index。它的安装或升级与 User Data Store 分离；不能因为 Package 升级或移除就删除用户记录。
+
+**正式决定必须说明：** Package Manifest、Signature/Integrity、Licensing 与 Visibility、Content Version 与 Anchor Migration、内置和用户导入材料的区别、Index Rebuild、应用升级行为、Rollback 与 Orphaned User Data 处理。
+
+**必须完成的阶段：** 在移动 Build 中内置书籍或可信参考资料集合之前。
+
+## ADR 队列
+
+下列只是候选记录，不是已接受决定或实施权威：
+
+| 候选 ADR 主题 | 触发条件 |
+| --- | --- |
+| 原生移动应用边界与 Reader 交互 | 第二个代表性 Use Case 与兼容 fixture 完成后解决 OQ-018 |
+| 可迁移用户数据 Package、Import 与恢复 | Export/Import 实现前解决 OQ-019 |
+| Source Provider Evidence 与信任契约 | Dictionary/Grammar 集成前解决 OQ-020 |
+| Language Learning Knowledge 的接受与再次遇见 | 持久语言知识实现前解决 OQ-021 |
+| Managed Content 打包与升级隔离 | 移动端内置内容前解决 OQ-022 |
+| 基于 Change 的 LAN 或 Cloud Replication | Export/Import 已工作且真实多设备需求得到验证后 |
 
 ## 决议模板
 

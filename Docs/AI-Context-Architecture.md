@@ -159,3 +159,11 @@ not imply that the book-local implementation has already been extracted.
 The extraction must preserve current context fixtures, freeze and hash selected
 evidence, and keep model routing and capability execution outside evidence
 discovery and user selection.
+
+The future platform may register books, Bible resources, dictionaries, grammar
+references, personal notes, discussions, and supplemental references behind a
+typed `SourceProvider` boundary. Every provider must preserve source identity,
+revision, rights, outbound eligibility, and independently renderable evidence;
+provider content remains untrusted data. Dictionary and grammar contracts remain
+open under [OQ-020](Open-Questions.md#oq-020-dictionary-and-grammar-source-provider-contract),
+so this direction does not add them to the current book-local implementation.

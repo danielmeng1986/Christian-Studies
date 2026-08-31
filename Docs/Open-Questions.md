@@ -1,6 +1,6 @@
 # Christian Studies Open Questions
 
-**Version:** 0.2
+**Version:** 0.3
 **Status:** Active decision registry
 **Authority:** Accepted decision records govern planning; open recommendations do not
 
@@ -19,9 +19,9 @@ decisions are preserved under [`Decisions/`](Decisions/README.md).
 
 | ID | Decision | Needed before | Status |
 | --- | --- | --- | --- |
-| OQ-001 | Product boundary | Structural refactor | Accepted — ADR-0001 |
-| OQ-002 | Runtime and deployment shape | Application shell | Accepted — ADR-0001 |
-| OQ-003 | Durable storage and Git | Structural refactor | Accepted — ADR-0001/0002; engine follow-up OQ-016 |
+| OQ-001 | Product boundary | Structural refactor | Accepted — ADR-0001/0004 |
+| OQ-002 | Runtime and deployment shape | Dedicated-device implementation | Accepted direction — ADR-0001/0004; mobile contract follow-up OQ-018 |
+| OQ-003 | Durable storage and Git | Structural refactor | Accepted — ADR-0001/0002/0004; engine/package follow-ups OQ-016/OQ-019 |
 | OQ-004 | Canonical normalized representation | Structural refactor | Accepted |
 | OQ-005 | Platform and book-package boundary | Structural refactor | Accepted |
 | OQ-006 | Database role | Structural refactor | Accepted — ADR-0002; engine follow-ups OQ-016/OQ-017 |
@@ -36,6 +36,11 @@ decisions are preserved under [`Decisions/`](Decisions/README.md).
 | OQ-015 | Source rights and repository exposure | Broader importing/sharing | Accepted |
 | OQ-016 | Internal/external user-data persistence engine | Internal/external release | Open |
 | OQ-017 | Knowledge graph projection engine | Graph implementation | Open |
+| OQ-018 | Native mobile application and interaction boundary | Native mobile implementation | Open within accepted mobile-first direction |
+| OQ-019 | Portable user-data package and synchronization boundary | Export/import implementation | Open within accepted export-before-sync direction |
+| OQ-020 | Dictionary and grammar Source Provider contract | Language-learning prototype | Open |
+| OQ-021 | Language-learning domain and durable knowledge model | Saving language knowledge | Open |
+| OQ-022 | Managed-content packaging, rights, and update isolation | Bundled mobile content | Open |
 
 ## OQ-001 Product boundary
 
@@ -67,6 +72,9 @@ possible.
 - **Consequences:** The user's machine is the trusted boundary. A collaborative
   edition is a future product branch, not a hidden first-release requirement.
 - **Record:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
+- **Amendment:** ADR-0004 keeps this personal boundary and makes the iPhone the
+  first dedicated-device target. It does not add public users or remote
+  accounts.
 
 ## OQ-002 Runtime and deployment shape
 
@@ -87,16 +95,20 @@ expectations, update method, secret-storage method, and remote-access policy.
 ### Decision
 
 - **Status:** Accepted on 2026-08-30.
-- **Chosen option:** Continue browser plus loopback local service during core
-  development. Target the first distributable release as a desktop application
-  built on the web application, with one local onboarding and reading entry
-  point.
+- **Chosen option, as amended:** Continue browser plus loopback local service
+  during core development and use it as the compatibility baseline. Target the
+  first dedicated-device release as a self-contained iPhone application; keep
+  desktop as a possible later client.
 - **Clarification:** A personal-release “registration” creates a local profile;
   it is not a remote account. The user's API key is configured and stored
   locally through an approved secret boundary.
-- **Deferred detail:** Packaging technology, supported operating systems, and
-  update delivery belong to the desktop implementation specification.
+- **Deferred detail:** The native/web boundary, iOS baseline, update delivery,
+  and mobile interaction contract belong to OQ-018.
 - **Record:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md).
+- **Amendment:** [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md)
+  replaces the desktop-first distributable target with a self-contained iPhone
+  target. The browser plus loopback service remains the current development and
+  compatibility runtime. The native application contract remains OQ-018.
 
 ## OQ-003 Durable storage and Git
 
@@ -130,9 +142,11 @@ between storage modes.
 - **Current authority:** Existing annotation and discussion JSON files remain
   authoritative in the personal stage.
 - **Deferred detail:** The internal/external user-data persistence engine is
-  OQ-016.
-- **Records:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md)
-  and [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
+  OQ-016. The first portable export/import package and any later synchronization
+  boundary are OQ-019.
+- **Records:** [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md),
+  [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md), and
+  [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md).
 
 ## OQ-004 Canonical normalized representation
 
@@ -533,6 +547,141 @@ measured data size.
 
 **Needed before:** Implementing a persistent graph projection beyond simple
 derived indexes.
+
+## OQ-018 Native mobile application and interaction boundary
+
+**Question:** Which native application architecture and interaction contract
+should implement the accepted mobile-first direction without coupling the
+Reading Core to one Apple UI or rewriting the current Reader prematurely?
+
+**Why it remains open:** ADR-0004 selects a self-contained iPhone application
+as the first dedicated-device target, but does not select SwiftUI, an embedded
+web runtime, a shared rendering layer, package layout, background behavior, or
+the exact selection/bottom-sheet interaction. Those decisions require a real
+second reading use case and compatibility fixtures.
+
+**Suggested starting position:** Keep the Reader as the primary surface. Text
+selection may reveal contextual actions such as Look Up, Explain, Grammar,
+Translate, Ask AI, Note, and Save in a transient mobile sheet, returning to the
+same reading position when dismissed. Treat this as an interaction hypothesis,
+not an implemented contract.
+
+**Decision must state:** native/web boundary, supported iOS baseline, book
+package access, offline behavior, navigation and restoration, selection model,
+accessibility, update/migration behavior, secret storage, and compatibility
+fixtures.
+
+**Needed by:** Before native mobile application implementation. Platform
+extraction remains gated by a representative second real use case.
+
+## OQ-019 Portable user-data package and synchronization boundary
+
+**Question:** What is the versioned portable representation for user data, and
+how should import behave when the destination already contains related data?
+
+**Accepted direction:** ADR-0004 requires explicit export/import before
+automatic synchronization, forbids whole-database replacement as the long-term
+protocol, and keeps cloud infrastructure optional. The package details and
+merge policy remain open.
+
+**Suggested starting position:** Export a manifest plus human-readable or
+documented records for progress, highlights, notes, discussions, accepted
+knowledge, and attachments. Use stable entity IDs, preserve unknown compatible
+fields, validate checksums and schema versions, preview conflicts, and keep a
+recoverable pre-import backup. Do not export provider credentials.
+
+**Decision must state:** package layout and schema, included/excluded data,
+identity and revision rules, import modes, duplicate/conflict behavior,
+attachments, integrity and encryption, downgrade/forward compatibility,
+recovery, and rights filtering.
+
+**Needed by:** Before export/import implementation. LAN transfer, LAN sync,
+AirDrop/Share Sheet integration, or cloud replication may transport this
+package or future change sets only after separate transport and threat-model
+decisions.
+
+## OQ-020 Dictionary and grammar Source Provider contract
+
+**Question:** How should dictionary and grammar evidence participate in search,
+Context Builder, citation, licensing, offline packaging, and AI discussion?
+
+**Why it remains open:** Dictionary is a first-class evidence source rather
+than a UI convenience, but no provider schema, licensing policy, language-pair
+model, lookup normalization, or citation contract has been validated with a
+real language-learning book.
+
+**Suggested starting position:** Define a shared `SourceProvider` contract whose
+results are typed, source-linked, revisioned, rights-aware, and independently
+renderable. Dictionary and grammar providers must supply evidence; the model may
+explain and compare it but must not impersonate a dictionary entry.
+
+**Decision must state:** provider identity and version, supported language
+pairs, headword/expression lookup, morphology, sense and example provenance,
+offline/index rules, licensing and export restrictions, context priority,
+failure behavior, and evaluation fixtures.
+
+**Needed by:** Before a language-learning prototype treats dictionary or grammar
+results as durable evidence.
+
+## OQ-021 Language-learning domain and durable knowledge model
+
+**Question:** Which language-learning entities and workflows belong in a Domain
+Profile, and which contracts are genuinely shared with Christian Studies?
+
+**Why it remains open:** Lexemes, expressions, collocations, grammar patterns,
+usage contrasts, examples, personal examples, and mistakes are plausible
+entities, but designing them before real English or German reading would repeat
+the premature abstraction the roadmap is intended to avoid.
+
+**Suggested starting position:** Use one representative English or German book
+to test the complete flow from selection through trusted lookup, AI explanation,
+personal example, review, save, and later recurrence. Keep AI proposals separate
+from user-accepted knowledge and reuse stable anchors, evidence, provenance, and
+discussion contracts where the evidence shows they fit.
+
+**Decision must state:** first knowledge types, stable identity and recurrence,
+source sentence/anchor links, personal-example review, AI authorship, acceptance
+and correction workflow, cross-language relations, and portable export.
+
+**Needed by:** Before durable language-learning knowledge or a generalized
+cross-domain ontology is implemented.
+
+## OQ-022 Managed-content packaging, rights, and update isolation
+
+**Question:** How may books, Bible data, dictionaries, grammar references, and
+other trusted materials be bundled on a personal device without confusing them
+with mutable user data or violating rights?
+
+**Why it remains open:** ADR-0004 permits legally appropriate first-party
+bundling for the personal stage, but package layout, licensing records, update
+diffs, removal behavior, and user-data survival are not specified.
+
+**Suggested starting position:** Give every managed content package a stable
+identity, version, checksum, provenance, rights/visibility record, and declared
+indexes. Install or update it separately from the user-data store; never delete
+user records merely because a package is updated or removed.
+
+**Decision must state:** package manifest, signature/integrity, licensing and
+visibility, content version and anchor migration, bundled versus user-imported
+material, index rebuilding, application-update behavior, rollback, and orphaned
+user-data handling.
+
+**Needed by:** Before books or trusted reference collections are embedded in a
+mobile build.
+
+## ADR queue
+
+The following are candidate records, not accepted decisions or implementation
+authority:
+
+| Candidate ADR topic | Trigger |
+| --- | --- |
+| Native mobile application boundary and Reader interaction | Resolve OQ-018 after the second representative use case and compatibility fixtures |
+| Portable user-data package, import, and recovery | Resolve OQ-019 before export/import implementation |
+| Source Provider evidence and trust contract | Resolve OQ-020 before dictionary/grammar integration |
+| Language-learning knowledge acceptance and recurrence | Resolve OQ-021 before durable language knowledge |
+| Managed-content packaging and update isolation | Resolve OQ-022 before bundling mobile content |
+| Change-based LAN or cloud replication | Only after export/import works and a measured multi-device need exists |
 
 ## Decision record template
 

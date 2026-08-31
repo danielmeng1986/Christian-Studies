@@ -21,7 +21,8 @@ In real use, carefully selected local context has produced answers that are more
 accurate, focused, and useful even without web access.
 
 The project is therefore evolving from a single-book reader into an
-**AI-assisted reading environment**.
+**AI-assisted reading environment**. Christian Studies is its first real Domain
+Profile; language learning is the leading candidate second use case.
 
 ## Current capabilities
 
@@ -56,16 +57,19 @@ Read, annotate, and discuss with source-aware AI
 Develop reviewed, structured knowledge across books
 ```
 
-The backend is expected to own import, conversion, validation, indexing,
-context assembly, model orchestration, and controlled tool or skill access. The
-frontend is expected to become a multi-book workspace for importing, managing,
-reading, annotating, discussing, and developing structured notes.
+The future Reading Core may own import, conversion, validation, indexing,
+context assembly, typed Source Providers, model orchestration, and controlled
+tool or skill access. Domain Profiles keep Christian Studies and future
+language-learning behavior distinct. These boundaries are extracted only after
+a second representative real use case validates them.
 
-The accepted first-product boundary is local-first and single-reader. Development
-continues as a browser plus loopback service, while the first distributable
-release targets a desktop application built on the web application. Personal,
-internal reading-group, and external distribution stages have different Git and
-user-data rules.
+The accepted first-product boundary is local-first and single-reader.
+Development and discovery continue through the browser plus loopback service;
+the first dedicated-device target is a self-contained iPhone application, with
+desktop as a possible later client. Local-first means the active device owns
+core reading capability and authoritative personal data, not that a Mac server
+must always run. Export/import precedes synchronization, and cloud remains
+optional infrastructure rather than the owner of personal knowledge.
 
 This direction is a planning target, not yet the current architecture. Major
 refactoring proceeds only through accepted decisions, compatibility fixtures,
@@ -84,6 +88,9 @@ versioned contracts, and migration plans.
 - Keep model providers, MCP tools, and skills behind explicit capability and
   consent boundaries.
 - Refactor incrementally while the current reader remains usable.
+- Keep device-local user data portable and provider credentials inside approved
+  secret storage.
+- Generalize only after a second real use case demonstrates the shared contract.
 
 ## Documentation
 
@@ -105,8 +112,8 @@ not authorize implementation changes by itself.
 ## Project status
 
 The single-book environment is working and has been used for real reading. The
-next stage is contract and migration planning: preserve what has already proved
-valuable, create compatibility fixtures, define book-independent contracts and
-stable block identity, specify SQLite authority by entity, and only then begin
-the multi-book refactor. User-data database and graph-projection engine
-selection remain deliberately deferred.
+current stage is to keep reading 《追寻敬虔》, record issues, and batch them when a
+coherent theme emerges. A representative English or German second book must be
+used before shared contracts or platform extraction are claimed. Native mobile,
+portable-data, dictionary/grammar Source Provider, language-knowledge, and
+managed-content details remain gated decisions rather than an active rewrite.

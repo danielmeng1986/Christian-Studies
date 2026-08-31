@@ -8,7 +8,7 @@ Christian Studies 最初只是一个使用 Git 管理的基督教书籍阅读笔
 
 项目现在可以直接选中文字写笔记、就地查看脚注和经文，并围绕当前段落与 AI 讨论。它最重要的成果并不是接入了某一个模型，而是通过可追溯来源的 `ContextBuilder`，自行控制究竟把哪些证据交给模型。实际使用表明，即使不联网，只要本地 Context 选择准确、层次清楚，AI 的回答也可以更加准确、聚焦且实用。
 
-因此，这个项目正在从单本书阅读器发展为一个 **AI-assisted Reading Environment（AI 辅助阅读环境）**。
+因此，这个项目正在从单本书阅读器发展为一个 **AI-assisted Reading Environment（AI 辅助阅读环境）**。Christian Studies 是第一个真实 Domain Profile；Language Learning 是最重要的候选第二 Use Case。
 
 ## 当前能力
 
@@ -43,9 +43,9 @@ Christian Studies 最初只是一个使用 Git 管理的基督教书籍阅读笔
 形成经过人审、可以跨书复用的结构化知识
 ```
 
-后端预计负责导入、转换、验证、索引、Context 组装、模型编排，以及受控的 MCP 或技能调用。前端预计成为多书籍工作台，可以导入和管理书籍与资料库，也可以直接阅读、写笔记、与 AI 讨论，并进一步形成结构化笔记。
+未来 Reading Core 可以负责导入、转换、验证、索引、Context 组装、分类明确的 Source Provider、模型编排，以及受控的 MCP 或技能调用。Domain Profile 使 Christian Studies 与未来 Language Learning 行为保持分离。只有第二个代表性真实 Use Case 证明契约共享后，才进行这些边界的提取。
 
-已经接受的第一版产品边界是本地优先、单读者。开发阶段继续使用浏览器加 loopback 本地服务；第一个可分发版本以 Web 应用为基础打包成桌面应用。个人版、读书会内部版和外部版分别采用不同的 Git 与用户数据规则。
+已经接受的第一版产品边界是本地优先、单读者。开发与需求发现继续使用浏览器加 loopback 本地服务；首个专用设备目标是能够独立运行的 iPhone App，桌面端作为以后可能的客户端。Local-first 表示当前设备拥有核心阅读能力和权威个人数据，而不是 Mac Server 必须持续运行。Export/Import 早于 Sync，Cloud 只作为可选 Infrastructure，不是个人知识的所有者。
 
 这是目标方向，不是当前已经生效的架构。大规模重构必须经过正式决议、兼容 fixture、版本化契约和迁移计划。
 
@@ -59,6 +59,8 @@ Christian Studies 最初只是一个使用 Git 管理的基督教书籍阅读笔
 - 优先通过改进证据选择提高回答质量，再考虑增加模型成本和复杂度。
 - 模型提供商、MCP 工具和技能必须位于明确的能力与授权边界之后。
 - 采用渐进式重构，并在迁移期间保持当前阅读器可用。
+- 保持设备本地 User Data 可迁移，并把 Provider Credential 隔离在经过批准的 Secret Storage 中。
+- 只有第二个真实 Use Case 证明契约共享后才进行通用化。
 
 ## 文档入口
 
@@ -76,4 +78,4 @@ Christian Studies 最初只是一个使用 Git 管理的基督教书籍阅读笔
 
 ## 项目状态
 
-单本书环境已经可以工作，并经过了真实阅读使用。下一阶段是契约和迁移规划：先保留已经证明有价值的部分，建立兼容 fixture，定义书籍无关契约和稳定块身份，明确 SQLite 中每类实体的权威角色，然后再开始多书籍重构。用户数据数据库与 Graph 投影引擎继续有意延后决定。
+单本书环境已经可以工作，并经过了真实阅读使用。当前阶段是继续阅读《追寻敬虔》、记录问题，并在问题形成明确主题后批量处理。必须先真正使用一本具有代表性的英文或德文第二本书，才能宣称共享契约或启动 Platform Extraction。原生移动、Portable Data、Dictionary/Grammar Source Provider、Language Knowledge 与 Managed Content 细节继续作为有门槛的决策，而不是当前重写任务。

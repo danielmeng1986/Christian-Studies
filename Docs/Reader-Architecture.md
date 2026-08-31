@@ -131,10 +131,20 @@ controls until the architecture is deliberately revised.
 
 ## 8. Accepted evolution direction
 
-[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md) keeps the
-browser plus loopback service as the development runtime and targets a desktop
-application built on the web application for the first distributable release.
-It does not authorize a packaging framework yet.
+[ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution.md), as
+amended by
+[ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md),
+keeps the browser plus loopback service as the development and compatibility
+runtime. The first dedicated-device target is now a self-contained iPhone
+application; desktop packaging remains a possible later client. Neither record
+authorizes a packaging framework, native rewrite, or immediate platform
+extraction.
+
+The mobile target must preserve offline reading and device-local user data,
+store provider credentials in Keychain or equivalent secret storage, and
+provide versioned export/import before synchronization. These are future
+acceptance constraints; the runtime write boundaries above continue to govern
+the current Reader.
 
 [ADR-0003](Decisions/ADR-0003-Stable-Block-Anchoring.md) replaces
 rendering-order identity in the future Reading Document Model with stable UUIDs

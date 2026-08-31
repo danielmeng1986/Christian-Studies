@@ -4,9 +4,17 @@
 **Date:** 2026-08-30
 **Deciders:** Project owner
 **Related questions:** OQ-001, OQ-002, OQ-003
+**Amended by:** ADR-0004 (first dedicated-device target only)
 
 > Chinese review version:
 > [`ADR-0001-Product-Deployment-and-Distribution-zh.md`](ADR-0001-Product-Deployment-and-Distribution-zh.md).
+
+> **Amendment:**
+> [ADR-0004](ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md)
+> replaces the desktop-first distributable target below with a mobile-first,
+> device-local iPhone target. The local-first/single-reader boundary, current
+> browser-plus-loopback development runtime, and deferred public or
+> collaborative stages remain accepted.
 
 ## Context
 
@@ -37,11 +45,12 @@ Development continues with the current **browser plus loopback local service**
 because it supports rapid implementation, testing, and iteration of core
 requirements.
 
-The intended first distributable product is a **desktop application built on a
-web application substrate**. It should provide one application entry point for
-local onboarding, book management, reading, notes, discussions, and AI-provider
-configuration. Packaging technology and supported operating systems will be
-selected in a later implementation specification.
+This record originally selected a **desktop application built on a web
+application substrate** as the first distributable product. ADR-0004 supersedes
+that terminal priority: the first dedicated-device target is now a self-contained
+iPhone application, while desktop remains a possible later client. The native
+boundary and packaging technology still require a later implementation
+specification.
 
 “User registration” in the personal release means creating a local profile or
 completing local onboarding. It does not create a remote account. API keys are
@@ -73,8 +82,8 @@ format support beyond OQ-007.
   discarded prototype.
 - Application APIs use stable identities and scoped resources, but avoid
   speculative multi-user infrastructure.
-- A distributable desktop shell is a target, not an immediate refactor
-  requirement.
+- A dedicated-device client is a target, not an immediate refactor requirement;
+  ADR-0004 assigns mobile priority.
 - Git inclusion rules depend on the distribution stage and data ownership.
 - Personal data must never enter a shared internal or external repository by
   default.
@@ -96,5 +105,5 @@ format support beyond OQ-007.
   or external stage ships.
 - Test that internal/external packages exclude personal notes, discussions,
   secrets, and unauthorized book content.
-- Treat packaging and local secret storage as explicit acceptance areas for the
-  desktop release.
+- Treat packaging and local secret storage as explicit acceptance areas for any
+  dedicated-device release; ADR-0004 adds the iOS Keychain boundary.

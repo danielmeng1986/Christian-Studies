@@ -1,8 +1,8 @@
 # 平台架构规范草案
 
-**版本：** 0.2
+**版本：** 0.3
 **状态：** 已接受的目标方向——实施仍有门槛，也不是当前有效架构
-**范围：** 拟议中的多书籍 AI 辅助阅读平台
+**范围：** 带 Domain Profile 的个人 AI 辅助阅读平台草案
 
 > Agent 使用的英文主文档：
 > [`Platform-Architecture-Proposal.md`](Platform-Architecture-Proposal.md)。
@@ -11,14 +11,15 @@
 
 ## 1. 目的
 
-本草案描述单本书实现被通用化之后，Christian Studies 的目标形态。它先确定逻辑边界和数据流，而不提前决定最终物理布局、前端框架、用户数据/Graph 引擎或桌面套壳技术。
+本草案描述 Christian Studies 单书实现在得到真实证据后通用化时，可能形成的目标架构。Christian Studies 是第一个 Domain Profile；Language Learning 是候选第二 Profile。本文先关注逻辑边界和数据流，暂不选择最终物理目录、前端框架、用户数据/Graph 引擎或原生客户端技术。
 
 目标不只是一个书架 UI，而是一个完整阅读环境：保存来源、审核 Markdown、交互式研读、透明的 AI Context 和持久知识共同组成一条可追溯的生命周期。
 
 ## 已接受的决策基线
 
 - 第一版产品是本地优先、单读者。
-- 开发阶段继续使用浏览器加 loopback 服务；第一个可分发版本以 Web 应用为基础打包成桌面应用。
+- 开发和需求发现阶段继续使用浏览器加 loopback 服务；首个专用设备目标是可以独立运行的 iPhone App，桌面端仍是以后可能的客户端。
+- Local-first 表示当前设备拥有核心阅读能力和权威个人数据；Export/Import 早于 Sync，Cloud 只作为可选 Transport、Replication 或 Backup。
 - 个人版、读书会内部版和外部版采用不同的 Git、附带内容与用户数据策略。
 - 审核 Markdown 继续作为规范化正文的权威来源。
 - 书籍包是可迁移数据单元；通用应用行为属于共享平台。
@@ -26,6 +27,7 @@
 - 经过审核的语义块使用稳定 UUID，精确选区继续保留引用、Range 和修订 Selector。
 - Context 契约与提供商无关；模型路由初期采用确定性策略并允许用户覆盖；能力必须注册、最小权限且感知授权。
 - 结构化知识需要用户接受，并且应用记录和执行来源权利与可见性。
+- 当前 Reader 继续作为兼容性基线；第二个代表性真实 Use Case 验证抽象以前，不启动 Platform Extraction。
 
 影响多个领域的理由汇总在 [`Decisions/README-zh.md`](Decisions/README-zh.md)。
 
@@ -43,7 +45,10 @@
 8. 通过明确能力和权限接入 MCP 与技能；
 9. 在 AI 或网络不可用时仍然可理解、可阅读、可记笔记；
 10. 从导入一直到 AI 回答都能看到证据与来源链；
-11. 让结构化知识通过用户审核形成，而不是由 AI 静默修改。
+11. 让结构化知识通过用户审核形成，而不是由 AI 静默修改；
+12. 支持 Offline-first 的设备运行，并把 Credential 隔离在原生 Secret Storage；
+13. 分离共享 Reading Core Service 与 Domain Profile；
+14. 只有经过明确契约，才把 Dictionary、Grammar Reference、Book、Bible、Note 与 Discussion 作为分类清楚的 Source Provider。
 
 ## 3. 从当前实现到目标平台
 
@@ -58,27 +63,32 @@
 | 模型调用 | 单一配置的模型路径 | 用户可见、可以降级的策略型 Model Router |
 | 工具与技能 | 很少或尚未接入 | 带授权、来源记录和最小权限的能力注册表 |
 | 知识 | 主要是书籍本地笔记与讨论 | 与多本书和证据相连的已审核结构化知识 |
+| 产品 Domain | Christian Studies 行为与路径共存于一个实现 | 共享 Reading Core 加经过证据验证的 Domain Profile |
+| 主要设备 | 由 Mac 本地服务承载的 Browser | 使用可迁移契约的独立 Mobile Client；Browser 继续作为基线 |
+| 个人数据 | 书籍本地文件 | 明确迁移后由设备本地权威存储，并具有版本化 Export/Import |
+| 可信查阅 | Book、Bible、Note 与补充资料库 | 注册且分类明确的 Source Provider；Dictionary/Grammar 契约仍未决 |
 
 这是提取和通用化策略，并不要求替换当前使用的每一种技术。
 
 ## 4. 目标逻辑架构
 
 ```text
-┌──────────────────────── 多书籍前端 ─────────────────────────┐
-│ 书库 │ 导入/审核 │ 阅读器 │ 笔记 │ AI 讨论 │ 知识            │
+┌──────────────────────── 设备阅读客户端 ──────────────────────┐
+│ Mobile Reader │ Browser 基线 │ 后续 Desktop/Tablet Client    │
 └──────────────────────────────┬───────────────────────────────┘
                                │ 版本化应用 API
 ┌──────────────────────────────▼───────────────────────────────┐
 │                           应用后端                            │
 │                                                               │
-│ 书籍目录       导入流水线             阅读器/构建服务          │
+│ Reader Core    书籍目录               导入流水线                │
+│ 阅读器/构建    Domain Profiles        Source Providers          │
 │ 笔记服务       讨论服务               补充资料库                │
 │ Context Service   Model Router         Capability Gateway      │
 │ Knowledge Service                   任务 / 迁移 / 验证          │
 └───────────┬──────────────────┬───────────────────┬─────────────┘
             │                  │                   │
             ▼                  ▼                   ▼
-      持久书籍包          用户拥有的数据        运行时/派生存储
+ Managed Content/Package  用户拥有的数据        运行时/派生存储
    原件 + Markdown        笔记 + 授权状态       索引 + 缓存 + 任务状态
             │                                      │
             └──────────────────┬───────────────────┘
@@ -90,7 +100,11 @@
                  已批准模型           已批准 MCP/技能
 ```
 
-图中是逻辑服务。初期它们可以存在于同一个本地进程和仓库中，开发阶段通过浏览器访问，之后打包进桌面应用。只有未来产品决议和实际规模证明有必要时，才拆成独立网络服务。
+图中表示的是逻辑服务，不是必须采用的网络拓扑。初期它们可以位于同一个本地进程和仓库中，通过开发用 Browser 访问，之后运行在设备本地客户端中。Mac Server 或独立 Network Service 不是产品要求；只有未来决议和真实规模证明有必要时才拆分。
+
+### 4.1 Reader Core 与 Domain Profiles
+
+候选共享 Core 负责 Content Access、Anchor、Annotation、Discussion、Context、Search、Provenance 与 Portable User Data Contract。Domain Profile 增加领域专属 Source Type、Action、Knowledge Proposal 与 UI 文案。Christian Studies 可以配置 Bible 和神学参考行为；Language Learning 可以配置 Dictionary、Grammar、Translation、Personal Example 与再次遇见。只有两个真实 Workflow 都证明契约共享，职责才能移入 Core。
 
 ## 5. 持久书籍包
 
@@ -165,6 +179,10 @@
 
 负责补充资料导入、处理、索引、隐私状态和逐来源外发资格。删除处理稿或索引不能删除原件，也不能静默改变授权。
 
+### 7.5a Source Providers
+
+Source Provider 通过版本化契约提供分类明确且链接来源的 Evidence。候选 Provider 包括当前 Book、Bible、Dictionary、Grammar Reference、Personal Note、Discussion 与 Supplemental Reference。Provider 不能赋予内容指令权威、扩大外发资格，也不能允许 Model 把生成文字冒充为来源条目。Dictionary 与 Grammar 细节继续由 OQ-020 决定。
+
 ### 7.6 Context Service
 
 负责证据发现、分类选择、排序、预算、预览、来源修订验证和 Manifest 生成。它产生与模型提供商无关的 `ContextBundle`；它不决定持久笔记内容，也不静默调用工具。
@@ -183,7 +201,7 @@
 
 ## 8. 前端信息架构
 
-目标前端包含六个互相连接的工作区：
+目标能力包含六个互相连接的工作区：
 
 1. **书库**：书籍、版本、进度、验证状态和最近活动。
 2. **导入与审核**：来源选择、转换诊断、Markdown 审核和发布批准。
@@ -192,7 +210,7 @@
 5. **Context 检查器**：证据预览、选择、预算、模型、工具、授权和 Manifest。
 6. **知识**：已审核的结构化笔记和跨书连接。
 
-这些工作区可以共享同一个应用外壳。在交互复杂度与维护标准得到决定之前，目标架构不指定前端框架。
+在 Phone 上，这些能力应围绕 Reader 按需出现，而不是形成长期存在的 Desktop Column。选区触发 Bottom Sheet，并显示 Look Up、Explain、Grammar、Translate、Ask AI、Note 与 Save，是候选交互，不是已接受 UI 规范。OQ-018 负责原生边界和交互契约。
 
 ## 9. AI 请求流程
 
@@ -260,10 +278,12 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 
 权威按实体或数据表声明。个人阶段的当前注释和讨论继续以 JSON 文件为权威，并且可以由 Git 管理。SQLite 可以成为平台 Book Catalog 和迁移后平台 Metadata 的权威来源，而搜索/检索数据仍然是派生数据。内部版/外部版用户数据引擎延后到 [OQ-016](Open-Questions-zh.md#oq-016-内部版外部版用户数据持久化引擎)，Graph 投影技术延后到 [OQ-017](Open-Questions-zh.md#oq-017-知识图谱投影引擎)。详见 [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles-zh.md)。
 
+对于未来设备本地客户端，内置书籍和可信资料属于 Managed Content；Progress、Highlight、Note、Discussion、已接受 Knowledge 与 Preference 属于可变 User Data。Local Database 只有经过测试迁移后才能成为权威，并且必须有版本化 Portable Export/Import 表示。覆盖整个 Database 不是长期归档或 Sync 契约。详见 [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md) 与 OQ-019。
+
 ## 13. 安全与隐私
 
 - 在部署策略改变前，本地服务默认只绑定 loopback。
-- 提供商凭证只进入进程级秘密存储，不能进入内容、浏览器资源、日志或命令参数。
+- Provider Credential 只能进入原生批准的 Secret Storage——iOS 使用 Keychain——不能进入内容、普通配置、SQLite 字段、Browser Bundle、Manifest、Discussion、Export、Log 或命令参数。
 - 每次写入都必须针对已注册资源和 schema 版本验证。
 - 所有导入和检索内容都按不可信数据处理。
 - 同时执行逐来源外发资格和逐请求证据选择。
@@ -294,11 +314,13 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 8. 把受控能力和结构化知识分别作为独立垂直切片加入。
 9. 只有数据和行为一致性得到验证后，才移除书籍本地应用代码。
 
+步骤 1–3 仍是准备工作。共享平台提取或原生客户端实现，只有第二个代表性真实 Use Case 已经被实际使用，并能检验所谓通用契约后才开始。任何 LAN 或 Cloud Sync 之前，先证明 Portable Export/Import。
+
 每一步迁移都需要为持久用户数据提供回退或向后读取能力。目录移动和 schema 修改不能随意捆绑。
 
 ## 16. 实施准备门槛
 
-首轮 OQ 决策门槛已经完成。结构性重构开始前仍必须满足：
+首轮方向门槛已经完成。结构性重构或原生移动客户端开始前仍必须满足：
 
 - 当前阅读器行为和用户数据 schema 已有兼容 fixture；
 - 目标书籍包契约已经版本化；
@@ -306,8 +328,9 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 - SQLite Schema 已为每张表声明权威、派生或运行角色，并定义 Metadata 导出和迁移；
 - 《追寻敬虔》的迁移与回退路径已有文档；
 - 已选定具有代表性的第二本书导入 fixture；
+- 该代表性第二本书已经作为真实 Workflow 使用，而不只是 Synthetic Fixture；
 - 已定义导入、锚点、Context 和可迁移性的成功标准。
 
-OQ-016 和 OQ-017 不阻塞这些契约设计；它们分别阻塞用户数据权威切换和持久 Graph 投影实现。
+OQ-018 至 OQ-022 分别阻塞其依赖的移动端、Portable Data、Source Provider、Language Learning 与 Managed Content 实现。OQ-016 和 OQ-017 继续作为更晚的引擎选择。
 
 之后，只有通过明确架构决议，同时更新当前核心文档和验证契约，本草案才能转为有效规范。

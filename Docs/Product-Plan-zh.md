@@ -1,6 +1,6 @@
 # Christian Studies 产品规划书
 
-**版本：** 0.2
+**版本：** 0.3
 **状态：** 已接受的规划基线——实施仍有门槛
 **效力：** 规划文档，不是当前实现规范
 
@@ -10,7 +10,7 @@
 
 ## 1. 目的
 
-本规划说明 Christian Studies 如何从一个已经可用的单本书阅读器，逐步发展为多书籍 AI 辅助阅读环境，同时不丢失当前系统已经证明有价值的特性。
+本规划说明 Christian Studies 如何在继续服务真实神学阅读的同时，成为更广泛个人 AI 辅助阅读环境的第一个 Domain Profile。它可以从已经可用的单本书 Reader 逐步成长为可复用阅读基础设施，同时不丢失当前系统已经证明有价值的特性。
 
 它定义产品成果、实施顺序、重构门槛和成功标准；它不会预先选择所有实施技术，也不会让目标架构自动变成当前架构。已接受决定和剩余问题记录在 [`Open-Questions-zh.md`](Open-Questions-zh.md) 与 [`Decisions/`](Decisions/README-zh.md) 中。
 
@@ -26,6 +26,8 @@
 
 Christian Studies 应当把 Context 变成用户可以检查和控制的产品能力，而不是隐藏在内部的实现细节。
 
+真实使用也改变了产品边界。可以复用的机会不只是“神学功能”，而是一套有来源意识的阅读闭环；它未来可以服务英文和德文书籍、技术资料与其他深度阅读。Christian Studies 继续作为第一个 Domain；Language Learning 是最重要的候选第二 Domain。任何一个 Domain 都不应被硬编码进另一个 Domain。
+
 ## 3. 主要用户成果
 
 这个环境应当帮助读者：
@@ -38,7 +40,9 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 6. 理解 AI 使用了什么证据，以及它不知道什么；
 7. 控制个人资料和补充资料是否离开本机；
 8. 从零散注释逐步形成经过审核的结构化知识；
-9. 保留不依赖单一模型或 UI、可以理解和迁移的数据。
+9. 保留不依赖单一模型或 UI、可以理解和迁移的数据；
+10. 在当前设备上阅读、搜索、查阅内置信实资料并写笔记，不需要另一台机器持续提供 Server；
+11. 在依赖自动同步之前，先通过具有明确版本的 Export/Import 迁移个人数据。
 
 已经接受的第一版产品以本地优先和个人读者为中心。是否发展协作版或托管版，要先向项目所有者的读书会朋友验证需求，并通过新的产品决议。
 
@@ -72,7 +76,11 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 兼顾成本与能力、且保留用户控制的模型选择；
 - 受控的 MCP 工具和可复用技能；
 - 经过人审的结构化笔记与跨书知识工作流；
-- 可重现的生成、迁移、测试和评估。
+- 可重现的生成、迁移、测试和评估；
+- 在第二个真实 Use Case 证明可以复用后，形成共享 Reader Core、Context Service、Source Provider 边界和 Domain Profile；
+- 设备本地的离线阅读，以及明确需要联网的 AI 能力；
+- 把 Dictionary 与 Grammar Evidence 作为候选正式 Source Provider；
+- 让 User Data 的长期迁移表示与运行时存储分离。
 
 ### 已接受的分发模式
 
@@ -80,23 +88,34 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - **内部版：** 读书会朋友在本地部署；共享书籍和资料可以使用 Git，每位读者的笔记与讨论只留在本地。
 - **外部版：** 应用不附带书籍，可以附带允许再分发的圣经资源；读者自行导入受支持的材料。
 
-开发阶段继续使用浏览器加 loopback 服务。第一个可分发版本以 Web 应用为基础打包成桌面应用。完整决定见 [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md)。
+开发和需求发现阶段继续使用浏览器加 loopback 服务。首个专用设备目标是能够独立运行的 iPhone App；桌面端继续作为以后可能的客户端。第一阶段个人移动版不要求 App Store、公开用户、远程账户、Cloud Backend、Mac Server 或强制 iCloud。完整决定见 [ADR-0001](Decisions/ADR-0001-Product-Deployment-and-Distribution-zh.md) 及其 [ADR-0004 修订](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md)。
 
 ### 当前不预设
 
 - 托管式多用户服务；
 - 账户、协作或公开分享；
-- 具体桌面套壳技术或操作系统支持矩阵；
+- 具体原生/移动框架、桌面套壳技术或操作系统支持矩阵；
 - 自动接受 AI 的转换结果或神学结论；
 - 以数据库作为当前注释和讨论的权威来源；
 - 不受限制的网络、MCP、文件系统或模型访问；
-- 在第一版平台中支持所有电子书和文档格式。
+- 在第一版平台中支持所有电子书和文档格式；
+- 在 Language Learning Workflow 出现前设计完整 Cross-domain Ontology；
+- 在 Export/Import 得到验证前实现自动 LAN 或 Cloud Sync；
+- 仅仅因为可以画出目标架构就启动平台重构。
 
 这些都是需要决定的问题，而不是隐含需求。
 
 ## 6. 交付策略
 
 项目按可验证阶段推进，而不是先指定日期。每个阶段在实施前都必须有明确的进入和退出条件，并且不能破坏当前阅读器的可用性。
+
+### 当前工作模式——先读、观察、批量处理
+
+当前阶段是继续使用现有《追寻敬虔》Reader 进行真实阅读。遇到的问题先记录，不触发零散 Tweak；形成明确主题后，再按 Mobile Reader UX、Context Extraction、Portable User Data、第二本书接入或 Language Learning Prototype 等主题集中处理。
+
+下列阶段不能因为“Roadmap 还没完成”而自动开始。只有第二个具有代表性的真实 Use Case——最好是一本非神学的英文或德文书——证明 Reader、Anchor、Source Provider、Discussion、Annotation 与 Context 中哪些契约真正共享，才能启动 Platform Extraction。
+
+因此，下列编号阶段是证据门槛完成后的候选顺序，不是当前开发队列。
 
 ### 阶段 0——架构与决策基线
 
@@ -108,7 +127,7 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 盘点当前《追寻敬虔》的行为与测试覆盖；
 - 建立未来实现必须保持兼容的测试样本。
 
-这一阶段的决策门槛已经完成。当前行为盘点、兼容 fixture、首批版本化领域契约和迁移/回退提纲完成后，阶段 0 才正式结束。
+首轮决策门槛已经完成。只有当前行为盘点、兼容 fixture、第二个代表性 Use Case 的选择与真实使用、从证据形成的首批版本化领域契约，以及迁移/回退提纲都完成后，阶段 0 才正式结束。
 
 ### 阶段 1——提取稳定的领域契约
 
@@ -118,7 +137,8 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 把领域行为与《追寻敬虔》的路径及 UI 假设分离；
 - 使用当前书籍作为兼容性 fixture 建立契约测试；
 - 定义 schema 版本和迁移策略；
-- 建立仓库级规范检查。
+- 建立仓库级规范检查；
+- 区分共享 Reading Core 契约、Christian Studies Domain 契约和 Language Learning Domain 契约。
 
 退出门槛：当前阅读器能够通过文档化的书籍无关接口保持原有行为，并且不移动权威用户数据。
 
@@ -142,12 +162,24 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 增加书籍目录和生命周期状态；
 - 通过稳定的应用接口提供书籍、章节、笔记、讨论、来源和构建操作；
 - 在同一个管理面板中提供导入、验证状态、资料库管理和阅读入口；
-- 让共享 Web 应用既能在开发阶段通过浏览器/本地服务使用，也能为之后的桌面套壳做好准备；
+- 让共享 Web 应用既能在开发阶段通过浏览器/本地服务使用，也能为之后的 iPhone 客户端定义设备无关边界；
 - 提供本地 Profile 初始化和本地 AI 提供商配置，不引入远程账户；
 - 以垂直切片方式保留当前阅读能力；
 - 所有写操作都只能通过经过验证且范围受限的 API 完成。
 
 退出门槛：《追寻敬虔》和第二本书都能通过同一应用流程打开和研读。
+
+### 阶段 3a——验证可迁移的设备本地用户数据
+
+成果：个人数据可以迁移，同时不依赖复制运行时 Database 或 Cloud Account。
+
+- 分离 Managed Content 与可变 User-owned Data；
+- 定义稳定 User Entity Identity 与版本化 Export Manifest；
+- Export/Import Progress、Highlight、Note、Discussion、已接受 Knowledge 与 Attachment，但不导出 Credential；
+- 保留兼容的未知字段，提供冲突预览和恢复；
+- 在设计自动同步前先测试往返迁移。
+
+退出门槛：代表性 Export/Import 可以在空目标和已有数据的目标之间保持 User Data 与 Provenance，并且失败可恢复。
 
 ### 阶段 4——通用化 Context 平台
 
@@ -157,7 +189,8 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 分离证据发现、排序、用户选择、预算和 Prompt 渲染；
 - 建立可重复的检索与回答质量评估用例；
 - 保留逐来源授权和 Prompt Injection 边界；
-- 把 Context 的可解释性作为正式 UI 能力。
+- 把 Context 的可解释性作为正式 UI 能力；
+- 支持具有明确类型的 Source Provider，包括未来的 Dictionary 或 Grammar Provider，同时不允许 Provider 或 Model 混淆 Evidence Provenance。
 
 退出门槛：同一条 Context 流水线可以处理多本书，同时不削弱来源标签、修订检查和用户控制。
 
@@ -211,6 +244,7 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 6. 只有新实现满足验收标准后才删除旧代码。
 
 避免一次性重写。目录迁移、schema 迁移、前端替换、模型路由和新产品行为不应合并在同一次修改中。
+第二个真实 Use Case 出现前不能启动提取；iPhone 目标也不是丢弃当前 Reader 的授权。
 
 ## 8. 成功标准
 
@@ -224,6 +258,9 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 | 经济性 | 按任务类别测量成本和延迟；路由不能牺牲验收质量 |
 | 可迁移性 | 书籍、审核正文、笔记和 Manifest 在脱离单一 UI 或提供商后仍可理解 |
 | 可复用性 | 第二本书只需要配置和内容审核，不需要复制应用代码 |
+| 离线自主性 | 没有 Mac 或网络时，阅读、本地资料查阅、搜索、笔记与历史仍能工作 |
+| 移动连续性 | 上下文动作关闭后回到同一阅读位置，不形成多个 App 之间切换的流程 |
+| 数据恢复 | 版本化 Export/Import 往返保持 User Data、Provenance 与兼容的未知字段 |
 
 每个阶段宣称成功之前，都应使用具体 fixture 定义其指标。
 
@@ -237,7 +274,10 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - MCP 工具或导入文档可能扩大信任和数据外发边界；
 - 数据库可能成为不透明的第二真相来源；
 - 结构化笔记自动化可能混淆用户判断和 AI 建议；
-- 大规模重构可能中断当前可用的阅读环境。
+- 大规模重构可能中断当前可用的阅读环境；
+- 内置内容可能违反权利，或在升级时覆盖 User State；
+- 移动端 Credential 可能泄漏到内容、Log、Database 或 Export；
+- 过早设计 Language Learning Ontology 可能固化真实使用随后否定的假设。
 
 每个阶段都必须把相关风险转化为测试、预览、权限或明确的用户决定。
 
@@ -245,12 +285,12 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 
 已接受决定和剩余问题统一记录在 [`Open-Questions-zh.md`](Open-Questions-zh.md)，影响多个领域的理由保存在 [`Decisions/`](Decisions/README-zh.md)。稳定 ID 使计划、规范、测试和提交可以引用同一个边界。
 
-当前下一步仍然是规划，而不是结构性迁移：
+当前下一步是使用，而不是结构性迁移：
 
-1. 盘点当前行为并建立兼容 fixture；
-2. 编制版本化 Book Package 与 Reading Document Model，包括稳定块 UUID 的表示；
-3. 编制 SQLite Schema，为每张表声明权威/派生/运行角色，并设计 Metadata 迁移与导出；
-4. 编制与提供商无关的 Context Service 契约；
-5. 选择具有代表性的第二本书 fixture。
+1. 继续用当前 Reader 阅读《追寻敬虔》；
+2. 记录问题，只有形成明确主题后再批量处理；
+3. 选择并真正开始一本具有代表性的英文或德文第二本书；
+4. 用真实流程辨认哪些能力共享、哪些属于 Domain Profile；
+5. 之后才盘点兼容 fixture，并为范围明确的提取编制最小契约。
 
-[OQ-016](Open-Questions-zh.md#oq-016-内部版外部版用户数据持久化引擎) 和 [OQ-017](Open-Questions-zh.md#oq-017-知识图谱投影引擎) 继续保持未决，但不阻塞上述契约设计。
+已接受的 Mobile 方向不能绕过这一证据门槛。OQ-018 至 OQ-022 分别定义原生移动、Portable Data、Source Provider、Language Learning 与 Managed Content 的实施前决策。OQ-016 与 OQ-017 继续作为更晚的引擎选择。

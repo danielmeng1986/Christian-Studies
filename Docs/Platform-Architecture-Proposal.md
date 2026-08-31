@@ -1,8 +1,8 @@
 # Platform Architecture Proposal
 
-**Version:** 0.2
+**Version:** 0.3
 **Status:** Accepted target direction — implementation gated, not current architecture
-**Scope:** Proposed multi-book AI-assisted reading platform
+**Scope:** Proposed personal AI-assisted reading platform with domain profiles
 
 > Chinese review version:
 > [`Platform-Architecture-Proposal-zh.md`](Platform-Architecture-Proposal-zh.md).
@@ -17,10 +17,12 @@ remains under [`Architecture.md`](Architecture.md),
 
 ## 1. Purpose
 
-This proposal describes the target shape of Christian Studies after the
-single-book implementation is generalized. It focuses on logical boundaries and
-data flow before selecting a final physical layout, frontend framework,
-user-data/graph engine, or desktop packaging technology.
+This proposal describes the possible target shape after the single-book
+Christian Studies implementation is generalized from evidence. Christian
+Studies is the first Domain Profile; language learning is a candidate second
+profile. It focuses on logical boundaries and data flow before selecting a
+physical layout, frontend framework, user-data/graph engine, or native client
+technology.
 
 The target is not merely a bookshelf UI. It is a reading environment in which
 source preservation, reviewed Markdown, interactive study, transparent AI
@@ -29,8 +31,12 @@ context, and durable knowledge form one traceable lifecycle.
 ## Accepted decision baseline
 
 - The first product is local-first and single-reader.
-- Development continues with a browser plus loopback service; the first
-  distributable release targets a desktop application built on the web app.
+- Development and discovery continue with a browser plus loopback service; the
+  first dedicated-device target is a self-contained iPhone application, while
+  desktop remains a possible later client.
+- Local-first means the active device owns core reading capability and
+  authoritative personal data. Export/import precedes sync, and cloud remains
+  optional transport, replication, or backup.
 - Personal, internal reading-group, and external distribution stages have
   different Git, bundled-content, and user-data policies.
 - Reviewed Markdown remains authoritative normalized prose.
@@ -45,6 +51,9 @@ context, and durable knowledge form one traceable lifecycle.
   least-privilege, and consent-aware.
 - Structured knowledge requires user acceptance, and source rights/visibility
   are recorded and enforced.
+- The current Reader remains the compatibility baseline, and no platform
+  extraction begins until a second representative real use case validates the
+  abstraction.
 
 Cross-cutting rationale is indexed in [`Decisions/README.md`](Decisions/README.md).
 
@@ -63,7 +72,12 @@ The platform must:
 9. remain understandable and useful when AI or network access is unavailable;
 10. keep evidence and provenance visible from import through AI answer; and
 11. allow structured knowledge to emerge through review rather than silent AI
-    mutation.
+    mutation;
+12. support offline-first device operation with credentials isolated in native
+    secret storage;
+13. separate shared Reading Core services from Domain Profiles; and
+14. admit dictionaries, grammar references, books, Scripture, notes, and
+    discussions as typed Source Providers only through explicit contracts.
 
 ## 3. Current-to-target shift
 
@@ -78,6 +92,10 @@ The platform must:
 | Model call | One configured model path | Policy-driven Model Router with user-visible selection and fallback |
 | Tools/skills | Limited or absent | Capability registry with consent, provenance, and least privilege |
 | Knowledge | Notes and discussions mostly book-local | Reviewed structured knowledge linked across books and evidence |
+| Product domain | Christian-study behavior and paths coexist in one implementation | Shared Reading Core plus evidence-tested Domain Profiles |
+| Primary device | Browser on a Mac-hosted local service | Self-contained mobile client using portable contracts; browser remains baseline |
+| Personal data | Book-local files | Device-local authority with versioned portable export/import after explicit migration |
+| Trusted lookup | Book, Scripture, notes, and supplemental library | Registered typed Source Providers, with dictionary/grammar contracts still open |
 
 This is an extraction and generalization strategy, not a requirement to replace
 every current technology.
@@ -85,21 +103,22 @@ every current technology.
 ## 4. Proposed logical architecture
 
 ```text
-┌──────────────────────── Multi-book frontend ────────────────────────┐
-│ Catalog │ Import/Review │ Reader │ Notes │ AI Discussion │ Knowledge │
+┌──────────────────── Device reading clients ─────────────────────────┐
+│ Mobile Reader │ Browser baseline │ Later desktop/tablet clients      │
 └──────────────────────────────┬───────────────────────────────────────┘
                                │ versioned application API
 ┌──────────────────────────────▼───────────────────────────────────────┐
 │                         Application backend                          │
 │                                                                       │
-│ Book Catalog      Ingestion Pipeline      Reader/Build Service        │
+│ Reader Core       Book Catalog            Ingestion Pipeline          │
+│ Reader/Build      Domain Profiles         Source Providers            │
 │ Note Service      Discussion Service      Source Library              │
 │ Context Service   Model Router            Capability Gateway          │
 │ Knowledge Service                     Jobs / migrations / validation  │
 └───────────┬──────────────────┬───────────────────┬────────────────────┘
             │                  │                   │
             ▼                  ▼                   ▼
-   Durable book packages   User-owned data   Operational/derived stores
+   Managed content/packages User-owned data  Operational/derived stores
    originals + Markdown    notes + consent   indexes + caches + job state
             │                                      │
             └──────────────────┬───────────────────┘
@@ -111,10 +130,21 @@ every current technology.
               Approved models      Approved MCP/skills
 ```
 
-The diagram shows logical services. They may begin in one local process and one
-repository, accessed through the development browser and later packaged in the
-desktop application. Separate network services are not required unless a future
-product decision and measured scale justify them.
+The diagram shows logical services, not a required network topology. They may
+begin in one local process and repository through the development browser, then
+run inside a device-local client. A Mac server or separate network service is
+not a product requirement. Separate services require a future decision and
+measured need.
+
+### 4.1 Reader Core and Domain Profiles
+
+The candidate shared core owns content access, anchors, annotation, discussion,
+context, search, provenance, and portable user-data contracts. Domain Profiles
+add domain-specific source types, actions, knowledge proposals, and UI wording.
+Christian Studies may configure Bible and theological reference behavior;
+language learning may configure dictionary, grammar, translation, personal
+examples, and recurrence. A responsibility moves into the core only after both
+real workflows demonstrate the shared contract.
 
 ## 5. Durable book package
 
@@ -211,6 +241,15 @@ Owns supplemental import, processing, indexing, privacy state, and per-source
 outbound eligibility. Removing a processed copy or index never removes the
 preserved source or silently changes consent.
 
+### 7.5a Source Providers
+
+A Source Provider exposes typed, source-linked evidence through a versioned
+contract. Candidate providers include the current book, Bible, dictionaries,
+grammar references, personal notes, discussions, and supplemental references.
+A provider does not grant its content instruction authority, broaden outbound
+eligibility, or let a model present generated wording as a source entry.
+Dictionary and grammar details remain open under OQ-020.
+
 ### 7.6 Context Service
 
 Owns evidence discovery, typed selection, ranking, budgeting, preview, source
@@ -238,7 +277,7 @@ it. Accepted knowledge retains evidence links and change history.
 
 ## 8. Frontend information architecture
 
-The target frontend has six connected workspaces:
+The target capabilities have six connected workspaces:
 
 1. **Library** — books, editions, progress, validation, and recent activity.
 2. **Import and review** — source selection, conversion diagnostics, Markdown
@@ -250,9 +289,11 @@ The target frontend has six connected workspaces:
    tools, consent, and manifest access.
 6. **Knowledge** — reviewed structured notes and cross-book connections.
 
-These may share one application shell. The target does not require a specific
-frontend framework until interaction complexity and maintenance criteria are
-agreed.
+On a phone these capabilities should appear around the Reader as contextual
+surfaces rather than permanent desktop columns. A selection-triggered bottom
+sheet with Look Up, Explain, Grammar, Translate, Ask AI, Note, and Save is a
+candidate interaction, not an accepted UI specification. OQ-018 owns the native
+boundary and interaction contract.
 
 ## 9. AI request flow
 
@@ -336,11 +377,20 @@ and graph projection technology to
 [OQ-017](Open-Questions.md#oq-017-knowledge-graph-projection-engine). See
 [ADR-0002](Decisions/ADR-0002-Data-Authority-and-Database-Roles.md).
 
+For a future device-local client, bundled books and trusted references are
+managed content; progress, highlights, notes, discussions, accepted knowledge,
+and preferences are mutable user data. A local database may become authoritative
+only through a tested migration and must have a versioned portable export/import
+representation. Whole-database replacement is not the archival or sync
+contract. See [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md)
+and OQ-019.
+
 ## 13. Security and privacy
 
 - Bind local services to loopback by default until deployment policy changes.
-- Keep provider credentials in process-scoped secret storage, never content,
-  browser bundles, logs, or command arguments.
+- Keep provider credentials in native approved secret storage—Keychain on
+  iOS—never content, ordinary configuration, SQLite fields, browser bundles,
+  manifests, discussions, exports, logs, or command arguments.
 - Validate every write against registered resources and schema versions.
 - Treat all imported and retrieved content as untrusted data.
 - Apply source-level outbound eligibility and per-request inclusion.
@@ -378,13 +428,18 @@ avoid retaining secrets or unnecessary private text.
 9. Remove book-local application code only after data and behavior parity are
    verified.
 
+Steps 1–3 remain preparatory. Steps that extract a shared platform or build a
+native client begin only after a representative second real use case has been
+used enough to test the supposed common contracts. Portable export/import is
+proved before any LAN or cloud synchronization layer.
+
 Every migration step needs rollback or backward-read behavior for durable user
 data. Directory moves and schema changes must not be bundled casually.
 
 ## 16. Readiness gates
 
-The initial OQ decision gate is complete. Implementation of the structural
-refactor should still not begin until:
+The initial direction gate is complete. Implementation of the structural
+refactor or native mobile client should still not begin until:
 
 - current reader behavior and user-data schemas have compatibility fixtures;
 - the target book-package contract is versioned;
@@ -392,11 +447,14 @@ refactor should still not begin until:
 - SQLite schemas declare authoritative, derived, or operational role per table
   and define metadata export/migration;
 - the migration and rollback path for 《追寻敬虔》 is documented;
-- a representative second-book import fixture is selected; and
+- a representative second-book import fixture is selected;
+- that representative second book has been used as a real workflow, not only a
+  synthetic fixture; and
 - success measures for import, anchoring, context, and portability are defined.
 
-OQ-016 and OQ-017 do not block these contract-design steps; they block changing
-user-data authority and implementing a persistent graph projection respectively.
+OQ-018 through OQ-022 block their dependent mobile, portable-data, Source
+Provider, language-learning, and managed-content implementation. OQ-016 and
+OQ-017 remain later engine choices.
 
 The proposal then becomes normative only through an explicit architecture
 decision that updates the current core documents and validation contract.
