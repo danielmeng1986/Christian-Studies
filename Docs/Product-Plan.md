@@ -1,6 +1,6 @@
 # Christian Studies Product Plan
 
-**Version:** 0.3
+**Version:** 0.4
 **Status:** Accepted planning baseline — implementation gated
 **Authority:** Planning document; not a current implementation specification
 
@@ -52,6 +52,14 @@ specifically “theology features,” but a source-aware reading loop that may s
 English and German books, technical material, and other deep reading. Christian
 Studies remains the first domain; language learning is the most important
 candidate second domain. Neither domain should be hard-coded into the other.
+
+Language learning may eventually extend that loop through pronunciation,
+sentence prosody, active expression practice, and book-based voice discussion.
+This staged direction is recorded in the
+[Voice Capability Hypothesis](Voice-Capability-Hypothesis.md). A possible
+commercial language-reading product is separately preserved in the
+[Commercial Product Hypothesis](Commercial-Product-Hypothesis.md); it is not a
+claim of market demand or an active delivery commitment.
 
 ## 3. Primary user outcomes
 
@@ -141,8 +149,13 @@ server, or mandatory iCloud. See
 - unrestricted web, MCP, filesystem, or model access;
 - support for every ebook and document format in the first platform release;
 - a complete cross-domain ontology before the language-learning workflow exists;
-- automatic LAN or cloud synchronization before export/import is proven; or
-- a platform refactor merely because a target architecture can be drawn.
+- automatic LAN or cloud synchronization before export/import is proven;
+- a platform refactor merely because a target architecture can be drawn;
+- a complete Voice system, raw-audio archive, or phoneme-level scoring service;
+- a commercial language-learning product, public catalog, publisher program,
+  payment system, subscription, DRM, or commercial cloud infrastructure; and
+- that a commercial hypothesis may introduce Christian Studies content or
+  personal study knowledge into another product.
 
 These are decision areas, not hidden requirements.
 
@@ -309,6 +322,52 @@ linked to evidence.
 Exit gate: a reader can review, accept, edit, reject, and trace a structured
 knowledge proposal without AI silently changing durable knowledge.
 
+### Future capability track — Voice and language practice
+
+Outcome: only after real language-learning use establishes demand, add the
+smallest speech capability that improves the Book-centered Learning Loop.
+
+The candidate progression is:
+
+1. word pronunciation linked to trusted dictionary evidence;
+2. sentence playback with optional prosody guidance;
+3. contextual speaking practice around saved expressions; and
+4. target-language discussion grounded in the current book and Context Service.
+
+Discussion may later use distinct Study, Language Tutor, Speaking Practice, and
+Free Discussion profiles. Profiles may share identity, anchor, Context, model,
+and Source Provider contracts while retaining different prompt policies,
+evaluation goals, correction styles, and outputs.
+
+A Voice Session may become a Learning Event with a transcript, content summary,
+language feedback, target-usage results, knowledge proposals, future-practice
+signals, and session metadata. Raw audio is ephemeral by default; a speaking
+sample is retained only through explicit user choice. AI proposals become
+durable knowledge only after user acceptance or editing.
+
+This track is not part of the current development queue. It begins only after a
+representative English or German book has been genuinely used, the smallest
+repeated need is known, and the relevant parts of OQ-020, OQ-021, and OQ-023 are
+resolved. Phoneme-level acoustic assessment remains a separately evaluated
+specialized capability. See
+[`Voice-Capability-Hypothesis.md`](Voice-Capability-Hypothesis.md).
+
+### Commercial product hypothesis — outside the delivery phases
+
+A separate language-reading and speaking product may eventually organize
+Reader, trusted lookup, Voice, discussion, and reviewed knowledge around a
+continuous **Book-centered Learning Loop**. It remains a hypothesis outside the
+current Roadmap. Christian Studies and a possible consumer language product
+must remain distinct Domain Profiles and data boundaries.
+
+Before serious commercial development, the project owner should complete at
+least one original English or German book in the system, preferably two of
+different difficulty or type. Until real use and a later product decision show
+otherwise, do not build public accounts, payments, subscriptions, DRM,
+publisher portals, commercial cloud infrastructure, or App Store
+commercialization. See
+[`Commercial-Product-Hypothesis.md`](Commercial-Product-Hypothesis.md).
+
 ## 7. Refactoring policy
 
 The platform should use an incremental replacement strategy:
@@ -358,6 +417,12 @@ Metrics should be defined with concrete fixtures before a phase claims success.
 - a mobile credential may leak into content, logs, databases, or exports; and
 - a premature language-learning ontology may encode assumptions that real use
   later disproves.
+- retained audio, transcripts, or speech-provider transmission may create
+  privacy and export obligations that exceed their demonstrated learning value;
+- a general Voice model may be mistaken for a validated phoneme-level
+  assessment system; and
+- an attractive commercial narrative may divert work into accounts, licensing,
+  payments, or cloud infrastructure before the reading loop is proven.
 
 Each phase must convert its relevant risks into tests, previews, permissions, or
 explicit user decisions.
@@ -380,6 +445,9 @@ The immediate next step is use rather than structural migration:
    needed for a scoped extraction.
 
 The accepted mobile direction does not bypass this evidence gate. OQ-018 through
-OQ-022 define the native mobile, portable-data, Source Provider,
-language-learning, and managed-content decisions that must be resolved before
-their dependent implementation. OQ-016 and OQ-017 remain later engine choices.
+OQ-023 define the native mobile, portable-data, Source Provider,
+language-learning, managed-content, and Voice decisions that must be resolved
+before their dependent implementation. OQ-016 and OQ-017 remain later engine
+choices. The commercial product hypothesis remains outside the implementation
+queue until its complete-book evidence and separate product-decision gates are
+met.

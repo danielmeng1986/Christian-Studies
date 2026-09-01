@@ -1,6 +1,6 @@
 # Christian Studies Documentation
 
-**Version:** 1.3
+**Version:** 1.4
 **Status:** Active repository specification
 
 This directory defines the repository's architectural truth, content
@@ -33,6 +33,7 @@ may add detail but may not silently redefine them.
 | Change reusable knowledge or cross-book links | Above + `06-Knowledge-Graph.md` |
 | Change architecture or roadmap | All core documents + affected numbered specifications |
 | Discuss or plan the future platform/refactor | All core documents + `Product-Plan.md`, `Platform-Architecture-Proposal.md`, `Open-Questions.md`, `Decisions/README.md`, and affected numbered specifications |
+| Discuss future voice/language-practice capabilities or commercialization | Above + `Voice-Capability-Hypothesis.md` and/or `Commercial-Product-Hypothesis.md` |
 
 Reading a required document means reading the current file, not relying on a
 summary from an earlier task.
@@ -67,6 +68,21 @@ specifications.
 - [Open Questions](Open-Questions.md) / [未决问题](Open-Questions-zh.md)
 - [Accepted Architecture Decisions](Decisions/README.md) /
   [已接受架构决议](Decisions/README-zh.md)
+
+## Future capability and product hypotheses
+
+These documents preserve directions worth testing without turning them into
+implementation authority or accepted architecture:
+
+- [Voice Capability Hypothesis](Voice-Capability-Hypothesis.md) /
+  [语音能力假设](Voice-Capability-Hypothesis-zh.md)
+- [Commercial Product Hypothesis](Commercial-Product-Hypothesis.md) /
+  [商业产品假设](Commercial-Product-Hypothesis-zh.md)
+
+A hypothesis may inform the Product Plan, target architecture, Roadmap, or an
+Open Question. It authorizes no feature, schema, provider, commercial service,
+or infrastructure. Promotion into implementation requires the evidence and
+decision gates named in the hypothesis and the governing planning documents.
 
 English planning and specification documents are the agent-facing source;
 Chinese companions are full human-review versions. Product decisions must be

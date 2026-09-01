@@ -1,6 +1,6 @@
 # Christian Studies Open Questions
 
-**Version:** 0.3
+**Version:** 0.4
 **Status:** Active decision registry
 **Authority:** Accepted decision records govern planning; open recommendations do not
 
@@ -41,6 +41,7 @@ decisions are preserved under [`Decisions/`](Decisions/README.md).
 | OQ-020 | Dictionary and grammar Source Provider contract | Language-learning prototype | Open |
 | OQ-021 | Language-learning domain and durable knowledge model | Saving language knowledge | Open |
 | OQ-022 | Managed-content packaging, rights, and update isolation | Bundled mobile content | Open |
+| OQ-023 | Voice capability, discussion profiles, and session data | First durable Voice feature | Open |
 
 ## OQ-001 Product boundary
 
@@ -641,7 +642,9 @@ discussion contracts where the evidence shows they fit.
 
 **Decision must state:** first knowledge types, stable identity and recurrence,
 source sentence/anchor links, personal-example review, AI authorship, acceptance
-and correction workflow, cross-language relations, and portable export.
+and correction workflow, cross-language relations, portable export, and which
+Study, Language Tutor, Speaking Practice, or Free Discussion outputs belong to
+the Language Learning Domain.
 
 **Needed by:** Before durable language-learning knowledge or a generalized
 cross-domain ontology is implemented.
@@ -669,6 +672,40 @@ user-data handling.
 **Needed by:** Before books or trusted reference collections are embedded in a
 mobile build.
 
+## OQ-023 Voice capability, discussion profiles, and session data
+
+**Question:** Which speech responsibilities belong to shared capabilities,
+which policies belong to Domain Profiles, and which Voice Session outputs may
+become durable user data or reviewed knowledge?
+
+**Why it remains open:** Word playback, sentence prosody, expression practice,
+and book-based voice discussion have different latency, offline, provider,
+privacy, interaction, evaluation, and retention requirements. No representative
+language-learning book has yet established which stages are repeatedly useful.
+Selecting providers or schemas now would turn a staged hypothesis into an
+unproven platform commitment.
+
+**Suggested starting position:** Keep Speech Playback, Speech Recognition,
+Realtime Conversation, and Practice Session orchestration in a candidate
+Capability Layer. Let Domain Profiles define Study, Language Tutor, Speaking
+Practice, and Free Discussion policies. Implement only the smallest evidenced
+stage. Treat transcript, summary, feedback, target-use records, practice
+signals, and session metadata as separately typed outputs; raw audio is
+ephemeral by default and a speaking sample is saved only by explicit choice.
+
+**Decision must state:** first Voice stage and use case, local/external provider
+boundary, supported languages, offline fallback, latency and interruption
+behavior, microphone and transmission consent, Discussion Profile contracts,
+transcript authorship, output schemas, retention/deletion, portable export,
+accessibility, evaluation fixtures, and failure recovery. Phoneme-level scoring
+requires a separately evaluated specialized capability and must not be inferred
+from general Voice support.
+
+**Needed by:** Before the first durable Voice feature, retained transcript or
+audio, or shared Voice service is implemented. The representative second-book
+and real-use gates still apply. See the
+[Voice Capability Hypothesis](Voice-Capability-Hypothesis.md).
+
 ## ADR queue
 
 The following are candidate records, not accepted decisions or implementation
@@ -681,6 +718,7 @@ authority:
 | Source Provider evidence and trust contract | Resolve OQ-020 before dictionary/grammar integration |
 | Language-learning knowledge acceptance and recurrence | Resolve OQ-021 before durable language knowledge |
 | Managed-content packaging and update isolation | Resolve OQ-022 before bundling mobile content |
+| Voice capability boundary, discussion profiles, and session lifecycle | Resolve OQ-023 before the first durable Voice feature |
 | Change-based LAN or cloud replication | Only after export/import works and a measured multi-device need exists |
 
 ## Decision record template

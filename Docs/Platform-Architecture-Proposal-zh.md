@@ -1,6 +1,6 @@
 # 平台架构规范草案
 
-**版本：** 0.3
+**版本：** 0.4
 **状态：** 已接受的目标方向——实施仍有门槛，也不是当前有效架构
 **范围：** 带 Domain Profile 的个人 AI 辅助阅读平台草案
 
@@ -14,6 +14,8 @@
 本草案描述 Christian Studies 单书实现在得到真实证据后通用化时，可能形成的目标架构。Christian Studies 是第一个 Domain Profile；Language Learning 是候选第二 Profile。本文先关注逻辑边界和数据流，暂不选择最终物理目录、前端框架、用户数据/Graph 引擎或原生客户端技术。
 
 目标不只是一个书架 UI，而是一个完整阅读环境：保存来源、审核 Markdown、交互式研读、透明的 AI Context 和持久知识共同组成一条可追溯的生命周期。
+
+未来的 Speech Playback、Recognition、Realtime Conversation 与 Practice 当前记录为能力假设，而不是默认已经存在的平台 Service。详见 [`Voice-Capability-Hypothesis-zh.md`](Voice-Capability-Hypothesis-zh.md)。
 
 ## 已接受的决策基线
 
@@ -48,7 +50,8 @@
 11. 让结构化知识通过用户审核形成，而不是由 AI 静默修改；
 12. 支持 Offline-first 的设备运行，并把 Credential 隔离在原生 Secret Storage；
 13. 分离共享 Reading Core Service 与 Domain Profile；
-14. 只有经过明确契约，才把 Dictionary、Grammar Reference、Book、Bible、Note 与 Discussion 作为分类清楚的 Source Provider。
+14. 只有经过明确契约，才把 Dictionary、Grammar Reference、Book、Bible、Note 与 Discussion 作为分类清楚的 Source Provider；
+15. 让候选 Voice Capability 与 Domain Profile Policy 分离，同时保留明确的 Capture、Provider、Consent 与 Data Lifecycle 边界。
 
 ## 3. 从当前实现到目标平台
 
@@ -67,6 +70,7 @@
 | 主要设备 | 由 Mac 本地服务承载的 Browser | 使用可迁移契约的独立 Mobile Client；Browser 继续作为基线 |
 | 个人数据 | 书籍本地文件 | 明确迁移后由设备本地权威存储，并具有版本化 Export/Import |
 | 可信查阅 | Book、Bible、Note 与补充资料库 | 注册且分类明确的 Source Provider；Dictionary/Grammar 契约仍未决 |
+| Voice 与语言练习 | 尚未实现 | 由 Domain-specific Discussion 与 Practice Policy 使用的候选 Capability Service；契约仍未决 |
 
 这是提取和通用化策略，并不要求替换当前使用的每一种技术。
 
@@ -84,7 +88,7 @@
 │ 阅读器/构建    Domain Profiles        Source Providers          │
 │ 笔记服务       讨论服务               补充资料库                │
 │ Context Service   Model Router         Capability Gateway      │
-│ Knowledge Service                   任务 / 迁移 / 验证          │
+│ Knowledge Service Voice Capabilities   任务 / 迁移 / 验证       │
 └───────────┬──────────────────┬───────────────────┬─────────────┘
             │                  │                   │
             ▼                  ▼                   ▼
@@ -105,6 +109,8 @@
 ### 4.1 Reader Core 与 Domain Profiles
 
 候选共享 Core 负责 Content Access、Anchor、Annotation、Discussion、Context、Search、Provenance 与 Portable User Data Contract。Domain Profile 增加领域专属 Source Type、Action、Knowledge Proposal 与 UI 文案。Christian Studies 可以配置 Bible 和神学参考行为；Language Learning 可以配置 Dictionary、Grammar、Translation、Personal Example 与再次遇见。只有两个真实 Workflow 都证明契约共享，职责才能移入 Core。
+
+候选 Voice Capability 位于 Domain Profile 边界之下。Language Learning Profile 可以配置 Tutor、Speaking Practice 或 Free Discussion Policy；Christian Studies 以后可以使用段落朗读或语音提问。共享 Transport、Recognition、Playback 与 Realtime Adapter 不能继承某个 Domain 的 Prompt、Evaluation Goal 或 Knowledge Model。
 
 ## 5. 持久书籍包
 
@@ -195,6 +201,12 @@ Source Provider 通过版本化契约提供分类明确且链接来源的 Eviden
 
 统一管理 MCP Server、技能、外部研究和其他工具。它只暴露已经注册的能力，执行用户和来源权限，把工具结果作为分类明确的证据，并把使用情况写入每轮 Manifest。
 
+### 7.8a Voice Capability Service
+
+候选 Voice Service 包括 Speech Playback、Speech Recognition、Realtime Conversation 与 Practice Session Orchestration。只有证据证明这项边界有用时，才形成 Provider-neutral Request 与 Result。Domain Profile 负责选择学习或研读 Policy；Voice Service 不得自行决定 Transcript、Correction 或 Suggested Expression 已成为 Accepted Knowledge。
+
+Discussion Profile 可以区分 Study、Language Tutor、Speaking Practice 与 Free Discussion。它们可以共享 Book、Anchor、Context、Model 与 Source Provider Contract，但必须明确各自的 Prompt Policy、Evaluation Goal、Feedback Timing 与 Session Output。Service 与 Profile 契约继续由 OQ-021 与 OQ-023 决定。
+
 ### 7.9 Knowledge Service
 
 为结构化笔记、实体、链接和综合内容创建建议。AI 建议在用户接受或编辑前，始终只是 AI 生成的工作材料；正式接受的知识必须保留证据链接和修改历史。
@@ -211,6 +223,8 @@ Source Provider 通过版本化契约提供分类明确且链接来源的 Eviden
 6. **知识**：已审核的结构化笔记和跨书连接。
 
 在 Phone 上，这些能力应围绕 Reader 按需出现，而不是形成长期存在的 Desktop Column。选区触发 Bottom Sheet，并显示 Look Up、Explain、Grammar、Translate、Ask AI、Note 与 Save，是候选交互，不是已接受 UI 规范。OQ-018 负责原生边界和交互契约。
+
+Voice Playback 或 Practice 同样应从当前阅读 Context 启动，结束后回到原位置，不能静默改变 Anchor 或 Navigation State。Microphone State、当前 Provider Boundary、Recording/Transmission Status 与 Retention Choice 必须可见。准确交互继续未决。
 
 ## 9. AI 请求流程
 
@@ -280,6 +294,8 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 
 对于未来设备本地客户端，内置书籍和可信资料属于 Managed Content；Progress、Highlight、Note、Discussion、已接受 Knowledge 与 Preference 属于可变 User Data。Local Database 只有经过测试迁移后才能成为权威，并且必须有版本化 Portable Export/Import 表示。覆盖整个 Database 不是长期归档或 Sync 契约。详见 [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md) 与 OQ-019。
 
+未来 Voice Session 可以产生 Transcript、Discussion Summary、Language Feedback、Target Usage Result、Knowledge Proposal、Practice Signal 与 Session Metadata。每种记录都必须声明 Authorship、Authority、Retention 与 Export 行为。Raw Audio 默认只临时存在；用户明确保存的 Speaking Sample 属于敏感 User-owned Data，不是 Operational Cache。
+
 ## 13. 安全与隐私
 
 - 在部署策略改变前，本地服务默认只绑定 loopback。
@@ -290,6 +306,8 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 - 当策略要求用户决定时，在外发给模型或工具前显示数据范围。
 - 记录模型、提供商、工具和证据来源，但不记录秘密。
 - AI 服务不可用时，离线阅读和笔记仍应有用。
+- 麦克风需要明确权限；需要授权时，必须让本地处理与外部 Speech Processing 的边界可见。
+- 默认不保留 Raw Audio；保存 Speaking Sample 需要明确的 Retention、Deletion、Provider Transmission 与 Export Policy。
 
 ## 14. 评估与可观测性
 
@@ -299,6 +317,8 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 2. **检索与 Context：** 证据召回、无关证据、来源链和确定性。
 3. **回答：** 事实依据、引用支持、聚焦程度和有用的不确定性。
 4. **系统：** 延迟、Token、费用、失败、隐私决定和迁移完整性。
+
+未来 Voice Evaluation 还应覆盖逐语言转写质量、播放与对话延迟、中断和恢复、Accessibility、Target-use Evidence、Feedback Usefulness、Provider Failure 与 Privacy/Retention Behavior。除非有经过独立 Ground-truth Evaluation 的 Specialized Capability，否则排除 Phoneme-level Scoring。
 
 日志和 Manifest 必须区分用户内容与运行元数据，并避免保留秘密或不必要的私密正文。
 
@@ -331,6 +351,6 @@ MCP Server 和技能是受控能力，不是环境中的默认权威。每项注
 - 该代表性第二本书已经作为真实 Workflow 使用，而不只是 Synthetic Fixture；
 - 已定义导入、锚点、Context 和可迁移性的成功标准。
 
-OQ-018 至 OQ-022 分别阻塞其依赖的移动端、Portable Data、Source Provider、Language Learning 与 Managed Content 实现。OQ-016 和 OQ-017 继续作为更晚的引擎选择。
+OQ-018 至 OQ-023 分别阻塞其依赖的移动端、Portable Data、Source Provider、Language Learning、Managed Content 与 Voice 实现。OQ-016 和 OQ-017 继续作为更晚的引擎选择。商业语言产品假设在完成自己的真实使用和产品决策门槛前，不进入平台实现。
 
 之后，只有通过明确架构决议，同时更新当前核心文档和验证契约，本草案才能转为有效规范。

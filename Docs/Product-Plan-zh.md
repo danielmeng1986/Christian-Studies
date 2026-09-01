@@ -1,6 +1,6 @@
 # Christian Studies 产品规划书
 
-**版本：** 0.3
+**版本：** 0.4
 **状态：** 已接受的规划基线——实施仍有门槛
 **效力：** 规划文档，不是当前实现规范
 
@@ -27,6 +27,8 @@
 Christian Studies 应当把 Context 变成用户可以检查和控制的产品能力，而不是隐藏在内部的实现细节。
 
 真实使用也改变了产品边界。可以复用的机会不只是“神学功能”，而是一套有来源意识的阅读闭环；它未来可以服务英文和德文书籍、技术资料与其他深度阅读。Christian Studies 继续作为第一个 Domain；Language Learning 是最重要的候选第二 Domain。任何一个 Domain 都不应被硬编码进另一个 Domain。
+
+Language Learning 以后可以通过单词发音、句子 Prosody、主动表达练习和围绕书籍的语音讨论继续扩展这个闭环。这条渐进方向记录在[语音能力假设](Voice-Capability-Hypothesis-zh.md)中。另一个可能独立发展的商业语言阅读产品记录在[商业产品假设](Commercial-Product-Hypothesis-zh.md)中；它不表示市场需求已经成立，也不是当前交付承诺。
 
 ## 3. 主要用户成果
 
@@ -101,7 +103,10 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 在第一版平台中支持所有电子书和文档格式；
 - 在 Language Learning Workflow 出现前设计完整 Cross-domain Ontology；
 - 在 Export/Import 得到验证前实现自动 LAN 或 Cloud Sync；
-- 仅仅因为可以画出目标架构就启动平台重构。
+- 仅仅因为可以画出目标架构就启动平台重构；
+- 完整 Voice System、长期 Raw Audio Archive 或 Phoneme-level Scoring Service；
+- 商业语言学习产品、公开书库、Publisher Program、Payment、Subscription、DRM 或商业 Cloud Infrastructure；
+- 商业假设可以把 Christian Studies 内容或个人研读知识带入另一个产品。
 
 这些都是需要决定的问题，而不是隐含需求。
 
@@ -232,6 +237,29 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 
 退出门槛：读者可以审核、接受、编辑、拒绝并追踪结构化知识建议，AI 不能静默修改持久知识。
 
+### 未来能力轨道——Voice 与语言练习
+
+成果：只有真实 Language Learning 使用证明需求后，才加入能够改善 Book-centered Learning Loop 的最小语音能力。
+
+候选渐进顺序是：
+
+1. 与可信 Dictionary Evidence 相连的单词发音；
+2. 带可选 Prosody 指导的句子播放；
+3. 围绕已保存表达进行情境口语练习；
+4. 以当前书籍与 Context Service 为依据的目标语言讨论。
+
+Discussion 以后可以分为 Study、Language Tutor、Speaking Practice 和 Free Discussion Profile。Profile 可以共享 Identity、Anchor、Context、Model 与 Source Provider 契约，但必须保留不同 Prompt Policy、Evaluation Goal、Correction Style 与 Output。
+
+Voice Session 可以成为包含 Transcript、内容 Summary、Language Feedback、Target Usage Result、Knowledge Proposal、Future-practice Signal 与 Session Metadata 的 Learning Event。Raw Audio 默认只临时存在；只有用户明确选择时才保存 Speaking Sample。AI Proposal 只有经过用户接受或编辑后，才能成为持久 Knowledge。
+
+这条轨道不属于当前开发队列。只有代表性的英文或德文书已经得到真实使用、最小重复需求已经明确，并解决 OQ-020、OQ-021 与 OQ-023 中相关部分后才能启动。Phoneme-level Acoustic Assessment 继续作为需要单独评估的 Specialized Capability。详见 [`Voice-Capability-Hypothesis-zh.md`](Voice-Capability-Hypothesis-zh.md)。
+
+### 商业产品假设——不属于交付阶段
+
+未来可能有一个独立语言阅读与口语产品，把 Reader、可信查阅、Voice、Discussion 与 Reviewed Knowledge 组织成连续的 **Book-centered Learning Loop**。它继续作为当前 Roadmap 之外的假设。Christian Studies 与潜在消费者语言产品必须保持不同 Domain Profile 和数据边界。
+
+认真启动商业开发前，项目所有者应使用本系统完整读完至少一本英文或德文原版书，最好是两本不同难度或类型的书。在真实使用和未来产品决议证明有必要以前，不开发 Public Account、Payment、Subscription、DRM、Publisher Portal、商业 Cloud Infrastructure 或 App Store Commercialization。详见 [`Commercial-Product-Hypothesis-zh.md`](Commercial-Product-Hypothesis-zh.md)。
+
 ## 7. 重构原则
 
 平台应采用渐进式替换：
@@ -278,6 +306,9 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 - 内置内容可能违反权利，或在升级时覆盖 User State；
 - 移动端 Credential 可能泄漏到内容、Log、Database 或 Export；
 - 过早设计 Language Learning Ontology 可能固化真实使用随后否定的假设。
+- 保留音频、Transcript 或向 Speech Provider 外发可能产生超过已证明学习价值的 Privacy 与 Export 义务；
+- 通用 Voice Model 可能被误认为经过验证的 Phoneme-level Assessment System；
+- 有吸引力的商业叙事可能在阅读闭环得到证明前，把工作引向 Account、Licensing、Payment 或 Cloud Infrastructure。
 
 每个阶段都必须把相关风险转化为测试、预览、权限或明确的用户决定。
 
@@ -293,4 +324,4 @@ Christian Studies 应当把 Context 变成用户可以检查和控制的产品�
 4. 用真实流程辨认哪些能力共享、哪些属于 Domain Profile；
 5. 之后才盘点兼容 fixture，并为范围明确的提取编制最小契约。
 
-已接受的 Mobile 方向不能绕过这一证据门槛。OQ-018 至 OQ-022 分别定义原生移动、Portable Data、Source Provider、Language Learning 与 Managed Content 的实施前决策。OQ-016 与 OQ-017 继续作为更晚的引擎选择。
+已接受的 Mobile 方向不能绕过这一证据门槛。OQ-018 至 OQ-023 分别定义原生移动、Portable Data、Source Provider、Language Learning、Managed Content 与 Voice 的实施前决策。OQ-016 与 OQ-017 继续作为更晚的引擎选择。Commercial Product Hypothesis 在完成整本书证据门槛并通过单独产品决议前，继续位于实施队列之外。

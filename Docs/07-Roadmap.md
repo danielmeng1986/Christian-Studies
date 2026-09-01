@@ -65,6 +65,29 @@ Before structural work begins:
 8. **Add controlled MCP and skill capabilities.** Use explicit registration, least privilege, consent, and provenance.
 9. **Develop reviewed structured knowledge.** Turn notes and discussions into evidence-linked proposals and cross-book or cross-domain knowledge through human acceptance.
 
+## Future capability tracks outside the current sequence
+
+Voice is preserved as a staged capability hypothesis, not added to the active
+implementation queue:
+
+1. **Voice 1:** trusted word lookup plus pronunciation playback;
+2. **Voice 2:** natural sentence playback and optional prosody guidance;
+3. **Voice 3:** contextual speaking practice for saved expressions; and
+4. **Voice 4:** target-language discussion grounded in the current book.
+
+The first experiment begins only after a representative language-learning book
+is genuinely used and the smallest repeated need is known. Durable Voice work
+is governed by OQ-020, OQ-021, and OQ-023; later stages require evidence from
+earlier ones. See
+[`Voice-Capability-Hypothesis.md`](Voice-Capability-Hypothesis.md).
+
+The possible commercial language-reading product is also outside this Roadmap.
+It does not authorize accounts, payments, DRM, publisher systems, cloud
+infrastructure, or App Store commercialization. Serious commercial discovery
+is gated by the project owner completing at least one original English or
+German book in the system, preferably two of different difficulty or type. See
+[`Commercial-Product-Hypothesis.md`](Commercial-Product-Hypothesis.md).
+
 ## Advancement rules
 
 - Advance by exit criteria and real-use evidence, not by date alone.
@@ -80,3 +103,5 @@ Before structural work begins:
   use whole-database replacement as the long-term sync protocol.
 - Batch real problems into coherent themes instead of running a continuous
   fix/tweak/refactor loop.
+- Do not promote a future capability or commercial hypothesis into the active
+  sequence without its named evidence and decision gates.

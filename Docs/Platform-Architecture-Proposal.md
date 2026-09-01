@@ -1,6 +1,6 @@
 # Platform Architecture Proposal
 
-**Version:** 0.3
+**Version:** 0.4
 **Status:** Accepted target direction — implementation gated, not current architecture
 **Scope:** Proposed personal AI-assisted reading platform with domain profiles
 
@@ -27,6 +27,10 @@ technology.
 The target is not merely a bookshelf UI. It is a reading environment in which
 source preservation, reviewed Markdown, interactive study, transparent AI
 context, and durable knowledge form one traceable lifecycle.
+
+Future speech playback, recognition, realtime conversation, and practice are
+recorded as a capability hypothesis rather than assumed platform services. See
+[`Voice-Capability-Hypothesis.md`](Voice-Capability-Hypothesis.md).
 
 ## Accepted decision baseline
 
@@ -77,7 +81,10 @@ The platform must:
     secret storage;
 13. separate shared Reading Core services from Domain Profiles; and
 14. admit dictionaries, grammar references, books, Scripture, notes, and
-    discussions as typed Source Providers only through explicit contracts.
+    discussions as typed Source Providers only through explicit contracts; and
+15. keep candidate Voice capabilities separate from Domain Profile policy,
+    while retaining explicit capture, provider, consent, and data-lifecycle
+    boundaries.
 
 ## 3. Current-to-target shift
 
@@ -96,6 +103,7 @@ The platform must:
 | Primary device | Browser on a Mac-hosted local service | Self-contained mobile client using portable contracts; browser remains baseline |
 | Personal data | Book-local files | Device-local authority with versioned portable export/import after explicit migration |
 | Trusted lookup | Book, Scripture, notes, and supplemental library | Registered typed Source Providers, with dictionary/grammar contracts still open |
+| Voice and language practice | Not implemented | Candidate capability services used through Domain-specific discussion and practice policies; contract remains open |
 
 This is an extraction and generalization strategy, not a requirement to replace
 every current technology.
@@ -114,7 +122,7 @@ every current technology.
 │ Reader/Build      Domain Profiles         Source Providers            │
 │ Note Service      Discussion Service      Source Library              │
 │ Context Service   Model Router            Capability Gateway          │
-│ Knowledge Service                     Jobs / migrations / validation  │
+│ Knowledge Service Voice Capabilities   Jobs / migrations / validation │
 └───────────┬──────────────────┬───────────────────┬────────────────────┘
             │                  │                   │
             ▼                  ▼                   ▼
@@ -145,6 +153,13 @@ Christian Studies may configure Bible and theological reference behavior;
 language learning may configure dictionary, grammar, translation, personal
 examples, and recurrence. A responsibility moves into the core only after both
 real workflows demonstrate the shared contract.
+
+Candidate Voice capabilities remain below the Domain Profile boundary. A
+Language Learning profile may configure tutoring, speaking-practice, or free
+discussion policies, while Christian Studies could later use passage playback
+or spoken questions. Shared transport, recognition, playback, and realtime
+adapters must not inherit one Domain's prompts, evaluation goals, or knowledge
+model.
 
 ## 5. Durable book package
 
@@ -269,6 +284,20 @@ Mediates MCP servers, skills, external research, and other tools. It exposes
 only registered capabilities, enforces user and source permissions, treats tool
 results as typed evidence, and records use in the turn manifest.
 
+### 7.8a Voice Capability Services
+
+Candidate Voice services include Speech Playback, Speech Recognition, Realtime
+Conversation, and Practice Session orchestration. They expose provider-neutral
+requests and results where evidence proves that boundary useful. Domain Profiles
+choose the learning or study policy; Voice services do not decide that a
+transcript, correction, or suggested expression is accepted knowledge.
+
+Discussion profiles may distinguish Study, Language Tutor, Speaking Practice,
+and Free Discussion. They may share book, anchor, Context, model, and Source
+Provider contracts while keeping prompt policy, evaluation goals, feedback
+timing, and session outputs explicit. The service and profile contracts remain
+open under OQ-021 and OQ-023.
+
 ### 7.9 Knowledge Service
 
 Creates proposals for structured notes, entities, links, and synthesis. A
@@ -294,6 +323,11 @@ surfaces rather than permanent desktop columns. A selection-triggered bottom
 sheet with Look Up, Explain, Grammar, Translate, Ask AI, Note, and Save is a
 candidate interaction, not an accepted UI specification. OQ-018 owns the native
 boundary and interaction contract.
+
+Voice playback or practice should likewise begin from the current reading
+context and return to it without silently changing the anchor or navigation
+state. Microphone state, active provider boundary, recording/transmission
+status, and retention choice must be visible. Exact interaction remains open.
 
 ## 9. AI request flow
 
@@ -385,6 +419,12 @@ representation. Whole-database replacement is not the archival or sync
 contract. See [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md)
 and OQ-019.
 
+A future Voice Session may produce a transcript, discussion summary, language
+feedback, target-usage results, knowledge proposals, practice signals, and
+session metadata. Each record must declare authorship, authority, retention,
+and export behavior. Raw audio is ephemeral by default; an explicitly saved
+speaking sample is sensitive user-owned data, not an operational cache.
+
 ## 13. Security and privacy
 
 - Bind local services to loopback by default until deployment policy changes.
@@ -399,6 +439,10 @@ and OQ-019.
 - Record model, provider, tools, and evidence provenance without recording
   secrets.
 - Make offline reading and notes useful when AI services are unavailable.
+- Require explicit microphone permission and make local versus external speech
+  processing visible when consent is required.
+- Do not retain raw audio by default; saved speaking samples require explicit
+  retention, deletion, provider-transmission, and export policy.
 
 ## 14. Evaluation and observability
 
@@ -411,6 +455,12 @@ The platform needs evaluation at four independent layers:
    uncertainty.
 4. **System:** latency, token use, monetary cost, failures, privacy decisions,
    and migration integrity.
+
+Future Voice evaluation adds transcription quality by language, playback and
+conversation latency, interruption and recovery, accessibility, target-use
+evidence, feedback usefulness, provider failure, and privacy/retention behavior.
+Phoneme-level scoring is excluded unless a specialized capability has separate
+ground-truth evaluation.
 
 Logs and manifests must distinguish user content from operational metadata and
 avoid retaining secrets or unnecessary private text.
@@ -452,9 +502,11 @@ refactor or native mobile client should still not begin until:
   synthetic fixture; and
 - success measures for import, anchoring, context, and portability are defined.
 
-OQ-018 through OQ-022 block their dependent mobile, portable-data, Source
-Provider, language-learning, and managed-content implementation. OQ-016 and
-OQ-017 remain later engine choices.
+OQ-018 through OQ-023 block their dependent mobile, portable-data, Source
+Provider, language-learning, managed-content, and Voice implementations.
+OQ-016 and OQ-017 remain later engine choices. The commercial language-product
+hypothesis remains outside platform implementation until its own real-use and
+product-decision gates are met.
 
 The proposal then becomes normative only through an explicit architecture
 decision that updates the current core documents and validation contract.

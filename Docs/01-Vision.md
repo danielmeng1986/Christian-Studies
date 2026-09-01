@@ -19,6 +19,16 @@ useful offline; explicitly networked AI calls are an optional capability layered
 on top. “Mobile-first” makes the phone reading flow a primary design case, but
 does not authorize an immediate native rewrite.
 
+The environment may later support language practice through speech playback,
+recognition, realtime conversation, and book-based discussion. Voice is a
+candidate capability layer used by Domain Profiles, not a reason to redefine
+Christian Studies as a language product or to start implementation before a
+real language-learning workflow exists. A separate commercial language-reading
+hypothesis is worth preserving, but it remains subordinate to building for one
+real reader and gathering complete-book evidence. See the
+[Voice Capability Hypothesis](Voice-Capability-Hypothesis.md) and
+[Commercial Product Hypothesis](Commercial-Product-Hypothesis.md).
+
 The repository is designed around a simple distinction: a book is a source of study, while the knowledge produced through studying it may outlast and connect to that book.
 
 Its central product insight is that useful reading assistance depends on controllable context. The system should know where the reader is, assemble relevant local evidence, distinguish each source type, expose what will be sent, and preserve a manifest of what informed the answer. Model capability matters, but a more expensive model is not a substitute for accurate, focused, source-linked context.

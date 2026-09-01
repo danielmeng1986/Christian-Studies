@@ -1,6 +1,6 @@
 # Christian Studies 未决问题
 
-**版本：** 0.3
+**版本：** 0.4
 **状态：** 活跃决策登记
 **效力：** 已接受决议约束未来规划；未决建议不构成决定
 
@@ -36,6 +36,7 @@
 | OQ-020 | Dictionary 与 Grammar Source Provider 契约 | 语言学习原型前 | 未决 |
 | OQ-021 | Language Learning Domain 与持久知识模型 | 保存语言知识前 | 未决 |
 | OQ-022 | Managed Content 打包、权利与升级隔离 | 移动端内置内容前 | 未决 |
+| OQ-023 | Voice Capability、Discussion Profile 与 Session Data | 第一项持久 Voice 功能前 | 未决 |
 
 ## OQ-001 产品边界
 
@@ -366,7 +367,7 @@
 
 **建议起点：** 使用一本具有代表性的英文或德文书，验证从选区、可信查阅、AI 解释、个人造句、审核、保存到再次遇见的完整流程。AI Proposal 与用户已接受 Knowledge 必须分开；只有真实证据支持时才复用 Stable Anchor、Evidence、Provenance 与 Discussion 契约。
 
-**正式决定必须说明：** 第一批知识类型、Stable Identity 与再次遇见记录、Source Sentence/Anchor Link、Personal Example Review、AI Authorship、接受与纠错流程、Cross-language Relation 和 Portable Export。
+**正式决定必须说明：** 第一批知识类型、Stable Identity 与再次遇见记录、Source Sentence/Anchor Link、Personal Example Review、AI Authorship、接受与纠错流程、Cross-language Relation、Portable Export，以及 Study、Language Tutor、Speaking Practice 或 Free Discussion 的哪些 Output 属于 Language Learning Domain。
 
 **必须完成的阶段：** 实现持久语言学习 Knowledge 或通用 Cross-domain Ontology 之前。
 
@@ -382,6 +383,18 @@
 
 **必须完成的阶段：** 在移动 Build 中内置书籍或可信参考资料集合之前。
 
+## OQ-023 Voice Capability、Discussion Profile 与 Session Data
+
+**问题：** 哪些 Speech 职责属于共享 Capability，哪些 Policy 属于 Domain Profile，哪些 Voice Session Output 可以成为持久 User Data 或经过审核的 Knowledge？
+
+**为什么仍未决定：** Word Playback、Sentence Prosody、Expression Practice 与 Book-based Voice Discussion 在延迟、离线、Provider、Privacy、Interaction、Evaluation 与 Retention 方面有不同要求。目前还没有代表性的 Language Learning Book 证明哪些阶段会被重复使用。现在选择 Provider 或 Schema，会把渐进式假设提前变成未经验证的平台承诺。
+
+**建议起点：** 把 Speech Playback、Speech Recognition、Realtime Conversation 与 Practice Session Orchestration 保留在候选 Capability Layer；由 Domain Profile 定义 Study、Language Tutor、Speaking Practice 与 Free Discussion Policy。只实现有证据支持的最小阶段。Transcript、Summary、Feedback、Target-use Record、Practice Signal 与 Session Metadata 应分类保存；Raw Audio 默认只临时存在，Speaking Sample 只有用户明确选择时才保存。
+
+**正式决定必须说明：** 第一 Voice 阶段与 Use Case、本地/外部 Provider Boundary、支持语言、离线降级、延迟与中断行为、Microphone 与 Transmission Consent、Discussion Profile Contract、Transcript Authorship、Output Schema、Retention/Deletion、Portable Export、Accessibility、Evaluation Fixture 与失败恢复。Phoneme-level Scoring 需要单独评估的 Specialized Capability，不能从通用 Voice Support 推断得出。
+
+**必须完成的阶段：** 第一项持久 Voice 功能、保留 Transcript/Audio 或共享 Voice Service 实现之前。第二本代表性书籍与真实使用门槛继续有效。详见[语音能力假设](Voice-Capability-Hypothesis-zh.md)。
+
 ## ADR 队列
 
 下列只是候选记录，不是已接受决定或实施权威：
@@ -393,6 +406,7 @@
 | Source Provider Evidence 与信任契约 | Dictionary/Grammar 集成前解决 OQ-020 |
 | Language Learning Knowledge 的接受与再次遇见 | 持久语言知识实现前解决 OQ-021 |
 | Managed Content 打包与升级隔离 | 移动端内置内容前解决 OQ-022 |
+| Voice Capability 边界、Discussion Profile 与 Session Lifecycle | 第一项持久 Voice 功能前解决 OQ-023 |
 | 基于 Change 的 LAN 或 Cloud Replication | Export/Import 已工作且真实多设备需求得到验证后 |
 
 ## 决议模板
