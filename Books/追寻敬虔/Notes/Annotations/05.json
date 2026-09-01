@@ -434,6 +434,22 @@
       "format": "plain-text",
       "createdAt": "2026-08-29T23:02:57.653Z",
       "updatedAt": "2026-08-29T23:02:57.653Z"
+    },
+    {
+      "id": "cd1665eb-d825-48ca-9a70-4a7706eec7e5",
+      "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+      "anchor": {
+        "blockId": "05-p-0061",
+        "startOffset": 0,
+        "endOffset": 114,
+        "exact": "有人埋怨聖經隱晦不明﹐因為「它的真理不是被分配在共同的經文處」﹐(也就是說不同的話題﹐各在一處得到充份的詮釋﹐) 而是需要我們「從歷史﹑先知的預言﹑禱告﹑詩歌﹑書信的文集裏﹐去收集那些真理」﹔而歐文的解惑則擊中要害。他寫道如下﹕",
+        "prefix": "",
+        "suffix": ""
+      },
+      "body": "这段话确实是不少人诟病的地方",
+      "format": "plain-text",
+      "createdAt": "2026-08-30T14:57:21.500Z",
+      "updatedAt": "2026-08-30T14:57:21.500Z"
     }
   ]
 }

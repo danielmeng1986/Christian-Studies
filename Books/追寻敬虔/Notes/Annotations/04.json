@@ -2,5 +2,38 @@
   "schemaVersion": 1,
   "bookId": "qfg",
   "chapterId": "04",
-  "notes": []
+  "notes": [
+    {
+      "id": "ca766920-2b6f-4579-85ff-93114abc2350",
+      "sourceRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+      "anchor": {
+        "blockId": "04-p-0130",
+        "startOffset": 74,
+        "endOffset": 174,
+        "exact": "因此﹐清教徒的講道是繞著符合聖經之宗教的三個「R」起頭的字－摧毀(ruin)﹑救贖(redemption)﹑重生(regeneration)－打轉的﹐並用深思熟慮的簡捷之活潑方式﹐穿上福音真理的外衣。",
+        "prefix": "問﹔他們所設計的講章是為了他們能為別人帶來益處﹐而非為取悅自己。",
+        "suffix": ""
+      },
+      "body": "ruin,\nredemption,\nregeneration\n这确实也是最关键的",
+      "format": "plain-text",
+      "createdAt": "2026-08-30T18:34:54.769Z",
+      "updatedAt": "2026-08-30T18:34:54.769Z"
+    },
+    {
+      "id": "c7bde586-926c-4533-843c-921ecb32a138",
+      "sourceRevision": "bebad2655c399d955c6bdcc368206034cc17eada9fb589e3263bcc6b0d8a978d",
+      "anchor": {
+        "blockId": "04-p-0137",
+        "startOffset": 14,
+        "endOffset": 62,
+        "exact": "他們愛慕恩主﹐遵行誡命﹐並在事奉上耗盡自我－在每一個時代裏﹐這三樣是真正被聖靈充滿者的主要因素。",
+        "prefix": "第五﹐清教徒是屬乎聖靈的人﹔",
+        "suffix": "巴克斯特的復興的牧師(The Reformed Pastor)一"
+      },
+      "body": "三要素：\n1. 爱慕恩主\n2. 遵行诫命\n3. 在事奉上耗尽自我",
+      "format": "plain-text",
+      "createdAt": "2026-08-30T18:51:09.674Z",
+      "updatedAt": "2026-08-30T18:51:09.674Z"
+    }
+  ]
 }
