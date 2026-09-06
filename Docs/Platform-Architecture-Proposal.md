@@ -183,6 +183,12 @@ adapters, and generic indexing code do not belong inside each book package.
 The package must remain understandable without running the frontend. Platform
 indexes and rendered HTML may be deleted and reconstructed.
 
+ADR-0005 establishes the first concrete multi-edition compatibility case:
+editions have stable identities, reviewed Markdown authorities, explicit
+manifests, edition-local anchors, and chapter-atomic publication. The shared
+platform must preserve those contracts when the current book-local reader is
+eventually extracted.
+
 ## 6. Ingestion and publication pipeline
 
 ```text

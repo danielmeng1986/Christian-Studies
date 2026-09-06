@@ -72,6 +72,178 @@ Responsibilities:
 - Runtime pages obtain notes only through the local API backed by `Notes/Annotations/05.json`.
 - The builder must not modify Markdown, footnotes, or note JSON.
 
+### 3.1 Multi-edition target layout
+
+The paths above describe the current compatibility layout. Before a second
+chapter body is added, implementation must migrate to the following target in
+one tested change:
+
+```text
+Reading/
+├── 第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md
+└── chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md
+Metadata/
+├── editions.json
+├── Glossaries/chatgpt-zh-cn/05.md
+├── Reading-Units/legacy-zh/05.json
+├── Reading-Units/chatgpt-zh-cn/05.json
+└── Edition-Reviews/chatgpt-zh-cn/05.json
+```
+
+No prose is stored in a metadata sidecar. Existing footnotes remain at
+`References/Footnotes-05.md` and are shared by explicit manifest reference.
+The versioned glossary at `Metadata/Glossaries/chatgpt-zh-cn/05.md` is the
+curated terminology authority identified as `qfg-05-v1` by review metadata.
+
+### 3.2 Edition manifest schema
+
+`Metadata/editions.json` uses schema version 1:
+
+```json
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "defaultEditionId": "legacy-zh",
+  "editions": [
+    {
+      "editionId": "legacy-zh",
+      "displayName": "Word 转写版",
+      "language": "zh-Hant",
+      "sourceType": "received-word-draft",
+      "status": "approved",
+      "chapters": {
+        "05": {
+          "path": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+          "notesPath": "Notes/Annotations/05.json",
+          "discussionsPath": "Notes/Discussions/05",
+          "status": "approved"
+        }
+      }
+    },
+    {
+      "editionId": "chatgpt-zh-cn",
+      "displayName": "现代简体润译版（ChatGPT）",
+      "language": "zh-Hans",
+      "sourceType": "ai-assisted-revision",
+      "sourceEditionId": "legacy-zh",
+      "status": "approved",
+      "chapters": {
+        "05": {
+          "path": "Reading/chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md",
+          "notesPath": "Notes/Annotations/chatgpt-zh-cn/05.json",
+          "discussionsPath": "Notes/Discussions/chatgpt-zh-cn/05",
+          "status": "approved"
+        }
+      }
+    }
+  ]
+}
+```
+
+Valid edition and chapter statuses are `draft`, `reviewed`, and `approved`.
+The default edition and every ordinary-reader chapter must be `approved`.
+Edition IDs are immutable after user data references them.
+
+### 3.3 Reading-unit identity sidecar
+
+`Metadata/Reading-Units/<editionId>/<chapterId>.json` uses schema version 1:
+
+```json
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "editionId": "legacy-zh",
+  "chapterId": "05",
+  "path": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+  "contentRevision": "sha256",
+  "blocks": [
+    {
+      "blockId": "uuid",
+      "kind": "paragraph",
+      "ordinal": 1,
+      "contentHash": "sha256"
+    }
+  ]
+}
+```
+
+Block kinds are the semantic Markdown block kinds supported by the builder,
+including headings, paragraphs, and quotation paragraphs. Ordinals aid review
+and diagnostics but are not durable identity. The sidecar order must match the
+parsed Markdown order exactly.
+
+### 3.4 Revision-review sidecar
+
+`Metadata/Edition-Reviews/chatgpt-zh-cn/05.json` uses schema version 2:
+
+```json
+{
+  "schemaVersion": 2,
+  "bookId": "qfg",
+  "chapterId": "05",
+  "sourceEditionId": "legacy-zh",
+  "targetEditionId": "chatgpt-zh-cn",
+  "sourceRevision": "sha256",
+  "targetRevision": "sha256",
+  "revisionPolicyVersion": "qfg-zh-revision-v1",
+  "glossaryVersion": "qfg-05-v1",
+  "generation": {
+    "model": "recorded-model-id",
+    "generatedAt": "RFC-3339 timestamp",
+    "references": [
+      {
+        "type": "permissioned-personal-use-web-pdf",
+        "url": "https://www.johnowen.org/media/packer_quest_for_godliness_ch_5.pdf",
+        "locator": "English chapter pages 1-15"
+      }
+    ]
+  },
+  "blocks": [
+    {
+      "pairId": "uuid",
+      "sourceBlockId": "uuid",
+      "targetBlockId": "uuid",
+      "sourceContentHash": "sha256",
+      "targetContentHash": "sha256",
+      "status": "draft",
+      "reviewedAt": null,
+      "approvedAt": null,
+      "comments": [
+        {
+          "commentId": "uuid",
+          "text": "Reviewer instruction",
+          "status": "open",
+          "createdAt": "RFC-3339 timestamp",
+          "resolvedAt": null
+        }
+      ]
+    }
+  ],
+  "chapterStatus": "draft",
+  "approvedAt": null
+}
+```
+
+The review service recomputes hashes before every state transition. A source
+hash change makes the alignment stale; a target hash change returns that block
+to `draft` while preserving its review comments. Comments are append-only review
+instructions and move between `open` and `resolved`; an open comment prevents
+block and chapter approval. Chapter approval requires all required blocks to be approved,
+one-to-one structural alignment, footnote-reference parity, and successful
+content validation. The sidecar records reference locators only, never the
+complete permissioned English text.
+
+### 3.5 Compatibility migration
+
+The first-edition migration is implemented. Existing flat body paths and
+`/chapters/{chapter}/` remain compatibility locations for `legacy-zh`.
+Annotation schema 2 and discussion schema 3 persist `editionId`; migrated
+legacy records carry `legacy-zh` without changing note text, anchors,
+discussion messages, or source revisions. Alternate-edition user data uses the
+edition-qualified manifest paths shown above. Ordinary alternate pages use
+`/editions/{editionId}/chapters/{chapter}/`, and their note/discussion APIs use
+`/api/editions/{editionId}/...`. Cross-edition offsets remain forbidden.
+
 ## 4. Build specification
 
 ### 4.1 Inputs and chapter identity
@@ -208,8 +380,9 @@ Left-panel items must include a `type`; version 1 uses only `footnote`, while th
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "notes": []
 }
@@ -239,7 +412,7 @@ Note entry:
 Constraints:
 
 - `id` is immutable after creation.
-- Root `bookId` and `chapterId` must match the requested chapter.
+- Root `bookId`, `editionId`, and `chapterId` must match the requested reading unit.
 - `body` is non-blank Unicode plain text.
 - `exact` is non-empty and `startOffset < endOffset`.
 - Valid ranges must not overlap in version 1.
@@ -267,11 +440,18 @@ Constraints:
 
 ### 8.2 Endpoints
 
-Version 1 exposes whole-chapter operations only:
+The unqualified compatibility routes address `legacy-zh` only:
 
 ```text
 GET /api/chapters/05/notes
 PUT /api/chapters/05/notes
+```
+
+Every ordinary reader page uses the composite route:
+
+```text
+GET /api/editions/{editionId}/chapters/{chapter}/notes
+PUT /api/editions/{editionId}/chapters/{chapter}/notes
 ```
 
 These are the minimum MVP endpoints. Keep handlers and routing separable so the local service can evolve into a broader REST API later, but do not add speculative resources in version 1.

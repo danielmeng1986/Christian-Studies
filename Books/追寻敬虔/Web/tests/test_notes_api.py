@@ -32,8 +32,9 @@ SERVE = load_serve_module()
 
 def sample_document(body: str = "测试笔记") -> dict:
     return {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "bookId": "qfg",
+        "editionId": "legacy-zh",
         "chapterId": "05",
         "notes": [
             {
@@ -66,11 +67,38 @@ class NotesAPITests(unittest.TestCase):
         self.note_path = root / "Notes/Annotations/05.json"
         self.note_path.parent.mkdir(parents=True)
         self.note_path.write_bytes(SERVE.serialize_note_document(SERVE.empty_note_document("05")))
+        self.alternate_note_path = root / "Notes/Annotations/chatgpt-zh-cn/05.json"
+        self.alternate_note_path.parent.mkdir(parents=True)
+        self.alternate_note_path.write_bytes(
+            SERVE.serialize_note_document(SERVE.empty_note_document("05", "chatgpt-zh-cn"))
+        )
+        edition_contexts = {
+            "legacy-zh": {
+                "chapters": {
+                    "05": {
+                        "chapter": SERVE.DEFAULT_CHAPTER_PATHS["05"],
+                        "notes": self.note_path,
+                        "discussions": root / "Notes/Discussions/05",
+                    }
+                }
+            },
+            "chatgpt-zh-cn": {
+                "chapters": {
+                    "05": {
+                        "chapter": SERVE.BOOK_ROOT
+                        / "Reading/chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md",
+                        "notes": self.alternate_note_path,
+                        "discussions": root / "Notes/Discussions/chatgpt-zh-cn/05",
+                    }
+                }
+            },
+        }
 
         self.server = SERVE.build_server(
             0,
             dist_root=self.dist,
             note_paths={"05": self.note_path},
+            edition_contexts=edition_contexts,
             write_token="test-write-token",
         )
         self.port = self.server.server_address[1]
@@ -119,6 +147,22 @@ class NotesAPITests(unittest.TestCase):
         self.assertIsInstance(session["model"], str)
         _, document = self.get_notes()
         self.assertEqual(document, SERVE.empty_note_document("05"))
+
+    def test_qualified_editions_have_isolated_notes_and_unknown_editions_fall_back(self) -> None:
+        status, _, content = self.request(
+            "GET", "/api/editions/chatgpt-zh-cn/chapters/05/notes"
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(
+            json.loads(content), SERVE.empty_note_document("05", "chatgpt-zh-cn")
+        )
+        self.assertNotEqual(self.alternate_note_path, self.note_path)
+
+        status, headers, _ = self.request("GET", "/editions/unpublished/chapters/05/")
+        self.assertEqual(status, 302)
+        self.assertEqual(
+            headers["Location"], "/chapters/05/?edition-fallback=unpublished"
+        )
 
     def test_valid_write_is_atomic_and_git_readable(self) -> None:
         etag, _ = self.get_notes()

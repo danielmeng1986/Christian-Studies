@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-Hant" data-theme="light">
+<html lang="{{DOCUMENT_LANGUAGE}}" data-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="《追寻敬虔》本地交互式阅读版">
     <title>{{PAGE_TITLE}}</title>
-    <link rel="stylesheet" href="../../assets/app.css">
-    <script type="module" src="../../assets/app.js"></script>
+    <link rel="stylesheet" href="/assets/app.css">
+    <script type="module" src="/assets/app.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#chapter-article">跳到正文</a>
@@ -19,6 +19,7 @@
       </div>
 
       <div class="toolbar__group toolbar__navigation">
+        {{EDITION_SWITCHER}}
         <div class="chapter-menu">
           <button type="button" class="chapter-menu__trigger" id="chapter-navigation" aria-label="章节导航" aria-haspopup="listbox" aria-expanded="false" aria-controls="chapter-menu-list">
             <span class="chapter-menu__current">{{CHAPTER_MENU_LABEL}}</span>
@@ -70,6 +71,8 @@
       </div>
     </header>
 
+    <div class="edition-fallback-notice" id="edition-fallback-notice" role="status" hidden></div>
+
     <main class="app-shell" id="app-shell">
       <aside class="side-panel footnote-panel" id="reference-panel" aria-label="脚注与经文">
         <div class="side-panel__header">
@@ -91,13 +94,13 @@
       </aside>
 
       <section class="reading-column" aria-label="章节正文">
-        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-chapter-id="{{CHAPTER_ID}}" data-source-revision="{{SOURCE_REVISION}}">
+        <article class="chapter-article" id="chapter-article" data-book-id="qfg" data-edition-id="{{EDITION_ID}}" data-chapter-id="{{CHAPTER_ID}}" data-source-revision="{{SOURCE_REVISION}}">
 {{ARTICLE_HTML}}
         </article>
         <footer class="chapter-footer">
           <span>{{CHAPTER_LABEL}}</span>
           <span aria-hidden="true">·</span>
-          <span>本地阅读版</span>
+          <span>{{EDITION_NAME}}</span>
         </footer>
       </section>
 

@@ -75,6 +75,15 @@ Context may read these durable sources:
 - selected `Sources/Originals/` or `Sources/Processed/` records according to
   registry and consent state.
 
+For a multi-edition book, every reading fragment, retrieval unit, note,
+discussion, and context manifest must identify its `editionId`. The current
+visible edition is the default primary reading evidence for that operation.
+Another edition may be included only as separately typed, source-linked
+comparison evidence; its text and offsets must not be merged with the current
+edition. Draft or reviewed-but-unapproved prose is excluded from ordinary
+reader discussion and retrieval, but may be used inside the explicit editorial
+review workflow.
+
 Retrieval units, indexes, rankings, previews, token estimates, and short-lived
 server-side context builds are derived. In particular:
 
@@ -112,6 +121,7 @@ record. Depending on the schema, this may include:
 - context and prompt schema versions;
 - source paths or IDs;
 - chapter, block, anchor, and heading identity;
+- edition identity and any reviewed cross-edition correspondence used;
 - content revisions or hashes;
 - included and excluded evidence IDs;
 - external tool use and URLs; and

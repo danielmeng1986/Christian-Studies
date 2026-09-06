@@ -139,6 +139,8 @@ Language Learning 以后可以通过单词发音、句子 Prosody、主动表达
 成果：在物理移动代码之前，先形成与具体书籍无关的契约。
 
 - 定义 `Book`、`Edition`、`ReadingUnit`、`Reference`、`Annotation`、`Discussion`、`Source`、`ContextBundle` 和 `EvidenceManifest` 的身份；
+- 把 ADR-0005 已接受的版本 Manifest、经过审核的块对应关系、版本内锚点
+  和整章原子发布规则纳入这些共享契约；
 - 把领域行为与《追寻敬虔》的路径及 UI 假设分离；
 - 使用当前书籍作为兼容性 fixture 建立契约测试；
 - 定义 schema 版本和迁移策略；

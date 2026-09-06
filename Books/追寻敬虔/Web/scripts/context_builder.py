@@ -16,7 +16,7 @@ from typing import Any
 from markdown_it import MarkdownIt
 
 
-CONTEXT_SCHEMA_VERSION = 2
+CONTEXT_SCHEMA_VERSION = 3
 RETRIEVAL_VERSION = 3
 SOURCE_REGISTRY_VERSION = 1
 
@@ -34,6 +34,8 @@ KEY_RE = re.compile(r"\A[a-z][a-z0-9_]*\Z")
 INTEGER_RE = re.compile(r"\A-?(?:0|[1-9]\d*)\Z")
 FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-\d{2}\.md#")
 CHAPTER_META_RE = re.compile(r"^chapter:\s*(?P<chapter>\d{2})\s*$", re.MULTILINE)
+STATUS_META_RE = re.compile(r"^status:\s*(?P<status>[a-z-]+)\s*$", re.MULTILINE)
+EDITION_META_RE = re.compile(r"^edition_id:\s*(?P<edition>[a-z0-9-]+)\s*$", re.MULTILINE)
 
 MARKDOWN_PARSER = MarkdownIt(
     "commonmark",
@@ -72,6 +74,7 @@ class ContextRequest:
     footnotes: list[dict[str, Any]]
     chapter_markdown: str
     prompt_version: int
+    edition_id: str = "legacy-zh"
     question: str = ""
     note_document: dict[str, Any] | None = None
     excluded_note_ids: frozenset[str] = frozenset()
@@ -98,6 +101,7 @@ class ContextRequest:
     ) -> ContextRequest:
         return cls(
             book_id=document["bookId"],
+            edition_id=document.get("editionId", "legacy-zh"),
             chapter_id=document["chapterId"],
             chapter_title=document["context"]["chapterTitle"],
             source_revision=document["sourceRevision"],
@@ -129,6 +133,7 @@ def resolve_note_evidence(
     chapter_id: str,
     selection: dict[str, Any],
     excluded_note_ids: frozenset[str] = frozenset(),
+    edition_id: str = "legacy-zh",
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Classify validated chapter notes without reading or mutating their source."""
 
@@ -136,6 +141,8 @@ def resolve_note_evidence(
         return [], []
     if note_document.get("bookId") != "qfg" or note_document.get("chapterId") != chapter_id:
         raise ContextBuildError("note document does not match the current chapter")
+    if note_document.get("editionId", "legacy-zh") != edition_id:
+        raise ContextBuildError("note document does not match the current edition")
     notes = note_document.get("notes")
     if not isinstance(notes, list):
         raise ContextBuildError("note document notes must be an array")
@@ -523,6 +530,14 @@ def discover_retrieval_paths(
             source = path.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError) as error:
             raise ContextBuildError(f"chapter source could not be read: {path}") from error
+        edition_match = EDITION_META_RE.search(source)
+        status_match = STATUS_META_RE.search(source)
+        if status_match and status_match.group("status") != "approved":
+            if not edition_match:
+                raise ContextBuildError(f"unpublished chapter is missing edition_id: {path}")
+            continue
+        if edition_match:
+            continue
         match = CHAPTER_META_RE.search(source)
         if match is None:
             continue
@@ -572,7 +587,11 @@ class ContextBuilder:
         anchor = request.anchor
         focus = resolve_reading_focus(request.chapter_markdown, request.chapter_id, anchor)
         notes, note_candidates = resolve_note_evidence(
-            request.note_document, request.chapter_id, focus["selection"], request.excluded_note_ids
+            request.note_document,
+            request.chapter_id,
+            focus["selection"],
+            request.excluded_note_ids,
+            request.edition_id,
         )
         default_entities, entity_candidates = resolve_translation_entities(
             load_translation_index(self.translation_index_path), focus, request.question
@@ -640,6 +659,7 @@ class ContextBuilder:
 
         manifest = {
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
+            "editionId": request.edition_id,
             "promptVersion": request.prompt_version,
             "retrievalVersion": RETRIEVAL_VERSION,
             "sourceRegistryVersion": SOURCE_REGISTRY_VERSION,
@@ -706,6 +726,7 @@ class ContextBuilder:
             "contextSchemaVersion": CONTEXT_SCHEMA_VERSION,
             "book": book,
             "chapter": {
+                "editionId": request.edition_id,
                 "chapterId": request.chapter_id,
                 "chapterTitle": request.chapter_title,
                 "sourceRevision": request.source_revision,

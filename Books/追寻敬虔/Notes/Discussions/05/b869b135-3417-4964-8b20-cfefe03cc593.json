@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "b869b135-3417-4964-8b20-cfefe03cc593",
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
   "anchor": {
@@ -19,10 +20,10 @@
     "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
     "scriptures": [
       {
-        "citation": "来 5:14",
-        "translationLabel": "新标点和合本简体",
-        "translationId": "cuv-s",
         "id": "HEB.5.14",
+        "translationId": "cuv-s",
+        "translationLabel": "新标点和合本简体",
+        "citation": "来 5:14",
         "text": "惟独长大成人的才能吃干粮；他们的心窍习练得通达，就能分辨好歹了。"
       }
     ],

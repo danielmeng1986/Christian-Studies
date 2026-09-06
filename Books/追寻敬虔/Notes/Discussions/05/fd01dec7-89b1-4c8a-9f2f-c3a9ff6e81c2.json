@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "id": "fd01dec7-89b1-4c8a-9f2f-c3a9ff6e81c2",
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
   "anchor": {
@@ -19,11 +20,11 @@
     "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
     "scriptures": [
       {
-        "citation": "彼前 1:10–11",
-        "translationLabel": "新标点和合本简体",
-        "text": "论到这救恩，那预先说你们要得恩典的众先知早已详细地寻求考察，就是考察在他们心里基督的灵，预先证明基督受苦难，后来得荣耀，是指着什么时候，并怎样的时候。",
+        "id": "1PE.1.10-11",
         "translationId": "cuv-s",
-        "id": "1PE.1.10-11"
+        "translationLabel": "新标点和合本简体",
+        "citation": "彼前 1:10–11",
+        "text": "论到这救恩，那预先说你们要得恩典的众先知早已详细地寻求考察，就是考察在他们心里基督的灵，预先证明基督受苦难，后来得荣耀，是指着什么时候，并怎样的时候。"
       }
     ],
     "footnotes": []
@@ -56,6 +57,14 @@
       },
       "error": null,
       "createdAt": "2026-08-28T22:56:54.170Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "08728cad-d0c7-481b-9479-b5e86c89aaad",
+      "contextManifest": null,
+      "contextSnapshot": null,
+      "legacyContext": true
     }
   ],
   "createdAt": "2026-08-28T22:56:40.521Z",

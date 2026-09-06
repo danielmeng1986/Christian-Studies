@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "79c6c84d-85c2-46ab-adcc-41a2d3487eff",
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
   "anchor": {

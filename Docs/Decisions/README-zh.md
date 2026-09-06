@@ -12,6 +12,7 @@
 | [ADR-0002 中文](ADR-0002-Data-Authority-and-Database-Roles-zh.md) / [English](ADR-0002-Data-Authority-and-Database-Roles.md) | 数据权威、Git 策略与数据库角色 | 已接受 | OQ-003、OQ-006、OQ-014 |
 | [ADR-0003 中文](ADR-0003-Stable-Block-Anchoring-zh.md) / [English](ADR-0003-Stable-Block-Anchoring.md) | 稳定块身份与精确选区 | 已接受 | OQ-008 |
 | [ADR-0004 中文](ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md) / [English](ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md) | 移动优先的本地设备与可迁移用户数据 | 已接受 | OQ-001–OQ-003、OQ-018–OQ-019 |
+| [ADR-0005 中文](ADR-0005-Multiple-Reading-Editions-and-Review-zh.md) / [English](ADR-0005-Multiple-Reading-Editions-and-Review.md) | 多阅读版本、段落对应与审核发布 | 已接受 | 第五章试验的直接决策 |
 
 已接受 ADR 记录的是方向，不表示迁移或实现已经发生。在核心规范被有计划地修订之前，当前运行行为继续由现有核心规范管理。
 

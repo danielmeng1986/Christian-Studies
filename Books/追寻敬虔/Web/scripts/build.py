@@ -21,10 +21,14 @@ REPO_ROOT = BOOK_ROOT.parents[1]
 READING_ROOT = BOOK_ROOT / "Reading"
 FOOTNOTE_ROOT = BOOK_ROOT / "References"
 SCRIPTURE_CONFIG_PATH = BOOK_ROOT / "Metadata/scripture-config.json"
+EDITION_MANIFEST_PATH = BOOK_ROOT / "Metadata/editions.json"
+EDITION_REVIEW_ROOT = BOOK_ROOT / "Metadata/Edition-Reviews"
+READING_UNIT_ROOT = BOOK_ROOT / "Metadata/Reading-Units"
 BIBLE_ROOT = REPO_ROOT / "References/Bible-Texts"
 BIBLE_MANIFEST_PATH = BIBLE_ROOT / "manifest.json"
 BIBLE_BOOKS_PATH = BIBLE_ROOT / "books.json"
 TEMPLATE_PATH = WEB_ROOT / "src/templates/chapter.html"
+REVIEW_TEMPLATE_PATH = WEB_ROOT / "src/templates/review.html"
 ASSET_ROOT = WEB_ROOT / "src/assets"
 DIST_ROOT = WEB_ROOT / "dist"
 OUTPUT_PATH = DIST_ROOT / "chapters/05/index.html"
@@ -36,6 +40,9 @@ FOOTNOTE_LINK_RE = re.compile(r"(?:^|/)Footnotes-(?P<chapter>\d{2})\.md#(?P<frag
 SCRIPTURE_FIRST_SEGMENT_RE = re.compile(r"^(?P<book>[1-3]?[A-Z]{2,3})\.(?P<chapter>[1-9]\d*)\.(?P<verses>.+)$")
 SCRIPTURE_NEXT_SEGMENT_RE = re.compile(r"^(?P<chapter>[1-9]\d*)\.(?P<verses>.+)$")
 SCRIPTURE_VERSE_PART_RE = re.compile(r"^(?P<start>[1-9]\d*)(?:-(?P<end>[1-9]\d*))?$")
+EDITION_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+CHAPTER_ID_RE = re.compile(r"^\d{2}$")
+PUBLICATION_STATUSES = {"draft", "reviewed", "approved"}
 
 
 def strip_front_matter(source: str) -> tuple[str, dict[str, str]]:
@@ -49,6 +56,125 @@ def strip_front_matter(source: str) -> tuple[str, dict[str, str]]:
         if separator:
             metadata[key.strip()] = value.strip().strip('"')
     return source[match.end() :], metadata
+
+
+def resolve_book_path(relative_path: str, field: str) -> Path:
+    if not isinstance(relative_path, str) or not relative_path.strip():
+        raise ValueError(f"{field} must be a non-empty repository-relative path")
+    candidate = (BOOK_ROOT / relative_path).resolve()
+    try:
+        candidate.relative_to(BOOK_ROOT.resolve())
+    except ValueError as error:
+        raise ValueError(f"{field} escapes the book directory") from error
+    return candidate
+
+
+def load_edition_catalog() -> dict:
+    catalog = json.loads(EDITION_MANIFEST_PATH.read_text(encoding="utf-8"))
+    if catalog.get("schemaVersion") != 1 or catalog.get("bookId") != "qfg":
+        raise ValueError("Edition manifest must use schemaVersion 1 for book qfg")
+    editions = catalog.get("editions")
+    default_edition_id = catalog.get("defaultEditionId")
+    if not isinstance(editions, list) or not editions or not isinstance(default_edition_id, str):
+        raise ValueError("Edition manifest must declare editions and a defaultEditionId")
+
+    by_id: dict[str, dict] = {}
+    for edition in editions:
+        edition_id = edition.get("editionId") if isinstance(edition, dict) else None
+        if not isinstance(edition_id, str) or not EDITION_ID_RE.fullmatch(edition_id) or edition_id in by_id:
+            raise ValueError(f"Invalid or duplicate editionId: {edition_id}")
+        if edition.get("status") not in PUBLICATION_STATUSES:
+            raise ValueError(f"Invalid edition status: {edition_id}")
+        chapters = edition.get("chapters")
+        if not isinstance(chapters, dict):
+            raise ValueError(f"Edition {edition_id} must declare chapters")
+        resolved_chapters: dict[str, dict] = {}
+        for chapter_id, chapter in chapters.items():
+            if not CHAPTER_ID_RE.fullmatch(chapter_id) or not isinstance(chapter, dict):
+                raise ValueError(f"Invalid chapter entry in edition {edition_id}: {chapter_id}")
+            if chapter.get("status") not in PUBLICATION_STATUSES:
+                raise ValueError(f"Invalid chapter status: {edition_id}/{chapter_id}")
+            source_path = resolve_book_path(chapter.get("path"), f"{edition_id}/{chapter_id}.path")
+            note_path = resolve_book_path(chapter.get("notesPath"), f"{edition_id}/{chapter_id}.notesPath")
+            discussion_path = resolve_book_path(
+                chapter.get("discussionsPath"), f"{edition_id}/{chapter_id}.discussionsPath"
+            )
+            if not source_path.is_file():
+                raise ValueError(f"Edition chapter source is missing: {source_path}")
+            if chapter["status"] == "approved" and not note_path.is_file():
+                raise ValueError(f"Approved edition notes file is missing: {note_path}")
+            body, metadata = strip_front_matter(source_path.read_text(encoding="utf-8"))
+            if metadata.get("chapter") != chapter_id:
+                raise ValueError(f"Chapter metadata mismatch: {edition_id}/{chapter_id}")
+            declared_edition = metadata.get("edition_id", default_edition_id)
+            if declared_edition != edition_id:
+                raise ValueError(f"Edition metadata mismatch: {edition_id}/{chapter_id}")
+            if metadata.get("status", "approved") != chapter["status"]:
+                raise ValueError(f"Publication status mismatch: {edition_id}/{chapter_id}")
+            resolved_chapters[chapter_id] = {
+                **chapter,
+                "sourcePath": source_path,
+                "notePath": note_path,
+                "discussionPath": discussion_path,
+                "contentRevision": hashlib.sha256(body.encode("utf-8")).hexdigest(),
+            }
+        by_id[edition_id] = {**edition, "chapters": resolved_chapters}
+
+    default_edition = by_id.get(default_edition_id)
+    if default_edition is None or default_edition["status"] != "approved":
+        raise ValueError("The default edition must exist and be approved")
+    if sorted(default_edition["chapters"]) != [f"{number:02d}" for number in range(1, 21)]:
+        raise ValueError("The default edition must declare chapters 01 through 20")
+
+    for edition_id, edition in by_id.items():
+        if edition_id == default_edition_id or edition["status"] != "approved":
+            continue
+        for chapter_id, chapter in edition["chapters"].items():
+            if chapter["status"] != "approved":
+                continue
+            review = json.loads((EDITION_REVIEW_ROOT / edition_id / f"{chapter_id}.json").read_text(encoding="utf-8"))
+            reading_unit = json.loads((READING_UNIT_ROOT / edition_id / f"{chapter_id}.json").read_text(encoding="utf-8"))
+            if review.get("chapterStatus") != "approved" or review.get("targetRevision") != chapter["contentRevision"]:
+                raise ValueError(f"Approved edition review is stale: {edition_id}/{chapter_id}")
+            pairs = review.get("pairs")
+            if not isinstance(pairs, list) or not pairs or any(pair.get("status") != "approved" for pair in pairs):
+                raise ValueError(f"Every aligned block must be approved: {edition_id}/{chapter_id}")
+            if any(comment.get("status") != "resolved" for pair in pairs for comment in pair.get("comments", [])):
+                raise ValueError(f"Approved edition has open review comments: {edition_id}/{chapter_id}")
+            if reading_unit.get("contentRevision") != chapter["contentRevision"]:
+                raise ValueError(f"Reading-unit sidecar is stale: {edition_id}/{chapter_id}")
+            blocks = reading_unit.get("blocks")
+            if not isinstance(blocks, list) or len(blocks) != len(pairs):
+                raise ValueError(f"Reading-unit block count differs from review: {edition_id}/{chapter_id}")
+            if any(
+                pair.get("targetBlockId") != block.get("blockId")
+                or pair.get("targetContentHash") != block.get("contentHash")
+                for pair, block in zip(pairs, blocks, strict=True)
+            ):
+                raise ValueError(f"Reading-unit block identity differs from review: {edition_id}/{chapter_id}")
+            source_edition_id = review.get("sourceEditionId")
+            source_chapter = by_id.get(source_edition_id, {}).get("chapters", {}).get(chapter_id)
+            if source_chapter is None or review.get("sourceRevision") != source_chapter["contentRevision"]:
+                raise ValueError(f"Edition review source is stale: {edition_id}/{chapter_id}")
+            source_unit = json.loads(
+                (READING_UNIT_ROOT / source_edition_id / f"{chapter_id}.json").read_text(encoding="utf-8")
+            )
+            source_blocks = source_unit.get("blocks")
+            if not isinstance(source_blocks, list) or len(source_blocks) != len(pairs):
+                raise ValueError(f"Source reading-unit block count differs from review: {edition_id}/{chapter_id}")
+            if any(
+                pair.get("sourceBlockId") != block.get("blockId")
+                or pair.get("sourceContentHash") != block.get("contentHash")
+                for pair, block in zip(pairs, source_blocks, strict=True)
+            ):
+                raise ValueError(f"Source reading-unit identity differs from review: {edition_id}/{chapter_id}")
+            source_body, _ = strip_front_matter(Path(source_chapter["sourcePath"]).read_text(encoding="utf-8"))
+            target_body, _ = strip_front_matter(Path(chapter["sourcePath"]).read_text(encoding="utf-8"))
+            footnote_pattern = re.compile(r"Footnotes-\d{2}\.md#([^\s)]+)")
+            if footnote_pattern.findall(source_body) != footnote_pattern.findall(target_body):
+                raise ValueError(f"Footnote-reference parity failed: {edition_id}/{chapter_id}")
+
+    return {**catalog, "editionsById": by_id}
 
 
 def markdown_parser() -> MarkdownIt:
@@ -322,17 +448,15 @@ def render_footnotes(source: str) -> tuple[str, set[str]]:
     return "\n".join(templates), footnote_ids
 
 
-def discover_chapters() -> list[dict[str, str | Path]]:
+def discover_chapters(catalog: dict | None = None) -> list[dict[str, str | Path]]:
+    catalog = catalog or load_edition_catalog()
+    default_edition_id = catalog["defaultEditionId"]
+    default_edition = catalog["editionsById"][default_edition_id]
     chapters = []
-    seen: set[str] = set()
-    for source_path in sorted(READING_ROOT.rglob("*.md")):
+    for chapter_id, chapter_config in sorted(default_edition["chapters"].items()):
+        source_path = Path(chapter_config["sourcePath"])
         source = source_path.read_text(encoding="utf-8")
         body, metadata = strip_front_matter(source)
-        chapter_id = metadata.get("chapter", "")
-        if not re.fullmatch(r"\d{2}", chapter_id):
-            raise ValueError(f"Missing or invalid chapter metadata: {source_path}")
-        if chapter_id in seen:
-            raise ValueError(f"Duplicate chapter metadata: {chapter_id}")
         title_match = TITLE_RE.search(body)
         if not title_match:
             raise ValueError(f"Missing chapter title: {source_path}")
@@ -348,35 +472,79 @@ def discover_chapters() -> list[dict[str, str | Path]]:
                 "title": title,
                 "label": chapter_label,
                 "short_title": chapter_title,
+                "edition_id": default_edition_id,
             }
         )
-        seen.add(chapter_id)
     chapters.sort(key=lambda chapter: str(chapter["id"]))
     if [chapter["id"] for chapter in chapters] != [f"{number:02d}" for number in range(1, 21)]:
         raise ValueError("Reading directory must contain chapters 01 through 20")
     return chapters
 
 
-def render_chapter_navigation(chapters: list[dict[str, str | Path]], selected_id: str) -> str:
+def reader_url(catalog: dict, edition_id: str, chapter_id: str) -> str:
+    if edition_id == catalog["defaultEditionId"]:
+        return f"/chapters/{chapter_id}/"
+    return f"/editions/{edition_id}/chapters/{chapter_id}/"
+
+
+def render_chapter_navigation(
+    chapters: list[dict[str, str | Path]], selected_id: str, edition_id: str, catalog: dict
+) -> str:
     options = []
+    edition = catalog["editionsById"][edition_id]
     for chapter in chapters:
         chapter_id = str(chapter["id"])
         selected = "true" if chapter_id == selected_id else "false"
         current = ' aria-current="page"' if chapter_id == selected_id else ""
         label = html.escape(f'{chapter["label"]} · {chapter["short_title"]}')
+        target_edition_id = (
+            edition_id
+            if chapter_id in edition["chapters"] and edition["chapters"][chapter_id]["status"] == "approved"
+            else catalog["defaultEditionId"]
+        )
+        href = reader_url(catalog, target_edition_id, chapter_id)
         options.append(
             f'<a class="chapter-menu__option" role="option" aria-selected="{selected}"{current} '
-            f'href="/chapters/{chapter_id}/">{label}</a>'
+            f'href="{href}">{label}</a>'
         )
     return "\n".join(options)
+
+
+def render_edition_switcher(catalog: dict, edition_id: str, chapter_id: str) -> str:
+    available = [
+        edition
+        for edition in catalog["editions"]
+        if edition["status"] == "approved"
+        and edition.get("chapters", {}).get(chapter_id, {}).get("status") == "approved"
+    ]
+    if len(available) < 2:
+        return ""
+    options = []
+    for edition in available:
+        candidate_id = edition["editionId"]
+        selected = " selected" if candidate_id == edition_id else ""
+        label = html.escape(edition["displayName"])
+        url = html.escape(reader_url(catalog, candidate_id, chapter_id), quote=True)
+        options.append(f'<option value="{url}"{selected}>{label}</option>')
+    return (
+        '<label class="edition-switcher" for="edition-switcher">'
+        '<span>版本</span>'
+        '<select id="edition-switcher" aria-label="选择阅读版本">'
+        + "".join(options)
+        + "</select></label>"
+    )
 
 
 def build_chapter(
     chapter: dict[str, str | Path],
     chapters: list[dict[str, str | Path]],
     scripture_context: tuple[dict, dict[str, dict], dict[str, dict]],
+    catalog: dict,
+    edition_id: str | None = None,
 ) -> Path:
     chapter_id = str(chapter["id"])
+    edition_id = edition_id or str(chapter.get("edition_id") or catalog["defaultEditionId"])
+    edition = catalog["editionsById"][edition_id]
     source_path = Path(chapter["source_path"])
     footnote_path = Path(chapter["footnote_path"])
     source = source_path.read_text(encoding="utf-8")
@@ -401,20 +569,30 @@ def build_chapter(
     template = TEMPLATE_PATH.read_text(encoding="utf-8")
     page_title = f"{title}｜追寻敬虔"
     output = template.replace("{{PAGE_TITLE}}", html.escape(page_title, quote=True))
+    output = output.replace("{{DOCUMENT_LANGUAGE}}", html.escape(edition["language"], quote=True))
     output = output.replace("{{CHAPTER_ID}}", chapter_id)
+    output = output.replace("{{EDITION_ID}}", html.escape(edition_id, quote=True))
+    output = output.replace("{{EDITION_NAME}}", html.escape(edition["displayName"]))
+    output = output.replace("{{EDITION_SWITCHER}}", render_edition_switcher(catalog, edition_id, chapter_id))
     output = output.replace("{{CHAPTER_LABEL}}", html.escape(str(chapter["label"])))
     output = output.replace(
         "{{CHAPTER_MENU_LABEL}}",
         html.escape(f'{chapter["label"]} · {chapter["short_title"]}'),
     )
-    output = output.replace("{{CHAPTER_NAVIGATION}}", render_chapter_navigation(chapters, chapter_id))
+    output = output.replace(
+        "{{CHAPTER_NAVIGATION}}", render_chapter_navigation(chapters, chapter_id, edition_id, catalog)
+    )
     output = output.replace("{{SECTION_NAVIGATION}}", render_section_navigation(outline_headings))
     output = output.replace("{{SOURCE_REVISION}}", source_revision)
     output = output.replace("{{ARTICLE_HTML}}", article_html)
     output = output.replace("{{FOOTNOTE_TEMPLATES}}", footnote_templates)
     output = output.replace("{{SCRIPTURE_DATA}}", serialize_scripture_data(scripture_data))
 
-    output_path = DIST_ROOT / f"chapters/{chapter_id}/index.html"
+    output_path = (
+        DIST_ROOT / f"chapters/{chapter_id}/index.html"
+        if edition_id == catalog["defaultEditionId"]
+        else DIST_ROOT / f"editions/{edition_id}/chapters/{chapter_id}/index.html"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(output.rstrip() + "\n", encoding="utf-8", newline="\n")
 
@@ -422,16 +600,44 @@ def build_chapter(
 
 
 def build() -> list[Path]:
-    chapters = discover_chapters()
+    catalog = load_edition_catalog()
+    chapters = discover_chapters(catalog)
     scripture_context = load_scripture_context()
-    outputs = [build_chapter(chapter, chapters, scripture_context) for chapter in chapters]
+    outputs = [build_chapter(chapter, chapters, scripture_context, catalog) for chapter in chapters]
+    for edition_id, edition in catalog["editionsById"].items():
+        if edition_id == catalog["defaultEditionId"] or edition["status"] != "approved":
+            continue
+        for chapter_id, chapter_config in sorted(edition["chapters"].items()):
+            if chapter_config["status"] != "approved":
+                continue
+            source = Path(chapter_config["sourcePath"]).read_text(encoding="utf-8")
+            body, _ = strip_front_matter(source)
+            title_match = TITLE_RE.search(body)
+            if title_match is None:
+                raise ValueError(f"Missing chapter title: {chapter_config['sourcePath']}")
+            title = title_match.group(1).strip()
+            title_parts = re.split(r"[：:]", title, maxsplit=1)
+            alternate = {
+                "id": chapter_id,
+                "source_path": chapter_config["sourcePath"],
+                "footnote_path": FOOTNOTE_ROOT / f"Footnotes-{chapter_id}.md",
+                "title": title,
+                "label": title_parts[0],
+                "short_title": title_parts[1] if len(title_parts) == 2 else title,
+                "edition_id": edition_id,
+            }
+            outputs.append(build_chapter(alternate, chapters, scripture_context, catalog, edition_id))
 
     (DIST_ROOT / "assets").mkdir(parents=True, exist_ok=True)
 
-    for asset_name in ("app.css", "app.js"):
+    for asset_name in ("app.css", "app.js", "review.css", "review.js"):
         source_asset = ASSET_ROOT / asset_name
         target_asset = DIST_ROOT / "assets" / asset_name
         target_asset.write_bytes(source_asset.read_bytes())
+
+    review_output = DIST_ROOT / "review/editions/chatgpt-zh-cn/chapters/05/index.html"
+    review_output.parent.mkdir(parents=True, exist_ok=True)
+    review_output.write_bytes(REVIEW_TEMPLATE_PATH.read_bytes())
 
     return outputs
 

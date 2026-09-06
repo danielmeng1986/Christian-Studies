@@ -74,6 +74,173 @@ Books/追寻敬虔/
 - 页面运行时只可通过 API 读取 `Notes/Annotations/05.json`。
 - 构建器不得修改 Markdown、脚注或笔记源文件。
 
+### 3.1 多版本目标目录
+
+以上路径描述当前兼容结构。在增加第二份章节正文之前，实施必须通过一次
+经过测试的变更迁移到以下目标：
+
+```text
+Reading/
+├── 第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md
+└── chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md
+Metadata/
+├── editions.json
+├── Glossaries/chatgpt-zh-cn/05.md
+├── Reading-Units/legacy-zh/05.json
+├── Reading-Units/chatgpt-zh-cn/05.json
+└── Edition-Reviews/chatgpt-zh-cn/05.json
+```
+
+任何元数据 Sidecar 都不得保存正文副本。现有脚注继续位于
+`References/Footnotes-05.md`，由版本清单明确共享。
+版本化术语表 `Metadata/Glossaries/chatgpt-zh-cn/05.md` 是审核元数据以
+`qfg-05-v1` 标识的术语权威。
+
+### 3.2 版本清单 Schema
+
+`Metadata/editions.json` 使用 Schema Version 1：
+
+```json
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "defaultEditionId": "legacy-zh",
+  "editions": [
+    {
+      "editionId": "legacy-zh",
+      "displayName": "Word 转写版",
+      "language": "zh-Hant",
+      "sourceType": "received-word-draft",
+      "status": "approved",
+      "chapters": {
+        "05": {
+          "path": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+          "notesPath": "Notes/Annotations/05.json",
+          "discussionsPath": "Notes/Discussions/05",
+          "status": "approved"
+        }
+      }
+    },
+    {
+      "editionId": "chatgpt-zh-cn",
+      "displayName": "现代简体润译版（ChatGPT）",
+      "language": "zh-Hans",
+      "sourceType": "ai-assisted-revision",
+      "sourceEditionId": "legacy-zh",
+      "status": "approved",
+      "chapters": {
+        "05": {
+          "path": "Reading/chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md",
+          "notesPath": "Notes/Annotations/chatgpt-zh-cn/05.json",
+          "discussionsPath": "Notes/Discussions/chatgpt-zh-cn/05",
+          "status": "approved"
+        }
+      }
+    }
+  ]
+}
+```
+
+合法的版本和章节状态为 `draft`、`reviewed`、`approved`。默认版本以及
+普通阅读器中的每一章都必须是 `approved`。一旦有用户数据引用某个
+`editionId`，该 ID 就不得改变。
+
+### 3.3 阅读单元身份 Sidecar
+
+`Metadata/Reading-Units/<editionId>/<chapterId>.json` 使用 Schema
+Version 1：
+
+```json
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "editionId": "legacy-zh",
+  "chapterId": "05",
+  "path": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+  "contentRevision": "sha256",
+  "blocks": [
+    {
+      "blockId": "uuid",
+      "kind": "paragraph",
+      "ordinal": 1,
+      "contentHash": "sha256"
+    }
+  ]
+}
+```
+
+块类型使用构建器支持的语义 Markdown 块，包括标题、普通段落和块引用
+中的段落。序号只辅助审核和诊断，不是持久身份。Sidecar 顺序必须与解析
+后的 Markdown 顺序完全一致。
+
+### 3.4 润译审核 Sidecar
+
+`Metadata/Edition-Reviews/chatgpt-zh-cn/05.json` 使用 Schema Version 2：
+
+```json
+{
+  "schemaVersion": 2,
+  "bookId": "qfg",
+  "chapterId": "05",
+  "sourceEditionId": "legacy-zh",
+  "targetEditionId": "chatgpt-zh-cn",
+  "sourceRevision": "sha256",
+  "targetRevision": "sha256",
+  "revisionPolicyVersion": "qfg-zh-revision-v1",
+  "glossaryVersion": "qfg-05-v1",
+  "generation": {
+    "model": "recorded-model-id",
+    "generatedAt": "RFC-3339 timestamp",
+    "references": [
+      {
+        "type": "permissioned-personal-use-web-pdf",
+        "url": "https://www.johnowen.org/media/packer_quest_for_godliness_ch_5.pdf",
+        "locator": "English chapter pages 1-15"
+      }
+    ]
+  },
+  "blocks": [
+    {
+      "pairId": "uuid",
+      "sourceBlockId": "uuid",
+      "targetBlockId": "uuid",
+      "sourceContentHash": "sha256",
+      "targetContentHash": "sha256",
+      "status": "draft",
+      "reviewedAt": null,
+      "approvedAt": null,
+      "comments": [
+        {
+          "commentId": "uuid",
+          "text": "审核者的修改意见",
+          "status": "open",
+          "createdAt": "RFC-3339 timestamp",
+          "resolvedAt": null
+        }
+      ]
+    }
+  ],
+  "chapterStatus": "draft",
+  "approvedAt": null
+}
+```
+
+审核服务在每次状态转换前重新计算哈希。来源哈希变化时，对应关系失效；
+目标哈希变化时，该块退回 `draft`，但保留其修改意见。修改意见是追加式审核
+记录，可在 `open` 与 `resolved` 之间转换；存在 `open` 意见时不能批准该块或
+整章。只有全部必要块均获批准、结构一一
+对应、脚注引用一致且内容校验通过，整章才能批准。Sidecar 只记录英文
+参考资料定位，不保存获准供个人使用的完整英文正文。
+
+### 3.5 兼容迁移
+
+首次多版本迁移已经实施。现有扁平正文路径和 `/chapters/{chapter}/` 继续作为
+`legacy-zh` 的兼容地址。笔记 Schema 2 与讨论 Schema 3 均持久化
+`editionId`；迁移后的旧数据明确标记为 `legacy-zh`，但笔记正文、锚点、
+讨论消息和来源修订保持不变。替代版本用户数据使用上例中带版本的 Manifest
+路径。普通替代版本页面使用 `/editions/{editionId}/chapters/{chapter}/`，
+笔记和讨论 API 使用 `/api/editions/{editionId}/...`。仍禁止跨版本复用 Offset。
+
 ## 4. 构建规范
 
 ### 4.1 构建输入
@@ -235,8 +402,9 @@ page: Books/追寻敬虔/Web/dist/chapters/05/index.html
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "notes": []
 }
@@ -266,7 +434,7 @@ page: Books/追寻敬虔/Web/dist/chapters/05/index.html
 约束：
 
 - `id` 创建后不得改变。
-- `bookId`、`chapterId` 必须与请求章节一致。
+- `bookId`、`editionId`、`chapterId` 必须与请求的阅读单元一致。
 - `body` 是纯文本，可以为空白以外的任意 Unicode 文本。
 - `exact` 必须为非空文字。
 - `startOffset < endOffset`。
@@ -295,11 +463,18 @@ page: Books/追寻敬虔/Web/dist/chapters/05/index.html
 
 ### 8.2 API
 
-第一版只提供整章读取和整章保存：
+不带版本的兼容路由只表示 `legacy-zh`：
 
 ```text
 GET /api/chapters/05/notes
 PUT /api/chapters/05/notes
+```
+
+普通阅读页统一使用复合身份路由：
+
+```text
+GET /api/editions/{editionId}/chapters/{chapter}/notes
+PUT /api/editions/{editionId}/chapters/{chapter}/notes
 ```
 
 这些是 MVP 的最小接口。路由与处理逻辑应保持可分离，以便以后演进为更完整的 REST API；第一版不得为尚未确认的资源增加推测性接口。

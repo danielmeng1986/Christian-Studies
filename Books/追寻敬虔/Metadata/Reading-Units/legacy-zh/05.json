@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "editionId": "legacy-zh",
+  "chapterId": "05",
+  "markdownPath": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+  "contentRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+  "blocks": [
+    {
+      "blockId": "dd1408c8-130b-53c0-afc1-93c2f21971ae",
+      "kind": "h1",
+      "ordinal": 1,
+      "contentHash": "e2084cbe8a99574b0d1a701130938377e5502fd8f3c161fc5c487f977c120a83"
+    },
+    {
+      "blockId": "16d0a278-99e8-562a-9dff-06aa0c27fd86",
+      "kind": "blockquote",
+      "ordinal": 2,
+      "contentHash": "53280552d3d4a52a9599852e0da7e79d375a0c0a66b9da88771c78ff0feeda23"
+    },
+    {
+      "blockId": "cc7c715a-b3f7-5b11-a9c6-a1d6778dfe53",
+      "kind": "h2",
+      "ordinal": 3,
+      "contentHash": "5cb11610f3ba2f806f7d143728df57388e3b70f1e82f088079355235c6df0e1a"
+    },
+    {
+      "blockId": "3f9ae247-59cc-5aa0-8a8c-685c32cd1ef2",
+      "kind": "paragraph",
+      "ordinal": 4,
+      "contentHash": "2b011941fe4acbc06e9d821579cec046dcbdc28adcf6c6ad60c95b98a4d51ea3"
+    },
+    {
+      "blockId": "497d0c0e-f444-5a01-bf92-48b423563612",
+      "kind": "paragraph",
+      "ordinal": 5,
+      "contentHash": "dc97e4b479dc6e64695d86aa0ac0c5845f3cd6d2c42cfcc90dfd94aa698d438e"
+    },
+    {
+      "blockId": "e7314411-f65e-5ed3-af2e-22bdfbfc5c07",
+      "kind": "h2",
+      "ordinal": 6,
+      "contentHash": "987cfeca18467af0af2877b78af3ab34e394a8fe726a0143a9a04dc75a9e279a"
+    },
+    {
+      "blockId": "fb941247-9bc5-50bf-84df-813b02b2b161",
+      "kind": "paragraph",
+      "ordinal": 7,
+      "contentHash": "05bfd8915be465a581bfcac2f4ec4fcde8c07710bd83667f2d6fc28d4ec45723"
+    },
+    {
+      "blockId": "c13a136a-4348-55fa-80fe-c035eb24657b",
+      "kind": "paragraph",
+      "ordinal": 8,
+      "contentHash": "14d7512a1693b2de8a72ff75e68500a433913d9d092e78e8f43b7d1b990b0255"
+    },
+    {
+      "blockId": "bf4344b0-701b-5e39-8f1e-3681cbdff0ba",
+      "kind": "paragraph",
+      "ordinal": 9,
+      "contentHash": "8f5718eabefaac1664603c92364316b6c08bb83df6e1f5a70e012805f7321329"
+    },
+    {
+      "blockId": "0a3052b0-9e5f-5b80-be12-fb6ebd8277d6",
+      "kind": "paragraph",
+      "ordinal": 10,
+      "contentHash": "77e55075893e7a2663385877907927de368c464a495c0aa01c0dd719527bc72f"
+    },
+    {
+      "blockId": "b84e8173-b056-5cee-b04e-fc1d9034c9de",
+      "kind": "paragraph",
+      "ordinal": 11,
+      "contentHash": "2da2072630f979695904ed47c596917f8d29d999a39946b3dab9cd40fdb8bd91"
+    },
+    {
+      "blockId": "07d7277a-94f3-51fa-b2d8-aa77b50051e5",
+      "kind": "paragraph",
+      "ordinal": 12,
+      "contentHash": "b5261790ef4eead82620cfef8c0588c0135e35354fadbbee83902f19c3d0f728"
+    },
+    {
+      "blockId": "02e3ba27-4011-561d-88a1-77aa7b0037f6",
+      "kind": "paragraph",
+      "ordinal": 13,
+      "contentHash": "0e22b2f4ecff7a25551fdfc64a9c89b770dbd422650f6bcf9ec6813f0c366727"
+    },
+    {
+      "blockId": "446de7dc-c755-566f-9e5d-1b023123151c",
+      "kind": "paragraph",
+      "ordinal": 14,
+      "contentHash": "9835a6c27655b83086f79e98dda4b168e53a40f5327339f9021ebbb0fe38aa1b"
+    },
+    {
+      "blockId": "1195591a-b3df-5be0-9f21-8612d1d3674d",
+      "kind": "h2",
+      "ordinal": 15,
+      "contentHash": "d7b70a106432e8ff194bae9f63160c0b5995627f1aae3073ab8b01c506b84561"
+    },
+    {
+      "blockId": "527f4089-119e-5406-9fb9-05eb695d0736",
+      "kind": "paragraph",
+      "ordinal": 16,
+      "contentHash": "7d9b58ffd342358d400cddf15440ff1bfb971d6eddfbcb584e3449d2d94a5fdf"
+    },
+    {
+      "blockId": "bdff2699-6ce3-5188-a034-df3ad2957552",
+      "kind": "paragraph",
+      "ordinal": 17,
+      "contentHash": "b277f24615e14f161581f1397fe62052402b45c143b967d48417d543893dc31b"
+    },
+    {
+      "blockId": "1726910a-226e-5bd7-a34b-fc47e5aca621",
+      "kind": "paragraph",
+      "ordinal": 18,
+      "contentHash": "b108c1753d3157d3af44cc20fab908884a50e8c1ed1db078186ae8d13508fd2e"
+    },
+    {
+      "blockId": "1161a7e8-470a-5628-8aed-ab1edad65f6b",
+      "kind": "blockquote",
+      "ordinal": 19,
+      "contentHash": "a33710cc25c24b971899b09529e5f31963a49eaaab6d9a367a2fb57b7801d56a"
+    },
+    {
+      "blockId": "c69c704f-f4a1-5135-8ba0-9aeb82883b4d",
+      "kind": "paragraph",
+      "ordinal": 20,
+      "contentHash": "9191c59a27cb5ede3ccdff2d958480efd734b19e9a8bead9566305d6ee4dab55"
+    },
+    {
+      "blockId": "68ccc58c-0b14-5be1-968b-db4fdc140a80",
+      "kind": "paragraph",
+      "ordinal": 21,
+      "contentHash": "2d899983d30c9f17a8009fec7865a6efa6cad4e2ee2118aca3a62c5ad0af17a2"
+    },
+    {
+      "blockId": "97713241-79fa-5c1e-a3df-a6fa9cb2f626",
+      "kind": "h2",
+      "ordinal": 22,
+      "contentHash": "679d4b02e8f8b71c2a8b49143a57ed86452a84e0ce126626979c36ca55047fc4"
+    },
+    {
+      "blockId": "933b071d-62c1-541d-bb36-175387ed2933",
+      "kind": "paragraph",
+      "ordinal": 23,
+      "contentHash": "e15608e3285d2c74ee49b872dad9a8fcef813e4e60e52a3fed109aa0c48f52b2"
+    },
+    {
+      "blockId": "5d4ce409-dd7c-5239-a71d-000452347963",
+      "kind": "blockquote",
+      "ordinal": 24,
+      "contentHash": "000227ce0839d13d186a3a9339111b7a047bf36cef558c4cca2b7fcbbb1459df"
+    },
+    {
+      "blockId": "91ef42d2-c513-5772-997c-b92abdd4b9f9",
+      "kind": "paragraph",
+      "ordinal": 25,
+      "contentHash": "e787c55034dcf7e91369c6083fb9a874654ce7d22fc47edaa5018a5dea0904fa"
+    },
+    {
+      "blockId": "df6f9055-5202-583c-94c4-9c9e5a255682",
+      "kind": "blockquote",
+      "ordinal": 26,
+      "contentHash": "abe288c4d12abe31510ff46209da310c334e166d4a9d8278f5a5fc19671f9c7e"
+    },
+    {
+      "blockId": "155df3c6-d75e-5ed8-8083-636ee6bb634c",
+      "kind": "paragraph",
+      "ordinal": 27,
+      "contentHash": "b08311e547cca726783950ccbe38eadccd74c8e3528d4bd01799a925b822c735"
+    },
+    {
+      "blockId": "65ab7f28-551e-5911-ad08-4152e2ddfb09",
+      "kind": "blockquote",
+      "ordinal": 28,
+      "contentHash": "319490ff21065ad908d44877a14c09d0768b94b5e9b7708e4fdbf87db408c6c2"
+    },
+    {
+      "blockId": "31435ddc-b6d3-55b0-bbde-f4439f71abce",
+      "kind": "paragraph",
+      "ordinal": 29,
+      "contentHash": "21b573cad0f6e7126f43ca2db2c4179482fd4ff841ae84ca6b109537c021219e"
+    },
+    {
+      "blockId": "bf61642b-9d02-5bad-bca7-d74524c2e0fd",
+      "kind": "blockquote",
+      "ordinal": 30,
+      "contentHash": "ab72854564e79229da6dc2d3f54e27c2943392d8b29aa37b23f594c0793b5a25"
+    },
+    {
+      "blockId": "1f4cb01f-833b-5577-baa1-2ceb22e20f43",
+      "kind": "paragraph",
+      "ordinal": 31,
+      "contentHash": "d9edfd7119c382e134aad8959bcc92c8964431efe41007cdfbc865bcee29e323"
+    },
+    {
+      "blockId": "4b672f91-ffba-5307-be81-41e29a5ab64d",
+      "kind": "paragraph",
+      "ordinal": 32,
+      "contentHash": "a3434a14a184d061fa472f4161d6ed0e23d401566bea6d8ea305d2d785caaed1"
+    },
+    {
+      "blockId": "f5b8bf47-3697-5557-8a58-b289e4bcd0e0",
+      "kind": "paragraph",
+      "ordinal": 33,
+      "contentHash": "a75d1891aab9449cd9a26896439d0125870eae64dc01fb5509e7b05c7cc7080b"
+    },
+    {
+      "blockId": "54bd498a-ee60-5aa8-ba67-11cd5aeb5a12",
+      "kind": "paragraph",
+      "ordinal": 34,
+      "contentHash": "7805be7f83cf65f796a61bc1365f7ef29f694d911430cdcb0ed3de44ac0d3f27"
+    },
+    {
+      "blockId": "68420e48-0e26-5858-95c5-2f12d1fb5028",
+      "kind": "paragraph",
+      "ordinal": 35,
+      "contentHash": "75e1b7bfdcd5ab972e33655479bd4a85d080f2af173a963222d823ba48fa6e5f"
+    },
+    {
+      "blockId": "9bd06f60-cf1f-560b-af56-38f9a2543664",
+      "kind": "paragraph",
+      "ordinal": 36,
+      "contentHash": "9ef78b9d314f21842d8a9e5b890eef670b2b1daff0dbeb20dd58c5d62a4b9fda"
+    },
+    {
+      "blockId": "6d40d33d-089a-5f74-84e6-134cb9b2d367",
+      "kind": "paragraph",
+      "ordinal": 37,
+      "contentHash": "35012fddb9f8ddf19a73560a9d9b5015926af0870aee4f94b137afc7e7ae5bc3"
+    },
+    {
+      "blockId": "f2386536-8615-5351-857b-10e1475055a6",
+      "kind": "paragraph",
+      "ordinal": 38,
+      "contentHash": "712d59c91a765394cfbc42c58d62a3747d98d3c2874bc29c608e729dcae4875b"
+    },
+    {
+      "blockId": "f8dcd08b-036b-50df-b870-d4dca243191b",
+      "kind": "paragraph",
+      "ordinal": 39,
+      "contentHash": "90c52016e65031f31c1aa206978c7043794b674c0ffb4b5f231aee50e7ad28e6"
+    },
+    {
+      "blockId": "fc7887ee-eabc-5a41-b6a4-f835af70dd3b",
+      "kind": "h2",
+      "ordinal": 40,
+      "contentHash": "559c3a9842f87aa91a8efc58c299c050d33553ee1107bed0d81f5a5d2c4d63f7"
+    },
+    {
+      "blockId": "6c4d18d9-391a-57d1-92f8-f364e7398b29",
+      "kind": "paragraph",
+      "ordinal": 41,
+      "contentHash": "655c9001ac0a504a2f9b609283dacb9b161d6bf585ac706b0689973ae50c88ae"
+    },
+    {
+      "blockId": "bc0c4f4f-4526-57e1-8c61-639c48e3d7ca",
+      "kind": "paragraph",
+      "ordinal": 42,
+      "contentHash": "50513536cd96cf8e5a6bd565bf02e49783e74dd8220fb649481eb0ac9d32a6e7"
+    },
+    {
+      "blockId": "9d4195c4-a62e-5b07-863b-f95df2cd2c03",
+      "kind": "paragraph",
+      "ordinal": 43,
+      "contentHash": "3c18c765be825a7f5a36797b38deff03f10991165889ac061155c63d2a490e86"
+    },
+    {
+      "blockId": "709a956f-caec-5030-8718-3bd59938b08d",
+      "kind": "paragraph",
+      "ordinal": 44,
+      "contentHash": "bc32278f5e0fb1051ab8dc6fb5bd5938a3f99c71d8043ac8a4f2f553f7de65ec"
+    },
+    {
+      "blockId": "65eb95b0-6210-569b-9002-209fffaa2810",
+      "kind": "paragraph",
+      "ordinal": 45,
+      "contentHash": "23f19c688b9b0f35f58f2e53562408e0b3ff0617b512eb29b89f84d2c2d4d481"
+    },
+    {
+      "blockId": "3324bc77-1cc3-51a1-8879-8a3098c7475b",
+      "kind": "paragraph",
+      "ordinal": 46,
+      "contentHash": "7b25cbc5cc9837d028a26c589bac3a088861789cb8f85a7f4c15830f17aa7d3d"
+    },
+    {
+      "blockId": "10787f4a-bab0-52f9-b9c2-6c6c0576b69a",
+      "kind": "paragraph",
+      "ordinal": 47,
+      "contentHash": "5071c8c89627b7eccf8cee80bfcf689f7346be949d841bf7bd02d78937786f29"
+    },
+    {
+      "blockId": "38b066c3-4120-5bb1-a8a1-179682545a6d",
+      "kind": "h2",
+      "ordinal": 48,
+      "contentHash": "074d7d5cd4c3072470508b5f2457fc1a245c5323fce2df451c88ad11ff34b60d"
+    },
+    {
+      "blockId": "26962717-0bd2-5fc0-9d73-a2e473a91112",
+      "kind": "paragraph",
+      "ordinal": 49,
+      "contentHash": "cb66fcadbe68ccada1f37fc118b0a088a12beaa94b0462ab4d44ff9cf0ca973b"
+    },
+    {
+      "blockId": "c21ca1a8-0a5e-517d-8261-f62849fb9e8e",
+      "kind": "paragraph",
+      "ordinal": 50,
+      "contentHash": "950527c26efe6d8a687d58a744bb59f817d97b6c85fe294eefe99ecb2cb8ec94"
+    },
+    {
+      "blockId": "7a3418cc-e666-5f5e-87f2-106f262808a7",
+      "kind": "blockquote",
+      "ordinal": 51,
+      "contentHash": "3cb196045b52bce1aae9059d0d6a60ec39dfb86003fce8b1530fa65e8e2dc87e"
+    },
+    {
+      "blockId": "d6c30281-2933-5b73-9afa-59b60c969674",
+      "kind": "paragraph",
+      "ordinal": 52,
+      "contentHash": "9472a90f3a632ccb90440f72a5858c4fab05ec922dc64aef5f11da18a7307ccc"
+    },
+    {
+      "blockId": "e5b6089b-5572-5226-8f3f-0e3837145c8d",
+      "kind": "paragraph",
+      "ordinal": 53,
+      "contentHash": "5ca982e02c76b326ed5f68f7344f21853dbe17fffacfb44f96b6d2936294a190"
+    },
+    {
+      "blockId": "3368c689-e7db-5eb5-81b4-2e9665e27327",
+      "kind": "h2",
+      "ordinal": 54,
+      "contentHash": "f32dcdd369ca8a5a935320ad55a8052e06497b26cc8e89b3cfc802586850bd40"
+    },
+    {
+      "blockId": "a25d6e0a-0d42-5299-9223-5bad7d85a0bb",
+      "kind": "paragraph",
+      "ordinal": 55,
+      "contentHash": "fcb57b32ebac5c611f67b2a8d8381c6130e1c02e2bb2fa4941fa42a65a1f30a7"
+    },
+    {
+      "blockId": "99d75275-a378-5e03-8623-19a0c0927a2b",
+      "kind": "paragraph",
+      "ordinal": 56,
+      "contentHash": "d2d0a066caa403a1d24593b40c781bed565c5d4457b71dceace67fe07a006184"
+    },
+    {
+      "blockId": "c0cdd512-e4c8-5807-8885-d52771f3af1e",
+      "kind": "blockquote",
+      "ordinal": 57,
+      "contentHash": "a72ce4e04eb2f0b69c96e919211c4ff70b6eca2aea84830207f76b3949a66d4e"
+    },
+    {
+      "blockId": "cb3f1558-542f-567f-9daf-205d1ba7e81c",
+      "kind": "paragraph",
+      "ordinal": 58,
+      "contentHash": "85c9c6ea74edcc0fb5398e19a2d540970c0bf2fc6cc4198aefec1bf29bae285e"
+    },
+    {
+      "blockId": "28f21c98-7576-5500-b7d1-7ab81eeb43ce",
+      "kind": "paragraph",
+      "ordinal": 59,
+      "contentHash": "046cead9b7213967708eb45db06d0649a701948656d819eb97dfea59db3ecf5c"
+    },
+    {
+      "blockId": "e7834ad2-5077-5cae-bc61-f9bab171607c",
+      "kind": "paragraph",
+      "ordinal": 60,
+      "contentHash": "1d335c5f84c0f049b614597e27a63bff7bae7bd52da5745e5928b6ef6a53e6e9"
+    },
+    {
+      "blockId": "456bf0a8-0dab-533f-a367-2684dd62752f",
+      "kind": "paragraph",
+      "ordinal": 61,
+      "contentHash": "eaa926142af4b02dc501a7ec483c2a7397ce466749a31c130c4fc7627c81574d"
+    },
+    {
+      "blockId": "6b474b17-6cdb-5f96-a51b-1060c1369602",
+      "kind": "blockquote",
+      "ordinal": 62,
+      "contentHash": "901bc174774fb80929d1038b6afa876871f0baea22b19acc46cbeabaaddc8a7e"
+    },
+    {
+      "blockId": "7020cdda-d26d-5003-a8b4-75eadd809dcb",
+      "kind": "paragraph",
+      "ordinal": 63,
+      "contentHash": "b39051bea189fea81661b1cc5fe710ec910e68e5a7e837794a2a25bba9739221"
+    },
+    {
+      "blockId": "bb2bf194-af95-57a7-901d-7893a56d9600",
+      "kind": "paragraph",
+      "ordinal": 64,
+      "contentHash": "8df503cc93d7526e84438ebbc2b3d20862c0e6fbd06060d47e6780d5decb5544"
+    },
+    {
+      "blockId": "dcad5f6b-0a60-5362-a294-ffcb353f3990",
+      "kind": "h2",
+      "ordinal": 65,
+      "contentHash": "47cdd2fcfdefb8acfdf6568733f4e3ba2a3f8e555bc0907cc840996bc814155f"
+    },
+    {
+      "blockId": "8b5ecc47-2042-54eb-8d7b-657e5456eb5c",
+      "kind": "paragraph",
+      "ordinal": 66,
+      "contentHash": "e7420690dec2454c9c147863367a3df1b5515fdc9d315fa33947a3b6fd3d337d"
+    },
+    {
+      "blockId": "4f68cad1-f388-5394-9143-a40c720d10f8",
+      "kind": "blockquote",
+      "ordinal": 67,
+      "contentHash": "7caaeb48a2ab2b05d54cf166cfb48694f110856c8217b1b2ce80ed47253e725b"
+    },
+    {
+      "blockId": "7028d248-36e6-540e-af34-ac2fabd196af",
+      "kind": "paragraph",
+      "ordinal": 68,
+      "contentHash": "420a12f4d1f0af7078ebabb4896952652d46ab005f13ad63d027bcf0c67fbbb8"
+    },
+    {
+      "blockId": "44fe68e8-2445-5630-9179-8f8860d0b46d",
+      "kind": "paragraph",
+      "ordinal": 69,
+      "contentHash": "4aa7a72d907e05b16fd01f839f475ae7dcbe2af110fc4ba19e74cec42766a011"
+    }
+  ]
+}

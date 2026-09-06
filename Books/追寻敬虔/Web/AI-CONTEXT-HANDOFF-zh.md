@@ -14,12 +14,12 @@ AI 执行合同：[`AI-CONTEXT-SPEC.md`](AI-CONTEXT-SPEC.md)
 - M2 已完成：标题路径、选中 block、前后正文 block 和服务器端锚点验证已经进入 context envelope。
 - M3 已完成：相关个人笔记和译名身份命中已进入 envelope/manifest，发送前可预览并做本轮排除或候选确认。
 - M4 已完成：20 章及其脚注关系已进入确定性跨章节检索，命中可预览、展开、跳转、扩展和逐项排除。
-- M5 已完成：预览使用短期 build ID 冻结；发送时重验完整 bundle；讨论 schema 2 保存逐轮 manifest、选择和可变证据快照；schema 1 旧轮次显式标记 legacy。
+- M5 已完成：预览使用短期 build ID 冻结；发送时重验完整 bundle；讨论 Schema 2 保存逐轮 manifest、选择和可变证据快照；Schema 1 旧轮次显式标记 legacy。首次多版本迁移后，讨论以 Schema 3 额外持久化 `editionId`。
 - M6 已完成：本地资料经预览确认后保存原件、转换稿和可重建索引；命中默认不发送，只有已授权来源中明确勾选的片段进入冻结上下文。
 - 当前讨论继续使用 OpenAI Responses API、`store: false`、`truncation: disabled` 和流式输出。
 - 当前 `promptVersion` 为 2；版本 1 的讨论仍可读取，并在下一次继续讨论时升级。
-- 当前 `contextSchemaVersion` 与 `sourceRegistryVersion` 为 1，`retrievalVersion` 为 3。
-- 当前讨论写入 `schemaVersion: 2`；保守预算法为 `conservative_unicode_characters_v1`，默认 context window 配置值为 128,000 tokens。
+- 当前 `contextSchemaVersion` 为 3，`sourceRegistryVersion` 为 1，`retrievalVersion` 为 3；上下文 envelope 与 manifest 均记录 `editionId`。
+- 当前讨论写入 `schemaVersion: 3`；保守预算法为 `conservative_unicode_characters_v1`，默认 context window 配置值为 128,000 tokens。
 
 ## 2. 关键代码位置
 
@@ -114,8 +114,8 @@ M3 按“确定性证据 → payload/API → 最小预览”完成，没有升�
 2. 发送时不信任浏览器选择：重新规范化选择、读取全部本地来源并重建 bundle。完整 canonical envelope hash 不一致时返回 `context_changed`，不写讨论文件。
 3. Responses adapter 接受已冻结 `ContextBundle`，测试逐字解析 payload 中的 evidence JSON，确认其 manifest 与逐轮持久化 manifest 相同。
 4. token 数量使用清楚标注的保守估算，不声称等同模型 tokenizer。默认每 Unicode 字符按一个 token，输入上限为可配置 context window 减去输出保留量。前端显示估算，超限发送再次被拒绝。
-5. schema 2 的 `turns` 与用户消息一一对应；保存 manifest、bundle hash、本轮选择和实际纳入的可变个人笔记证据。稳定书稿证据只保存 locator、revision/hash，不重复保存完整章节。
-6. schema 1 在内存中映射为 schema 2；所有旧轮次 `legacyContext: true`、manifest/snapshot 为 `null`。读取、列表或审计不会改写文件；继续讨论才正常写回 schema 2。
+5. Schema 2 引入、Schema 3 延续的 `turns` 与用户消息一一对应；保存 manifest、bundle hash、本轮选择和实际纳入的可变个人笔记证据。稳定书稿证据只保存 locator、revision/hash，不重复保存完整章节。
+6. Schema 1、2 旧文件在内存中映射为 Schema 3；旧轮次 `legacyContext: true`、manifest/snapshot 为 `null` 的规则保持不变。读取、列表或审计不会改写文件；继续讨论或运行显式迁移时才正常写回 Schema 3。
 
 ## 8. M6 的完成实现
 

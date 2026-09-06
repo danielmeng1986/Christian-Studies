@@ -30,8 +30,26 @@ const readingProgressLabel = document.querySelector("#reading-progress-label");
 const readingProgressBar = document.querySelector("#reading-progress-bar");
 const currentSectionLabel = document.querySelector("#current-section-label");
 const chapterId = article.dataset.chapterId;
-const notesApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/notes`;
-const discussionsApiUrl = `/api/chapters/${encodeURIComponent(chapterId)}/discussions`;
+const editionId = article.dataset.editionId;
+const editionApiBase = `/api/editions/${encodeURIComponent(editionId)}`;
+const notesApiUrl = `${editionApiBase}/chapters/${encodeURIComponent(chapterId)}/notes`;
+const discussionsApiUrl = `${editionApiBase}/chapters/${encodeURIComponent(chapterId)}/discussions`;
+const discussionApiUrl = (discussionId) =>
+  `${editionApiBase}/discussions/${encodeURIComponent(discussionId)}`;
+const editionSwitcher = document.querySelector("#edition-switcher");
+const editionFallbackNotice = document.querySelector("#edition-fallback-notice");
+
+editionSwitcher?.addEventListener("change", () => {
+  const target = new URL(editionSwitcher.value, window.location.origin);
+  target.hash = window.location.hash;
+  window.location.assign(target);
+});
+
+const fallbackEdition = new URLSearchParams(window.location.search).get("edition-fallback");
+if (fallbackEdition && editionFallbackNotice) {
+  editionFallbackNotice.textContent = `请求的版本“${fallbackEdition}”尚未发布或本章不可用，已显示默认的 Word 转写版。`;
+  editionFallbackNotice.hidden = false;
+}
 
 const referenceList = document.querySelector("#reference-list");
 const referenceEmptyState = document.querySelector("#reference-empty-state");
@@ -1238,7 +1256,7 @@ function renderDiscussionThread() {
 
 async function openDiscussion(id) {
   try {
-    const response = await fetch(`/api/discussions/${encodeURIComponent(id)}`, { cache: "no-store" });
+    const response = await fetch(discussionApiUrl(id), { cache: "no-store" });
     if (!response.ok) throw new Error(await responseError(response));
     activeDiscussion = await response.json();
     activeDiscussionEtag = response.headers.get("ETag");
@@ -1710,7 +1728,7 @@ async function continueDiscussion(event) {
   try {
     discussionReply.value = "";
     await postDiscussion(
-      `/api/discussions/${encodeURIComponent(activeDiscussion.id)}/messages`,
+      `${discussionApiUrl(activeDiscussion.id)}/messages`,
       {
         message,
         excludedNoteIds: [...discussionPreviewState.reply.excludedNoteIds],
@@ -1741,7 +1759,7 @@ async function retryDiscussion() {
   if (!activeDiscussion || discussionBusy) return;
   try {
     await postDiscussion(
-      `/api/discussions/${encodeURIComponent(activeDiscussion.id)}/messages`,
+      `${discussionApiUrl(activeDiscussion.id)}/messages`,
       { retry: true },
       activeDiscussionEtag,
     );
@@ -1755,7 +1773,7 @@ async function deleteDiscussion() {
   if (!window.confirm("确定删除这个讨论及其全部消息吗？此操作不可在阅读器中撤销。")) return;
   discussionBusy = true;
   try {
-    const response = await fetch(`/api/discussions/${encodeURIComponent(activeDiscussion.id)}`, {
+    const response = await fetch(discussionApiUrl(activeDiscussion.id), {
       method: "DELETE",
       headers: {
         "If-Match": activeDiscussionEtag,

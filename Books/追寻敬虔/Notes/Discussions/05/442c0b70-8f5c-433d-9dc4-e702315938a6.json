@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 3,
   "id": "442c0b70-8f5c-433d-9dc4-e702315938a6",
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
   "anchor": {
@@ -48,6 +49,14 @@
       },
       "error": null,
       "createdAt": "2026-08-28T23:16:43.017Z"
+    }
+  ],
+  "turns": [
+    {
+      "userMessageId": "e822d896-9236-403c-bbad-f93978e81772",
+      "contextManifest": null,
+      "contextSnapshot": null,
+      "legacyContext": true
     }
   ],
   "createdAt": "2026-08-28T23:16:30.681Z",

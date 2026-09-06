@@ -86,6 +86,24 @@ Use `null` for an unknown scalar value and `[]` for an intentionally empty list.
 
 `Reading/` is divided into meaningful reading units, normally one chapter per Markdown file. A unit may be a preface, introduction, chapter, or comparable section when that better supports reading and discussion.
 
+For a single-edition book, the existing flat or part-grouped layout remains
+valid. When a book introduces multiple reading editions, the received default
+may retain its existing paths and each new alternate edition uses:
+
+```text
+Reading/<editionId>/<chapter>.md
+Metadata/editions.json
+Metadata/Reading-Units/<editionId>/<chapterId>.json
+Metadata/Edition-Reviews/<targetEditionId>/<chapterId>.json
+```
+
+The edition manifest declares the default edition and explicit paths; tools
+must not resolve duplicate chapter numbers by directory scan. Edition IDs are
+stable identifiers, not display labels or language codes. Reading-unit
+sidecars store block identity and hashes but never duplicate prose. Review
+sidecars store alignment, provenance, and approval state. See
+[ADR-0005](Decisions/ADR-0005-Multiple-Reading-Editions-and-Review.md).
+
 ```text
 Reading/
   00-Front-Matter.md

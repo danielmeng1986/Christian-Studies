@@ -284,7 +284,7 @@ M1–M5 构成本地上下文架构的第一个完整版本。M6 以后均为独
 
 实施状态：**已完成（2026-08-29）**。预览端点现在返回五分钟有效的随机 `contextBuildId` 与明确标注的保守 token 估算；新建或继续讨论必须携带该标识。发送前服务器重新读取章节、笔记、译名索引与跨章节来源，并比较完整 envelope 的 canonical SHA-256；任一来源变化、选项变化、修订冲突或 build 过期都会要求重新预览。最终 Responses payload 直接使用验证后的冻结 `ContextBundle`，不再在 API adapter 内二次检索。
 
-讨论持久化已升级为 schema 2：每条用户消息在 `turns` 中对应实际 `contextManifest`、bundle hash、本轮选择及可变个人笔记快照。schema 1 文件只在内存中迁移，旧轮次标记 `legacyContext: true` 且 manifest/snapshot 保持 `null`；只有用户继续该讨论时才以 schema 2 原子写回。预算采用 `conservative_unicode_characters_v1`（每个 Unicode 字符按一个 token 计），默认以可配置的 128,000 context window 和输出保留量判断；超限在预览中可见，发送端再次拒绝，且始终保持 `truncation: disabled`。
+讨论持久化在 M5 升级为 Schema 2，并在首次多版本发布时升级为 Schema 3：每条用户消息在 `turns` 中对应实际 `contextManifest`、bundle hash、本轮选择及可变个人笔记快照，顶层另持久化 `editionId`。Schema 1、2 旧文件映射为 `legacy-zh`；旧轮次标记 `legacyContext: true` 且 manifest/snapshot 保持 `null`，不得伪造历史上下文。预算采用 `conservative_unicode_characters_v1`（每个 Unicode 字符按一个 token 计），默认以可配置的 128,000 context window 和输出保留量判断；超限在预览中可见，发送端再次拒绝，且始终保持 `truncation: disabled`。
 
 ### 工作
 

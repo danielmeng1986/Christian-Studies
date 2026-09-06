@@ -1,0 +1,939 @@
+{
+  "schemaVersion": 2,
+  "bookId": "qfg",
+  "sourceEditionId": "legacy-zh",
+  "targetEditionId": "chatgpt-zh-cn",
+  "chapterId": "05",
+  "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
+  "targetRevision": "d8c96b4706cd6c64c8a24507a031f4d7d711365163b9c67e2cf051d1ade2fcbb",
+  "revisionPolicyVersion": "qfg-modern-zh-cn-v1",
+  "glossaryId": "qfg-05-v1",
+  "generationModel": "gpt-5",
+  "generatedAt": "2026-09-05",
+  "referenceSources": [
+    {
+      "url": "https://www.johnowen.org/media/packer_quest_for_godliness_ch_5.pdf",
+      "locator": "第五章；英文参考文本第1–15页"
+    }
+  ],
+  "chapterStatus": "approved",
+  "approvedAt": "2026-09-06T06:00:24.763Z",
+  "pairs": [
+    {
+      "pairId": "831af240-9ac4-5217-a190-90c30deee7b0",
+      "sourceBlockId": "dd1408c8-130b-53c0-afc1-93c2f21971ae",
+      "targetBlockId": "d1c2bd54-192f-55eb-a091-0a106cdcdd14",
+      "sourceContentHash": "e2084cbe8a99574b0d1a701130938377e5502fd8f3c161fc5c487f977c120a83",
+      "targetContentHash": "dff815ef1247f729b6b74bc1c98b6447f51d3d63e0bedf2ef0312bd8a9869f41",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:57:52.314Z",
+      "approvedAt": "2026-09-06T05:57:52.314Z",
+      "comments": [
+        {
+          "commentId": "8bbdef6d-fc5f-4cd3-b6a5-954542a7abd8",
+          "text": "“第五章：约翰·欧文论从神而来的交通”，我认为译者之前的这个翻译更合适",
+          "status": "resolved",
+          "createdAt": "2026-09-05T21:12:56.353Z",
+          "resolvedAt": "2026-09-05T21:28:03.590Z"
+        }
+      ]
+    },
+    {
+      "pairId": "34de12f7-a732-5633-b02b-b4f51d2b23a4",
+      "sourceBlockId": "16d0a278-99e8-562a-9dff-06aa0c27fd86",
+      "targetBlockId": "0c1f4b4e-55fd-5ce6-839a-4578c2b7b5fa",
+      "sourceContentHash": "53280552d3d4a52a9599852e0da7e79d375a0c0a66b9da88771c78ff0feeda23",
+      "targetContentHash": "e69edf3956784b75b93e240edd5b98046e5f3428b54f07f120cc09856e3ee0ea",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:57:53.709Z",
+      "approvedAt": "2026-09-06T05:57:53.709Z",
+      "comments": []
+    },
+    {
+      "pairId": "16a7a5bf-2f61-50d0-81fa-ebbc5c57f4ed",
+      "sourceBlockId": "cc7c715a-b3f7-5b11-a9c6-a1d6778dfe53",
+      "targetBlockId": "c0112405-1636-5b39-8a6d-6e95c13c327d",
+      "sourceContentHash": "5cb11610f3ba2f806f7d143728df57388e3b70f1e82f088079355235c6df0e1a",
+      "targetContentHash": "b8a6797bd3b5ee04e83d80ef76fdc08e53283a5c829fc60d528ad14823e1639f",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:57:54.943Z",
+      "approvedAt": "2026-09-06T05:57:54.943Z",
+      "comments": []
+    },
+    {
+      "pairId": "9ca4e41f-0064-5e1f-aaf9-f60a8031d290",
+      "sourceBlockId": "3f9ae247-59cc-5aa0-8a8c-685c32cd1ef2",
+      "targetBlockId": "b312d4fa-5948-59c7-ac83-7f0fa66180a9",
+      "sourceContentHash": "2b011941fe4acbc06e9d821579cec046dcbdc28adcf6c6ad60c95b98a4d51ea3",
+      "targetContentHash": "4bb87ef01931bb9c45fe1d87b5293a2b0aa69d153c3094269142b646400d3d2f",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:57:56.620Z",
+      "approvedAt": "2026-09-06T05:57:56.620Z",
+      "comments": []
+    },
+    {
+      "pairId": "572b1fbf-a8c4-59a7-adb5-64436d0921f0",
+      "sourceBlockId": "497d0c0e-f444-5a01-bf92-48b423563612",
+      "targetBlockId": "d46e5d11-54db-51d1-a8ac-c9ebc14470d0",
+      "sourceContentHash": "dc97e4b479dc6e64695d86aa0ac0c5845f3cd6d2c42cfcc90dfd94aa698d438e",
+      "targetContentHash": "0a21fb38cf7cc43381d227b674a58a8e3599cf77f8f725caa484fd83dccb81b7",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:57:58.253Z",
+      "approvedAt": "2026-09-06T05:57:58.253Z",
+      "comments": []
+    },
+    {
+      "pairId": "baca3e40-fb7d-5c7f-9291-5bd589d58889",
+      "sourceBlockId": "e7314411-f65e-5ed3-af2e-22bdfbfc5c07",
+      "targetBlockId": "4c9bbb6f-3bca-5f4b-a898-d39873ed40bb",
+      "sourceContentHash": "987cfeca18467af0af2877b78af3ab34e394a8fe726a0143a9a04dc75a9e279a",
+      "targetContentHash": "64e7b2ddcaf2e17145722d8fb7da3e011b90147ebddd0ca88a253c1b686f89f7",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:00.150Z",
+      "approvedAt": "2026-09-06T05:58:00.150Z",
+      "comments": [
+        {
+          "commentId": "c7908ed2-2571-49b1-902e-5f947b3b60bd",
+          "text": "修改为“贰 神与人能够交通”",
+          "status": "resolved",
+          "createdAt": "2026-09-05T21:13:54.126Z",
+          "resolvedAt": "2026-09-05T21:33:23.125Z"
+        }
+      ]
+    },
+    {
+      "pairId": "12155a5d-53c5-5ca2-8d33-84b54d3f127a",
+      "sourceBlockId": "fb941247-9bc5-50bf-84df-813b02b2b161",
+      "targetBlockId": "babd3a6b-15f4-5d98-87c9-fa2c4d01111d",
+      "sourceContentHash": "05bfd8915be465a581bfcac2f4ec4fcde8c07710bd83667f2d6fc28d4ec45723",
+      "targetContentHash": "1614d905285a1bca23d2344d4bb23f4f63a258d47ae23144645ffcd6c275a8f9",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:01.734Z",
+      "approvedAt": "2026-09-06T05:58:01.734Z",
+      "comments": [
+        {
+          "commentId": "ae252d2b-66ff-45b1-bedf-559e70235eee",
+          "text": "“传达”（communication）认知性传达（*cognitive communication*），其实可以把 communication 统一作为一个术语来定义，然后翻译为“交通”",
+          "status": "resolved",
+          "createdAt": "2026-09-05T21:15:32.071Z",
+          "resolvedAt": "2026-09-05T21:28:13.559Z"
+        }
+      ]
+    },
+    {
+      "pairId": "103e584a-8bda-5ddf-b528-22ea10afd140",
+      "sourceBlockId": "c13a136a-4348-55fa-80fe-c035eb24657b",
+      "targetBlockId": "fc29fbd0-766f-5bfe-861f-475051927597",
+      "sourceContentHash": "14d7512a1693b2de8a72ff75e68500a433913d9d092e78e8f43b7d1b990b0255",
+      "targetContentHash": "b32119a300d215b0cae5191f953eeb907d0429e1abed027107fe9a1302cc1b48",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:03.546Z",
+      "approvedAt": "2026-09-06T05:58:03.546Z",
+      "comments": []
+    },
+    {
+      "pairId": "6d6d7469-b162-561b-a847-2570d3ab60e8",
+      "sourceBlockId": "bf4344b0-701b-5e39-8f1e-3681cbdff0ba",
+      "targetBlockId": "5b17a48e-21a4-537a-92e9-ae38b7028560",
+      "sourceContentHash": "8f5718eabefaac1664603c92364316b6c08bb83df6e1f5a70e012805f7321329",
+      "targetContentHash": "76e70fac9b0f0edb1933ab1b3aa5fd78b63825f2dc77b416eeb134163f9cc1fd",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:06.960Z",
+      "approvedAt": "2026-09-06T05:58:06.960Z",
+      "comments": []
+    },
+    {
+      "pairId": "066b2b36-d181-5d70-a326-5f5136c1de77",
+      "sourceBlockId": "0a3052b0-9e5f-5b80-be12-fb6ebd8277d6",
+      "targetBlockId": "a6dd3625-256f-5ece-8348-cb93955e185a",
+      "sourceContentHash": "77e55075893e7a2663385877907927de368c464a495c0aa01c0dd719527bc72f",
+      "targetContentHash": "44087a8e9c4f6007e7454eed9f7675aecf6008505397c3c46b5f714b0fdaeabb",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:08.743Z",
+      "approvedAt": "2026-09-06T05:58:08.743Z",
+      "comments": [
+        {
+          "commentId": "2a48565c-2e4b-4538-8045-3a75a228b87a",
+          "text": "“我们里面的罪，是人性中反抗神的驱动力，是从亚当承受的遗产”，这里用“遗产”来表达这种负面的继承，似乎不是太恰当。尝试用其他的方式表达。",
+          "status": "resolved",
+          "createdAt": "2026-09-05T22:48:48.848Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "6f79a734-655e-54d5-a402-62606719cae4",
+      "sourceBlockId": "b84e8173-b056-5cee-b04e-fc1d9034c9de",
+      "targetBlockId": "8ec91e9c-be20-584d-8b07-08eaa4b0d9b0",
+      "sourceContentHash": "2da2072630f979695904ed47c596917f8d29d999a39946b3dab9cd40fdb8bd91",
+      "targetContentHash": "21a4c961c6444b7b5367f1c5b278a7c00c237d3d6b919e56da498c6ed7c57c36",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:10.395Z",
+      "approvedAt": "2026-09-06T05:58:10.395Z",
+      "comments": []
+    },
+    {
+      "pairId": "a385be5e-36db-5780-90dc-e1e3ba3d88f5",
+      "sourceBlockId": "07d7277a-94f3-51fa-b2d8-aa77b50051e5",
+      "targetBlockId": "12abd1b2-4813-59de-84f0-876ac043b738",
+      "sourceContentHash": "b5261790ef4eead82620cfef8c0588c0135e35354fadbbee83902f19c3d0f728",
+      "targetContentHash": "67d93323b227c81ecfa15ab64f95e3d8143404f32418b4a886e95e7c65aa1d4a",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:12.634Z",
+      "approvedAt": "2026-09-06T05:58:12.634Z",
+      "comments": []
+    },
+    {
+      "pairId": "2ccc1c65-a370-597c-99d4-ea09a5ee1572",
+      "sourceBlockId": "02e3ba27-4011-561d-88a1-77aa7b0037f6",
+      "targetBlockId": "87f14a38-3a5d-5249-81c2-c718fb495cae",
+      "sourceContentHash": "0e22b2f4ecff7a25551fdfc64a9c89b770dbd422650f6bcf9ec6813f0c366727",
+      "targetContentHash": "cd108f9ccec182257fb8d1498a3fedc61083d4aa98b7993015ea2c54d9c8d2dd",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:14.662Z",
+      "approvedAt": "2026-09-06T05:58:14.662Z",
+      "comments": []
+    },
+    {
+      "pairId": "7f3f7f54-1950-5219-a19f-c1fbd5c79b43",
+      "sourceBlockId": "446de7dc-c755-566f-9e5d-1b023123151c",
+      "targetBlockId": "78649d01-b067-53d4-8dec-d5b68ff341f2",
+      "sourceContentHash": "9835a6c27655b83086f79e98dda4b168e53a40f5327339f9021ebbb0fe38aa1b",
+      "targetContentHash": "e24919747049a34cf532dfbf4c12fd311ce1c7cc05120e0eb5c8f0b7871475b7",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:17.722Z",
+      "approvedAt": "2026-09-06T05:58:17.722Z",
+      "comments": [
+        {
+          "commentId": "b5a6d49a-061f-4e28-ab10-88fe33107ab0",
+          "text": "Barth’s complaint is that, having started well by asserting the divine origin of\nScripture, these theologians allowed rationalism to creep into their biblical exposition and\ntheology, for want of effectively thinking through the doctrine of the Spirit as Lord of,\nand instructor through, the written word. Since Barth’s own doctrine of Scripture makes\nits divine origin wholly problematical, and his theological interpretations of it seem again\nand again to be read into the text rather than read out of it, one is tempted simply to retort\n‘physician, heal thyself’, and leave the matter there—but the criticism is a serious one,\nmade in good faith, and if it is valid as a stricture on Owen, who, whatever else he is, is\ncertainly a mainstream Reformed divine, it would certainly limit the extent to which we\ncould look to him for help today.\n\n对于这一段，我看得比较糊涂。\n\nKarl Barth 的观点，是不是说，他认为圣经的解释不能引入理性，圣灵是圣经的作者，我们想读懂圣经，就必须完全靠圣灵来教导我们？\n\n后面又提到“可是，巴特自己的圣经论使圣经的神圣来源变得完全成问题；他的神学解释也似乎一再是读进经文，而不是从经文读出来。” 我从这里猜测 Karl Barth 是反对正统神学中，使用理性来理解、提取圣经中的教义的。他的圣经论具体是什么，有什么问题？请你在网上查询 Karl Barth 的圣经论相关的说法。\n也许，可以像原译者一样，你也可以为此添加一个“译者注”。\n\n从上下文，“事实上，我们将发现，巴特的批评完全不适用于欧文；巴特认为欧文那一代人最薄弱的地方，恰恰是欧文最为精通的领域。” 可能也证实了我的猜测，巴特批评正统神学家“冻结”在圣经中，但欧文在论及圣灵和圣经的关系方面，绝对不会被巴特打倒。",
+          "status": "resolved",
+          "createdAt": "2026-09-05T23:23:07.649Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "3aa6c821-61e3-5818-9175-aed38b1629ac",
+      "sourceBlockId": "1195591a-b3df-5be0-9f21-8612d1d3674d",
+      "targetBlockId": "fee60cd2-2833-5d0e-bc82-649558dbd496",
+      "sourceContentHash": "d7b70a106432e8ff194bae9f63160c0b5995627f1aae3073ab8b01c506b84561",
+      "targetContentHash": "02e68a8402508905f76688d72fcb40beb7ccb98dcff2e76a742142c97ebacb0b",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:20.602Z",
+      "approvedAt": "2026-09-06T05:58:20.602Z",
+      "comments": []
+    },
+    {
+      "pairId": "a9262b90-1d0b-52f4-949f-fcf4ed8a9204",
+      "sourceBlockId": "527f4089-119e-5406-9fb9-05eb695d0736",
+      "targetBlockId": "7416354a-6756-56e8-bb8c-8d58b9915092",
+      "sourceContentHash": "7d9b58ffd342358d400cddf15440ff1bfb971d6eddfbcb584e3449d2d94a5fdf",
+      "targetContentHash": "a0c6e361a2ab2bcd18490a7c69b370024e344eef2b4b07c9d8c908d6956a783a",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:22.359Z",
+      "approvedAt": "2026-09-06T05:58:22.359Z",
+      "comments": []
+    },
+    {
+      "pairId": "1085db06-ed26-5a85-afa1-d22263861003",
+      "sourceBlockId": "bdff2699-6ce3-5188-a034-df3ad2957552",
+      "targetBlockId": "660292e1-ab80-55a7-97ff-133595d4dd56",
+      "sourceContentHash": "b277f24615e14f161581f1397fe62052402b45c143b967d48417d543893dc31b",
+      "targetContentHash": "51ffcac3463669d1f953b634a6f96ca66c368f5aec41de7fced108a1187b8417",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:23.955Z",
+      "approvedAt": "2026-09-06T05:58:23.955Z",
+      "comments": []
+    },
+    {
+      "pairId": "4db842c6-3f8d-5d35-ba18-9b099e912d52",
+      "sourceBlockId": "1726910a-226e-5bd7-a34b-fc47e5aca621",
+      "targetBlockId": "5b7654e1-61f5-5b0c-8631-b5bba3913117",
+      "sourceContentHash": "b108c1753d3157d3af44cc20fab908884a50e8c1ed1db078186ae8d13508fd2e",
+      "targetContentHash": "7bacf3d619673bf6802f4685f060692f6a514e4e050d739f08b802553cca69ba",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:25.703Z",
+      "approvedAt": "2026-09-06T05:58:25.703Z",
+      "comments": []
+    },
+    {
+      "pairId": "3ea4bbe8-a147-51ff-9e39-858e9a3289c8",
+      "sourceBlockId": "1161a7e8-470a-5628-8aed-ab1edad65f6b",
+      "targetBlockId": "fbbdd0c9-4b37-5e9a-9ba1-01b592fde1e3",
+      "sourceContentHash": "a33710cc25c24b971899b09529e5f31963a49eaaab6d9a367a2fb57b7801d56a",
+      "targetContentHash": "093591be799aca8011b37b54defca6466a31c0b32776cfd1bdcf194da20f1436",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:27.879Z",
+      "approvedAt": "2026-09-06T05:58:27.879Z",
+      "comments": [
+        {
+          "commentId": "35227c51-4dd9-4a7c-8b80-77d001b0c861",
+          "text": "这里的 “tradition” 似乎是在这个上下文中代表一种，不使用文字，而只是用“口口相传”、“代代相传”，使用某种习俗、惯例的传统。仅用“传统”二字似乎无法表达的很准确。前文中，欧文反对天主教的“trandition” 似乎也提到了“口传”。可以看看天主教的 tradition 怎么翻译更好。",
+          "status": "resolved",
+          "createdAt": "2026-09-05T23:39:25.780Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        },
+        {
+          "commentId": "46f439ef-7bd4-49a9-9e81-24679c046d62",
+          "text": "也许天主教的 tradition 可以表达为“宗教传统”？",
+          "status": "resolved",
+          "createdAt": "2026-09-05T23:58:26.738Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "71c72fe1-c5ba-5994-b6b3-fc385f0b70db",
+      "sourceBlockId": "c69c704f-f4a1-5135-8ba0-9aeb82883b4d",
+      "targetBlockId": "dbd26f67-58c8-5f09-9da5-a119878d0631",
+      "sourceContentHash": "9191c59a27cb5ede3ccdff2d958480efd734b19e9a8bead9566305d6ee4dab55",
+      "targetContentHash": "363e79544d10a966b173c6a227043b998f21234b75ef9bed266ddaad3c4cd11c",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:31.575Z",
+      "approvedAt": "2026-09-06T05:58:31.575Z",
+      "comments": []
+    },
+    {
+      "pairId": "bbbec8e9-5fd6-5948-81fd-c403a142226a",
+      "sourceBlockId": "68ccc58c-0b14-5be1-968b-db4fdc140a80",
+      "targetBlockId": "63261100-627e-5a0a-bedd-084cf02e76d5",
+      "sourceContentHash": "2d899983d30c9f17a8009fec7865a6efa6cad4e2ee2118aca3a62c5ad0af17a2",
+      "targetContentHash": "6bf664e228a7887068919752494145800da1b76d40b129b9c50eb00c4dfc75cd",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:33.532Z",
+      "approvedAt": "2026-09-06T05:58:33.532Z",
+      "comments": []
+    },
+    {
+      "pairId": "796d0b84-fd65-5f1b-b467-2edf26f207fb",
+      "sourceBlockId": "97713241-79fa-5c1e-a3df-a6fa9cb2f626",
+      "targetBlockId": "e44efa93-2c8a-51bf-ba4d-61e5795770f9",
+      "sourceContentHash": "679d4b02e8f8b71c2a8b49143a57ed86452a84e0ce126626979c36ca55047fc4",
+      "targetContentHash": "509c6b1f35813b6e416019df5c6fde5dff8735ee542395cacd819f48c3973237",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:35.178Z",
+      "approvedAt": "2026-09-06T05:58:35.178Z",
+      "comments": []
+    },
+    {
+      "pairId": "9740237d-e930-5b74-8a45-5a6ad708673d",
+      "sourceBlockId": "933b071d-62c1-541d-bb36-175387ed2933",
+      "targetBlockId": "ec635d90-8875-559f-97fa-28456b43c539",
+      "sourceContentHash": "e15608e3285d2c74ee49b872dad9a8fcef813e4e60e52a3fed109aa0c48f52b2",
+      "targetContentHash": "f2ee21557b3fdbd01b01968e6ebcf495720c24092057bc13b0cf31f189c09e07",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:36.865Z",
+      "approvedAt": "2026-09-06T05:58:36.865Z",
+      "comments": []
+    },
+    {
+      "pairId": "2f23ba9d-c8f0-54b5-8446-135801cc87d0",
+      "sourceBlockId": "5d4ce409-dd7c-5239-a71d-000452347963",
+      "targetBlockId": "edd689c2-0818-5428-b1dc-5b4a2c1570d2",
+      "sourceContentHash": "000227ce0839d13d186a3a9339111b7a047bf36cef558c4cca2b7fcbbb1459df",
+      "targetContentHash": "77eecbd612c74ecad0fa3e85d8a8446e5fe89b6897a67719811b5df59e590ef5",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:40.390Z",
+      "approvedAt": "2026-09-06T05:58:40.390Z",
+      "comments": []
+    },
+    {
+      "pairId": "f512570e-7ddb-5932-a69e-e2a548a8e07a",
+      "sourceBlockId": "91ef42d2-c513-5772-997c-b92abdd4b9f9",
+      "targetBlockId": "fa319fba-238f-5bb3-9028-6b3db987b82d",
+      "sourceContentHash": "e787c55034dcf7e91369c6083fb9a874654ce7d22fc47edaa5018a5dea0904fa",
+      "targetContentHash": "6f48a353e0e4a0eb09d100d5875894265bf3bf3f3d1bfafdd2effd8892730c41",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:42.040Z",
+      "approvedAt": "2026-09-06T05:58:42.040Z",
+      "comments": []
+    },
+    {
+      "pairId": "990f4ab3-1a39-544f-b93c-77b006d14429",
+      "sourceBlockId": "df6f9055-5202-583c-94c4-9c9e5a255682",
+      "targetBlockId": "d010ef59-243c-59ce-966b-3fff0a14bf9f",
+      "sourceContentHash": "abe288c4d12abe31510ff46209da310c334e166d4a9d8278f5a5fc19671f9c7e",
+      "targetContentHash": "758ea4b0029d41d5af060bae77179f93f1f65bb0d937d03302b8825e49b37990",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:43.874Z",
+      "approvedAt": "2026-09-06T05:58:43.874Z",
+      "comments": []
+    },
+    {
+      "pairId": "700e79ad-0d86-5480-836f-a9e0959481c7",
+      "sourceBlockId": "155df3c6-d75e-5ed8-8083-636ee6bb634c",
+      "targetBlockId": "92e47e14-f6bc-5f7b-be7c-e26ea152c060",
+      "sourceContentHash": "b08311e547cca726783950ccbe38eadccd74c8e3528d4bd01799a925b822c735",
+      "targetContentHash": "3702aa757dbd5312273fe25152cd8312bffa190cc7743290899263abd01f94d2",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:46.190Z",
+      "approvedAt": "2026-09-06T05:58:46.190Z",
+      "comments": []
+    },
+    {
+      "pairId": "5751a527-fd3c-577d-ada9-679f9c0e4572",
+      "sourceBlockId": "65ab7f28-551e-5911-ad08-4152e2ddfb09",
+      "targetBlockId": "b6789a0a-d64c-5973-be9b-d4788d32bd07",
+      "sourceContentHash": "319490ff21065ad908d44877a14c09d0768b94b5e9b7708e4fdbf87db408c6c2",
+      "targetContentHash": "0715fcc1b22b6641eee13e9c22101e2fbce72b9151b225953152b187f7759b0e",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:49.135Z",
+      "approvedAt": "2026-09-06T05:58:49.135Z",
+      "comments": []
+    },
+    {
+      "pairId": "710e1400-66a8-57c4-8812-6c91e87ecbfd",
+      "sourceBlockId": "31435ddc-b6d3-55b0-bbde-f4439f71abce",
+      "targetBlockId": "81724765-1110-5408-9259-ac435a8a7f22",
+      "sourceContentHash": "21b573cad0f6e7126f43ca2db2c4179482fd4ff841ae84ca6b109537c021219e",
+      "targetContentHash": "d3dd213b804c6cea4f5e459cb61e00061448826b88d50039253b0f644ac79167",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:50.994Z",
+      "approvedAt": "2026-09-06T05:58:50.994Z",
+      "comments": []
+    },
+    {
+      "pairId": "e668abd0-603b-5aa4-ad54-b3aa766f981c",
+      "sourceBlockId": "bf61642b-9d02-5bad-bca7-d74524c2e0fd",
+      "targetBlockId": "9399d42a-af3e-5f34-ad22-dea8293e01eb",
+      "sourceContentHash": "ab72854564e79229da6dc2d3f54e27c2943392d8b29aa37b23f594c0793b5a25",
+      "targetContentHash": "31e86d733ff1497d3dedf363006227bc6105aa6418d84abed9406113b9ee3d31",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:54.174Z",
+      "approvedAt": "2026-09-06T05:58:54.174Z",
+      "comments": []
+    },
+    {
+      "pairId": "079582d6-4cfa-5cfa-bc40-08c2616ab4f3",
+      "sourceBlockId": "1f4cb01f-833b-5577-baa1-2ceb22e20f43",
+      "targetBlockId": "f1cbd761-676f-51b7-8cea-7d0d83ca6dd1",
+      "sourceContentHash": "d9edfd7119c382e134aad8959bcc92c8964431efe41007cdfbc865bcee29e323",
+      "targetContentHash": "c0472ab918697c796dd39fdb7a420e17be1acfb2d8eaa410d7ae4ce6c06070f4",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:56.138Z",
+      "approvedAt": "2026-09-06T05:58:56.138Z",
+      "comments": []
+    },
+    {
+      "pairId": "1c831f20-407d-5397-9687-e965713e110b",
+      "sourceBlockId": "4b672f91-ffba-5307-be81-41e29a5ab64d",
+      "targetBlockId": "333a77f3-a20e-5cf9-b4f2-f53a918c5291",
+      "sourceContentHash": "a3434a14a184d061fa472f4161d6ed0e23d401566bea6d8ea305d2d785caaed1",
+      "targetContentHash": "73035780eaf7a354aeaed2150924d558ce970dd646cbcd1d88137c3d525762dc",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:58:58.913Z",
+      "approvedAt": "2026-09-06T05:58:58.913Z",
+      "comments": [
+        {
+          "commentId": "6878e60a-1a7f-4bc0-9df4-c1d849d5cebd",
+          "text": "As the word of God, Holy Scripture is a direct and primary object of faith, just as\nthe revelations which came to the patriarchs, and the inspired sermons of the prophets\nand apostles, were direct and primary objects of faith for their original recipients. \n\n这里“a direct and primary object of faith”翻译为“信心直接而首要的对象”确实比“信心直接而首要的目標”要好一些。但是在中文语境中，仍然显得有点抽象。从这 Object 表达的含义来看，似乎有“根基”、“基础”的含义。可以再斟酌一下，如何翻译这个词组。",
+          "status": "resolved",
+          "createdAt": "2026-09-05T23:53:44.899Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        },
+        {
+          "commentId": "dd945efd-9d8c-49ab-8b99-e99fcb06b6cb",
+          "text": "The faith which he requires is divine faith springing\nfrom a recognition that the basis on which the Christian confession rests—that is, the\ntestimony of Scripture—is God’s own infallible testimony to himself. The ground of\ndivine faith in the divine truth of what the Scriptures teach is thus the fact of their ‘divine\noriginall’\n, which is the source of their authority (that is, as Owen defines it, their ‘power\nto command and require obedience, in the name of God’13). \n\n这里似乎用倒了 basis, ground 来诠释前文中的 object 的作用。另外“认信”这个词，对我来说，比较陌生，是某个神学术语吗？",
+          "status": "resolved",
+          "createdAt": "2026-09-05T23:56:57.521Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "1b8e6b4b-d5e6-5e04-a003-844ea0930a90",
+      "sourceBlockId": "f5b8bf47-3697-5557-8a58-b289e4bcd0e0",
+      "targetBlockId": "cab49a3c-b664-5ba0-ad1f-ad216cc25553",
+      "sourceContentHash": "a75d1891aab9449cd9a26896439d0125870eae64dc01fb5509e7b05c7cc7080b",
+      "targetContentHash": "27d804cb5ef11f5a1c4088abf7915538f67a234636875ab83ce41dd8f7f41f57",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:02.756Z",
+      "approvedAt": "2026-09-06T05:59:02.756Z",
+      "comments": []
+    },
+    {
+      "pairId": "62be243b-0dde-58b9-ba0f-be7e842549a4",
+      "sourceBlockId": "54bd498a-ee60-5aa8-ba67-11cd5aeb5a12",
+      "targetBlockId": "1841a7b8-554d-53fe-8abb-16f72c96c1ef",
+      "sourceContentHash": "7805be7f83cf65f796a61bc1365f7ef29f694d911430cdcb0ed3de44ac0d3f27",
+      "targetContentHash": "e5d0964016b1058c09518d1f3c2158b7a1941982fc8da346de5c590047c56c00",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:04.793Z",
+      "approvedAt": "2026-09-06T05:59:04.793Z",
+      "comments": [
+        {
+          "commentId": "c07d120b-a067-4bcd-a6c4-ef3ae3eb5163",
+          "text": "今天有人显然对基督具有“由神所赐、超自然、无误的”信心，却又承认自己没有完全相信圣经具有“神圣来源”；欧文会怎样解释这种事实？\n这里 today 是否翻译为 “当今”，“当代”更为恰当？",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:04:33.825Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "eb4cd588-a197-56af-a958-c2378f277e3a",
+      "sourceBlockId": "68420e48-0e26-5858-95c5-2f12d1fb5028",
+      "targetBlockId": "a478ab1d-2e39-5af3-b269-99ff507e088e",
+      "sourceContentHash": "75e1b7bfdcd5ab972e33655479bd4a85d080f2af173a963222d823ba48fa6e5f",
+      "targetContentHash": "d90df7ac352f0f47b85f8dd80d5eefa6c011c01649c57a0bea666b1f06250a87",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:06.827Z",
+      "approvedAt": "2026-09-06T05:59:06.827Z",
+      "comments": [
+        {
+          "commentId": "fcab53a8-0c1b-4dda-bec0-40a8686524a2",
+          "text": "这里 proper ground  翻译为“适当的根基”，“合宜的根基”似乎都不是特别的恰当。“正确的根基”、“恰当的根基”或者其他翻译会不会更好？",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:07:54.246Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "5efc7d96-cea3-544e-bac6-8b0022ad0677",
+      "sourceBlockId": "9bd06f60-cf1f-560b-af56-38f9a2543664",
+      "targetBlockId": "b466ced2-b0c2-541d-b044-87c5581d9b3f",
+      "sourceContentHash": "9ef78b9d314f21842d8a9e5b890eef670b2b1daff0dbeb20dd58c5d62a4b9fda",
+      "targetContentHash": "f678d791ecd674c7a74d01f850c2f078850b01970dd9ad958c49b34790b81cbf",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:08.933Z",
+      "approvedAt": "2026-09-06T05:59:08.933Z",
+      "comments": []
+    },
+    {
+      "pairId": "dd26d5a1-54ae-5130-97d0-ccd62547414a",
+      "sourceBlockId": "6d40d33d-089a-5f74-84e6-134cb9b2d367",
+      "targetBlockId": "0c3fe16f-0291-5115-8641-9eeacf6f5546",
+      "sourceContentHash": "35012fddb9f8ddf19a73560a9d9b5015926af0870aee4f94b137afc7e7ae5bc3",
+      "targetContentHash": "22ee682507a928f3b71012c7abc74bfec062e0cc37fdd71d15a2220ce87686fa",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:11.251Z",
+      "approvedAt": "2026-09-06T05:59:11.251Z",
+      "comments": []
+    },
+    {
+      "pairId": "1a8b927c-2aa2-5d0f-918f-e3b5c6d1552e",
+      "sourceBlockId": "f2386536-8615-5351-857b-10e1475055a6",
+      "targetBlockId": "55b5e97b-c95c-549f-aa16-32fc7d7cef23",
+      "sourceContentHash": "712d59c91a765394cfbc42c58d62a3747d98d3c2874bc29c608e729dcae4875b",
+      "targetContentHash": "ebb027e85d39689848bc48c63c9053bdaf819707d8ac93f27f8eb2974fe2732b",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:14.517Z",
+      "approvedAt": "2026-09-06T05:59:14.517Z",
+      "comments": []
+    },
+    {
+      "pairId": "cd5dc358-c07a-52aa-b4d0-b2181ea7d29a",
+      "sourceBlockId": "f8dcd08b-036b-50df-b870-d4dca243191b",
+      "targetBlockId": "d57fe92a-e3e3-5004-ad63-5246c10eb49c",
+      "sourceContentHash": "90c52016e65031f31c1aa206978c7043794b674c0ffb4b5f231aee50e7ad28e6",
+      "targetContentHash": "88283c9488bff7416bfdb2904f7b2f310a37261c4e5b71852ed15bb8808f9474",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:16.872Z",
+      "approvedAt": "2026-09-06T05:59:16.872Z",
+      "comments": []
+    },
+    {
+      "pairId": "0ef460bf-c39c-5f0d-a265-a7a063a12c2c",
+      "sourceBlockId": "fc7887ee-eabc-5a41-b6a4-f835af70dd3b",
+      "targetBlockId": "141f3908-74e0-5757-bcb1-d0609c15da5a",
+      "sourceContentHash": "559c3a9842f87aa91a8efc58c299c050d33553ee1107bed0d81f5a5d2c4d63f7",
+      "targetContentHash": "2416215df8ad268c27085dc522473903763f32795ca1b597e7d0342a4d62e3b0",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:18.677Z",
+      "approvedAt": "2026-09-06T05:59:18.677Z",
+      "comments": []
+    },
+    {
+      "pairId": "4f875c34-bade-50e9-a91f-7cce702d5bc0",
+      "sourceBlockId": "6c4d18d9-391a-57d1-92f8-f364e7398b29",
+      "targetBlockId": "a897564c-a461-5413-8f40-5560ccbf0a4f",
+      "sourceContentHash": "655c9001ac0a504a2f9b609283dacb9b161d6bf585ac706b0689973ae50c88ae",
+      "targetContentHash": "07cdf11338b1ed969536d1085a23216810d61fe3236f844a72c03efcd824a0c5",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:19.999Z",
+      "approvedAt": "2026-09-06T05:59:19.999Z",
+      "comments": []
+    },
+    {
+      "pairId": "7547bc99-4787-5da8-9cdd-a79b8dc1a3fc",
+      "sourceBlockId": "bc0c4f4f-4526-57e1-8c61-639c48e3d7ca",
+      "targetBlockId": "04d8c4a1-dea3-572c-8ba3-f34a9a3645d2",
+      "sourceContentHash": "50513536cd96cf8e5a6bd565bf02e49783e74dd8220fb649481eb0ac9d32a6e7",
+      "targetContentHash": "71197534bc1e0c478e4a24e7c2ec4b145dfcab33f71413bfcf0105d8224fac35",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:21.804Z",
+      "approvedAt": "2026-09-06T05:59:21.804Z",
+      "comments": []
+    },
+    {
+      "pairId": "a1d6038d-af35-5e41-a4b6-bf40ecf3ee1f",
+      "sourceBlockId": "9d4195c4-a62e-5b07-863b-f95df2cd2c03",
+      "targetBlockId": "5dfdc5d4-73b8-5331-af19-443edde96ab9",
+      "sourceContentHash": "3c18c765be825a7f5a36797b38deff03f10991165889ac061155c63d2a490e86",
+      "targetContentHash": "2673611d4104377889f18008b1e6080b92f6944957c0380c56f1d0e87dc33a45",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:23.967Z",
+      "approvedAt": "2026-09-06T05:59:23.967Z",
+      "comments": []
+    },
+    {
+      "pairId": "04993ef9-3445-53b8-93ad-8f3bbe6cfc16",
+      "sourceBlockId": "709a956f-caec-5030-8718-3bd59938b08d",
+      "targetBlockId": "4679e7b3-ade6-541f-adec-5a564c44530c",
+      "sourceContentHash": "bc32278f5e0fb1051ab8dc6fb5bd5938a3f99c71d8043ac8a4f2f553f7de65ec",
+      "targetContentHash": "1acdd26e65b7a93abba8e6972770863ea39b0b56044f535947297cd56b84b90c",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:25.419Z",
+      "approvedAt": "2026-09-06T05:59:25.419Z",
+      "comments": [
+        {
+          "commentId": "74a57487-476a-4c01-99ba-1998946d9d12",
+          "text": "Scripture, through the covenanted action of the Holy Spirit, constantly\n‘shines’\n, in the sense of giving spiritual illumination and insight as to who and what one\nis in the sight of God, and who and what Jesus Christ is, both in himself and in relation to\none’s own self and finally, in the broadest and most inclusive sense, how one ought to\nlive. \n\n圣灵按约所作的工作，使圣经不断“发光”：它赐人属灵的光照和洞察，使人看见自己在神眼中是谁、处于什么光景，看见耶稣基督本身是谁、祂与自己有什么关系，也使人认识自己、知道当如何生活——这是最广阔、最完整的意义。\n\n这里圣灵按约，或者原译者翻译的“透过圣灵立约的作为”。这里的“约”指的是哪个“圣约”？\n\n你的译文本身我认为是正确的，但是此处，对于所指的约，我不知道作者指的是哪个？\n\n如果你能找到依据，可以为此写一个你的“译者注”",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:20:04.481Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "f82baca2-3b81-583d-987b-3c207f32dcdf",
+      "sourceBlockId": "65eb95b0-6210-569b-9002-209fffaa2810",
+      "targetBlockId": "0e7ab484-4254-5b45-be8b-306bb2ddb3f9",
+      "sourceContentHash": "23f19c688b9b0f35f58f2e53562408e0b3ff0617b512eb29b89f84d2c2d4d481",
+      "targetContentHash": "695e03f3489211e547b3d7b1dd9b7b28c2bf7255b62f4417a893e2de87ff03e6",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:27.730Z",
+      "approvedAt": "2026-09-06T05:59:27.730Z",
+      "comments": []
+    },
+    {
+      "pairId": "d05f333d-9db1-5392-bbb1-daeeac5bec49",
+      "sourceBlockId": "3324bc77-1cc3-51a1-8879-8a3098c7475b",
+      "targetBlockId": "81b814ec-33fa-5bc9-b72d-f38231dfe7d9",
+      "sourceContentHash": "7b25cbc5cc9837d028a26c589bac3a088861789cb8f85a7f4c15830f17aa7d3d",
+      "targetContentHash": "f0b867a5be863cc360fa58f8d31b9242808101acc9744e4ab16cd82703e2c80e",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:29.252Z",
+      "approvedAt": "2026-09-06T05:59:29.252Z",
+      "comments": [
+        {
+          "commentId": "1c3bd4f7-0636-4082-bb23-008d968faa1f",
+          "text": "So he writes: ‘the Holy Ghost speaking in and by the\nword imparting to it virtue, power, efficacy, majesty, and authority, affords us the\nwitness, that our faith is resolved into’.\n\n原文中这句话很长，也比较拗口，可以尝试拆分成几个分句，来翻译，以便能够更容易理解。特别是比如，“the Holy Ghost speaking in and by the\nword”  翻译为 “圣灵在神的话中并藉着神的话说话” 本身是可以的，但是用中文读起来，理解起来有些困难。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:24:15.838Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "c5e1524a-2685-5cb7-9811-ae0a7e456178",
+      "sourceBlockId": "10787f4a-bab0-52f9-b9c2-6c6c0576b69a",
+      "targetBlockId": "780ed4a6-3407-5e8d-91e3-2397963eb03b",
+      "sourceContentHash": "5071c8c89627b7eccf8cee80bfcf689f7346be949d841bf7bd02d78937786f29",
+      "targetContentHash": "5a909aba19db4837de955d9075f6dbb329baeb4d2867910e3ca3658dfdcab494",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:31.854Z",
+      "approvedAt": "2026-09-06T05:59:31.854Z",
+      "comments": [
+        {
+          "commentId": "d83c9d74-af4e-4d9b-a14b-3c1900feaf7f",
+          "text": "‘Must we not rest at last in that to theion [divine quality], which\naccompanies the true voice of God, evidencing itself and ascertaining the soul beyond all\npossibility of mistake?’\n\n可以说，这个反问句把我搞糊涂了。\n你的翻译“我们最终岂不必须安息在那与神真实声音相伴的‘神圣性质’（*to theion*）上吗？这性质能显明自己，并使人的灵魂确信到一个地步，排除一切错误的可能。” 我大概明白这里的意思，似乎是说，我们的信心需要安息在圣灵的工作里，“听”到那神真实的声音，因而完全可以确信。这是信心可安息的根基。但是读起来始终绕口。可以尝试再组织语言，让中文阅读者读起来，也更容易明白。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:29:31.358Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "2985adbe-8f41-5dcf-8858-d194419e8549",
+      "sourceBlockId": "38b066c3-4120-5bb1-a8a1-179682545a6d",
+      "targetBlockId": "3475eacd-259c-5ed9-9142-68c6ddb2cfb9",
+      "sourceContentHash": "074d7d5cd4c3072470508b5f2457fc1a245c5323fce2df451c88ad11ff34b60d",
+      "targetContentHash": "5b38cfa9184783b217d2b10ee70a267db2f8519ad02f1fd0f34063688d5ef7f4",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:33.939Z",
+      "approvedAt": "2026-09-06T05:59:33.939Z",
+      "comments": []
+    },
+    {
+      "pairId": "b3a4e4da-179b-5eac-b0a7-a0391f032c4c",
+      "sourceBlockId": "26962717-0bd2-5fc0-9d73-a2e473a91112",
+      "targetBlockId": "7685dc53-8add-5a8f-ad7e-9380d8b4e188",
+      "sourceContentHash": "cb66fcadbe68ccada1f37fc118b0a088a12beaa94b0462ab4d44ff9cf0ca973b",
+      "targetContentHash": "4c1166229f3fad6b463fac2934f73bb9c69fcc8a7b225e9606255fdfa3e2f63f",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:35.610Z",
+      "approvedAt": "2026-09-06T05:59:35.610Z",
+      "comments": []
+    },
+    {
+      "pairId": "58928b73-27d4-5909-afdb-7103a122e9ea",
+      "sourceBlockId": "c21ca1a8-0a5e-517d-8261-f62849fb9e8e",
+      "targetBlockId": "e94529da-78a5-5790-a9a6-c228e7d088b6",
+      "sourceContentHash": "950527c26efe6d8a687d58a744bb59f817d97b6c85fe294eefe99ecb2cb8ec94",
+      "targetContentHash": "d2227d9e5b98098be673bbd30ec04d3a8d577f1bbfbd2e2b543345140c3d17e7",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:37.224Z",
+      "approvedAt": "2026-09-06T05:59:37.224Z",
+      "comments": []
+    },
+    {
+      "pairId": "f7468301-b090-54d9-9f3f-cf7025c5f345",
+      "sourceBlockId": "7a3418cc-e666-5f5e-87f2-106f262808a7",
+      "targetBlockId": "ea6bac93-92e0-565f-9ef6-d3c1aca739ba",
+      "sourceContentHash": "3cb196045b52bce1aae9059d0d6a60ec39dfb86003fce8b1530fa65e8e2dc87e",
+      "targetContentHash": "4511ad0bbfcf02c6955a3c8b5e37de21acdb986b7692971e1297f7fcc9c8f557",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:39.265Z",
+      "approvedAt": "2026-09-06T05:59:39.265Z",
+      "comments": []
+    },
+    {
+      "pairId": "7605f6b5-1438-579d-8538-5bf75eaacfec",
+      "sourceBlockId": "d6c30281-2933-5b73-9afa-59b60c969674",
+      "targetBlockId": "58e6238b-a3fc-5bcf-b53d-7fbffeda043b",
+      "sourceContentHash": "9472a90f3a632ccb90440f72a5858c4fab05ec922dc64aef5f11da18a7307ccc",
+      "targetContentHash": "9c9119dfdd436dbf9c69aec34d3032e06d8483757e7a227c6307508de33e1936",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:40.839Z",
+      "approvedAt": "2026-09-06T05:59:40.839Z",
+      "comments": []
+    },
+    {
+      "pairId": "047798ae-7ef9-5d3d-87f9-0e3fcdd1a5ea",
+      "sourceBlockId": "e5b6089b-5572-5226-8f3f-0e3837145c8d",
+      "targetBlockId": "28eab2fd-13a0-59e4-b7e4-09ed6513891c",
+      "sourceContentHash": "5ca982e02c76b326ed5f68f7344f21853dbe17fffacfb44f96b6d2936294a190",
+      "targetContentHash": "05bdb163810bede9e33cfc254e2ccec40448f022e78a04971b2b262f087429c3",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:42.339Z",
+      "approvedAt": "2026-09-06T05:59:42.339Z",
+      "comments": []
+    },
+    {
+      "pairId": "a860897a-93d3-57ec-b537-cbaa989f2c29",
+      "sourceBlockId": "3368c689-e7db-5eb5-81b4-2e9665e27327",
+      "targetBlockId": "0256c265-54bb-556e-bcab-3d0c95e48ddd",
+      "sourceContentHash": "f32dcdd369ca8a5a935320ad55a8052e06497b26cc8e89b3cfc802586850bd40",
+      "targetContentHash": "ad5529d3cbb770d107aa177b01c3f84b3a05591eb80b865dff11ff1c57e30fa8",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:43.952Z",
+      "approvedAt": "2026-09-06T05:59:43.952Z",
+      "comments": [
+        {
+          "commentId": "2c964247-a38f-45b2-bae4-6412f770aa3a",
+          "text": "这里 interpreting of the Scriptures 用 “圣经的诠释”似乎更恰当一些。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:35:30.443Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "287bc7bb-edb6-523c-91d1-f69d406c5137",
+      "sourceBlockId": "a25d6e0a-0d42-5299-9223-5bad7d85a0bb",
+      "targetBlockId": "b02b026e-c3e3-50f5-9823-2d83b6fb6ad0",
+      "sourceContentHash": "fcb57b32ebac5c611f67b2a8d8381c6130e1c02e2bb2fa4941fa42a65a1f30a7",
+      "targetContentHash": "2434367f565664313e6736444fc1ed9464b4cf2c3d0e9ed231a75384bd63e275",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:45.859Z",
+      "approvedAt": "2026-09-06T05:59:45.859Z",
+      "comments": [
+        {
+          "commentId": "585a46c1-8c16-4e08-b4f8-3c6a54534296",
+          "text": "这里 interpreting of the Scriptures 用 “圣经的诠释”似乎更恰当一些。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:35:34.621Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "722ff503-58e2-5e85-8801-b92016b69c57",
+      "sourceBlockId": "99d75275-a378-5e03-8623-19a0c0927a2b",
+      "targetBlockId": "cea8f3f9-ebd8-5dfa-8a3a-367731c4c016",
+      "sourceContentHash": "d2d0a066caa403a1d24593b40c781bed565c5d4457b71dceace67fe07a006184",
+      "targetContentHash": "980e91e6570b2654bb3d800f202b9f7f6e00f2d08399333e3283db0555023642",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:47.547Z",
+      "approvedAt": "2026-09-06T05:59:47.547Z",
+      "comments": []
+    },
+    {
+      "pairId": "f0a4699d-f18b-56dd-bd03-f16ef3da8df0",
+      "sourceBlockId": "c0cdd512-e4c8-5807-8885-d52771f3af1e",
+      "targetBlockId": "de861cd7-ce92-5e69-959e-e48fbdeb2e83",
+      "sourceContentHash": "a72ce4e04eb2f0b69c96e919211c4ff70b6eca2aea84830207f76b3949a66d4e",
+      "targetContentHash": "c9b8bda5bfa9024ae06f876e7b6a238eacc81805499527f21dfe2f8e7142fc75",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:49.435Z",
+      "approvedAt": "2026-09-06T05:59:49.435Z",
+      "comments": [
+        {
+          "commentId": "c9da5a67-72f8-435e-a692-baf57159109f",
+          "text": "这段的含义似乎是说，我们有责任彼此交流教导圣经中神的心意。即便我们只是一个普通的基督徒，而不是上过神学院的牧师。而现在，很多人似乎把普通的信徒解释圣经，或者跟其他人交流圣经看作一种自不量力的行为，并嘲笑、指责这种行为。而这，让教会里很多的信徒在真道上无知，活在黑暗之中。\n\n原文中用了很多长句子，请使用较短的句子，让中文读者也比较适应的长度和节奏，拆分长句子来翻译。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:41:49.193Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "db3797ed-c6d1-5e02-a495-f351d6a8da59",
+      "sourceBlockId": "cb3f1558-542f-567f-9daf-205d1ba7e81c",
+      "targetBlockId": "2e38e1bc-5c90-5c44-80b4-6ee4707d135a",
+      "sourceContentHash": "85c9c6ea74edcc0fb5398e19a2d540970c0bf2fc6cc4198aefec1bf29bae285e",
+      "targetContentHash": "8068e8195be8af06d6d5f81a97933ead125914fa145897c3aabfa54559395260",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:51.200Z",
+      "approvedAt": "2026-09-06T05:59:51.200Z",
+      "comments": []
+    },
+    {
+      "pairId": "68cd92e9-6e69-5a59-b313-7113863f153c",
+      "sourceBlockId": "28f21c98-7576-5500-b7d1-7ab81eeb43ce",
+      "targetBlockId": "2819096a-07bf-559b-bb46-1ec85662ad2e",
+      "sourceContentHash": "046cead9b7213967708eb45db06d0649a701948656d819eb97dfea59db3ecf5c",
+      "targetContentHash": "437c219543d6172065fc021db39af683bd0e69db4d05e1eb53e74f72f2798d3f",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:52.715Z",
+      "approvedAt": "2026-09-06T05:59:52.715Z",
+      "comments": [
+        {
+          "commentId": "e9c293e3-55e8-4b76-907e-7d84aed20edb",
+          "text": "Though written in the usual dull style (dull even for him!)\nwhich Owen affected when writing about the Scriptures, this chapter is veritable\ndynamite, and deserves reading and re-reading by all who desire to prove the perspicuity\nof Scripture for themselves.\n欧文写到圣经时，常采用一种沉闷的风格——即使对他而言也算沉闷！——但这一章其实充满爆发力。凡想亲自验证圣经清晰性的人，都值得一读再读。\n\n这里的“这一章”应该是指脚注 30 所指向的章节。但也许距离这一句子有点远，读到的时候，已经忘记“这一章”指的是什么了。是否可以拆分，或者把代名词再次表述一遍，以便可以读的更明白一些。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:48:01.910Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "1ff7006b-e18d-5bed-960f-7fd78f5ece58",
+      "sourceBlockId": "e7834ad2-5077-5cae-bc61-f9bab171607c",
+      "targetBlockId": "06f4b163-89c1-5a09-9895-a20bd6a2beba",
+      "sourceContentHash": "1d335c5f84c0f049b614597e27a63bff7bae7bd52da5745e5928b6ef6a53e6e9",
+      "targetContentHash": "9ba07efeac2419397d7175623a659c0e3a083dd30585f0aaa881d9b2a7ba9d05",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:55.909Z",
+      "approvedAt": "2026-09-06T05:59:55.909Z",
+      "comments": [
+        {
+          "commentId": "9a898870-e072-47bb-bec9-3ac975ffc28c",
+          "text": "landscape 在这里，我认为原译者适时的使用“景观”和“风景”来区分，似乎比较有助于理解。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:49:53.252Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        },
+        {
+          "commentId": "a34671b6-8e81-415f-bc93-5b4ac3999c42",
+          "text": "Generally, Owen saw Scripture as consisting of doctrines (facts about God) and examples\nof their application—the doctrinal principles interpreting the narratives, and the\nnarratives illustrating the doctrinal principles. \n\n总的来说，欧文认为圣经由教义——关于神的事实——及其应用实例组成：教义原则解释叙事，叙事则说明教义原则。\n\n这种翻译方法，本身从含义上是合理的。但是读起来，会让听众感到拗口。可以尝试把这个句子拆分成短一些的句子，有一些部分即便有重复也没关系。",
+          "status": "resolved",
+          "createdAt": "2026-09-06T00:52:09.392Z",
+          "resolvedAt": "2026-09-06T01:00:56.878Z"
+        }
+      ]
+    },
+    {
+      "pairId": "653d6048-dece-5073-8e32-269aba262eee",
+      "sourceBlockId": "456bf0a8-0dab-533f-a367-2684dd62752f",
+      "targetBlockId": "45629edb-5e3e-5eb4-8714-bfdf7e1bbc88",
+      "sourceContentHash": "eaa926142af4b02dc501a7ec483c2a7397ce466749a31c130c4fc7627c81574d",
+      "targetContentHash": "2eea1dc5822ee097d7ab02874ab48434ed9e6da3fbdd67d6209dc7562be9b2f8",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T05:59:58.482Z",
+      "approvedAt": "2026-09-06T05:59:58.482Z",
+      "comments": []
+    },
+    {
+      "pairId": "23831ddb-d1d8-58e1-b9ca-056ad57c8752",
+      "sourceBlockId": "6b474b17-6cdb-5f96-a51b-1060c1369602",
+      "targetBlockId": "99577269-6c56-5428-a5fb-41be22a1f924",
+      "sourceContentHash": "901bc174774fb80929d1038b6afa876871f0baea22b19acc46cbeabaaddc8a7e",
+      "targetContentHash": "078c3a8a45fe3dc540a5091da0f8e51abb978f7f7652cf7859b6b8496ed36d9e",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:00.600Z",
+      "approvedAt": "2026-09-06T06:00:00.600Z",
+      "comments": []
+    },
+    {
+      "pairId": "c5ad323e-b310-59eb-9db1-0bd9072079a0",
+      "sourceBlockId": "7020cdda-d26d-5003-a8b4-75eadd809dcb",
+      "targetBlockId": "353efde3-1c8c-5517-b49d-4249f6fff4f5",
+      "sourceContentHash": "b39051bea189fea81661b1cc5fe710ec910e68e5a7e837794a2a25bba9739221",
+      "targetContentHash": "3a94cf3709f0e035f5342eaf60296a5da6c9eebec2f14a8b13a8a054a7eb12bd",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:02.837Z",
+      "approvedAt": "2026-09-06T06:00:02.837Z",
+      "comments": []
+    },
+    {
+      "pairId": "845b98a1-a65b-5504-802f-9869a973ceb9",
+      "sourceBlockId": "bb2bf194-af95-57a7-901d-7893a56d9600",
+      "targetBlockId": "a255e4ea-b790-5d0b-9fc4-95502984b54a",
+      "sourceContentHash": "8df503cc93d7526e84438ebbc2b3d20862c0e6fbd06060d47e6780d5decb5544",
+      "targetContentHash": "ddec44ce3fffad603d58e9b8b941effd1b1ece593f26ee41b8e39be6a727b08d",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:04.494Z",
+      "approvedAt": "2026-09-06T06:00:04.494Z",
+      "comments": []
+    },
+    {
+      "pairId": "00158ab6-14c3-57b1-849e-0cb5385f606a",
+      "sourceBlockId": "dcad5f6b-0a60-5362-a294-ffcb353f3990",
+      "targetBlockId": "7fddd364-01cd-53a6-a368-975298b169cf",
+      "sourceContentHash": "47cdd2fcfdefb8acfdf6568733f4e3ba2a3f8e555bc0907cc840996bc814155f",
+      "targetContentHash": "9c588c414f519e245a89780d451eaf6e310beb27c0717a55aee2bb3cf75bae03",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:06.298Z",
+      "approvedAt": "2026-09-06T06:00:06.298Z",
+      "comments": []
+    },
+    {
+      "pairId": "d5932d53-61d5-5d25-9792-d51c9ee208ab",
+      "sourceBlockId": "8b5ecc47-2042-54eb-8d7b-657e5456eb5c",
+      "targetBlockId": "cb0b97c8-24b5-54e8-bb77-3b3b1970e595",
+      "sourceContentHash": "e7420690dec2454c9c147863367a3df1b5515fdc9d315fa33947a3b6fd3d337d",
+      "targetContentHash": "02b63be12c2cc4693b381d7bc8193364306acb0380ccb0d434956de6f4ee6a26",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:07.503Z",
+      "approvedAt": "2026-09-06T06:00:07.503Z",
+      "comments": []
+    },
+    {
+      "pairId": "6f419a36-f777-596e-91e9-a51a232814a4",
+      "sourceBlockId": "4f68cad1-f388-5394-9143-a40c720d10f8",
+      "targetBlockId": "d111beed-32b9-58d6-890d-21c5c531fbac",
+      "sourceContentHash": "7caaeb48a2ab2b05d54cf166cfb48694f110856c8217b1b2ce80ed47253e725b",
+      "targetContentHash": "5ba37fe8d8f5989ed4a130ec8a12f4ba0f02dc7e3380f66a5c24dfb18ea743f3",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:09.294Z",
+      "approvedAt": "2026-09-06T06:00:09.294Z",
+      "comments": []
+    },
+    {
+      "pairId": "85579cee-2a72-5cd7-9943-29dea7c26809",
+      "sourceBlockId": "7028d248-36e6-540e-af34-ac2fabd196af",
+      "targetBlockId": "ed5b8bfe-6f52-532c-b372-7e1f98d8a0cd",
+      "sourceContentHash": "420a12f4d1f0af7078ebabb4896952652d46ab005f13ad63d027bcf0c67fbbb8",
+      "targetContentHash": "fc4e35745a69e8755f8cb70669acacdf8ad23c12a7fe0be44a66b54df2ffee77",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:10.653Z",
+      "approvedAt": "2026-09-06T06:00:10.653Z",
+      "comments": []
+    },
+    {
+      "pairId": "44ae7196-cd36-5705-bf6a-0ddefcc89352",
+      "sourceBlockId": "44fe68e8-2445-5630-9179-8f8860d0b46d",
+      "targetBlockId": "ba493332-ebb3-59d0-ac2c-920bad0e68c2",
+      "sourceContentHash": "4aa7a72d907e05b16fd01f839f475ae7dcbe2af110fc4ba19e74cec42766a011",
+      "targetContentHash": "c814c22de9755f9e65401e2a2eba32a31be4b93f1b262670e1ffc0616d091e17",
+      "status": "approved",
+      "reviewedAt": "2026-09-06T06:00:12.865Z",
+      "approvedAt": "2026-09-06T06:00:12.865Z",
+      "comments": []
+    }
+  ]
+}

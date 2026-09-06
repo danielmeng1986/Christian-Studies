@@ -28,6 +28,34 @@ Generated files are written to `Books/追寻敬虔/Web/dist/` and are intentiona
 
 Open `http://127.0.0.1:4173/chapters/01/` in Safari or Chrome. Use the top menu to navigate between all 20 chapters.
 
+Chapter 05 now has two approved reading editions. The unqualified URL
+`http://127.0.0.1:4173/chapters/05/` continues to open the default Word-derived
+edition. The approved modern Simplified Chinese edition is available at
+`http://127.0.0.1:4173/editions/chatgpt-zh-cn/chapters/05/`; use the version
+selector in the top toolbar to switch between them. Notes, discussions, source
+revisions, and AI context manifests remain isolated by edition. An unavailable
+explicit edition falls back to the default page with a visible notice.
+
+The chapter 05 edition-review pilot is available at
+`http://127.0.0.1:4173/review/editions/chatgpt-zh-cn/chapters/05/`. It compares
+the received Word-derived edition with the modern Simplified Chinese revision
+block by block. Each aligned block moves through `draft`, `reviewed`, and
+`approved`; chapter approval remains disabled until every block is approved.
+Each block accepts append-only reviewer comments. Open comments must be marked
+resolved before that block or the chapter can be approved; the compared prose
+remains read-only in the browser.
+Review writes use the same loopback-only origin, session token, atomic
+replacement, and stale-revision protection as other local writes.
+The English chapter is shown in a collapsible reference panel through a
+same-origin, in-memory runtime proxy. It is fetched from the permissioned source
+URL but is not persisted in the repository, review sidecar, or generated reader
+output.
+
+Because edition publication changes both generated pages and the local service,
+run the build and restart an already-running service once after pulling or
+applying this release. Later text-only edits still need only a rebuild and page
+refresh when the service code has not changed.
+
 The current reader deterministically builds all 20 chapters and includes working chapter navigation, a current-chapter outline with live section/progress feedback, the three-column reading layout, responsive side panels, light/dark/sepia themes, left-panel footnote and Scripture interaction, per-chapter annotations, AI discussions, and a local source library. The outline opens from the top toolbar and stays separate from reading-context references. The annotation panel shows the three most recently updated notes by default and can expand to show all notes.
 
 The divider beside the study panel can be dragged or adjusted with the arrow keys, and double-clicking restores the default width. Notes and AI discussions remember separate widths. AI discussion mode collapses the reference panel by default and opens it as an overlay on demand so it does not squeeze the reading or discussion columns. On narrow screens both side panels remain overlays.

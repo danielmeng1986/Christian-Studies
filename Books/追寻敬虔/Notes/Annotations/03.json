@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "03",
   "notes": []
 }

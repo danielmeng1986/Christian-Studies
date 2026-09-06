@@ -26,6 +26,22 @@ The Chapter 05 Markdown already contains machine-readable structure:
 
 The reviewed Markdown is the sole body-content source for the website. The web build must not reinterpret the Word file or introduce a separately maintained HTML copy of the chapter.
 
+### 2.1 Multiple-edition pilot inputs
+
+Chapter 05 includes an approved modern Simplified Chinese revised edition with
+`editionId: chatgpt-zh-cn`. The current Word-derived edition becomes
+`legacy-zh` and remains the default. The revision uses the current Chinese
+Markdown for paragraph alignment and a permissioned, personal-use English
+chapter as the highest authority for authorial meaning. The English text is a
+temporary review reference and must not be copied into repository content or
+generated reader output.
+
+The revised body and body block quotations are rewritten together. Existing
+footnote content remains shared and unchanged. Person names use the repository
+translation index for identity and modern Simplified Chinese display forms,
+including the mainland-style middle dot. A versioned chapter glossary governs
+theological terminology.
+
 ## 3. Product goals
 
 The project will provide a local-first interactive book suitable for sustained reading:
@@ -36,6 +52,10 @@ The project will provide a local-first interactive book suitable for sustained r
 4. Highlight annotated text and reopen the corresponding note when the highlight is clicked.
 5. Restore the theme, panel preferences, notes, and highlights after the application is restarted.
 6. Generate all chapters through one reusable build process rather than chapter-specific handwritten HTML.
+7. Let an editor compare aligned source and revised paragraphs, edit the
+   revision, and move each block through `draft`, `reviewed`, and `approved`.
+8. Publish an alternate edition only as a complete approved chapter, while
+   preserving direct URLs and defaulting unqualified URLs to `legacy-zh`.
 
 ## 4. Non-goals for version 1
 
@@ -216,8 +236,9 @@ Character offsets alone become invalid when earlier text changes. DOM paths also
 
 ```json
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "notes": [
     {

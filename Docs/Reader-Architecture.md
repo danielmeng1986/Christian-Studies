@@ -19,6 +19,11 @@ The reader has three components:
 
 The reader consumes content; it does not own the canonical book text.
 
+For multi-edition books, the reader resolves content through the authoritative
+edition manifest. Its unit of identity is `(bookId, editionId, chapterId)`;
+unqualified chapter identity remains a compatibility route to the declared
+default edition only.
+
 ## 2. Inputs and outputs
 
 The current build reads:
@@ -48,8 +53,8 @@ The local service may write only through an explicit, validated user operation:
 
 | Operation | Durable target | Required protection |
 | --- | --- | --- |
-| Create/update/delete annotation | `Notes/Annotations/<chapter>.json` | Schema validation, source revision, conflict-safe save |
-| Create/continue discussion | `Notes/Discussions/<chapter>/` | Schema validation, message state, evidence provenance |
+| Create/update/delete annotation | manifest-declared `notesPath` for `(editionId, chapterId)` | Schema validation, composite identity, source revision, conflict-safe save |
+| Create/continue discussion | manifest-declared `discussionsPath` for `(editionId, chapterId)` | Schema validation, composite identity, message state, evidence provenance |
 | Confirm library import | `Sources/Originals/`, `Sources/Processed/`, `Sources/catalog.json` | Preview, explicit confirmation, privacy defaults |
 | Rebuild/remove library index | `Sources/Indexes/` | Never delete originals or registry consent state |
 
@@ -58,6 +63,13 @@ must not mutate user data.
 
 Browser storage may hold presentation preferences, but it must not be the only
 durable location of annotations, discussions, library ownership, or consent.
+
+The last selected edition may be a browser presentation preference. Notes,
+discussions, revisions, retrieval records, and context manifests are not
+preferences and must persist their `editionId`. Unapproved edition chapters are
+excluded from ordinary reader builds. An unavailable explicit edition request
+falls back visibly to the default; review tooling is the only interface that
+may render draft or reviewed-but-unapproved prose.
 
 ## 4. Build and runtime flow
 
@@ -151,3 +163,9 @@ rendering-order identity in the future Reading Document Model with stable UUIDs
 for reviewed semantic blocks while retaining exact range/context/revision
 selectors. Current anchors are not migrated until that model and its
 compatibility tests exist.
+
+[ADR-0005](Decisions/ADR-0005-Multiple-Reading-Editions-and-Review.md)
+requires composite edition/chapter identity, explicit edition manifests, and
+chapter-atomic approval before alternate prose enters the ordinary reader.
+Current unqualified routes and user-data files remain bound to the default
+received edition until the documented migration is implemented and tested.

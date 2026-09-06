@@ -91,6 +91,9 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(self.output.count('class="chapter-menu__option"'), 20)
         self.assertIn('aria-selected="true" aria-current="page" href="/chapters/05/"', self.output)
         self.assertIn('role="listbox" aria-label="选择章节"', self.output)
+        self.assertIn('id="edition-switcher"', self.output)
+        self.assertIn('data-edition-id="legacy-zh"', self.output)
+        self.assertIn('value="/editions/chatgpt-zh-cn/chapters/05/"', self.output)
         self.assertIn('id="section-navigation"', self.output)
         self.assertIn('id="section-menu-panel" aria-label="本章目录"', self.output)
         parser = StructureParser()
@@ -99,6 +102,24 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(parser.outline_targets), 9)
         for chapter_id in range(1, 21):
             self.assertTrue((BUILD.DIST_ROOT / f"chapters/{chapter_id:02d}/index.html").is_file())
+        alternate_page = BUILD.DIST_ROOT / "editions/chatgpt-zh-cn/chapters/05/index.html"
+        self.assertTrue(alternate_page.is_file())
+        alternate_output = alternate_page.read_text(encoding="utf-8")
+        self.assertIn('<html lang="zh-Hans"', alternate_output)
+        self.assertIn('data-edition-id="chatgpt-zh-cn"', alternate_output)
+        self.assertIn('value="/chapters/05/"', alternate_output)
+        self.assertIn('现代简体润译版（ChatGPT）', alternate_output)
+        self.assertIn('data-scripture-id="JHN.14.26;16.13"', alternate_output)
+        self.assertIn('>约14:26，16:13</a>', alternate_output)
+        review_page = BUILD.DIST_ROOT / "review/editions/chatgpt-zh-cn/chapters/05/index.html"
+        self.assertTrue(review_page.is_file())
+        self.assertIn("第五章版本审核", review_page.read_text(encoding="utf-8"))
+        self.assertTrue((BUILD.DIST_ROOT / "assets/review.js").is_file())
+        review_output = review_page.read_text(encoding="utf-8")
+        self.assertIn('id="english-reference"', review_output)
+        self.assertIn('class="review-comments"', review_output)
+        self.assertIn("packer_quest_for_godliness_ch_5.pdf", review_output)
+        self.assertFalse(any(BUILD.DIST_ROOT.rglob("*.pdf")))
 
     def test_notes_list_can_collapse_to_recent_items(self) -> None:
         app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")

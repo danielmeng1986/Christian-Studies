@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hans" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="《追寻敬虔》双版本逐段审核">
+    <title>第五章版本审核｜追寻敬虔</title>
+    <link rel="stylesheet" href="../../../../../assets/review.css">
+    <script type="module" src="../../../../../assets/review.js"></script>
+  </head>
+  <body>
+    <header class="review-toolbar">
+      <div>
+        <p class="eyebrow">EDITION REVIEW · CHAPTER 05</p>
+        <h1>第五章版本审核</h1>
+      </div>
+      <div class="review-toolbar__actions">
+        <span id="save-status" role="status">载入中</span>
+        <button id="toggle-english" type="button" aria-controls="english-reference" aria-expanded="true">隐藏英文原稿</button>
+        <button id="approve-chapter" type="button" disabled>批准整章</button>
+        <a href="/chapters/05/">返回阅读器</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="review-summary" aria-labelledby="summary-title">
+        <div>
+          <p class="eyebrow">REVIEW PROGRESS</p>
+          <h2 id="summary-title">审核进度</h2>
+        </div>
+        <div class="review-summary__counts" id="review-counts"></div>
+        <p id="chapter-state"></p>
+      </section>
+
+      <div class="column-headings" aria-hidden="true">
+        <strong>Word 转写版</strong>
+        <strong>现代简体润译版（ChatGPT）</strong>
+        <strong>审核</strong>
+      </div>
+      <section class="review-list" id="review-list" aria-live="polite"></section>
+    </main>
+
+    <aside class="english-reference" id="english-reference" aria-label="英文原稿参考">
+      <header>
+        <div>
+          <p class="eyebrow">ENGLISH SOURCE · PAGES 1–15</p>
+          <h2>英文原稿</h2>
+        </div>
+        <a href="https://www.johnowen.org/media/packer_quest_for_godliness_ch_5.pdf" target="_blank" rel="noreferrer">单独打开</a>
+      </header>
+      <p class="english-reference__notice">此处直接显示来源网站提供的许可版本，仅供审核参考；英文全文不会写入本仓库或阅读器构建产物。</p>
+      <iframe
+        title="John Owen on Communication from God 英文原稿"
+        src="/api/edition-reviews/chatgpt-zh-cn/05/english-source#page=1&view=FitH"
+      ></iframe>
+    </aside>
+
+    <template id="review-row-template">
+      <article class="review-row">
+        <div class="review-row__meta"><span class="review-row__number"></span><span class="review-row__kind"></span></div>
+        <div class="review-copy review-copy--source"><p></p></div>
+        <div class="review-copy review-copy--target"><p></p></div>
+        <div class="review-actions" role="group" aria-label="段落审核状态">
+          <button type="button" data-status="draft">草稿</button>
+          <button type="button" data-status="reviewed">已复核</button>
+          <button type="button" data-status="approved">已批准</button>
+        </div>
+        <section class="review-comments" aria-label="修改意见">
+          <div class="review-comments__heading">
+            <strong>修改意见</strong>
+            <span class="review-comments__summary"></span>
+          </div>
+          <div class="review-comments__list"></div>
+          <form class="review-comments__form">
+            <label>
+              <span>给这一段添加意见</span>
+              <textarea name="comment" rows="3" maxlength="4000" placeholder="例如：这里的语序不自然；建议把……改为……"></textarea>
+            </label>
+            <button type="submit">保存意见</button>
+          </form>
+        </section>
+      </article>
+    </template>
+  </body>
+</html>

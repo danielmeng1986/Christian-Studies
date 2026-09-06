@@ -450,7 +450,8 @@ AI 回答必须能区分：
 
 ```json
 {
-  "contextSchemaVersion": 2,
+  "contextSchemaVersion": 3,
+  "editionId": "legacy-zh",
   "promptVersion": 1,
   "retrievalVersion": 1,
   "sourceRegistryVersion": 1,

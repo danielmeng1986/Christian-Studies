@@ -1,7 +1,8 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "ff886a59-7d27-4f71-a6ce-5901d2347f55",
   "bookId": "qfg",
+  "editionId": "legacy-zh",
   "chapterId": "05",
   "sourceRevision": "771ae81851cd2d8317d8b1cf23b3100a8b697d8cb8a10c0d92f2fd376b383a6f",
   "anchor": {
@@ -19,31 +20,31 @@
     "chapterTitle": "第五章：約翰．歐文論從神而來的交通",
     "scriptures": [
       {
-        "citation": "来 5:14",
-        "translationLabel": "新标点和合本简体",
-        "translationId": "cuv-s",
         "id": "HEB.5.14",
+        "translationId": "cuv-s",
+        "translationLabel": "新标点和合本简体",
+        "citation": "来 5:14",
         "text": "惟独长大成人的才能吃干粮；他们的心窍习练得通达，就能分辨好歹了。"
       },
       {
-        "citation": "太 11:25–27",
-        "translationLabel": "新标点和合本简体",
-        "translationId": "cuv-s",
         "id": "MAT.11.25-27",
+        "translationId": "cuv-s",
+        "translationLabel": "新标点和合本简体",
+        "citation": "太 11:25–27",
         "text": "那时，耶稣说：「父啊，天地的主，我感谢你！因为你将这些事向聪明通达人就藏起来，向婴孩就显出来。父啊，是的，因为你的美意本是如此。一切所有的，都是我父交付我的；除了父，没有人知道子；除了子和子所愿意指示的，没有人知道父。"
       },
       {
-        "citation": "弗 1:17–19",
-        "translationLabel": "新标点和合本简体",
-        "translationId": "cuv-s",
         "id": "EPH.1.17-19",
+        "translationId": "cuv-s",
+        "translationLabel": "新标点和合本简体",
+        "citation": "弗 1:17–19",
         "text": "求我们主耶稣基督的　神，荣耀的父，将那赐人智慧和启示的灵赏给你们，使你们真知道他，并且照明你们心中的眼睛，使你们知道他的恩召有何等指望，他在圣徒中得的基业有何等丰盛的荣耀；并[知道]他向我们这信的人所显的能力是何等浩大，"
       },
       {
-        "citation": "约壹 2:27",
-        "translationLabel": "新标点和合本简体",
-        "translationId": "cuv-s",
         "id": "1JO.2.27",
+        "translationId": "cuv-s",
+        "translationLabel": "新标点和合本简体",
+        "citation": "约壹 2:27",
         "text": "你们从主所受的[恩]膏常存在你们心里，并不用人教训你们，自有主的[恩]膏在凡事上教训你们。这[恩]膏是真的，不是假的；你们要按这[恩]膏的教训住在主里面。"
       }
     ],

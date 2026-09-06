@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "bookId": "qfg",
+  "defaultEditionId": "legacy-zh",
+  "editions": [
+    {
+      "editionId": "legacy-zh",
+      "displayName": "Word 转写版",
+      "language": "zh-Hant",
+      "sourceType": "received-word-draft",
+      "status": "approved",
+      "chapters": {
+        "01": {"path": "Reading/01-導言.md", "notesPath": "Notes/Annotations/01.json", "discussionsPath": "Notes/Discussions/01", "status": "approved"},
+        "02": {"path": "Reading/第1部分-清教徒的画像/02-為何我們仍需清教徒.md", "notesPath": "Notes/Annotations/02.json", "discussionsPath": "Notes/Discussions/02", "status": "approved"},
+        "03": {"path": "Reading/第1部分-清教徒的画像/03-清教徒運動乃復興運動.md", "notesPath": "Notes/Annotations/03.json", "discussionsPath": "Notes/Discussions/03", "status": "approved"},
+        "04": {"path": "Reading/第1部分-清教徒的画像/04-英國清教徒的實用作品.md", "notesPath": "Notes/Annotations/04.json", "discussionsPath": "Notes/Discussions/04", "status": "approved"},
+        "05": {"path": "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md", "notesPath": "Notes/Annotations/05.json", "discussionsPath": "Notes/Discussions/05", "status": "approved"},
+        "06": {"path": "Reading/第2部分-清教徒与圣经/06-詮釋聖經的清教徒.md", "notesPath": "Notes/Annotations/06.json", "discussionsPath": "Notes/Discussions/06", "status": "approved"},
+        "07": {"path": "Reading/第2部分-清教徒与圣经/07-清教徒的良心.md", "notesPath": "Notes/Annotations/07.json", "discussionsPath": "Notes/Discussions/07", "status": "approved"},
+        "08": {"path": "Reading/第3部分-清教徒与福音/08-靠寶血得救.md", "notesPath": "Notes/Annotations/08.json", "discussionsPath": "Notes/Discussions/08", "status": "approved"},
+        "09": {"path": "Reading/第3部分-清教徒与福音/09-稱義教義在清教徒中的興衰.md", "notesPath": "Notes/Annotations/09.json", "discussionsPath": "Notes/Discussions/09", "status": "approved"},
+        "10": {"path": "Reading/第3部分-清教徒与福音/10-清教徒傳講福音的觀點.md", "notesPath": "Notes/Annotations/10.json", "discussionsPath": "Notes/Discussions/10", "status": "approved"},
+        "11": {"path": "Reading/第4部分-清教徒与圣灵/11-清教徒思想中的聖靈的見證.md", "notesPath": "Notes/Annotations/11.json", "discussionsPath": "Notes/Discussions/11", "status": "approved"},
+        "12": {"path": "Reading/第4部分-清教徒与圣灵/12-歐文的靈命觀.md", "notesPath": "Notes/Annotations/12.json", "discussionsPath": "Notes/Discussions/12", "status": "approved"},
+        "13": {"path": "Reading/第4部分-清教徒与圣灵/13-歐文論屬靈的恩賜.md", "notesPath": "Notes/Annotations/13.json", "discussionsPath": "Notes/Discussions/13", "status": "approved"},
+        "14": {"path": "Reading/第5部分-清教徒的基督徒/14-清教徒與主日.md", "notesPath": "Notes/Annotations/14.json", "discussionsPath": "Notes/Discussions/14", "status": "approved"},
+        "15": {"path": "Reading/第5部分-清教徒的基督徒/15-清教徒崇拜神的途徑.md", "notesPath": "Notes/Annotations/15.json", "discussionsPath": "Notes/Discussions/15", "status": "approved"},
+        "16": {"path": "Reading/第5部分-清教徒的基督徒/16-清教徒思想中的婚姻與家庭.md", "notesPath": "Notes/Annotations/16.json", "discussionsPath": "Notes/Discussions/16", "status": "approved"},
+        "17": {"path": "Reading/第6部分-清教徒的职事观/17-清教徒論講道.md", "notesPath": "Notes/Annotations/17.json", "discussionsPath": "Notes/Discussions/17", "status": "approved"},
+        "18": {"path": "Reading/第6部分-清教徒的职事观/18-清教徒佈道觀.md", "notesPath": "Notes/Annotations/18.json", "discussionsPath": "Notes/Discussions/18", "status": "approved"},
+        "19": {"path": "Reading/第6部分-清教徒的职事观/19-約拿單．愛德華滋與復興.md", "notesPath": "Notes/Annotations/19.json", "discussionsPath": "Notes/Discussions/19", "status": "approved"},
+        "20": {"path": "Reading/第6部分-清教徒的职事观/20-跋語.md", "notesPath": "Notes/Annotations/20.json", "discussionsPath": "Notes/Discussions/20", "status": "approved"}
+      }
+    },
+    {
+      "editionId": "chatgpt-zh-cn",
+      "displayName": "现代简体润译版（ChatGPT）",
+      "language": "zh-Hans",
+      "sourceEditionId": "legacy-zh",
+      "sourceType": "ai-assisted-revision",
+      "status": "approved",
+      "chapters": {
+        "05": {
+          "path": "Reading/chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md",
+          "notesPath": "Notes/Annotations/chatgpt-zh-cn/05.json",
+          "discussionsPath": "Notes/Discussions/chatgpt-zh-cn/05",
+          "status": "approved"
+        }
+      }
+    }
+  ]
+}

@@ -34,6 +34,13 @@ reader README has been prepared:
   -s 'Books/追寻敬虔/Web/tests'
 ```
 
+The suite also validates the chapter 05 edition-review pilot: semantic-block
+alignment, omission of prose from review sidecars, hash-based approval
+invalidation, chapter-atomic approval, and deterministic review-page output.
+It additionally covers first-alternate publication: approved-edition output,
+the default compatibility URL, explicit edition URLs and fallback, top-level
+switching, and edition-qualified note/discussion/context identity.
+
 The first command regenerates `Books/追寻敬虔/Web/dist/`. The second exercises
 the current reader's build, note and discussion APIs, context assembly,
 retrieval, local library, and related service behavior.
@@ -51,6 +58,7 @@ full suite is required before declaring a cross-cutting reader change complete.
 | Discussion schema, persistence, or API | `test_discussions.py`, `test_discussions_api.py`, and affected context tests |
 | Context assembly or retrieval | `test_context_builder.py`, `test_context_retrieval.py`, and discussion tests |
 | Local source library | `test_local_library.py` and affected context/service tests |
+| Edition manifest, alignment, review, or publication | Schema validation; block/hash and footnote parity checks; build, notes, discussion, retrieval, context, URL fallback, and publication-gate tests |
 | Core architecture or canonical paths | Documentation link/path audit and every subsystem test affected by the decision |
 | Planning decision or ADR only | Documentation link/anchor audit; English/Chinese OQ and ADR parity; verify accepted/open status and current-vs-target wording |
 | Generated or derived format | Rebuild twice when determinism is part of the contract; compare declared outputs |
@@ -66,6 +74,7 @@ The current reader suite provides automated coverage for, among other behavior:
 - expected chapter and asset production;
 - Scripture and footnote processing;
 - annotation and discussion validation/persistence behavior;
+- approved alternate-edition publication, URL fallback, and user-data isolation;
 - deterministic context construction and evidence classification;
 - cross-chapter retrieval;
 - supplemental-library preservation and index rebuilding; and
@@ -85,6 +94,7 @@ following across every book:
 - every Markdown link in `Docs/` resolves;
 - every accepted OQ has matching bilingual status and every ADR has a bilingual pair;
 - every reading unit has complete provenance; or
+- every multi-edition manifest, block alignment, and publication gate is valid; or
 - all user-data schemas preserve unknown compatible fields.
 
 Until such checks are implemented, these are review obligations. Future policy

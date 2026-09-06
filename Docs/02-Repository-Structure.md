@@ -28,3 +28,21 @@ Docs/         This Design Book and repository conventions
 `Docs/` records the repository's current architecture. Unnumbered core documents define system boundaries; numbered Design Book documents preserve the reading order of domain conventions and rationale. `Docs/README.md` is the authoritative task-to-document index.
 
 Avoid adding a top-level directory until a recurring need makes its purpose obvious.
+
+## Multi-edition book refinement
+
+When a book has multiple reviewed reading editions, it refines the existing
+`Reading/` and `Metadata/` responsibilities rather than adding a new top-level
+book directory:
+
+```text
+Reading/<editionId>/<chapter>.md
+Metadata/editions.json
+Metadata/Reading-Units/<editionId>/<chapterId>.json
+Metadata/Edition-Reviews/<targetEditionId>/<chapterId>.json
+```
+
+The received default edition may retain its existing paths so that introducing
+an alternate edition does not itself disturb links or user anchors. New
+alternate editions use the edition-qualified layout. See
+[ADR-0005](Decisions/ADR-0005-Multiple-Reading-Editions-and-Review.md).

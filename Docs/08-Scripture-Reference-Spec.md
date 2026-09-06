@@ -50,6 +50,10 @@ Use an ordinary Markdown link with a `scripture:` URI:
 ```
 
 The label is source-authoritative. The target uses canonical uppercase book codes.
+Editorial or reviser notes embedded in `Reading/**/*.md` follow the same rule:
+every explicit, locatable Scripture citation in such a note must use a canonical
+`scripture:` link. A general mention of Scripture or a biblical teaching does not
+authorize inventing a citation.
 
 ### 3.1 URI grammar
 

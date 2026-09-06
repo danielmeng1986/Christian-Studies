@@ -117,7 +117,8 @@ class DiscussionTests(unittest.TestCase):
     def test_schema_one_migrates_in_memory_without_inventing_context(self) -> None:
         fixture = load_json_fixture("context-baseline.json")["document"]
         migrated = DISCUSSIONS.normalize_discussion_document(fixture, "05")
-        self.assertEqual(migrated["schemaVersion"], 2)
+        self.assertEqual(migrated["schemaVersion"], 3)
+        self.assertEqual(migrated["editionId"], "legacy-zh")
         user_messages = [message for message in migrated["messages"] if message["role"] == "user"]
         self.assertEqual(len(migrated["turns"]), len(user_messages))
         self.assertTrue(all(turn["legacyContext"] for turn in migrated["turns"]))
@@ -193,7 +194,7 @@ class DiscussionTests(unittest.TestCase):
 
         self.assertNotIn("Packer", self.document["messages"][0]["content"])
         self.assertNotIn("巴刻", self.chapter_markdown)
-        self.assertEqual(evidence["contextSchemaVersion"], 2)
+        self.assertEqual(evidence["contextSchemaVersion"], 3)
         self.assertEqual(evidence["book"]["author"], "J. I. Packer")
         self.assertEqual(evidence["book"]["authorDisplayName"], "巴刻")
         self.assertEqual(evidence["book"]["authorAliases"], ["帕克"])
@@ -316,7 +317,7 @@ class DiscussionTests(unittest.TestCase):
         self.assertTrue(evidence_text.startswith(evidence_prefix))
         evidence = json.loads(evidence_text.removeprefix(evidence_prefix))
         self.assertEqual(list(evidence), fixture["expectedContextKeys"])
-        self.assertEqual(evidence["contextSchemaVersion"], 2)
+        self.assertEqual(evidence["contextSchemaVersion"], 3)
         self.assertEqual(evidence["book"]["bookId"], "qfg")
         self.assertEqual(evidence["book"]["displayTitle"], "追寻敬虔")
         self.assertEqual(evidence["primarySources"]["chapterMarkdown"], fixture["chapterMarkdown"])

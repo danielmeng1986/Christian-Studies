@@ -29,7 +29,8 @@ from context_builder import ContextBuildError, ContextBuilder, ContextBundle, Co
 
 
 BOOK_ID = "qfg"
-SCHEMA_VERSION = 2
+DEFAULT_EDITION_ID = "legacy-zh"
+SCHEMA_VERSION = 3
 PROMPT_VERSION = 3
 SUPPORTED_PROMPT_VERSIONS = frozenset({1, 2, PROMPT_VERSION})
 DEFAULT_MODEL = "gpt-5.6-terra"
@@ -52,6 +53,8 @@ BOOK_PASSAGE_ID_RE = re.compile(r"\Aqfg:(?:0[1-9]|1[0-9]|20):(?:0[1-9]|1[0-9]|20
 LOCAL_CHUNK_ID_RE = re.compile(r"\A[0-9a-f-]{36}:\d{4}\Z")
 FRONT_MATTER_RE = re.compile(r"\A---\n(?P<meta>.*?)\n---\n(?P<body>.*)\Z", re.DOTALL)
 CHAPTER_META_RE = re.compile(r"^chapter:\s*['\"]?(?P<chapter>\d{2})['\"]?\s*$", re.MULTILINE)
+STATUS_META_RE = re.compile(r"^status:\s*['\"]?(?P<status>[a-z-]+)['\"]?\s*$", re.MULTILINE)
+EDITION_META_RE = re.compile(r"^edition_id:\s*['\"]?(?P<edition>[a-z0-9-]+)['\"]?\s*$", re.MULTILINE)
 TITLE_RE = re.compile(r"^#\s+(?P<title>.+?)\s*$", re.MULTILINE)
 
 
@@ -166,12 +169,12 @@ def normalize_context(value: Any, field: str = "context") -> dict[str, Any]:
 
     normalized_scriptures = []
     scripture_ids: set[str] = set()
-    scripture_keys = {"id", "translationId", "translationLabel", "citation", "text"}
+    scripture_keys = ("id", "translationId", "translationLabel", "citation", "text")
     for index, scripture in enumerate(scriptures):
         item_field = f"{field}.scriptures[{index}]"
         if not isinstance(scripture, dict):
             raise DiscussionValidationError(f"{item_field} must be an object")
-        require_exact_keys(scripture, scripture_keys, item_field)
+        require_exact_keys(scripture, set(scripture_keys), item_field)
         normalized = {}
         for key in scripture_keys:
             text = scripture[key]
@@ -345,7 +348,11 @@ def normalize_turn(value: Any, index: int, user_message_ids: set[str]) -> dict[s
     }
 
 
-def normalize_discussion_document(value: Any, chapter_id: str | None = None) -> dict[str, Any]:
+def normalize_discussion_document(
+    value: Any,
+    chapter_id: str | None = None,
+    edition_id: str | None = None,
+) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise DiscussionValidationError("document must be an object")
     schema_version = value.get("schemaVersion")
@@ -353,10 +360,12 @@ def normalize_discussion_document(value: Any, chapter_id: str | None = None) -> 
         "schemaVersion", "id", "bookId", "chapterId", "sourceRevision", "anchor",
         "title", "status", "promptVersion", "context", "messages", "createdAt", "updatedAt",
     }
-    if schema_version == SCHEMA_VERSION:
+    if schema_version in {2, SCHEMA_VERSION}:
         expected_keys.add("turns")
-    elif schema_version != 1:
-        raise DiscussionValidationError("schemaVersion must be 1 or 2")
+    if schema_version == SCHEMA_VERSION:
+        expected_keys.add("editionId")
+    elif schema_version not in {1, 2}:
+        raise DiscussionValidationError("schemaVersion must be 1, 2, or 3")
     require_exact_keys(
         value,
         expected_keys,
@@ -365,6 +374,11 @@ def normalize_discussion_document(value: Any, chapter_id: str | None = None) -> 
     discussion_id = validate_uuid(value["id"], "document.id")
     if value["bookId"] != BOOK_ID:
         raise DiscussionValidationError(f"bookId must be {BOOK_ID}")
+    document_edition = value.get("editionId", DEFAULT_EDITION_ID)
+    if not isinstance(document_edition, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", document_edition):
+        raise DiscussionValidationError("editionId must be a stable lowercase identifier")
+    if edition_id is not None and document_edition != edition_id:
+        raise DiscussionValidationError("editionId does not match the requested edition")
     document_chapter = value["chapterId"]
     if not isinstance(document_chapter, str) or not CHAPTER_RE.fullmatch(document_chapter):
         raise DiscussionValidationError("chapterId must be 01 through 20")
@@ -417,6 +431,7 @@ def normalize_discussion_document(value: Any, chapter_id: str | None = None) -> 
         "schemaVersion": SCHEMA_VERSION,
         "id": discussion_id,
         "bookId": BOOK_ID,
+        "editionId": document_edition,
         "chapterId": document_chapter,
         "sourceRevision": source_revision,
         "anchor": normalize_anchor(value["anchor"]),
@@ -482,7 +497,16 @@ def discover_chapter_paths(reading_root: Path) -> dict[str, Path]:
         front_matter = FRONT_MATTER_RE.fullmatch(source)
         if not front_matter:
             continue
-        chapter_match = CHAPTER_META_RE.search(front_matter.group("meta"))
+        metadata = front_matter.group("meta")
+        edition_match = EDITION_META_RE.search(metadata)
+        status_match = STATUS_META_RE.search(metadata)
+        if status_match and status_match.group("status") != "approved":
+            if not edition_match:
+                raise DiscussionValidationError(f"unpublished chapter is missing edition_id: {path}")
+            continue
+        if edition_match:
+            continue
+        chapter_match = CHAPTER_META_RE.search(metadata)
         if not chapter_match:
             continue
         chapter_id = chapter_match.group("chapter")
@@ -507,26 +531,34 @@ def find_discussion_path(root: Path, discussion_id: str) -> Path | None:
     return matches[0] if matches else None
 
 
-def load_discussion(path: Path, chapter_id: str | None = None) -> tuple[dict[str, Any], bytes]:
+def load_discussion(
+    path: Path,
+    chapter_id: str | None = None,
+    *,
+    edition_id: str | None = None,
+) -> tuple[dict[str, Any], bytes]:
     content = path.read_bytes()
-    document = normalize_discussion_document(json.loads(content), chapter_id)
+    document = normalize_discussion_document(json.loads(content), chapter_id, edition_id)
     if path.stem != document["id"]:
         raise DiscussionValidationError("discussion filename does not match document id")
     return document, content
 
 
-def list_discussion_summaries(root: Path, chapter_id: str) -> list[dict[str, Any]]:
+def list_discussion_summaries(
+    root: Path, chapter_id: str, *, edition_id: str = DEFAULT_EDITION_ID
+) -> list[dict[str, Any]]:
     chapter_root = root / chapter_id
     if not chapter_root.exists():
         return []
     summaries = []
     for path in sorted(chapter_root.glob("*.json")):
-        document, _ = load_discussion(path, chapter_id)
+        document, _ = load_discussion(path, chapter_id, edition_id=edition_id)
         completed_messages = [message for message in document["messages"] if message["status"] == "completed"]
         preview = completed_messages[-1]["content"] if completed_messages else ""
         summaries.append(
             {
                 "id": document["id"],
+                "editionId": edition_id,
                 "chapterId": chapter_id,
                 "title": document["title"],
                 "anchor": document["anchor"],
@@ -642,7 +674,13 @@ def normalize_included_local_chunk_ids(value: Any) -> frozenset[str]:
     return frozenset(result)
 
 
-def create_discussion_document(payload: Any, chapter_id: str, chapter_title: str) -> dict[str, Any]:
+def create_discussion_document(
+    payload: Any,
+    chapter_id: str,
+    chapter_title: str,
+    *,
+    edition_id: str = DEFAULT_EDITION_ID,
+) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise DiscussionValidationError("request must be an object")
     require_exact_keys(payload, {"sourceRevision", "anchor", "scriptures", "footnotes", "message"}, "request")
@@ -660,6 +698,7 @@ def create_discussion_document(payload: Any, chapter_id: str, chapter_title: str
         "schemaVersion": SCHEMA_VERSION,
         "id": str(uuid4()),
         "bookId": BOOK_ID,
+        "editionId": edition_id,
         "chapterId": chapter_id,
         "sourceRevision": source_revision,
         "anchor": anchor,
@@ -677,7 +716,7 @@ def create_discussion_document(payload: Any, chapter_id: str, chapter_title: str
         "createdAt": timestamp,
         "updatedAt": timestamp,
     }
-    return normalize_discussion_document(document, chapter_id)
+    return normalize_discussion_document(document, chapter_id, edition_id)
 
 
 def append_discussion_turn(document: dict[str, Any], message: Any) -> dict[str, Any]:

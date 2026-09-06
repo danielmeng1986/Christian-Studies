@@ -320,6 +320,9 @@ MVP 显示 token 用量即可，不在代码中硬编码可能变化的美元价
 Books/追寻敬虔/Notes/Discussions/
   05/
     <discussion-uuid>.json
+  chatgpt-zh-cn/
+    05/
+      <discussion-uuid>.json
 ```
 
 不维护必须同步更新的全局索引文件。章节讨论列表由服务端扫描对应章节目录并生成。未来若数据量证明需要索引，索引必须是可重建的派生数据。
@@ -456,25 +459,46 @@ M5 起，新写入讨论在顶层增加与用户消息同序的 `turns`：
 - `selections` 保存该轮排除、确认与数量选择；
 - `optionalMutableEvidence` 只保存已实际使用、以后可能变化而又无法仅靠稳定引用复现的可选证据；M5 为个人笔记证据；
 - schema 1 文件读取时迁移到内存中的 schema 2 视图，旧 turn 使用 `legacyContext: true`，并将 manifest 与 snapshot 保持为 `null`；不得倒推或伪造历史上下文；
-- 读取旧讨论本身不得改写文件；只有用户发起新的轮次时，才按正常原子写入流程保存 schema 2 文档。
+- 读取旧讨论本身不得改写文件；在多版本迁移前，只有用户发起新的轮次时，才按正常原子写入流程保存 Schema 2 文档；迁移后按下节升级为 Schema 3。
+
+### 11.6 讨论文档 schemaVersion 3
+
+首次多版本发布后，新写入及完成迁移的讨论使用 Schema 3，在 Schema 2
+结构上增加顶层稳定身份：
+
+```json
+{
+  "schemaVersion": 3,
+  "bookId": "qfg",
+  "editionId": "legacy-zh",
+  "chapterId": "05"
+}
+```
+
+- `bookId`、`editionId`、`chapterId` 共同标识讨论所依附的阅读单元；
+- Schema 1、2 文件只可作为 `legacy-zh` 读取，并在下一次正常写入或显式迁移时升级；
+- 升级不得改写消息、锚点、来源修订或历史上下文 Manifest；
+- 替代版本讨论写入 `Notes/Discussions/<editionId>/<chapterId>/`，不得扫描或复用默认版本目录。
 
 ## 12. 本地 HTTP API 规范
 
-建议路由：
+普通阅读器使用带版本身份的路由：
 
 ```text
-GET    /api/chapters/{chapter}/discussions
-POST   /api/chapters/{chapter}/discussions
-GET    /api/discussions/{discussion_id}
-POST   /api/discussions/{discussion_id}/messages
-DELETE /api/discussions/{discussion_id}
+GET    /api/editions/{editionId}/chapters/{chapter}/discussions
+POST   /api/editions/{editionId}/chapters/{chapter}/discussions
+GET    /api/editions/{editionId}/discussions/{discussion_id}
+POST   /api/editions/{editionId}/discussions/{discussion_id}/messages
+DELETE /api/editions/{editionId}/discussions/{discussion_id}
 ```
+
+原有不带版本的路由继续作为 `legacy-zh` 的兼容入口，但新页面不得使用它们。
 
 行为要求：
 
-- `GET /api/chapters/{chapter}/discussions` 返回轻量摘要，不返回完整消息历史；
-- 第一次发送消息时，`POST /api/chapters/{chapter}/discussions` 创建文件并返回流；
-- 继续讨论时，`POST /api/discussions/{id}/messages` 返回流；
+- 章节讨论列表返回轻量摘要，不返回完整消息历史；
+- 第一次发送消息时，带版本的章节讨论路由创建文件并返回流；
+- 继续讨论时，带版本的讨论消息路由返回流；
 - 流采用 `application/x-ndjson` 或同等可测试的逐事件格式；
 - 事件至少包含 `response.started`、`response.delta`、`response.completed` 和 `response.error`；
 - 所有状态变更请求必须复用现有的 Origin 检查和 `X-QFG-Write-Token`；

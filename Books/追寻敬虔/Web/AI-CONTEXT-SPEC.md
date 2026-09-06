@@ -193,9 +193,9 @@ The assembler SHOULD produce one versioned envelope with this logical shape:
 
 ```json
 {
-  "contextSchemaVersion": 2,
+  "contextSchemaVersion": 3,
   "book": {},
-  "chapter": {},
+  "chapter": {"editionId": "legacy-zh"},
   "focus": {},
   "primarySources": {
     "chapterMarkdown": "",
@@ -559,7 +559,8 @@ Minimum shape:
 
 ```json
 {
-  "contextSchemaVersion": 2,
+  "contextSchemaVersion": 3,
+  "editionId": "legacy-zh",
   "promptVersion": 1,
   "retrievalVersion": 1,
   "sourceRegistryVersion": 1,

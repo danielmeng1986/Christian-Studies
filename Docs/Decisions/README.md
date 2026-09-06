@@ -15,6 +15,7 @@ affected current or planning document in the same change.
 | [ADR-0002](ADR-0002-Data-Authority-and-Database-Roles.md) / [中文](ADR-0002-Data-Authority-and-Database-Roles-zh.md) | Data authority, Git policy, and database roles | Accepted | OQ-003, OQ-006, OQ-014 |
 | [ADR-0003](ADR-0003-Stable-Block-Anchoring.md) / [中文](ADR-0003-Stable-Block-Anchoring-zh.md) | Stable block identity with precise range selectors | Accepted | OQ-008 |
 | [ADR-0004](ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md) / [中文](ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data-zh.md) | Mobile-first local device and portable user data | Accepted | OQ-001–OQ-003, OQ-018–OQ-019 |
+| [ADR-0005](ADR-0005-Multiple-Reading-Editions-and-Review.md) / [中文](ADR-0005-Multiple-Reading-Editions-and-Review-zh.md) | Multiple reading editions, paragraph alignment, and reviewed publication | Accepted | Direct chapter 05 pilot decision |
 
 An accepted ADR records direction. It does not claim that migration or
 implementation has already occurred. Current runtime behavior continues to be

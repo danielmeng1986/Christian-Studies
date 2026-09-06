@@ -202,6 +202,9 @@ Outcome: book-independent contracts exist before code is physically moved.
 
 - specify `Book`, `Edition`, `ReadingUnit`, `Reference`, `Annotation`,
   `Discussion`, `Source`, `ContextBundle`, and `EvidenceManifest` identities;
+- carry the accepted ADR-0005 edition manifest, reviewed block correspondence,
+  edition-local anchors, and chapter-atomic publication rules into those
+  shared contracts;
 - separate domain behavior from 《追寻敬虔》 paths and UI assumptions;
 - create contract tests using the existing book as a compatibility fixture;
 - define schema versioning and migration policy;

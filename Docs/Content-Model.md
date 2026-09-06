@@ -48,6 +48,13 @@ must be supportable from the preserved source or explicitly identified as an
 editorial correction. Summaries, translations, interpretations, and AI answers
 must not be silently inserted as though they were source prose.
 
+A book may contain more than one reviewed reading edition. Each edition has a
+stable `editionId`, independent provenance, publication state, and its own
+authoritative Markdown reading units. An AI-assisted revision is authoritative
+only for that explicitly labeled edition after review; it never replaces or
+changes the authorship of the received edition. Draft review metadata and block
+correspondence are curated metadata, not substitute prose authorities.
+
 ### 2.3 Reference record
 
 Reference records include footnotes, bibliography entries, Scripture links and
@@ -65,6 +72,11 @@ rather than silently overwriting a newer revision.
 
 Notes may be used as optional personal context. They must always be labeled as
 user-authored material and kept distinct from author text and references.
+
+Every anchor into a multi-edition book is scoped by `(bookId, editionId,
+readingUnitId)`. Exact text and offsets are edition-local. Cross-edition
+correspondence may support navigation or comparison, but it must not silently
+reattach user data to different wording.
 
 ### 2.5 Supplemental library item
 

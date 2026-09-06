@@ -22,6 +22,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
+from urllib.request import Request, urlopen
 from uuid import UUID
 
 
@@ -30,6 +31,7 @@ if str(SCRIPT_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPT_ROOT))
 
 import discussions
+import edition_review
 import local_library
 
 
@@ -40,8 +42,39 @@ NOTES_ROOT = BOOK_ROOT / "Notes/Annotations"
 DISCUSSIONS_ROOT = BOOK_ROOT / "Notes/Discussions"
 READING_ROOT = BOOK_ROOT / "Reading"
 SOURCES_ROOT = BOOK_ROOT / "Sources"
-DEFAULT_NOTE_PATHS = {f"{chapter:02d}": NOTES_ROOT / f"{chapter:02d}.json" for chapter in range(1, 21)}
-DEFAULT_CHAPTER_PATHS = discussions.discover_chapter_paths(READING_ROOT)
+EDITION_REVIEW_ROOT = BOOK_ROOT / "Metadata/Edition-Reviews"
+EDITION_MANIFEST_PATH = BOOK_ROOT / "Metadata/editions.json"
+
+
+def load_runtime_editions() -> tuple[str, dict[str, dict[str, dict[str, Path]]]]:
+    manifest = json.loads(EDITION_MANIFEST_PATH.read_text(encoding="utf-8"))
+    default_edition_id = manifest["defaultEditionId"]
+    contexts: dict[str, dict[str, dict[str, Path]]] = {}
+    for edition in manifest["editions"]:
+        if edition["status"] != "approved":
+            continue
+        chapters = {
+            chapter_id: {
+                "chapter": BOOK_ROOT / chapter["path"],
+                "notes": BOOK_ROOT / chapter["notesPath"],
+                "discussions": BOOK_ROOT / chapter["discussionsPath"],
+            }
+            for chapter_id, chapter in edition["chapters"].items()
+            if chapter["status"] == "approved"
+        }
+        contexts[edition["editionId"]] = {"chapters": chapters}
+    return default_edition_id, contexts
+
+
+DEFAULT_EDITION_ID, DEFAULT_EDITION_CONTEXTS = load_runtime_editions()
+DEFAULT_NOTE_PATHS = {
+    chapter_id: paths["notes"]
+    for chapter_id, paths in DEFAULT_EDITION_CONTEXTS[DEFAULT_EDITION_ID]["chapters"].items()
+}
+DEFAULT_CHAPTER_PATHS = {
+    chapter_id: paths["chapter"]
+    for chapter_id, paths in DEFAULT_EDITION_CONTEXTS[DEFAULT_EDITION_ID]["chapters"].items()
+}
 DEFAULT_FOOTNOTE_PATHS = {
     chapter_id: BOOK_ROOT / f"References/Footnotes-{chapter_id}.md"
     for chapter_id in DEFAULT_CHAPTER_PATHS
@@ -51,13 +84,29 @@ MAX_REQUEST_BYTES = 1_000_000
 MAX_LIBRARY_REQUEST_BYTES = 28_000_000
 CONTEXT_BUILD_TTL_SECONDS = 300
 NOTES_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/notes\Z")
+EDITION_NOTES_ROUTE_RE = re.compile(r"\A/api/editions/([a-z0-9-]+)/chapters/([^/]+)/notes\Z")
 DISCUSSION_LIST_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions\Z")
+EDITION_DISCUSSION_LIST_ROUTE_RE = re.compile(
+    r"\A/api/editions/([a-z0-9-]+)/chapters/([^/]+)/discussions\Z"
+)
 DISCUSSION_PREVIEW_ROUTE_RE = re.compile(r"\A/api/chapters/([^/]+)/discussions/context-preview\Z")
+EDITION_DISCUSSION_PREVIEW_ROUTE_RE = re.compile(
+    r"\A/api/editions/([a-z0-9-]+)/chapters/([^/]+)/discussions/context-preview\Z"
+)
 DISCUSSION_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)\Z")
+EDITION_DISCUSSION_ROUTE_RE = re.compile(r"\A/api/editions/([a-z0-9-]+)/discussions/([^/]+)\Z")
 DISCUSSION_MESSAGES_ROUTE_RE = re.compile(r"\A/api/discussions/([^/]+)/messages\Z")
+EDITION_DISCUSSION_MESSAGES_ROUTE_RE = re.compile(
+    r"\A/api/editions/([a-z0-9-]+)/discussions/([^/]+)/messages\Z"
+)
+EDITION_READER_ROUTE_RE = re.compile(r"\A/editions/([a-z0-9-]+)/chapters/([^/]+)/?\Z")
 LIBRARY_IMPORT_CONFIRM_ROUTE_RE = re.compile(r"\A/api/library/imports/([^/]+)/confirm\Z")
 LIBRARY_SOURCE_ROUTE_RE = re.compile(r"\A/api/library/sources/([^/]+)\Z")
 LIBRARY_DERIVED_ROUTE_RE = re.compile(r"\A/api/library/sources/([^/]+)/derived\Z")
+EDITION_REVIEW_ROUTE_RE = re.compile(r"\A/api/edition-reviews/([a-z0-9-]+)/([^/]+)\Z")
+ENGLISH_REFERENCE_ROUTE = "/api/edition-reviews/chatgpt-zh-cn/05/english-source"
+ENGLISH_REFERENCE_URL = "https://www.johnowen.org/media/packer_quest_for_godliness_ch_5.pdf"
+MAX_ENGLISH_REFERENCE_BYTES = 12_000_000
 SHA256_RE = re.compile(r"\A[0-9a-f]{64}\Z")
 TIMESTAMP_RE = re.compile(r"\A\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z\Z")
 
@@ -66,8 +115,14 @@ class ValidationError(ValueError):
     """Raised when a note document does not match schema version 1."""
 
 
-def empty_note_document(chapter_id: str) -> dict[str, Any]:
-    return {"schemaVersion": 1, "bookId": "qfg", "chapterId": chapter_id, "notes": []}
+def empty_note_document(chapter_id: str, edition_id: str = DEFAULT_EDITION_ID) -> dict[str, Any]:
+    return {
+        "schemaVersion": 2,
+        "bookId": "qfg",
+        "editionId": edition_id,
+        "chapterId": chapter_id,
+        "notes": [],
+    }
 
 
 def validate_timestamp(value: Any, field: str) -> str:
@@ -93,13 +148,21 @@ def require_exact_keys(value: dict[str, Any], expected: set[str], field: str) ->
         raise ValidationError(f"{field} has invalid fields: {'; '.join(details)}")
 
 
-def normalize_note_document(value: Any, chapter_id: str) -> dict[str, Any]:
+def normalize_note_document(
+    value: Any, chapter_id: str, edition_id: str = DEFAULT_EDITION_ID
+) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValidationError("document must be a JSON object")
-    require_exact_keys(value, {"schemaVersion", "bookId", "chapterId", "notes"}, "document")
-
-    if value["schemaVersion"] != 1:
-        raise ValidationError("schemaVersion must be 1")
+    schema_version = value.get("schemaVersion")
+    expected_keys = {"schemaVersion", "bookId", "chapterId", "notes"}
+    if schema_version == 2:
+        expected_keys.add("editionId")
+    elif schema_version != 1:
+        raise ValidationError("schemaVersion must be 1 or 2")
+    require_exact_keys(value, expected_keys, "document")
+    document_edition_id = value.get("editionId", DEFAULT_EDITION_ID)
+    if document_edition_id != edition_id:
+        raise ValidationError("editionId does not match the requested edition")
     if value["bookId"] != "qfg":
         raise ValidationError("bookId must be qfg")
     if value["chapterId"] != chapter_id:
@@ -200,7 +263,13 @@ def normalize_note_document(value: Any, chapter_id: str) -> dict[str, Any]:
         )
 
     normalized_notes.sort(key=lambda note: (note["createdAt"], note["id"]))
-    return {"schemaVersion": 1, "bookId": "qfg", "chapterId": chapter_id, "notes": normalized_notes}
+    return {
+        "schemaVersion": 2,
+        "bookId": "qfg",
+        "editionId": edition_id,
+        "chapterId": chapter_id,
+        "notes": normalized_notes,
+    }
 
 
 def serialize_note_document(document: dict[str, Any]) -> bytes:
@@ -249,7 +318,10 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         discussion_root: Path,
         chapter_paths: dict[str, Path],
         footnote_paths: dict[str, Path],
+        edition_contexts: dict[str, dict[str, dict[str, Path]]] | None,
+        default_edition_id: str,
         sources_root: Path,
+        edition_reviews: dict[tuple[str, str], dict[str, Path]] | None,
         openai_client: Any,
         write_token: str | None = None,
     ) -> None:
@@ -260,18 +332,58 @@ class ReaderHTTPServer(ThreadingHTTPServer):
         self.discussion_root = discussion_root.resolve()
         self.chapter_paths = {chapter: path.resolve() for chapter, path in chapter_paths.items()}
         self.footnote_paths = {chapter: path.resolve() for chapter, path in footnote_paths.items()}
+        self.default_edition_id = default_edition_id
+        if edition_contexts is None:
+            edition_contexts = {
+                default_edition_id: {
+                    "chapters": {
+                        chapter_id: {
+                            "chapter": chapter_path,
+                            "notes": self.note_paths.get(
+                                chapter_id, self.discussion_root.parent / "Annotations" / f"{chapter_id}.json"
+                            ),
+                            "discussions": self.discussion_root / chapter_id,
+                        }
+                        for chapter_id, chapter_path in self.chapter_paths.items()
+                    }
+                }
+            }
+        self.edition_contexts = {
+            edition_id: {
+                "chapters": {
+                    chapter_id: {key: path.resolve() for key, path in paths.items()}
+                    for chapter_id, paths in context["chapters"].items()
+                }
+            }
+            for edition_id, context in edition_contexts.items()
+        }
         self.openai_client = openai_client
         self.local_library = local_library.LocalLibrary(sources_root)
+        self.edition_reviews = edition_reviews or {}
+        self.edition_reviews_lock = threading.Lock()
+        self.english_reference_lock = threading.Lock()
+        self.english_reference_content: bytes | None = None
         self.local_library.ensure()
         client_builder = getattr(openai_client, "context_builder", None)
         base_builder = client_builder or discussions.ContextBuilder()
-        self.context_builder = discussions.ContextBuilder(
-            metadata_path=base_builder.metadata_path,
-            translation_index_path=base_builder.translation_index_path,
-            chapter_paths=self.chapter_paths,
-            footnote_paths=self.footnote_paths,
-            local_library=self.local_library,
-        )
+        self.context_builders: dict[str, discussions.ContextBuilder] = {}
+        default_chapter_paths = {
+            chapter_id: paths["chapter"]
+            for chapter_id, paths in self.edition_contexts[default_edition_id]["chapters"].items()
+        }
+        for edition_id, context in self.edition_contexts.items():
+            edition_chapter_paths = dict(default_chapter_paths)
+            edition_chapter_paths.update(
+                {chapter_id: paths["chapter"] for chapter_id, paths in context["chapters"].items()}
+            )
+            self.context_builders[edition_id] = discussions.ContextBuilder(
+                metadata_path=base_builder.metadata_path,
+                translation_index_path=base_builder.translation_index_path,
+                chapter_paths=edition_chapter_paths,
+                footnote_paths=self.footnote_paths,
+                local_library=self.local_library,
+            )
+        self.context_builder = self.context_builders[default_edition_id]
         if client_builder is not None:
             openai_client.context_builder = self.context_builder
         self.write_token = write_token or secrets.token_urlsafe(32)
@@ -308,64 +420,125 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
     def send_api_error(self, status: int, code: str, message: str) -> None:
         self.send_json(status, {"error": {"code": code, "message": message}})
 
-    def notes_route(self) -> tuple[str, Path] | None:
-        path = urlsplit(self.path).path
-        match = NOTES_ROUTE_RE.fullmatch(path)
-        if not match:
-            return None
-        chapter_id = match.group(1)
-        note_path = self.server.note_paths.get(chapter_id)
-        if note_path is None:
-            return None
-        return chapter_id, note_path
+    def send_english_reference(self) -> None:
+        try:
+            with self.server.english_reference_lock:
+                content = self.server.english_reference_content
+                if content is None:
+                    request = Request(ENGLISH_REFERENCE_URL, headers={"User-Agent": "QFG local edition reviewer"})
+                    with urlopen(request, timeout=20) as response:
+                        content = response.read(MAX_ENGLISH_REFERENCE_BYTES + 1)
+                    if len(content) > MAX_ENGLISH_REFERENCE_BYTES or not content.startswith(b"%PDF-"):
+                        raise ValueError("English reference response is not a valid PDF")
+                    self.server.english_reference_content = content
+        except (OSError, ValueError) as error:
+            self.send_api_error(502, "english_reference_unavailable", str(error))
+            return
 
-    def discussion_list_route(self) -> tuple[str, Path] | None:
-        path = urlsplit(self.path).path
-        match = DISCUSSION_LIST_ROUTE_RE.fullmatch(path)
-        if not match:
-            return None
-        chapter_id = match.group(1)
-        chapter_path = self.server.chapter_paths.get(chapter_id)
-        if chapter_path is None:
-            return None
-        return chapter_id, chapter_path
+        self.send_response(200)
+        self.send_header("Content-Type", "application/pdf")
+        self.send_header("Content-Length", str(len(content)))
+        self.send_header("Content-Disposition", 'inline; filename="packer_quest_for_godliness_ch_5.pdf"')
+        self.end_headers()
+        self.wfile.write(content)
 
-    def discussion_preview_route(self) -> tuple[str, Path] | None:
-        path = urlsplit(self.path).path
-        match = DISCUSSION_PREVIEW_ROUTE_RE.fullmatch(path)
-        if not match:
-            return None
-        chapter_id = match.group(1)
-        chapter_path = self.server.chapter_paths.get(chapter_id)
-        if chapter_path is None or chapter_id not in self.server.note_paths:
-            return None
-        return chapter_id, chapter_path
+    def edition_chapter(self, edition_id: str, chapter_id: str) -> dict[str, Path] | None:
+        edition = self.server.edition_contexts.get(edition_id)
+        return edition["chapters"].get(chapter_id) if edition is not None else None
 
-    def discussion_route(self) -> tuple[str, Path] | None:
+    def notes_route(self) -> tuple[str, str, Path] | None:
         path = urlsplit(self.path).path
-        match = DISCUSSION_ROUTE_RE.fullmatch(path)
+        qualified = EDITION_NOTES_ROUTE_RE.fullmatch(path)
+        match = qualified or NOTES_ROUTE_RE.fullmatch(path)
         if not match:
+            return None
+        edition_id = qualified.group(1) if qualified else self.server.default_edition_id
+        chapter_id = qualified.group(2) if qualified else match.group(1)
+        context = self.edition_chapter(edition_id, chapter_id)
+        if context is None:
+            return None
+        return edition_id, chapter_id, context["notes"]
+
+    def discussion_list_route(self) -> tuple[str, str, dict[str, Path]] | None:
+        path = urlsplit(self.path).path
+        qualified = EDITION_DISCUSSION_LIST_ROUTE_RE.fullmatch(path)
+        match = qualified or DISCUSSION_LIST_ROUTE_RE.fullmatch(path)
+        if not match:
+            return None
+        edition_id = qualified.group(1) if qualified else self.server.default_edition_id
+        chapter_id = qualified.group(2) if qualified else match.group(1)
+        context = self.edition_chapter(edition_id, chapter_id)
+        if context is None:
+            return None
+        return edition_id, chapter_id, context
+
+    def discussion_preview_route(self) -> tuple[str, str, dict[str, Path]] | None:
+        path = urlsplit(self.path).path
+        qualified = EDITION_DISCUSSION_PREVIEW_ROUTE_RE.fullmatch(path)
+        match = qualified or DISCUSSION_PREVIEW_ROUTE_RE.fullmatch(path)
+        if not match:
+            return None
+        edition_id = qualified.group(1) if qualified else self.server.default_edition_id
+        chapter_id = qualified.group(2) if qualified else match.group(1)
+        context = self.edition_chapter(edition_id, chapter_id)
+        if context is None:
+            return None
+        return edition_id, chapter_id, context
+
+    def find_edition_discussion(self, edition_id: str, discussion_id: str) -> Path | None:
+        edition = self.server.edition_contexts.get(edition_id)
+        if edition is None:
             return None
         try:
-            discussion_path = discussions.find_discussion_path(self.server.discussion_root, match.group(1))
-        except discussions.DiscussionValidationError:
+            UUID(discussion_id)
+        except ValueError:
             return None
-        if discussion_path is None:
-            return None
-        return match.group(1), discussion_path
+        matches = [
+            paths["discussions"] / f"{discussion_id}.json"
+            for paths in edition["chapters"].values()
+            if (paths["discussions"] / f"{discussion_id}.json").is_file()
+        ]
+        return matches[0] if len(matches) == 1 else None
 
-    def discussion_messages_route(self) -> tuple[str, Path] | None:
+    def discussion_route(self) -> tuple[str, str, Path] | None:
         path = urlsplit(self.path).path
-        match = DISCUSSION_MESSAGES_ROUTE_RE.fullmatch(path)
+        qualified = EDITION_DISCUSSION_ROUTE_RE.fullmatch(path)
+        match = qualified or DISCUSSION_ROUTE_RE.fullmatch(path)
         if not match:
             return None
-        try:
-            discussion_path = discussions.find_discussion_path(self.server.discussion_root, match.group(1))
-        except discussions.DiscussionValidationError:
-            return None
+        edition_id = qualified.group(1) if qualified else self.server.default_edition_id
+        discussion_id = qualified.group(2) if qualified else match.group(1)
+        discussion_path = self.find_edition_discussion(edition_id, discussion_id)
         if discussion_path is None:
             return None
-        return match.group(1), discussion_path
+        return edition_id, discussion_id, discussion_path
+
+    def discussion_messages_route(self) -> tuple[str, str, Path] | None:
+        path = urlsplit(self.path).path
+        qualified = EDITION_DISCUSSION_MESSAGES_ROUTE_RE.fullmatch(path)
+        match = qualified or DISCUSSION_MESSAGES_ROUTE_RE.fullmatch(path)
+        if not match:
+            return None
+        edition_id = qualified.group(1) if qualified else self.server.default_edition_id
+        discussion_id = qualified.group(2) if qualified else match.group(1)
+        discussion_path = self.find_edition_discussion(edition_id, discussion_id)
+        if discussion_path is None:
+            return None
+        return edition_id, discussion_id, discussion_path
+
+    def edition_review_route(self) -> dict[str, Path] | None:
+        match = EDITION_REVIEW_ROUTE_RE.fullmatch(urlsplit(self.path).path)
+        if not match:
+            return None
+        return self.server.edition_reviews.get((match.group(1), match.group(2)))
+
+    def load_edition_review(self, config: dict[str, Path]) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], bytes]:
+        content = config["review"].read_bytes()
+        existing = json.loads(content)
+        source = edition_review.load_markdown(config["source"], edition_id="legacy-zh", chapter_id="05")
+        target = edition_review.load_markdown(config["target"], edition_id="chatgpt-zh-cn", chapter_id="05")
+        document = edition_review.build_review_document(source, target, existing)
+        return source, target, document, content
 
     def authorize_write(self) -> bool:
         if self.headers.get("Origin") not in self.server.allowed_origins:
@@ -410,15 +583,20 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass
 
-    def chapter_context(self, chapter_id: str) -> tuple[str, str, str]:
-        source = self.server.chapter_paths[chapter_id].read_text(encoding="utf-8")
+    def chapter_context(self, edition_id: str, chapter_id: str) -> tuple[str, str, str]:
+        context = self.edition_chapter(edition_id, chapter_id)
+        if context is None:
+            raise discussions.DiscussionValidationError("edition chapter is unavailable")
+        source = context["chapter"].read_text(encoding="utf-8")
         chapter_markdown, title = discussions.strip_front_matter(source)
         revision = hashlib.sha256(chapter_markdown.encode("utf-8")).hexdigest()
         return chapter_markdown, title, revision
 
-    def note_context(self, chapter_id: str) -> dict[str, Any]:
-        path = self.server.note_paths[chapter_id]
-        return normalize_note_document(json.loads(path.read_bytes()), chapter_id)
+    def note_context(self, edition_id: str, chapter_id: str) -> dict[str, Any]:
+        context = self.edition_chapter(edition_id, chapter_id)
+        if context is None:
+            raise ValidationError("edition chapter is unavailable")
+        return normalize_note_document(json.loads(context["notes"].read_bytes()), chapter_id, edition_id)
 
     def context_options(self, payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         excluded_note_ids = discussions.normalize_excluded_note_ids(payload.get("excludedNoteIds"))
@@ -454,7 +632,12 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         return options, selections
 
     def build_context_bundle(
-        self, document: dict[str, Any], chapter_markdown: str, note_document: dict[str, Any], options: dict[str, Any]
+        self,
+        edition_id: str,
+        document: dict[str, Any],
+        chapter_markdown: str,
+        note_document: dict[str, Any],
+        options: dict[str, Any],
     ) -> discussions.ContextBundle:
         request = discussions.ContextRequest.from_discussion(
             document,
@@ -463,7 +646,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             note_document=note_document,
             **options,
         )
-        return self.server.context_builder.build(request)
+        return self.server.context_builders[edition_id].build(request)
 
     def save_context_build(self, record: dict[str, Any]) -> tuple[str, float]:
         now = time.time()
@@ -610,6 +793,23 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         path = urlsplit(self.path).path
+        reader_match = EDITION_READER_ROUTE_RE.fullmatch(path)
+        if reader_match is not None:
+            edition_id, chapter_id = reader_match.groups()
+            if self.edition_chapter(edition_id, chapter_id) is None:
+                if self.edition_chapter(self.server.default_edition_id, chapter_id) is None:
+                    self.send_error(404)
+                    return
+                self.send_response(302)
+                self.send_header(
+                    "Location", f"/chapters/{chapter_id}/?edition-fallback={edition_id}"
+                )
+                self.end_headers()
+                return
+        if path == ENGLISH_REFERENCE_ROUTE:
+            self.send_english_reference()
+            return
+
         if path == "/api/session":
             self.send_json(
                 200,
@@ -628,12 +828,21 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 self.send_api_error(500, "library_unavailable", str(error))
             return
 
+        review_route = self.edition_review_route()
+        if review_route is not None:
+            try:
+                source, target, document, content = self.load_edition_review(review_route)
+                self.send_json(200, edition_review.review_payload(source, target, document), etag=etag_for(content))
+            except (OSError, json.JSONDecodeError, UnicodeDecodeError, edition_review.ReviewError) as error:
+                self.send_api_error(500, "invalid_edition_review", str(error))
+            return
+
         route = self.notes_route()
         if route is not None:
-            chapter_id, note_path = route
+            edition_id, chapter_id, note_path = route
             try:
                 content = note_path.read_bytes()
-                document = normalize_note_document(json.loads(content), chapter_id)
+                document = normalize_note_document(json.loads(content), chapter_id, edition_id)
             except FileNotFoundError:
                 self.send_api_error(404, "notes_not_found", "Chapter notes file was not found")
                 return
@@ -645,9 +854,11 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
 
         discussion_list_route = self.discussion_list_route()
         if discussion_list_route is not None:
-            chapter_id, _ = discussion_list_route
+            edition_id, chapter_id, context = discussion_list_route
             try:
-                summaries = discussions.list_discussion_summaries(self.server.discussion_root, chapter_id)
+                summaries = discussions.list_discussion_summaries(
+                    context["discussions"].parent, chapter_id, edition_id=edition_id
+                )
             except (OSError, json.JSONDecodeError, UnicodeDecodeError, discussions.DiscussionValidationError) as error:
                 self.send_api_error(500, "invalid_discussion_file", str(error))
                 return
@@ -656,9 +867,11 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
 
         discussion_route = self.discussion_route()
         if discussion_route is not None:
-            _, discussion_path = discussion_route
+            edition_id, _, discussion_path = discussion_route
             try:
-                document, content = discussions.load_discussion(discussion_path)
+                document, content = discussions.load_discussion(
+                    discussion_path, edition_id=edition_id
+                )
             except (OSError, json.JSONDecodeError, UnicodeDecodeError, discussions.DiscussionValidationError) as error:
                 self.send_api_error(500, "invalid_discussion_file", str(error))
                 return
@@ -747,7 +960,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             return
 
         if preview_route is not None:
-            chapter_id, _ = preview_route
+            edition_id, chapter_id, context = preview_route
             try:
                 if not isinstance(payload, dict):
                     raise discussions.DiscussionValidationError("request must be an object")
@@ -765,7 +978,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 if not set(payload) <= allowed or not required <= set(payload):
                     raise discussions.DiscussionValidationError("preview request has invalid fields")
                 options, selections = self.context_options(payload)
-                chapter_markdown, chapter_title, current_revision = self.chapter_context(chapter_id)
+                chapter_markdown, chapter_title, current_revision = self.chapter_context(edition_id, chapter_id)
                 if payload["sourceRevision"] != current_revision:
                     self.send_api_error(409, "chapter_source_changed", "章节内容已变更，请刷新页面后重试。")
                     return
@@ -778,15 +991,18 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                         {key: value for key, value in payload.items() if key in required},
                         chapter_id,
                         chapter_title,
+                        edition_id=edition_id,
                     )
                     kind = "create"
                 else:
                     if not isinstance(expected_etag, str):
                         raise discussions.DiscussionValidationError("discussionEtag is required for a reply preview")
-                    discussion_path = discussions.find_discussion_path(self.server.discussion_root, discussion_id)
+                    discussion_path = self.find_edition_discussion(edition_id, discussion_id)
                     if discussion_path is None:
                         raise discussions.DiscussionValidationError("discussion was not found")
-                    existing, content = discussions.load_discussion(discussion_path, chapter_id)
+                    existing, content = discussions.load_discussion(
+                        discussion_path, chapter_id, edition_id=edition_id
+                    )
                     if discussions.document_etag(content) != expected_etag:
                         self.send_api_error(409, "revision_conflict", "Discussion changed on disk")
                         return
@@ -805,8 +1021,10 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                         raise discussions.DiscussionValidationError("reply preview snapshots do not match discussion")
                     document = discussions.append_discussion_turn(existing, payload["message"])
                     kind = "continue"
-                note_document = self.note_context(chapter_id)
-                bundle = self.build_context_bundle(document, chapter_markdown, note_document, options)
+                note_document = self.note_context(edition_id, chapter_id)
+                bundle = self.build_context_bundle(
+                    edition_id, document, chapter_markdown, note_document, options
+                )
                 budget = discussions.estimate_request_budget(
                     document,
                     bundle,
@@ -822,6 +1040,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 build_id, expires_at = self.save_context_build(
                     {
                         "kind": kind,
+                        "editionId": edition_id,
                         "chapterId": chapter_id,
                         "discussionId": discussion_id,
                         "expectedEtag": expected_etag,
@@ -850,9 +1069,9 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             return
 
         if create_route is not None:
-            chapter_id, _ = create_route
+            edition_id, chapter_id, context = create_route
             try:
-                chapter_markdown, chapter_title, current_revision = self.chapter_context(chapter_id)
+                chapter_markdown, chapter_title, current_revision = self.chapter_context(edition_id, chapter_id)
                 create_required = {
                     "sourceRevision", "anchor", "scriptures", "footnotes", "message", "contextBuildId"
                 }
@@ -873,6 +1092,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 options, selections = self.context_options(payload)
                 if (
                     record["kind"] != "create"
+                    or record["editionId"] != edition_id
                     or record["chapterId"] != chapter_id
                     or record["message"] != payload.get("message")
                     or record["selections"] != selections
@@ -890,8 +1110,10 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 )
                 if supplied_context != document["context"]:
                     raise discussions.DiscussionValidationError("context preview snapshots do not match request")
-                note_document = self.note_context(chapter_id)
-                bundle = self.build_context_bundle(document, chapter_markdown, note_document, options)
+                note_document = self.note_context(edition_id, chapter_id)
+                bundle = self.build_context_bundle(
+                    edition_id, document, chapter_markdown, note_document, options
+                )
                 if discussions.bundle_hash(bundle) != record["bundleHash"]:
                     self.send_api_error(409, "context_changed", "上下文来源已变更，请重新预览。")
                     return
@@ -911,9 +1133,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     self.send_api_error(422, "context_over_budget", "上下文超过预算，请排除可选证据后重新预览。")
                     return
                 document = discussions.attach_context_bundle(document, bundle, selections)
-                discussion_path = discussions.discussion_path(
-                    self.server.discussion_root, chapter_id, document["id"]
-                )
+                discussion_path = context["discussions"] / f'{document["id"]}.json'
                 content = discussions.serialize_discussion_document(document)
                 with self.server.discussions_lock:
                     if discussion_path.exists():
@@ -941,7 +1161,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             )
             return
 
-        discussion_id, discussion_path = continue_route
+        edition_id, discussion_id, discussion_path = continue_route
         expected_revision = self.headers.get("If-Match")
         if expected_revision is None:
             self.send_api_error(428, "revision_required", "If-Match is required")
@@ -967,7 +1187,9 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                 if discussion_id in self.server.active_discussions:
                     self.send_api_error(409, "discussion_busy", "Discussion already has a response in progress")
                     return
-                document, current_content = discussions.load_discussion(discussion_path)
+                document, current_content = discussions.load_discussion(
+                    discussion_path, edition_id=edition_id
+                )
                 if expected_revision != discussions.document_etag(current_content):
                     self.send_api_error(409, "revision_conflict", "Discussion changed on disk")
                     return
@@ -986,6 +1208,7 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     options, selections = self.context_options(payload)
                     if (
                         record["kind"] != "continue"
+                        or record["editionId"] != edition_id
                         or record["discussionId"] != discussion_id
                         or record["expectedEtag"] != expected_revision
                         or record["message"] != payload["message"]
@@ -993,9 +1216,11 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
                     ):
                         raise discussions.DiscussionValidationError("context preview does not match this reply")
                     pending = record["document"]
-                chapter_markdown, _, _ = self.chapter_context(document["chapterId"])
-                note_document = self.note_context(document["chapterId"])
-                bundle = self.build_context_bundle(pending, chapter_markdown, note_document, options)
+                chapter_markdown, _, _ = self.chapter_context(edition_id, document["chapterId"])
+                note_document = self.note_context(edition_id, document["chapterId"])
+                bundle = self.build_context_bundle(
+                    edition_id, pending, chapter_markdown, note_document, options
+                )
                 expected_bundle_hash = (
                     turn["contextSnapshot"]["bundleHash"] if "retry" in payload else record["bundleHash"]
                 )
@@ -1065,13 +1290,15 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         if expected_revision is None:
             self.send_api_error(428, "revision_required", "If-Match is required")
             return
-        discussion_id, discussion_path = route
+        edition_id, discussion_id, discussion_path = route
         try:
             with self.server.discussions_lock:
                 if discussion_id in self.server.active_discussions:
                     self.send_api_error(409, "discussion_busy", "Discussion has a response in progress")
                     return
-                _, content = discussions.load_discussion(discussion_path)
+                _, content = discussions.load_discussion(
+                    discussion_path, edition_id=edition_id
+                )
                 if expected_revision != discussions.document_etag(content):
                     self.send_api_error(409, "revision_conflict", "Discussion changed on disk")
                     return
@@ -1085,6 +1312,59 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
         self.send_json(200, {"deleted": discussion_id})
 
     def do_PUT(self) -> None:
+        review_route = self.edition_review_route()
+        if review_route is not None:
+            if not self.authorize_write():
+                return
+            payload = self.read_json_body()
+            if payload is None:
+                return
+            expected_revision = self.headers.get("If-Match")
+            if expected_revision is None:
+                self.send_api_error(428, "revision_required", "If-Match is required")
+                return
+            try:
+                with self.server.edition_reviews_lock:
+                    source, target, document, content = self.load_edition_review(review_route)
+                    if expected_revision != etag_for(content):
+                        self.send_api_error(409, "revision_conflict", "审核记录已在磁盘上变更，请重新载入。")
+                        return
+                    if not isinstance(payload, dict):
+                        raise edition_review.ReviewError("Review request must be an object")
+                    if payload.get("action") == "set-block-status":
+                        document = edition_review.apply_review_update(
+                            document, {"pairId": payload.get("pairId"), "status": payload.get("status")}
+                        )
+                    elif payload.get("action") == "add-comment":
+                        document = edition_review.add_review_comment(
+                            document, {"pairId": payload.get("pairId"), "text": payload.get("text")}
+                        )
+                    elif payload.get("action") == "set-comment-status":
+                        document = edition_review.set_comment_status(
+                            document,
+                            {
+                                "pairId": payload.get("pairId"),
+                                "commentId": payload.get("commentId"),
+                                "status": payload.get("status"),
+                            },
+                        )
+                    elif payload == {"action": "approve-chapter"}:
+                        document = edition_review.approve_chapter(document)
+                    else:
+                        raise edition_review.ReviewError("Unknown review action")
+                    normalized_content = edition_review.serialize(document)
+                    edition_review.write_atomically(review_route["review"], normalized_content)
+                self.send_json(
+                    200,
+                    edition_review.review_payload(source, target, document),
+                    etag=etag_for(normalized_content),
+                )
+            except edition_review.ReviewError as error:
+                self.send_api_error(422, "invalid_edition_review", str(error))
+            except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+                self.send_api_error(500, "edition_review_write_failed", "审核记录无法保存。")
+            return
+
         route = self.notes_route()
         if route is None:
             self.send_api_error(404, "not_found", "API route was not found")
@@ -1113,10 +1393,10 @@ class ReaderRequestHandler(SimpleHTTPRequestHandler):
             self.send_api_error(413, "request_too_large", "Request body is too large")
             return
 
-        chapter_id, note_path = route
+        edition_id, chapter_id, note_path = route
         try:
             incoming = json.loads(self.rfile.read(content_length))
-            normalized_document = normalize_note_document(incoming, chapter_id)
+            normalized_document = normalize_note_document(incoming, chapter_id, edition_id)
             normalized_content = serialize_note_document(normalized_document)
         except (json.JSONDecodeError, UnicodeDecodeError, ValidationError) as error:
             self.send_api_error(422, "invalid_document", str(error))
@@ -1155,7 +1435,10 @@ def build_server(
     discussion_root: Path = DISCUSSIONS_ROOT,
     chapter_paths: dict[str, Path] | None = None,
     footnote_paths: dict[str, Path] | None = None,
+    edition_contexts: dict[str, dict[str, dict[str, Path]]] | None = None,
+    default_edition_id: str = DEFAULT_EDITION_ID,
     sources_root: Path | None = None,
+    edition_reviews: dict[tuple[str, str], dict[str, Path]] | None = None,
     openai_client: Any | None = None,
     write_token: str | None = None,
 ) -> ReaderHTTPServer:
@@ -1165,6 +1448,23 @@ def build_server(
         if footnote_paths is not None
         else DEFAULT_FOOTNOTE_PATHS if chapter_paths is None else {}
     )
+    resolved_edition_contexts = edition_contexts
+    if (
+        resolved_edition_contexts is None
+        and note_paths is None
+        and chapter_paths is None
+        and discussion_root == DISCUSSIONS_ROOT
+    ):
+        resolved_edition_contexts = DEFAULT_EDITION_CONTEXTS
+    if edition_reviews is None:
+        default_review = {
+            "source": BOOK_ROOT / "Reading/第2部分-清教徒与圣经/05-約翰．歐文論從神而來的交通.md",
+            "target": BOOK_ROOT / "Reading/chatgpt-zh-cn/05-约翰·欧文论神如何向人传达真理.md",
+            "review": EDITION_REVIEW_ROOT / "chatgpt-zh-cn/05.json",
+        }
+        edition_reviews = {("chatgpt-zh-cn", "05"): default_review} if all(
+            path.is_file() for key, path in default_review.items() if key != "review"
+        ) else {}
     return ReaderHTTPServer(
         ("127.0.0.1", port),
         dist_root=dist_root,
@@ -1172,12 +1472,15 @@ def build_server(
         discussion_root=discussion_root,
         chapter_paths=resolved_chapter_paths,
         footnote_paths=resolved_footnote_paths,
+        edition_contexts=resolved_edition_contexts,
+        default_edition_id=default_edition_id,
         sources_root=(
             sources_root
             if sources_root is not None
             else SOURCES_ROOT if discussion_root == DISCUSSIONS_ROOT
             else discussion_root.parent.parent / "Sources"
         ),
+        edition_reviews=edition_reviews,
         openai_client=openai_client or discussions.client_from_environment(),
         write_token=write_token,
     )
@@ -1259,11 +1562,23 @@ def main() -> None:
         inject_api_key_from_macos_generic_password(args.keychain_generic_password_service)
 
     chapter_pages = [DIST_ROOT / f"chapters/{chapter:02d}/index.html" for chapter in range(1, 21)]
+    chapter_pages.extend(
+        DIST_ROOT / f"editions/{edition_id}/chapters/{chapter_id}/index.html"
+        for edition_id, context in DEFAULT_EDITION_CONTEXTS.items()
+        if edition_id != DEFAULT_EDITION_ID
+        for chapter_id in context["chapters"]
+    )
     if any(not chapter.is_file() for chapter in chapter_pages):
         raise SystemExit("Build output is missing. Run Web/scripts/build.py first.")
     for chapter_id, note_path in DEFAULT_NOTE_PATHS.items():
         if not note_path.is_file():
             raise SystemExit(f"Notes file for chapter {chapter_id} is missing: {note_path}")
+    for edition_id, context in DEFAULT_EDITION_CONTEXTS.items():
+        for chapter_id, paths in context["chapters"].items():
+            if not paths["notes"].is_file():
+                raise SystemExit(
+                    f"Notes file for edition {edition_id}, chapter {chapter_id} is missing: {paths['notes']}"
+                )
 
     server = build_server(args.port)
     print(f"Reader available at http://127.0.0.1:{server.server_address[1]}/chapters/01/")

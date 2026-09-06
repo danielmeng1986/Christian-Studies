@@ -1,0 +1,51 @@
+:root { color-scheme: light; --ink:#27231e; --muted:#71695f; --line:#ddd4c8; --paper:#faf8f3; --card:#fff; --accent:#9a4f23; --approved:#256b45; --reviewed:#8b6515; }
+* { box-sizing:border-box; }
+body { margin:0; padding-right:min(42vw,680px); color:var(--ink); background:var(--paper); font-family:"Noto Serif SC","Songti SC",serif; line-height:1.75; transition:padding-right .2s ease; }
+body.english-hidden { padding-right:0; }
+button,a { font:inherit; }
+.review-toolbar { position:sticky; top:0; z-index:4; display:flex; justify-content:space-between; gap:2rem; align-items:center; padding:1rem 2rem; background:rgba(250,248,243,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+.review-toolbar h1,.review-summary h2 { margin:0; font-size:1.35rem; }
+.eyebrow { margin:0; color:var(--muted); font:600 .7rem/1.4 system-ui,sans-serif; letter-spacing:.13em; }
+.review-toolbar__actions { display:flex; align-items:center; gap:.8rem; font-family:system-ui,sans-serif; font-size:.85rem; }
+.review-toolbar a,.review-toolbar button { border:1px solid var(--line); border-radius:999px; background:var(--card); color:var(--ink); padding:.45rem .8rem; text-decoration:none; }
+.review-toolbar button:not(:disabled) { background:var(--approved); color:white; cursor:pointer; }
+.review-toolbar button:disabled { color:var(--muted); }
+main { width:96%; margin:2rem auto 5rem; }
+.review-summary { display:flex; align-items:end; gap:2rem; margin-bottom:1.25rem; padding:1rem 1.25rem; border:1px solid var(--line); background:var(--card); border-radius:12px; }
+.review-summary p { margin:0; }
+.review-summary__counts { margin-left:auto; font-family:system-ui,sans-serif; font-size:.88rem; }
+.column-headings { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 220px; gap:1rem; padding:.6rem 1rem; color:var(--muted); font-family:system-ui,sans-serif; }
+.review-list { display:grid; gap:.75rem; }
+.review-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr) 220px; gap:1rem; position:relative; padding:2.2rem 1rem 1rem; border:1px solid var(--line); border-left:5px solid #aaa; border-radius:10px; background:var(--card); }
+.review-row[data-has-open-comments="true"] { box-shadow:inset 0 0 0 1px #d4a44e; }
+.review-row[data-status="reviewed"] { border-left-color:var(--reviewed); }
+.review-row[data-status="approved"] { border-left-color:var(--approved); }
+.review-row__meta { position:absolute; inset:.45rem auto auto 1rem; display:flex; gap:.6rem; color:var(--muted); font:600 .72rem/1.4 system-ui,sans-serif; }
+.review-copy { padding:.3rem .8rem; border-right:1px solid var(--line); }
+.review-copy p { margin:0; white-space:pre-wrap; }
+.review-copy--source { color:#595149; }
+.review-actions { display:grid; align-content:center; gap:.45rem; }
+.review-actions button { padding:.45rem .7rem; border:1px solid var(--line); border-radius:7px; background:transparent; cursor:pointer; }
+.review-actions button[aria-pressed="true"] { border-color:var(--accent); background:#f4e3d7; color:#703718; font-weight:700; }
+body[data-saving="true"] .review-actions { opacity:.55; pointer-events:none; }
+.review-comments { grid-column:1/-1; padding-top:.8rem; border-top:1px solid var(--line); font-family:system-ui,sans-serif; }
+.review-comments__heading { display:flex; justify-content:space-between; gap:1rem; margin-bottom:.55rem; color:var(--muted); font-size:.8rem; }
+.review-comments__list { display:grid; gap:.5rem; }
+.review-comment { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; padding:.65rem .75rem; border-radius:8px; background:#fff6e6; border:1px solid #e6c98e; }
+.review-comment[data-status="resolved"] { background:#f2f4f1; border-color:#d6ded8; color:var(--muted); }
+.review-comment p { margin:0; white-space:pre-wrap; }
+.review-comment button,.review-comments__form button { flex:none; padding:.35rem .65rem; border:1px solid var(--line); border-radius:7px; background:var(--card); cursor:pointer; }
+.review-comments__form { display:flex; align-items:end; gap:.65rem; margin-top:.65rem; }
+.review-comments__form label { flex:1; }
+.review-comments__form label span { display:block; margin-bottom:.25rem; color:var(--muted); font-size:.75rem; }
+.review-comments__form textarea { width:100%; resize:vertical; min-height:4.8rem; padding:.55rem .65rem; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); font:inherit; line-height:1.55; }
+body[data-saving="true"] .review-comments { opacity:.65; pointer-events:none; }
+.english-reference { position:fixed; z-index:3; inset:0 0 0 auto; width:min(42vw,680px); display:grid; grid-template-rows:auto auto 1fr; background:#f1eee7; border-left:1px solid var(--line); box-shadow:-10px 0 30px rgba(52,42,30,.08); }
+.english-reference[hidden] { display:none; }
+.english-reference header { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.05rem 1rem .6rem; border-bottom:1px solid var(--line); }
+.english-reference h2 { margin:0; font-size:1.2rem; }
+.english-reference a { color:var(--accent); font:600 .78rem system-ui,sans-serif; }
+.english-reference__notice { margin:0; padding:.65rem 1rem; color:var(--muted); background:#faf8f3; border-bottom:1px solid var(--line); font:normal .76rem/1.55 system-ui,sans-serif; }
+.english-reference iframe { width:100%; height:100%; border:0; background:white; }
+@media (max-width:1200px) { body { padding-right:0; } .english-reference { inset:5.5rem 1rem 1rem auto; width:min(680px,calc(100vw - 2rem)); border:1px solid var(--line); border-radius:12px; overflow:hidden; } }
+@media (max-width:900px) { .review-toolbar,.review-summary { align-items:flex-start; flex-direction:column; gap:.7rem; } .review-summary__counts { margin-left:0; } .column-headings { display:none; } .review-row { grid-template-columns:1fr; padding-top:2.5rem; } .review-copy { border-right:0; border-bottom:1px solid var(--line); } .review-copy::before { display:block; margin-bottom:.25rem; color:var(--muted); font:600 .72rem system-ui,sans-serif; } .review-copy--source::before { content:"WORD 转写版"; } .review-copy--target::before { content:"现代简体润译版"; } .review-actions { grid-template-columns:repeat(3,1fr); } .review-comments__form { align-items:stretch; flex-direction:column; } .english-reference { inset:8.5rem .5rem .5rem; width:auto; } }

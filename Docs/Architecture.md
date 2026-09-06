@@ -71,6 +71,12 @@ migration that updates metadata, code, tests, and links together.
 book. The five durable study areas—`Original/`, `Reading/`, `References/`,
 `Metadata/`, and `Notes/`—remain the base format.
 
+When a book has multiple reviewed reading editions, new alternate editions use
+one `Reading/<editionId>/` subtree each, while `Metadata/editions.json` declares
+the default edition and explicit chapter paths. A received default edition may
+retain pre-existing paths to preserve links and user anchors. Edition identity
+is never inferred from language or filenames.
+
 ## 4. Authority is domain-specific
 
 There is no single file that is authoritative for every question:
@@ -172,7 +178,9 @@ The future platform direction has accepted decisions, indexed in
 - reviewed Markdown remains authoritative normalized prose;
 - SQLite may become authoritative for a platform Book Catalog and migrated
   platform-managed metadata, while retrieval indexes remain derived; and
-- reviewed semantic blocks gain stable UUIDs for durable anchoring.
+- reviewed semantic blocks gain stable UUIDs for durable anchoring; and
+- multiple reviewed reading editions use stable edition identity, explicit
+  manifests, edition-bound user anchors, and chapter-atomic publication.
 
 These are accepted migration targets, not claims about current implementation.
 The authorities and paths in this document remain controlling until a scoped
@@ -183,3 +191,8 @@ The current Reader remains the compatibility baseline. Platform extraction and
 native mobile implementation are not authorized merely by this target: a second
 representative real use case must first validate the shared contracts. See
 [ADR-0004](Decisions/ADR-0004-Mobile-First-Local-Device-and-Portable-User-Data.md).
+
+[ADR-0005](Decisions/ADR-0005-Multiple-Reading-Editions-and-Review.md)
+governs multiple reading editions and their reviewed publication. It does not
+authorize duplicate chapter identities in the current reader before the
+manifest, composite identity, user-data migration, and validation gates exist.
