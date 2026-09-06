@@ -363,6 +363,21 @@ def citation_selector(reference: dict) -> str:
     return "; ".join(parts)
 
 
+def passage_groups(reference: dict) -> list[dict]:
+    groups: list[dict] = []
+    for segment in reference["segments"]:
+        for verse in segment["verses"]:
+            if (
+                groups
+                and groups[-1]["chapter"] == segment["chapter"]
+                and verse == groups[-1]["verses"][-1] + 1
+            ):
+                groups[-1]["verses"].append(verse)
+            else:
+                groups.append({"chapter": segment["chapter"], "verses": [verse]})
+    return groups
+
+
 def build_scripture_data(
     references: list[dict],
     config: dict,
@@ -393,29 +408,46 @@ def build_scripture_data(
     for reference in references:
         book = books[reference["book"]]
         selector = citation_selector(reference)
+        groups = passage_groups(reference)
         versions = {}
         for translation_id in translation_order:
             metadata = translations[translation_id]
             language = metadata["language"]
-            texts: list[str] = []
-            for segment in reference["segments"]:
-                for verse in segment["verses"]:
+            is_chinese = language.startswith("zh")
+            joiner = "" if is_chinese else " "
+            passage_parts: list[dict[str, str]] = []
+            previous_chapter: int | None = None
+            for group in groups:
+                texts: list[str] = []
+                for verse in group["verses"]:
                     try:
-                        texts.append(corpora[translation_id][reference["book"]][str(segment["chapter"])][str(verse)])
+                        texts.append(corpora[translation_id][reference["book"]][str(group["chapter"])][str(verse)])
                     except KeyError as error:
                         raise ValueError(
                             f'Missing verse in {translation_id}: {reference["book"]} '
-                            f'{segment["chapter"]}:{verse}'
+                            f'{group["chapter"]}:{verse}'
                         ) from error
-            is_chinese = language.startswith("zh")
+                if previous_chapter is not None:
+                    passage_parts.append(
+                        {"type": "chapter-gap" if group["chapter"] != previous_chapter else "verse-gap"}
+                    )
+                passage_parts.append({"type": "text", "text": joiner.join(texts)})
+                previous_chapter = group["chapter"]
             if language == "zh-Hant":
                 book_label = book["abbreviation_zh_hant"]
             elif language == "zh-Hans":
                 book_label = book["abbreviation_zh_hans"]
             else:
                 book_label = book["name_en"]
+            plain_text = "".join(
+                part["text"]
+                if part["type"] == "text"
+                else ("\n…\n" if part["type"] == "chapter-gap" else "……")
+                for part in passage_parts
+            )
             versions[translation_id] = {
-                "text": "".join(texts) if is_chinese else " ".join(texts),
+                "text": plain_text,
+                "parts": passage_parts,
                 "citation": f"{book_label} {selector}",
             }
         payload["references"][reference["id"]] = {"versions": versions}

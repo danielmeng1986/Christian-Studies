@@ -416,7 +416,17 @@ function createScriptureCard(scriptureId) {
   content.className = "footnote-card__content scripture-card__content";
   const text = document.createElement("p");
   text.className = "scripture-card__text";
-  text.textContent = passage.text;
+  (passage.parts || [{ type: "text", text: passage.text }]).forEach((part) => {
+    if (part.type === "text") {
+      text.append(document.createTextNode(part.text));
+      return;
+    }
+    const separator = document.createElement("span");
+    separator.className = `scripture-card__gap scripture-card__gap--${part.type}`;
+    separator.setAttribute("aria-label", part.type === "chapter-gap" ? "中间省略其他章节" : "中间省略其他经节");
+    separator.textContent = "…";
+    text.append(separator);
+  });
   const citation = document.createElement("p");
   citation.className = "scripture-card__citation";
   citation.textContent = passage.citation;

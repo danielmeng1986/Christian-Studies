@@ -244,6 +244,28 @@ class BuildTests(unittest.TestCase):
         self.assertIn("joy. And blessed", versions["kjv"]["text"])
         self.assertEqual(versions["kjv"]["citation"], "Luke 1:44–45")
 
+    def test_discontinuous_scripture_passages_expose_visible_gaps(self) -> None:
+        config, translations, books = BUILD.load_scripture_context()
+        references = [
+            BUILD.parse_scripture_uri(target, books, config["available_translations"])
+            for target in ("scripture:JHN.14.26;16.13", "scripture:LUK.24.26,27,32")
+        ]
+        payload = BUILD.build_scripture_data(references, config, translations, books)["references"]
+
+        john = payload["JHN.14.26;16.13"]["versions"]["cuv-s"]
+        self.assertEqual([part["type"] for part in john["parts"]], ["text", "chapter-gap", "text"])
+        self.assertIn("\n…\n", john["text"])
+
+        luke = payload["LUK.24.26,27,32"]["versions"]["cuv-s"]
+        self.assertEqual([part["type"] for part in luke["parts"]], ["text", "verse-gap", "text"])
+        self.assertIn("明白了。……他们彼此说", luke["text"])
+        self.assertNotIn("岂不是应当的吗？」……于是", luke["text"])
+
+        app_js = (BUILD.ASSET_ROOT / "app.js").read_text(encoding="utf-8")
+        app_css = (BUILD.ASSET_ROOT / "app.css").read_text(encoding="utf-8")
+        self.assertIn('part.type === "chapter-gap"', app_js)
+        self.assertIn(".scripture-card__gap--chapter-gap", app_css)
+
     def test_output_excludes_private_and_machine_specific_data(self) -> None:
         self.assertNotIn(str(BUILD.REPO_ROOT), self.output)
         self.assertNotIn("Notes/Annotations", self.output)

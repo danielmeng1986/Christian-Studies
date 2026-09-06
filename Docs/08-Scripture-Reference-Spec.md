@@ -151,7 +151,9 @@ Generated anchors must include at least:
 - Join Chinese verse records with an empty string.
 - Join English verse records with exactly one ASCII space.
 - Preserve all translation text, punctuation, paragraph marks, and brackets. Do not edit or repair it.
-- Join discontinuous verses and chapter continuations in URI order.
+- Join contiguous verses in each selected run using the language rule above.
+- When selected verses in the same chapter omit one or more intervening verses, insert a visible inline ellipsis between the contiguous runs.
+- When a reference continues in another chapter, insert a visible block-level ellipsis between chapter passages. The separator must be exposed to assistive technology as omitted verses or chapters, not as translation text.
 
 ### 6.2 Citation line and translation identity
 

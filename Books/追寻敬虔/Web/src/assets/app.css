@@ -813,6 +813,22 @@ body.is-resizing-study-panel * {
   line-height: 1.85;
 }
 
+.scripture-card__gap {
+  color: var(--muted);
+}
+
+.scripture-card__gap--verse-gap {
+  padding: 0 0.18em;
+}
+
+.scripture-card__gap--chapter-gap {
+  display: block;
+  margin: 0.45rem 0;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.22em;
+}
+
 .scripture-card__citation {
   color: var(--muted);
   font-family: ui-sans-serif, -apple-system, sans-serif;
